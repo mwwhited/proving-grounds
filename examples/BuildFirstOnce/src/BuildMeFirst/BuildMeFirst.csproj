@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.Build.NoTargets/3.7.56"  DefaultTargets="Build">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <Target Name="DoBeforeBuild" BeforeTargets="Build">
+    <Message Text="I run first and only once $(ProjectFileName)" Importance="high" />
+  </Target>
+
+  <Target Name="DoAfterBuild" AfterTargets="Build">
+    <Message Text="I also only run once $(ProjectFileName)" Importance="high" />
+  </Target>
+
+</Project>

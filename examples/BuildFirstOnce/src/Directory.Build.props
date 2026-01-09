@@ -1,0 +1,45 @@
+<Project>
+  <PropertyGroup Condition="'$(SolutionDir)' == ''">
+    <!-- Resolve solution dir if not set -->
+    <SolutionDir Condition="'$(SolutionDir)' == '' and $([System.IO.Directory]::GetFiles('./', '*.sln').get_Length()) != 0">./</SolutionDir>
+    <SolutionDir Condition="'$(SolutionDir)' == '' and $([System.IO.Directory]::GetFiles('../', '*.sln').get_Length()) != 0">../</SolutionDir>
+    <SolutionDir Condition="'$(SolutionDir)' != ''">$([System.IO.Path]::GetFullPath('$(SolutionDir)'))</SolutionDir>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Company>Out-of-Band Development, LLC</Company>
+    <Authors>$(USERNAME)@$(USERDNSDOMAIN)</Authors>
+    <Copyright>$(Company), $([System.DateTime]::Now.ToString('yyyy'))</Copyright>
+
+    <TestResultsOutFolderPath>$(SolutionDir)TestResults\</TestResultsOutFolderPath>
+    <VSTestResultsDirectory>$(SolutionDir)TestResults\</VSTestResultsDirectory>
+    <RunSettingsFilePath>$(SolutionDir).runsettings</RunSettingsFilePath>
+
+    <RepositoryUrl>https://github.com/OutOfBandDevelopment/BuildFirstOnce/</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+
+  </PropertyGroup>
+
+  <PropertyGroup Condition="Exists('$(SolutionDir)..\LICENSE')">
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+  <ItemGroup Condition="Exists('$(SolutionDir)..\LICENSE')">
+    <LicenseFile Include="$(SolutionDir)..\LICENSE" />
+    <None Include="@(LicenseFile)" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)BuildMeFirst\BuildMeFirst.csproj">
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
+  </ItemGroup>
+
+  <Target Name="DoBeforeBuild" BeforeTargets="Build">
+    <Message Text="Run before everything else $(ProjectFileName)" Importance="high" />
+  </Target>
+
+  <Target Name="DoAfterBuild" AfterTargets="Build">
+    <Message Text="Run after everything else $(ProjectFileName)" Importance="high" />
+  </Target>
+
+</Project>
