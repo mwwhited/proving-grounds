@@ -1,0 +1,48 @@
+
+
+REM @ECHO OFF
+SETLOCAL ENABLEEXTENSIONS
+
+SET ENTRTY_PATH=%0
+SET ENTRY_FOLDER=%~dp0
+
+PUSHD %ENTRY_FOLDER%
+
+SET TARGET_VERSION=%1
+IF "%TARGET_VERSION%"=="" GOTO DONE
+
+SET TOOL_LIST=lightwell.dataloader.31.cli lightwell.dataloader.cli lightwell.dacpaccompiler.cli
+
+ECHO == Install Tools ==
+CALL :INSTALL_TOOLS %TOOL_LIST%
+
+
+REM === Exits ===
+GOTO DONE
+
+POPD
+ENDLOCAL
+IF %REAL_ERROR%==0 SET %REAL_ERROR%=1
+EXIT /B %REAL_ERROR%
+
+:DONE
+SHIFT
+IF NOT "%1"=="" GOTO %1
+ECHO.
+ECHO Update Versions Complete
+ECHO.
+:DONE_DONE
+
+POPD
+ENDLOCAL
+EXIT /B
+
+REM === Functions ===
+
+:INSTALL_TOOLS
+SET INSTALL_TOOL=%1
+ECHO Installing %INSTALL_TOOL%@%TARGET_VERSION%
+dotnet tool install %INSTALL_TOOL% --version %TARGET_VERSION%
+SHIFT
+IF NOT "%1"=="" GOTO :INSTALL_TOOLS
+EXIT /B

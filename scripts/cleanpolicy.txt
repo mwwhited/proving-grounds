@@ -1,0 +1,4 @@
+REG delete HKLM\Software\Policies /va
+REG delete HKCU\Software\Policies /va
+REG delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Group Policy Objects" /va
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies" /va
