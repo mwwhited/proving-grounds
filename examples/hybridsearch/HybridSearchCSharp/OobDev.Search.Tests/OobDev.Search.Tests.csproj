@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.0.4" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.4" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OobDev.Documents.Markdig\OobDev.Documents.Markdig.csproj" />
+    <ProjectReference Include="..\OobDev.Documents.WkHtmlToPdf\OobDev.Documents.WkHtmlToPdf.csproj" />
+    <ProjectReference Include="..\OobDev.Documents\OobDev.Documents.csproj" />
+    <ProjectReference Include="..\OobDev.Search.Azure\OobDev.Search.Azure.csproj" />
+    <ProjectReference Include="..\OobDev.Search.Neo4j\OobDev.Search.Neo4j.csproj" />
+    <ProjectReference Include="..\OobDev.Search.Ollama\OobDev.Search.Ollama.csproj" />
+    <ProjectReference Include="..\OobDev.Search.OpenSearch\OobDev.Search.OpenSearch.csproj" />
+    <ProjectReference Include="..\OobDev.Search.Qdrant\OobDev.Search.Qdrant.csproj" />
+    <ProjectReference Include="..\OobDev.Search.Sbert\OobDev.Search.Sbert.csproj" />
+    <ProjectReference Include="..\OobDev.Search\OobDev.Search.csproj" />
+  </ItemGroup>
+
+</Project>
