@@ -1,0 +1,5 @@
+exit
+RUNDLL32 PRINTUI.DLL,PrintUIEntry  /dl /n "PDFCreator" /q
+RUNDLL32 PRINTUI.DLL,PrintUIEntry /in /n "\\EFCTS\F-1630-HPCLJ8500.FCC.Printers.DIS" /u /z
+RUNDLL32 PRINTUI.DLL,PrintUIEntry /in /n "\\EFCTS\F-1630-HPLJ4200.FCC.Printers.DIS" /u /z
+RUNDLL32 PRINTUI.DLL,PrintUIEntry /n "\\EFCTS\F-1630-HPLJ4200.FCC.Printers.DIS" /y
