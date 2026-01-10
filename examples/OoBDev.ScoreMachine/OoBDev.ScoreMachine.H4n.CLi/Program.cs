@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO.Ports;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OoBDev.ScoreMachine.H4n.CLi
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            using (var serial = new SerialPort("COM7", 2400, Parity.None, 8, StopBits.One))
+            {
+                serial.Open();
+
+                /*
+                 Record: 0x81 0x00 | 0x80 0x00
+Play:   0x82 0x00 | 0x80 0x00
+Stop:   0x84 0x00 | 0x80 0x00
+ffwd:   0x88 0x00 | 0x80 0x00
+rwd:    0x90 0x00 | 0x80 0x00
+vol+:   0x80 0x08 | 0x80 0x00
+vol-:   0x80 0x10 | 0x80 0x00
+rec+:   0x80 0x20 | 0x80 0x00
+rec-:   0x80 0x40 | 0x80 0x00
+mic :   0x80 0x01 | 0x80 0x00
+ch1 :   0x80 0x02 | 0x80 0x00
+ch2 :   0x80 0x04 | 0x80 0x00
+*/
+                var running = true;
+
+                var task1 = Task.Run(async () =>
+                {
+                    while (running)
+                    {
+                        serial.Write(new byte[] { 0x82, 0x00 }, 0, 2);
+                        await Task.Delay(100);
+                        serial.Write(new byte[] { 0x80, 0x00 }, 0, 2);
+                        await Task.Delay(1000);
+                    }
+                });
+                var task2 = Task.Run(() =>
+                {
+                    while (running)
+                    {
+                        var inp = serial.ReadByte();
+                        Console.Write($"{(byte)inp:x2}");
+                    }
+                });
+
+                Console.ReadLine();
+                running = false;
+
+                Task.WaitAll(task1, task2);
+            }
+        }
+    }
+}

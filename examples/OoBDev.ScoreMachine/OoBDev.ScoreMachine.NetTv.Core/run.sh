@@ -1,0 +1,1 @@
+﻿dotnet run -v d --no-build OoBDev.ScoreMachine.NeTv.Core.csproj --netv=http://10.0.88.1 --hub=http://10.0.88.4:5000/

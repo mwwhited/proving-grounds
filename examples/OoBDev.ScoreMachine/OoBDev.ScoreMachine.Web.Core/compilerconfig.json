@@ -1,0 +1,22 @@
+﻿[
+  {
+    "outputFile": "wwwroot/lib/babel/polyfill.es5.js",
+    "inputFile": "wwwroot/lib/babel/polyfill.js"
+  },
+  {
+    "outputFile": "wwwroot/lib/signalr/dist/browser/signalr.es5.js",
+    "inputFile": "wwwroot/lib/signalr/dist/browser/signalr.js"
+  },
+  {
+    "outputFile": "wwwroot/js/Score.es5.js",
+    "inputFile": "wwwroot/js/Score.js"
+  },
+  {
+    "outputFile": "wwwroot/js/Manager.es5.js",
+    "inputFile": "wwwroot/js/Manager.js"
+  },
+  {
+    "outputFile": "wwwroot/js/Shared.es5.js",
+    "inputFile": "wwwroot/js/Shared.js"
+  }
+]

@@ -1,0 +1,9 @@
+﻿{
+  "messageType": "ScoreMachine",
+  "playerRightName": "1234567890123456789",
+  "playerRightClub": "12345678901234567890123456789012",
+  "playerLeftName": "1234567890123456789",
+  "playerLeftClub": "12345678901234567890123456789012",
+  "weapon": "Foil", /* Foil | Sabre | Epee | Long Sword | Rapier */
+  "content": "block" /* block | none */
+}

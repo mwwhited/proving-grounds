@@ -1,0 +1,44 @@
+﻿@*@model IEnumerable<OobDev.InfrastructureSurvey.Models.SurveyModel>*@
+
+@{
+    ViewBag.Title = "Surveys";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@*<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SurveryID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Subtitle)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SurveryID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Subtitle)
+                </td>
+                <td>
+                    @Html.ActionLink("Ask", "Ask", new { surveyName = item.Title }) |
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>*@

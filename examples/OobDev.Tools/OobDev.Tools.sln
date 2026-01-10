@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OobDev.Tools", "OobDev.Tools\OobDev.Tools.csproj", "{C1661638-E813-4295-A8DD-5EEEA383E5CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OobDev.Tools.Tests", "OobDev.Tools.Tests\OobDev.Tools.Tests.csproj", "{21ADB2AE-89B3-4E95-9370-A1ECA5BEA072}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OobDev.Tools.AfUnix", "OobDev.Tools.AfUnix\OobDev.Tools.AfUnix.csproj", "{118CA81D-8741-4C76-9193-D6AD4BB23822}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1661638-E813-4295-A8DD-5EEEA383E5CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1661638-E813-4295-A8DD-5EEEA383E5CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1661638-E813-4295-A8DD-5EEEA383E5CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1661638-E813-4295-A8DD-5EEEA383E5CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21ADB2AE-89B3-4E95-9370-A1ECA5BEA072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21ADB2AE-89B3-4E95-9370-A1ECA5BEA072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21ADB2AE-89B3-4E95-9370-A1ECA5BEA072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21ADB2AE-89B3-4E95-9370-A1ECA5BEA072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{118CA81D-8741-4C76-9193-D6AD4BB23822}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{118CA81D-8741-4C76-9193-D6AD4BB23822}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{118CA81D-8741-4C76-9193-D6AD4BB23822}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{118CA81D-8741-4C76-9193-D6AD4BB23822}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {333C2D60-24C3-43B4-A52D-532AE706AC08}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://outofbanddevelopment.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = OobDev.Tools\\OobDev.Tools.csproj
+		SccProjectName1 = OobDev.Tools
+		SccLocalPath1 = OobDev.Tools
+		SccProjectUniqueName2 = OobDev.Tools.Tests\\OobDev.Tools.Tests.csproj
+		SccProjectName2 = OobDev.Tools.Tests
+		SccLocalPath2 = OobDev.Tools.Tests
+		SccProjectUniqueName3 = OobDev.Tools.AfUnix\\OobDev.Tools.AfUnix.csproj
+		SccProjectName3 = OobDev.Tools.AfUnix
+		SccLocalPath3 = OobDev.Tools.AfUnix
+	EndGlobalSection
+EndGlobal

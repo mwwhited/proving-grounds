@@ -1,0 +1,1 @@
+﻿dotnet run -v d --no-build OoBDev.ScoreMachine.Emulator.Core.csproj --hub=http://10.0.88.4:5000/

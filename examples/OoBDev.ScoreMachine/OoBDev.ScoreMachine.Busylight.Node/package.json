@@ -1,0 +1,13 @@
+{
+  "name": "oo-bdev.score-machine.busylight.node",
+  "version": "0.0.0",
+  "description": "OoBDev.ScoreMachine.Busylight.Node",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "@aspnet/signalr": "^1.1.0",
+    "busylight": "^0.4.0"
+  }
+}

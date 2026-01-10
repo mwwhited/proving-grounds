@@ -1,0 +1,386 @@
+﻿@page
+@*<?php require '..\royalarts-config.php'; ?>
+    <?php error_reporting(E_ALL);
+
+    //************************************************************* */
+    //	START BOUT FOR VIDEO RECORDING AT ARNOLD
+    //************************************************************* */
+    //everything is now in FT40 and Holocron databases of SQL Server.
+    //MySQl has been elminated
+    $DB = new RoyalArts\Database("ft");
+
+    $bid = isset($_GET["bid"]) ? $_GET["bid"] : 0;
+
+
+    //pulling data from Fencing Time where we have a final available for the stage
+    $sql = "select eb.BoutID, eb.BoutNum, TableSize as [Table], inhSeedTop as Seed1,
+    p1.FirstName as First1, p1.LastName as Last1,
+    ef1.RatingStrVal as Rating1,
+    k1.Abbreviation as ClubAbbr1, k2.Name as ClubName1, d1.Abbreviation as Division1,
+    InhSeedBot as Seed2,
+    p2.FirstName as First2, p2.LastName as Last2, ef2.RatingStrVal as Rating2,
+    k2.Abbreviation as ClubAbbr2, k2.Name as ClubName2, d2.Abbreviation as Division2,
+
+    tn.Name as Tournament,  e.Weapon, e.GenderMix, al.Name, al.ShortName
+
+    from tblElimBouts eb
+    LEFT JOIN tblBouts b on b.ID = eb.BoutID
+    LEFT JOIN tblEventFencers ef1 on ef1.CompetitorID = b.Competitor1ID
+    LEFT JOIN tblCompetitors c1 on c1.ID = ef1.CompetitorID
+    LEFT JOIN tblPeople p1 on p1.ID = ef1.PersonID
+    LEFT JOIN tblClubs k1 on k1.ID = ef1.Club1ID
+    LEFT JOIN tblDivisions d1 on d1.ID = ef1.DivisionID
+
+    LEFT JOIN tblEventFencers ef2 on ef2.CompetitorID = b.Competitor2ID
+    LEFT JOIN tblCompetitors c2 on c2.ID = ef2.CompetitorID
+    LEFT JOIN tblPeople p2 on p2.ID = ef2.PersonID
+    LEFT JOIN tblClubs k2 on k2.ID = ef2.Club2ID
+    LEFT JOIN tblDivisions d2 on d2.ID = ef2.DivisionID
+
+    LEFT JOIN tblTreeTables et on et.ID = eb.TreeTableID
+    LEFT JOIN tblElimTrees t on t.ID = et.TreeID
+
+    LEFT JOIN tblElimRounds er on er.RoundID = t.RoundID
+    LEFT JOIN tblRounds r on r.ID = t.RoundID
+    LEFT JOIN tblEvents e on e.ID = r.EventID
+    LEFT JOIN tblTournaments tn on tn.ID = e.TournamentID
+
+    LEFT JOIN tblAgeLimits al on al.ID = e.AgeLimitID
+
+    WHERE (Score1Value = -1 AND Score2Value = -1)
+    AND (p1.LastName IS NOT NULL AND p2.LastName IS NOT NULL)
+    AND [TableSize] <=4
+    ORDER BY boutNum";
+
+    //$smHost = "http://192.168.0.215:5000/";
+    $smHost = "http://172.29.75.2:5000/";
+
+    ?>*@
+<html>
+<head>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="stylesheet" type="text/css" href="/_design/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/_design/fonts/royalarts/style.css" />
+    <link rel="stylesheet" type="text/css" href="vs.css" />
+    <script type="text/javascript" src="/_design/js-core/jquery-core.js"></script>
+
+    @*<script type="text/javascript" src="<?php echo $smHost; ?>lib/babel/polyfill.es5.min.js"></script>
+        <script type="text/javascript" src="<?php echo $smHost; ?>lib/signalr/dist/browser/signalr.es5.min.js"></script>
+        <script type="text/javascript" src="<?php echo $smHost; ?>js/EventSourcePoly.js"></script>
+        <script type="text/javascript" src="<?php echo $smHost; ?>js/Shared.es5.js"></script>*@
+    <script type="text/javascript" src="lib/babel/polyfill.es5.min.js"></script>
+    <script type="text/javascript" src="lib/signalr/dist/browser/signalr.es5.min.js"></script>
+    <script type="text/javascript" src="js/EventSourcePoly.js"></script>
+    <script type="text/javascript" src="js/Shared.es5.js"></script>
+    <script type="text/javascript">
+        function GetCurrentBoutPlayers() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const boutId = urlParams.get('bid');
+            if (boutId) {
+                console.log('current bout:'.concat(boutId || ""));
+                //<? php if ($bid != 0) {
+                //$boutQuery = "SELECT
+                //                eb.BoutID,
+                //                    p1.FirstName as First1, p1.LastName as Last1, k2.Name as Club1,
+                //                    p2.FirstName as First2, p2.LastName as Last2, k2.Name as Club2
+                //            FROM tblElimBouts eb
+
+                //            LEFT JOIN tblBouts b on b.ID = eb.BoutID
+                //            LEFT JOIN tblEventFencers ef1 on ef1.CompetitorID = b.Competitor1ID
+                //            LEFT JOIN tblCompetitors c1 on c1.ID = ef1.CompetitorID
+                //            LEFT JOIN tblPeople p1 on p1.ID = ef1.PersonID
+                //            LEFT JOIN tblClubs k1 on k1.ID = ef1.Club1ID
+
+                //            LEFT JOIN tblEventFencers ef2 on ef2.CompetitorID = b.Competitor2ID
+                //            LEFT JOIN tblCompetitors c2 on c2.ID = ef2.CompetitorID
+                //            LEFT JOIN tblPeople p2 on p2.ID = ef2.PersonID
+                //            LEFT JOIN tblClubs k2 on k2.ID = ef2.Club2ID
+
+                //            WHERE eb.BoutID = " + $bid;
+                //$boutData = $DB -> getRow($sql);
+                //?>
+                //var players = {
+                //    playerRight: {
+                //        name: "<?php echo $boutData->First1; ?> <?php echo $boutData->Last1; ?>",
+                //        club: "<?php echo $boutData->Club1; ?>"
+                //    },
+                //    playerLeft: {
+                //        name: "<?php echo $boutData->First2; ?> <?php echo $boutData->Last2; ?>",
+                //        club: "<?php echo $boutData->Club2; ?>"
+                //    },
+                //};
+                //<? php } ?>
+
+                var players = {
+                    playerRight: {
+                        name: "p1",
+                        club: "c1"
+                    },
+                    playerLeft: {
+                        name: "p2",
+                        club: "c2"
+                    },
+                };
+                return players;
+            } else {
+                console.log('not bout set');
+            }
+        }
+
+        function StartRecordingNoOverlay() {
+            console.log('StartRecordingNoOverlay');
+            if (window.ScoreMachineHub && window.ScoreMachineHub.overlayOff && window.ScoreMachineHub.startBout) {
+                window.ScoreMachineHub.overlayOff();
+                window.ScoreMachineHub.startBout();
+            }
+        }
+        function StartRecordingWithOverlay() {
+            console.log('StartRecordingWithOverlay');
+            var players = GetCurrentBoutPlayers();
+            console.log('current players: '.concat(JSON.stringify(players)));
+            if (window.ScoreMachineHub) {
+                if (players) {
+                    window.ScoreMachineHub.endBout(); //make sure recording is stopped
+                    window.ScoreMachineHub.updatePlayers(players.playerRight, players.playerLeft);
+                    window.ScoreMachineHub.overlayOn(); // make sure overlay on
+                    setTimeout(function () { // allow the system to have time to stop recording
+                        window.ScoreMachineHub.startBout();
+                    }, 1000);
+                }
+            }
+        }
+        function StopRecording() {
+            console.log('StopRecording');
+            if (window.ScoreMachineHub) {
+                window.ScoreMachineHub.endBout();
+                window.ScoreMachineHub.overlayOn();
+            }
+        }
+        function SwapSides() {
+            var players = GetCurrentBoutPlayers();
+            window.ScoreMachineHub.updatePlayers(players.playerLeft, players.playerRight);
+        }
+
+        window.ScoreMachineVM.onReceivedData = function (message) {
+            console.log(JSON.stringify(message));
+        }
+        window.ScoreMachineVM.onDocumentReady = function (connection) {
+            console.log("started versus to signalr");
+            function SendPlayers() {
+                var players = GetCurrentBoutPlayers();
+                if (players) {
+                    StartRecordingWithOverlay();
+                } else {
+                    StopRecording();
+                }
+            }  
+            setTimeout(SendPlayers, 500);
+        }
+
+        //function connectionStateChanged(state) {
+        //    var stateConversion = { 0: 'connecting', 1: 'connected', 2: 'reconnecting', 4: 'disconnected' };
+        //    console.log('SignalR state changed from: ' + stateConversion[state.oldState]
+        //        + ' to: ' + stateConversion[state.newState]);
+        //}
+
+        //connection = $.connection(signalR_Endpoint);
+        //connection.stateChanged(connectionStateChanged);
+    </script>
+</head>
+<body onload="documentReady();">
+
+
+
+    @*'<?php echo $smHost; ?>'
+
+
+
+            <div class="row">
+            <div class="col-md-8">
+                <div align="center">
+                    <img src="xvsy.png" /><br /><Br />
+                    <?php
+                    //pull the bout data: only finals for live system
+                    $dr = $DB->getData($sql);
+                    //echo $dr[0]["Tournament"] . ': ' . $dr[0]["ShortName"] . ' ' . $dr[0]["GenderMix"] . ' ' . $dr[0]["Weapon"];
+                    ?>
+                    <div class="list-group" style="max-width: 900px;">
+                        Select from available final bouts for recording. Touch bout to start VIDEO. Green means active bout.
+                        <?php
+                        foreach($dr as $row){
+
+                        echo '<a href="start.php?bid=' . $row[" BoutID"] . '" class="list-group-item list-group-item-action ' ;
+                                 if($bid= =$row["BoutID"]){ echo 'bg-success' ;
+                            //RoyalArts\Messages::SendTweet(
+                        //	$row["Tournament"]. ' ' . $row["ShortName"] . ': ' . $row["Last1"] . ' v. ' . $row["Last2"] . ' now fencing!');
+                        }
+
+                        echo '">';
+                        //echo '<div class="row" style="padding:15px;margin-bottom: 10px;maxwidth: 900px;">
+                            ';
+                            echo '<table style="width:900px;">
+                                ';
+
+                                //tournament row
+                                echo '
+                                <tr>
+                                    ';
+                                    echo	'
+                                    <td></td>
+                                    <Td></Td>
+                                    <td colspan="5" style="color: #ccc;">
+                                        ';
+                                        echo		'<b>'. $row["Tournament"] . ':</b> ' .$row["ShortName"] . ' ' . $row["GenderMix"] . ' ' . $row["Weapon"];
+                                        echo	'
+                                    </td>';
+                                    echo '
+                                </tr>';
+
+                                echo '
+                                <tr>
+                                    ';
+                                    echo	'
+                                    <td style="line-height: 1.5em;width:50px;border-right: 1px solid #ccc;padding-right: 5px;"><span class="rnd">ROUND</span><br /><span class="TableSize">' . $row["Table"] . '</span></td>';
+                                    echo	'
+                                    <td style="width:24px;vertical-align: middle;">' . $row["Seed1"] . '</td>';
+                                    echo	'
+                                    <td style="padding-right:5px; border-right: 1px solid #ccc; width:350px;">
+                                        <span class="TableFencer">' . $row["Last1"] . ', ' . $row["First1"] . '</span><br />';
+
+                                        echo $row["ClubAbbr1"] . ' [' . $row["Division1"] . ']
+                                    </td>';
+
+                                    echo '</td>';
+
+                                    echo '
+                                    <td class="TableVS" style="width:50px;padding-right:5px;padding-left: 5px;border-right: 1px solid #ccc;">VS</td>';
+
+                                    echo '
+                                    <td style="width:24px;vertical-align: middle;">' . $row["Seed2"] . '</td>';
+                                    echo '
+                                    <td style="width:350px;">
+                                        <span class="TableFencer">' . $row["Last2"] . ', ' . $row["First2"] . '</span><br />';
+
+                                        echo '' . $row["ClubAbbr2"] . ' [' . $row["Division2"] . ']
+                                    </td>';
+
+                                    echo '
+                                    <td style="padding-left: 5px; border-left: 1px solid #ccc;">
+                                        <i class="ra-clock" style="padding-top: 10px;font-size:45px;"></i>
+                                    </td>';
+
+                                    echo '
+                                </tr>
+                            </table>';
+                            echo '</a>';
+                            }//end foreach
+
+
+                            ?>
+                            <!--<a href="#">Exibition or Special Bout</a>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h1>Music Selection</h1>
+                    <div class="list-group" sty1le="max-width: 300px;">
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('medals');">Medals - 2019</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('medalremix');">Medals Remix - 2019</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('champion');">Medal Music - 2018</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('halo')">Victory's Halo</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('american')">American Fencer</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('starwars')">Star Wars Throne Room</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('throne')">Empire</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('gameofthrones')">Game of Thrones</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('conan')">Conan</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('shashka')">Arnold Performance</a>
+                        <!--<a href="#" class="list-group-item list-group-item-action" onclick="play('rapier')">The Man in Black</a>-->
+                        <a href="#" class="list-group-item list-group-item-action" onclick="play('wonder')">Wonder Woman</a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="stopAudio();">STOP ALL</a>
+                    </div>
+                    <h1>Day Schedule</h1>
+                    <?php
+                    $sql = "SELECT al.Abbreviation, GenderMix, Weapon, AltName,  DateAndTime
+                    FROM tblEvents e
+                    LEFT JOIN tblAgeLimits al on al.ID = e.AgeLimitID
+                    WHERE  CONVERT(DATE, DateAndTime)=CONVERT(DATE,getdate())
+                    ORDER BY DateAndTime";
+
+                    $dr = $DB->getData($sql);
+
+                    echo '<table class="table table-sm table-striped">
+                        ';
+                        $i = 0;
+                        foreach($dr as $row){
+                        $i++;
+                        echo '
+                        <tr>
+                            <td>' . $i . '.</td>';
+                            echo '
+                            <td>
+                                ';
+
+                                if($row["AltName"] > ""){
+                                echo $row["AltName"];
+                                } else {
+                                if($row["Abbreviation"] > ""){ echo $row["Abbreviation"] . ' ';}
+
+                                echo $row["GenderMix"] . ' ' . $row["Weapon"];
+                                }
+
+                                echo '
+                            </td>';
+
+                            echo '
+                            <td>' . RoyalArts\Database::FormatTime($row["DateAndTime"]) . '</td>';
+                            echo '
+                        </tr>';
+                        }
+                        echo '
+                    </table>';
+                    $DB = null;
+                    ?>
+                </div>
+            </div>
+        </div>
+        <audio id="medals" src="/music/Medals.mp3"></audio>
+        <audio id="medalsremix" src="/music/MedalRemix.mp3"></audio>
+        <audio id="champion" src="/music/send-us-a-champion.mp3"></audio>
+        <audio id="halo" src="/music/to-capture-victorys-halo.mp3"></audio>
+        <audio id="starwars" src="/music/star-wars.mp3"></audio>
+        <audio id="imperial" src="/music/Imperial.mp3"></audio>
+        <audio id="throne" src="/music/throne-room.mp3"></audio>
+        <audio id="gameofthrones" src="/music/game-of-thrones.mp3"></audio>
+        <audio id="conan" src="/music/Conan.mp3"></audio>
+        <audio id="american" src="/music/american-fencer.mp3"></audio>
+        <audio id="allweek" src="/music/allweek.mp3"></audio>
+        <audio id="wanting" src="/music/wanting.mp3"></audio>
+        <audio id="rapier" src="/music/rapier.mp3"></audio>
+        <audio id="wonder" src="/music/wonder-woman.mp3"></audio>
+        <audio id="shashka" src="/music/shashka.mp3"></audio>
+
+        <script>
+            function play($source) {
+                stopAudio();
+                document.getElementById($source).loop = true;
+                document.getElementById($source).play();
+            }
+
+            function stopAudio() {
+                document.getElementById('champion').pause();
+                document.getElementById('halo').pause();
+                document.getElementById('starwars').pause();
+                document.getElementById('imperial').pause();
+                document.getElementById('throne').pause();
+                document.getElementById('gameofthrones').pause();
+                document.getElementById('conan').pause();
+                document.getElementById('allweek').pause();
+                document.getElementById('wanting').pause();
+                document.getElementById('american').pause();
+                document.getElementById('rapier').pause();
+                document.getElementById('shashka').pause();
+                document.getElementById('wonder').pause();
+            }
+        </script>*@
+</body>
+</html>

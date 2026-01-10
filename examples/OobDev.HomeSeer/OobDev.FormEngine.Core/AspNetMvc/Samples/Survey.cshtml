@@ -1,0 +1,20 @@
+﻿@model string
+@{
+    ViewBag.Title = "Survey";
+}
+@section styles{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Questionnaires/Survey.css")" />
+}
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Questionnaires/Survey.js")"></script>
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    @Html.Raw(this.Model)
+
+    <input type="submit" name="Submit" value="Submit" />
+}

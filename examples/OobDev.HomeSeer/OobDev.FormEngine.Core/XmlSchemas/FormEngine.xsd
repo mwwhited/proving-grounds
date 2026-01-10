@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FormEngine"
+    targetNamespace="http://schemas.outofbanddevelopment.com/FormEngine/2015/05/v1"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.outofbanddevelopment.com/FormEngine/2015/05/v1"
+    xmlns:mstns="http://schemas.outofbanddevelopment.com/FormEngine/2015/05/v1"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:simpleType name="non-empty-string">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="slug-name">
+    <xs:restriction base="non-empty-string">
+      <xs:pattern value="^[A-Za-z0-9_\- ()\[\]\{\}\&lt;\&gt;]+$" />
+    </xs:restriction>
+  </xs:simpleType>  
+  <xs:simpleType name="special-name">
+    <xs:restriction base="non-empty-string">
+      <xs:pattern value="^[A-Za-z]{1}[A-Za-z0-9_]*$" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="control-types">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RadioBox" />
+      <xs:enumeration value="CheckBox" />
+      <xs:enumeration value="DropDownBox" />
+      <xs:enumeration value="TextBox" />
+      <xs:enumeration value="MultilineTextBox" />
+      <xs:enumeration value="FieldSet" />
+      <xs:enumeration value="Label" />
+      <xs:enumeration value="RadioOtherBox" />
+      <xs:enumeration value="CheckOtherBox" />
+      <xs:enumeration value="AddCheckOtherBox" />
+      <xs:enumeration value="AddRadioOtherBox" />
+      <xs:enumeration value="Hidden" />
+      <xs:enumeration value="ReadOnly" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="dropdown-options">
+    <xs:sequence>
+      <xs:element name="option" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="non-empty-string">
+              <xs:attribute name="value" type="xs:string" use="required" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="rule-group-equals">
+    <xs:attribute name="group" use="required" type="special-name" />
+    <xs:attribute name="equals" use="required" type="non-empty-string" />
+  </xs:complexType>
+
+  <xs:complexType name="rules-type">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="options" type="dropdown-options" minOccurs="0" maxOccurs="1" />
+      
+      <xs:element name="set-if" type="rule-group-equals" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="set-if-not" type="rule-group-equals" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="unset-if" type="rule-group-equals" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="unset-if-not" type="rule-group-equals" minOccurs="0" maxOccurs="unbounded" />
+
+      <xs:element name="disable-if" type="rule-group-equals" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="disable-if-not" type="rule-group-equals" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="enable-if" type="rule-group-equals" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="enable-if-not" type="rule-group-equals" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="question-type">
+    <xs:sequence>
+      <xs:element name="rules" type="rules-type"  minOccurs="0" maxOccurs="1"/>
+      <xs:element name="question" type="question-type"  minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="group" type="non-empty-string" use="optional" default="group" />
+    <xs:attribute name="body" type="non-empty-string" use="required" />
+    <xs:attribute name="value" type="non-empty-string" use="optional" />
+    <xs:attribute name="control" type="control-types" use="optional" default="Label" />
+  </xs:complexType>
+
+  <xs:complexType name="page-type">
+    <xs:sequence>
+      <xs:element name="button" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="class" type="non-empty-string" use="optional" />
+          <xs:attribute name="label" type="non-empty-string" use="optional" />
+          <xs:attribute name="action" use="required">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="goto" />
+                <xs:enumeration value="show" />
+                <xs:enumeration value="hide" />
+                <xs:enumeration value="put" />
+                <!--
+                <xs:enumeration value="delete" />
+                <xs:enumeration value="post" />
+                -->
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="target" type="non-empty-string" use="required" />
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="question" type="question-type"  minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+
+    <xs:attribute name="slug" type="slug-name" use="required" />
+    <xs:attribute name="title" type="non-empty-string" use="required" />
+    <xs:attribute name="sub-title" type="non-empty-string" use="optional" />
+    <xs:attribute name="entry-point" type="xs:boolean" use="optional" />
+    
+  </xs:complexType>
+
+  <xs:complexType name="form-type">
+    <xs:sequence>
+      <xs:element name="page" type="page-type"  minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="title" type="slug-name" use="required" />
+    <xs:attribute name="sub-title" type="non-empty-string" use="optional" />
+  </xs:complexType>
+
+  <xs:element name="form" type="form-type" />
+  
+</xs:schema>

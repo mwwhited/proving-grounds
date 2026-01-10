@@ -1,0 +1,10 @@
+﻿{
+  "messageType": "ScoreMachine",
+  "playerRightScore": "99",
+  "playerRightCard": "red" /* red | yellow | transparent */,
+  "playerRightLight": "red" /* white | red | transparent */,
+  "playerLeftScore": "99",
+  "playerLeftCard": "red" /* red | yellow | transparent */,
+  "playerLeftLight": "green" /* white | green | transparent */,
+  "clock": "mm:ss"
+}

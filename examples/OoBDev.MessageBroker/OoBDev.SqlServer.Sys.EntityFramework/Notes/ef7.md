@@ -1,0 +1,1 @@
+﻿https://docs.microsoft.com/en-us/ef/core/modeling/value-conversions

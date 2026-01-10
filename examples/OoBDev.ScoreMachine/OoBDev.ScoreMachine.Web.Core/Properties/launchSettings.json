@@ -1,0 +1,32 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:52523/",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "OoBDev.ScoreMachine.Web.Core": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "SM_H4NPORT": "Disabled",
+        "SM_NETVHOST": "Disabled",
+        "SM_HDMIPORT": "Disabled",
+        "SM_BUSYLIGHT": "Disabled",
+        "SM_E810HOST": "Disabled",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:52524/"
+    }
+  }
+}

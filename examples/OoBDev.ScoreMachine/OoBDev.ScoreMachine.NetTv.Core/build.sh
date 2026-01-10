@@ -1,0 +1,1 @@
+﻿dotnet build -v d OoBDev.ScoreMachine.NetTv.Core.csproj

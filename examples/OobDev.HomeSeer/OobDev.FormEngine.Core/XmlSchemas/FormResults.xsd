@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Survey-Data"
+    targetNamespace="http://schemas.outofbanddevelopment.com/FormEngine/Results/2015/05/v1"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.outofbanddevelopment.com/FormEngine/Results/2015/05/v1"
+    xmlns:mstns="http://schemas.outofbanddevelopment.com/FormEngine/Results/2015/05/v1"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:simpleType name="non-empty-string">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="slug-name">
+    <xs:restriction base="non-empty-string">
+      <xs:pattern value="^[A-Za-z0-9_\- ()\[\]\{\}\&lt;\&gt;]+$" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="special-name">
+    <xs:restriction base="non-empty-string">
+      <xs:pattern value="^[A-Za-z]{1}[A-Za-z0-9_]*$" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="line-item-type">
+    <xs:attribute name="key" type="non-empty-string" use="required" />
+    <xs:attribute name="value" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="data-type">
+    <xs:sequence>
+      <xs:element name="data" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="form-data" type="data-type" />
+
+</xs:schema>

@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OoBDev.MessageBroker.Cli", "OoBDev.MessageBroker.Cli\OoBDev.MessageBroker.Cli.csproj", "{B73C096A-3549-4590-B27E-DA76A09CDCDA}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "OoBDev.MessageBroker.DB", "OoBDev.MessageBroker.DB\OoBDev.MessageBroker.DB.sqlproj", "{2C23603A-6A77-436D-A4A4-E774706CD871}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OoBDev.SqlServer.Sys.EntityFramework", "OoBDev.SqlServer.Sys.EntityFramework\OoBDev.SqlServer.Sys.EntityFramework.csproj", "{F3E0B99E-E381-4FFD-8D7C-69DBF6D901CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OoBDev.SqlServer.Extensions.EntityFramework", "OoBDev.SqlServer.Extensions.EntityFramework\OoBDev.SqlServer.Extensions.EntityFramework.csproj", "{98A0EB0B-9025-42D0-AA89-60276ACCBA29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OoBDev.DependnecyInjection.Cli", "OoBDev.DependnecyInjection.Cli\OoBDev.DependnecyInjection.Cli.csproj", "{D5EC11CD-7926-4E51-B199-5FC9A5D672F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B73C096A-3549-4590-B27E-DA76A09CDCDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B73C096A-3549-4590-B27E-DA76A09CDCDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B73C096A-3549-4590-B27E-DA76A09CDCDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B73C096A-3549-4590-B27E-DA76A09CDCDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C23603A-6A77-436D-A4A4-E774706CD871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C23603A-6A77-436D-A4A4-E774706CD871}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C23603A-6A77-436D-A4A4-E774706CD871}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2C23603A-6A77-436D-A4A4-E774706CD871}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C23603A-6A77-436D-A4A4-E774706CD871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C23603A-6A77-436D-A4A4-E774706CD871}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F3E0B99E-E381-4FFD-8D7C-69DBF6D901CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3E0B99E-E381-4FFD-8D7C-69DBF6D901CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3E0B99E-E381-4FFD-8D7C-69DBF6D901CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3E0B99E-E381-4FFD-8D7C-69DBF6D901CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98A0EB0B-9025-42D0-AA89-60276ACCBA29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98A0EB0B-9025-42D0-AA89-60276ACCBA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98A0EB0B-9025-42D0-AA89-60276ACCBA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98A0EB0B-9025-42D0-AA89-60276ACCBA29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5EC11CD-7926-4E51-B199-5FC9A5D672F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5EC11CD-7926-4E51-B199-5FC9A5D672F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5EC11CD-7926-4E51-B199-5FC9A5D672F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5EC11CD-7926-4E51-B199-5FC9A5D672F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD5B4840-F8B4-40B0-B661-B4170CA330A6}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://outofbanddevelopment.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = OoBDev.MessageBroker.Cli\\OoBDev.MessageBroker.Cli.csproj
+		SccProjectName1 = OoBDev.MessageBroker.Cli
+		SccLocalPath1 = OoBDev.MessageBroker.Cli
+		SccProjectUniqueName2 = OoBDev.MessageBroker.DB\\OoBDev.MessageBroker.DB.sqlproj
+		SccProjectName2 = OoBDev.MessageBroker.DB
+		SccLocalPath2 = OoBDev.MessageBroker.DB
+		SccProjectUniqueName3 = OoBDev.SqlServer.Sys.EntityFramework\\OoBDev.SqlServer.Sys.EntityFramework.csproj
+		SccProjectName3 = OoBDev.SqlServer.Sys.EntityFramework
+		SccLocalPath3 = OoBDev.SqlServer.Sys.EntityFramework
+		SccProjectUniqueName4 = OoBDev.SqlServer.Extensions.EntityFramework\\OoBDev.SqlServer.Extensions.EntityFramework.csproj
+		SccProjectName4 = OoBDev.SqlServer.Extensions.EntityFramework
+		SccLocalPath4 = OoBDev.SqlServer.Extensions.EntityFramework
+		SccProjectUniqueName5 = OoBDev.DependnecyInjection.Cli\\OoBDev.DependnecyInjection.Cli.csproj
+		SccProjectName5 = OoBDev.DependnecyInjection.Cli
+		SccLocalPath5 = OoBDev.DependnecyInjection.Cli
+	EndGlobalSection
+EndGlobal

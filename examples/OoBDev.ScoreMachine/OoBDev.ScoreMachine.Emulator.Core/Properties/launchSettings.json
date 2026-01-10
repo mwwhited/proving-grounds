@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OoBDev.ScoreMachine.Emulator.Core": {
+      "commandName": "Project",
+      "commandLineArgs": "--hub=http://192.168.137.171:5000/"
+    }
+  }
+}

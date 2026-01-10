@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OoBDev.ScoreMachine.Client.Core\OoBDev.ScoreMachine.Client.Core.csproj" />
+    <ProjectReference Include="..\OoBDev.ScoreMachine.Common\OoBDev.ScoreMachine.Common.csproj" />
+    <ProjectReference Include="..\OoBDev.ScoreMachine.Emulator\OoBDev.ScoreMachine.Emulator.csproj" />
+  </ItemGroup>
+
+</Project>

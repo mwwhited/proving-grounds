@@ -1,0 +1,531 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<form xmlns="http://schemas.outofbanddevelopment.com/FormEngine/2015/05/v1"
+        title="Discovery Questions">
+
+  <page slug="CustomerInfo" title="Customer Info" entry-point="true">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="Implementation" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="EnvironmentType" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    <button label="Show All" action="show" target="all" />
+
+    <question group="CustomerName" body="Name" control="ReadOnly" />
+    <question group="CustomerCompany" body="Business Name" control="ReadOnly" />
+    <question group="CustomerTitle" body="Title" control="Hidden" />
+    <question group="CustomerEmailAddress" body="Email Address" control="Hidden" />
+    <question group="CustomerPhoneNumber" body="Phone Number" control="Hidden" />
+  </page>
+
+  <page slug="EnvironmentType" title="Environment Type" sub-title="Is this a brand new environment, existing storage replacement or a hyper converged integration">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="CustomerInfo" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="ScaleIOType" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+
+    <question group="EnvironmentType" body="New environment" value="New" control="RadioBox" />
+    <question group="EnvironmentType" body="Legacy storage replacement" value="Legacy" control="RadioBox">
+      <question group="EnvironmentTypeLegacyDetails" body="Details for this environment" control="MultilineTextBox" />
+    </question>
+    <question group="EnvironmentType" body="Hyper converged integration with existing environment" value="Hyper converged" control="RadioBox">
+      <question group="EnvironmentTypeConvergedDetails" body="Details for this environment" control="MultilineTextBox" />
+    </question>
+  </page>
+
+  <page slug="ScaleIOType" title="Scale IO" sub-title="Do you intend to use ScaleIO standalone or hyper converged?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="EnvironmentType" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="ScaleIOConnect" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+
+    <question group="ScaleIOType" body="Standalone" value="Standalone" control="RadioBox" />
+    <question group="ScaleIOType" body="Hyper Converged" value="Hyper Converged" control="RadioBox" />
+  </page>
+
+  <page slug="ScaleIOConnect" title="Scale IO Connection" sub-title="What do you plan to connect to ScaleIO?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="ScaleIOType" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="Virtualized" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="ScaleIOConnect" body="Standalone servers" value="Standalone" control="CheckBox" />
+    <question group="ScaleIOConnect" body="Hypervisor/Virtual servers" value="Virtual" control="CheckBox" />
+    <question group="ScaleIOConnect" body="Other" control="CheckOtherBox" />
+  </page>
+
+  <page slug="Virtualized" title="Virtualization" sub-title="Are you currently using/planning to use virtualization?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="ScaleIOConnect" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="BareMetalConnectedOS" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="Virtualized" body="Yes" value="Yes" control="RadioBox">
+      <rules>
+        <set-if group="EnvironmentType" equals="Hyper converged" />
+      </rules>
+      <question group="VirtualizedPlatformLabel" body="What platform do they use or prefer" control="Label">
+        <question group="VirtualizedPlatform" body="VMware" value="VMware" control="CheckBox" />
+        <question group="VirtualizedPlatform" body="KVM" value="KVM" control="CheckBox" />
+        <question group="VirtualizedPlatform" body="Xen" value="Xen" control="CheckBox" />
+        <question group="VirtualizedPlatform" body="Hyper-V" value="Hyper-V" control="CheckBox" />
+        <question group="VirtualizedPlatform" body="Other" control="CheckOtherBox" />
+        <question group="VirtualizedPlatform" body="More" control="AddCheckOtherBox" />
+      </question>
+    </question>
+    <question group="Virtualized" body="No" value="N" control="RadioBox">
+      <rules>
+        <disable-if group="EnvironmentType" equals="Hyper converged" />
+        <enable-if-not group="EnvironmentType" equals="Hyper converged" />
+        <unset-if group="EnvironmentType" equals="Hyper converged" />
+      </rules>
+    </question>
+  </page>
+
+  <page slug="BareMetalConnectedOS" title="Operating Systems" sub-title="Which operating systems do you plan to run on servers that you plan to connect to ScaleIO?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="Virtualized" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="PerformanceExpectation" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="BareMetalConnectedOS" body="Windows" value="W" control="CheckBox" />
+    <question group="BareMetalConnectedOS" body="Linux" value="L" control="CheckBox" />
+    <question group="BareMetalConnectedOS" body="Other" control="CheckOtherBox" />
+  </page>
+
+  <page slug="PerformanceExpectation" title="Performance" sub-title="What is the performance/IOPS expectation/behavior for this environment?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="BareMetalConnectedOS" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="EnvironmentApplication" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="PerformanceExpectation" body="IOPS" control="RadioOtherBox" />
+    <question group="PerformanceExpectation" body="Unknown" value="Unk" control="RadioBox">
+      <question group="EnvironmentPerformanceTestLabel" body="Do you have the ability to run a diagnostic tool to determine the Environment IOPS?" control="Label">
+        <question group="EnvironmentPerformanceTest" body="Yes" value="Yes" control="RadioBox" />
+        <question group="EnvironmentPerformanceTest" body="No" value="No" control="RadioBox" />
+      </question>
+    </question>
+  </page>
+
+  <page slug="EnvironmentApplication" title="Application Support" sub-title="Which applications does the environment need to support?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="PerformanceExpectation" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="Network" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+
+    <question group="EnvironmentApplication" body="SQL server" value="SQL" control="CheckBox">
+      <question group="HyperConvergedLabel_SQL" body="Is this hyper converged" control="Label">
+        <question group="HyperConverged_SQL" body="Yes" value="Yes" control="RadioBox">
+          <question group="HyperConverged_SQL_CPU" body="CPU" control="TextBox" />
+          <question group="HyperConverged_SQL_Memory" body="Memory" control="TextBox" />
+          <question group="HyperConverged_SQL_IOPS" body="IOPS" control="TextBox" />
+        </question>
+        <question group="HyperConverged_SQL" body="No" value="No" control="RadioBox">
+          <question group="NotHyperConverged_SQL_IOPS" body="IOPS" control="TextBox" />
+        </question>
+      </question>
+    </question>
+
+    <question group="EnvironmentApplication" body="Exchange" value="Exchange" control="CheckBox">
+      <question group="HyperConvergedLabel_Exchange" body="Is this hyper converged" control="Label">
+        <question group="HyperConverged_Exchange" body="Yes" value="Yes" control="RadioBox">
+          <question group="HyperConverged_Exchange_CPU" body="CPU" control="TextBox" />
+          <question group="HyperConverged_Exchange_Memory" body="Memory" control="TextBox" />
+          <question group="HyperConverged_Exchange_IOPS" body="IOPS" control="TextBox" />
+        </question>
+        <question group="HyperConverged_Exchange" body="No" value="No" control="RadioBox">
+          <question group="NotHyperConverged_Exchange_IOPS" body="IOPS" control="TextBox" />
+        </question>
+      </question>
+    </question>
+
+    <question group="EnvironmentApplication" body="Lync" value="Lync" control="CheckBox">
+      <question group="HyperConvergedLabel_Lync" body="Is this hyper converged" control="Label">
+        <question group="HyperConverged_Lync" body="Yes" value="Yes" control="RadioBox">
+          <question group="HyperConverged_Lync_CPU" body="CPU" control="TextBox" />
+          <question group="HyperConverged_Lync_Memory" body="Memory" control="TextBox" />
+          <question group="HyperConverged_Lync_IOPS" body="IOPS" control="TextBox" />
+        </question>
+        <question group="HyperConverged_Lync" body="No" value="No" control="RadioBox">
+          <question group="NotHyperConverged_Lync_IOPS" body="IOPS" control="TextBox" />
+        </question>
+      </question>
+    </question>
+
+    <question group="EnvironmentApplication" body="Oracle" value="Oracle" control="CheckBox">
+      <question group="HyperConvergedLabel_Oracle" body="Is this hyper converged" control="Label">
+        <question group="HyperConverged_Oracle" body="Yes" value="Yes" control="RadioBox">
+          <question group="HyperConverged_Oracle_CPU" body="CPU" control="TextBox" />
+          <question group="HyperConverged_Oracle_Memory" body="Memory" control="TextBox" />
+          <question group="HyperConverged_Oracle_IOPS" body="IOPS" control="TextBox" />
+        </question>
+        <question group="HyperConverged_Oracle" body="No" value="No" control="RadioBox">
+          <question group="NotHyperConverged_Oracle_IOPS" body="IOPS" control="TextBox" />
+        </question>
+      </question>
+    </question>
+
+    <question group="EnvironmentApplication" body="SAP" value="SAP" control="CheckBox">
+      <question group="HyperConvergedLabel_SAP" body="Is this hyper converged" control="Label">
+        <question group="HyperConverged_SAP" body="Yes" value="Yes" control="RadioBox">
+          <question group="HyperConverged_SAP_CPU" body="CPU" control="TextBox" />
+          <question group="HyperConverged_SAP_Memory" body="Memory" control="TextBox" />
+          <question group="HyperConverged_SAP_IOPS" body="IOPS" control="TextBox" />
+        </question>
+        <question group="HyperConverged_SAP" body="No" value="No" control="RadioBox">
+          <question group="NotHyperConverged_SAP_IOPS" body="IOPS" control="TextBox" />
+        </question>
+      </question>
+    </question>
+
+    <question group="EnvironmentApplication" body="Virtualization" value="Virtualization" control="CheckBox">
+      <question group="HyperConvergedLabel_Virtualization" body="Is this hyper converged" control="Label">
+        <question group="HyperConverged_Virtualization" body="Yes" value="Yes" control="RadioBox">
+          <question group="HyperConverged_Virtualization_CPU" body="CPU" control="TextBox" />
+          <question group="HyperConverged_Virtualization_Memory" body="Memory" control="TextBox" />
+          <question group="HyperConverged_Virtualization_IOPS" body="IOPS" control="TextBox" />
+        </question>
+        <question group="HyperConverged_Virtualization" body="No" value="No" control="RadioBox">
+          <question group="NotHyperConverged_Virtualization_IOPS" body="IOPS" control="TextBox" />
+        </question>
+      </question>
+    </question>
+
+    <question group="EnvironmentApplication" body="Other" control="CheckOtherBox" />
+    <question group="EnvironmentApplication" body="None of the above" control="RadioBox" />
+  </page>
+
+  <page slug="Network" title="Network Infrastructure">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="EnvironmentApplication" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="DataCenter" />
+    
+    <question group="NetworkManufacturer" body="Who is your network technology manufacturer?" control="DropDownBox">
+      <rules>
+        <options>
+          <option value="">(Please Choose)</option>
+          <option value="Cisco">Cisco</option>
+          <option value="Arista">Arista</option>
+          <option value="HP">HP</option>
+          <option value="Mellanox">Mellanox</option>
+          <option value="Other">Other</option>
+        </options>
+      </rules>
+    </question>
+    <question group="NetworkHardwareModel" body="What is the hardware model of your existing equipment?" control="MultilineTextBox" />
+    <question group="NetworkSpeed" body="What is the operating speed?" control="DropDownBox">
+      <rules>
+        <options>
+          <option value="">(Please Choose)</option>
+          <option value="1 Gbps">1 Gbps</option>
+          <option value="10 Gbps">10 Gbps</option>
+          <option value="40 Gbps">40 Gbps</option>
+          <option value="56 Gbps">56 Gbps</option>
+          <option value="40 GBit infiniband">40 GBit infiniband</option>
+          <option value="8GBit Fiber channel">8GBit Fiber channel</option>
+          <option value="Other">Other</option>
+        </options>
+      </rules>
+    </question>
+    <question group="NetworkAlternativeAllowedLabel" body="Do you have the option to leverage alternative networking equipment?" control="Label">
+      <question group="NetworkAlternativeAllowed" body="Yes" value="Yes" control="RadioBox" />
+      <question group="NetworkAlternativeAllowed" body="No" value="No" control="RadioBox" />
+    </question>
+  </page>
+
+  <page slug="DataCenter" title="Data Center" sub-title="Where will this environment be located?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="Network" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="StorageSpace" />
+    
+    <question group="DataCenterLocation" body="In my own rack" value="On Premise" control="RadioBox" />
+    <question group="DataCenterLocation" body="Hosted in a data center" value="Customer Hosted" control="RadioBox">
+      <question group="DataCenterRoomAvailableLabel" body="Do you have rack space available?">
+        <question group="DataCenterRoomAvailable" body="Yes" value="Yes" control="RadioBox">
+          <question group="DataCenterRoomAvailableAmount" body="How much rack space do you have avalible?" control="MultilineTextBox" />
+        </question>
+        <question group="DataCenterRoomAvailable" body="No" value="No" control="RadioBox" />
+      </question>
+
+      <question group="DataCenterElectricityLabel" body="What type of electricity do you have?" control="Label">
+        <question group="DataCenterElectricity" body="600VAC" value="600VAC" control="CheckBox" />
+        <question group="DataCenterElectricity" body="400VAC" value="400VAC" control="CheckBox" />
+        <question group="DataCenterElectricity" body="480VAC" value="480VAC" control="CheckBox" />
+        <question group="DataCenterElectricity" body="208VAC" value="208VAC" control="CheckBox" />
+        <question group="DataCenterElectricity" body="120VAC" value="120VAC" control="CheckBox" />
+      </question>
+
+      <question group="DataCenterRemoteAccessLabel" body="What type of electricity do you have?" control="Label">
+        <question group="DataCenterRemoteAccess" body="VPN" value="VPN" control="RadioBox" />
+        <question group="DataCenterRemoteAccess" body="Other secure solution" value="Other secure solution" control="RadioBox" />
+      </question>
+    </question>
+
+    <question group="DataCenterLocation" body="Itrica Provided rack" value="Itrica Hosted" control="RadioBox">
+
+      <question group="FirewallLabel" body="Do you require intrusion protection or firewall?" control="Label">
+        <question group="Firewall" body="Yes" value="Yes" control="RadioBox">
+
+          <question group="DedicatedManagementNetworkLabel" body="Do you have a dedicated management network?" control="Label">
+            <question group="DedicatedManagementNetwork" body="Yes" value="Yes" control="RadioBox">
+              <question group="DedicatedManagementNetworkAddress" body="What is the IP scheme for that network?" control="TextBox" />
+              <question group="DedicatedManagementNetworkMask" body="What is the network mask?"  control="DropDownBox">
+                <rules>
+                  <options>
+                    <option value="">(Please Choose)</option>
+                    <option value="16">/16</option>
+                    <option value="20">/20</option>
+                    <option value="22">/22</option>
+                    <option value="23">/23</option>
+                    <option value="24">/24</option>
+                  </options>
+                </rules>
+              </question>
+            </question>
+            <question group="DedicatedManagementNetwork" body="No" value="No" control="RadioBox" />
+          </question>
+
+          <question group="DedicatedStorageNetworkLabel" body="Do you have a dedicated storage network?" control="Label">
+            <question group="DedicatedStorageNetwork" body="Yes" value="Yes" control="RadioBox">
+              <question group="DedicatedStorageNetworkAddress" body="What is the IP scheme for that network?" control="TextBox" />
+              <question group="DedicatedStorageNetworkMask" body="What is the network mask?" control="DropDownBox">
+                <rules>
+                  <options>
+                    <option value="">(Please Choose)</option>
+                    <option value="16">/16</option>
+                    <option value="20">/20</option>
+                    <option value="22">/22</option>
+                    <option value="23">/23</option>
+                    <option value="24">/24</option>
+                  </options>
+                </rules>
+              </question>
+            </question>
+            <question group="DedicatedStorageNetwork" body="No" value="No" control="RadioBox" />
+          </question>
+
+        </question>
+        <question group="Firewall" body="No" value="No" control="RadioBox" />
+      </question>
+
+      <question group="InternetOrCrossConnectLabel" body="Do you require Internet or dedicated connectivity via private circuit?" control="Label">
+        <question group="InternetOrCrossConnect" body="Yes" value="Yes" control="RadioBox">
+          <question group="DataCenterConnection" body="Existing" value="Existing" control="RadioBox">
+            <question group="DataCenterConnectionExistingCarrier" body="What carrier?" control="TextBox" />
+          </question>
+          <question group="DataCenterConnection" body="New" value="New" control="RadioBox">
+            <question group="DataCenterConnectionNewAddress" body="What is the address?" control="MultilineTextBox" />
+            <question group="DataCenterConnectionNewSpeed" body="What speed do you need?" control="DropDownBox">
+              <rules>
+                <options>
+                  <option value="">(Please Choose)</option>
+                  <option value="1Gbps">1 Gbps</option>
+                  <option value="10Gbps">10 Gbps</option>
+                  <option value="Other">Other</option>
+                </options>
+              </rules>
+            </question>
+          </question>
+        </question>
+        <question group="InternetOrCrossConnect" body="No" value="No" control="RadioBox" />
+      </question>
+
+    </question>
+  </page>
+
+  <page slug="StorageSpace" title="Storage Space">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="DataCenter" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="StorageGrowth" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="StorageSpace" body="How much usable disk space do you need?" control="MultilineTextBox" />
+  </page>
+
+  <page slug="StorageGrowth" title="Storage Growth" sub-title="How much growth do you expect to have?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="StorageSpace" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="Management" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="StorageGrowth6Months" body="6 Months" control="DropDownBox">
+      <rules>
+        <options>
+          <option value="">(Please Choose)</option>
+          <option value="0">0%</option>
+          <option value="10">10%</option>
+          <option value="25">25%</option>
+          <option value="50">50%</option>
+          <option value="100">100%</option>
+          <option value="200">200%</option>
+          <option value="300">300%</option>
+          <option value="400">400%</option>
+          <option value="500">500%</option>
+          <option value="UNK">Unknown</option>
+        </options>
+      </rules>
+    </question>
+    <question group="StorageGrowth12Months" body="12 Months" control="DropDownBox">
+      <rules>
+        <options>
+          <option value="">(Please Choose)</option>
+          <option value="0">0%</option>
+          <option value="10">10%</option>
+          <option value="25">25%</option>
+          <option value="50">50%</option>
+          <option value="100">100%</option>
+          <option value="200">200%</option>
+          <option value="300">300%</option>
+          <option value="400">400%</option>
+          <option value="UNK">Unknown</option>
+        </options>
+      </rules>
+    </question>
+    <question group="StorageGrowth24Months" body="24 Months" control="DropDownBox">
+      <rules>
+        <options>
+          <option value="">(Please Choose)</option>
+          <option value="0">0%</option>
+          <option value="10">10%</option>
+          <option value="25">25%</option>
+          <option value="50">50%</option>
+          <option value="100">100%</option>
+          <option value="200">200%</option>
+          <option value="300">300%</option>
+          <option value="400">400%</option>
+          <option value="UNK">Unknown</option>
+        </options>
+      </rules>
+    </question>
+    <question group="StorageGrowth36Months" body="36 Months" control="DropDownBox">
+      <rules>
+        <options>
+          <option value="">(Please Choose)</option>
+          <option value="0">0%</option>
+          <option value="10">10%</option>
+          <option value="25">25%</option>
+          <option value="50">50%</option>
+          <option value="100">100%</option>
+          <option value="200">200%</option>
+          <option value="300">300%</option>
+          <option value="400">400%</option>
+          <option value="UNK">Unknown</option>
+        </options>
+      </rules>
+    </question>
+  </page>
+
+  <page slug="Management" title="Management" sub-title="Do you want to manage yourself, or do you want us to manage it?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="StorageGrowth" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="ScaleIOThinProvisioning" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="ManagedBy" body="No, Self managed" value="SelfManaged" control="RadioBox">
+      <question group="SelfManagedSLA" body="What level of support contract do you require?" control="DropDownBox">
+        <rules>
+          <options>
+            <option value="">(Please Choose)</option>
+            <option value="4hr">4 hour response</option>
+            <option value="24hr">24 hour response</option>
+            <option value="1hr">1 hour response</option>
+          </options>
+        </rules>
+      </question>
+      <question group="SelfManagedMonitoringLabel" body="Do you require 24-hour monitoring of the environment?" control="Label">
+        <question group="SelfManagedMonitoring" body="Yes" value="Yes" control="RadioBox" />
+        <question group="SelfManagedMonitoring" body="No" value="No" control="RadioBox" />
+      </question>
+      <question group="SelfManagedRBACLabel" body="Do you need role based access control to managing ScaleIO Systems?" control="Label">
+        <question group="SelfManagedRBAC" body="Yes" value="Yes" control="RadioBox" />
+        <question group="SelfManagedRBAC" body="No" value="No" control="RadioBox" />
+      </question>
+      <question group="SelfManagedAccessIntegrationLabel" body="Do you need integration with existing authentication and authorization system?" control="Label">
+        <question group="SelfManagedAccessIntegration" body="Yes" value="Yes" control="RadioBox" />
+        <question group="SelfManagedAccessIntegration" body="No" value="No" control="RadioBox" />
+      </question>
+    </question>
+    <question group="ManagedBy" body="Itrica Managed" value="Itrica" control="RadioBox">
+      <question group="ManagedSLA" body="What level of support contract do you require?" control="DropDownBox">
+        <rules>
+          <options>
+            <option value="">(Please Choose)</option>
+            <option value="4hr">4 hour response</option>
+            <option value="24hr">24 hour response</option>
+            <option value="1hr">1 hour response</option>
+          </options>
+        </rules>
+      </question>
+      <question group="ManagedMonitoringLabel" body="Do you require 24-hour monitoring of the environment?" control="Label">
+        <question group="ManagedMonitoring" body="Yes" value="Yes" control="RadioBox" />
+        <question group="ManagedMonitoring" body="No" value="No" control="RadioBox" />
+      </question>
+      <question group="ManagedRBACLabel" body="Do you need role based access control to managing ScaleIO Systems?" control="Label">
+        <question group="ManagedRBAC" body="Yes" value="Yes" control="RadioBox" />
+        <question group="ManagedRBAC" body="No" value="No" control="RadioBox" />
+      </question>
+      <question group="ManagedAccessIntegrationLabel" body="Do you need integration with existing authentication and authorization system?" control="Label">
+        <question group="ManagedAccessIntegration" body="Yes" value="Yes" control="RadioBox" />
+        <question group="ManagedAccessIntegration" body="No" value="No" control="RadioBox" />
+      </question>
+    </question>
+  </page>
+
+  <page slug="ScaleIOThinProvisioning"  title="Provisioning" sub-title="Thin provisioning?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="Management" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="ScaleIOQoS" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="ScaleIOThinProvisioning" body="Yes" value="Yes" control="RadioBox" />
+    <question group="ScaleIOThinProvisioning" body="No" value="No" control="RadioBox" />
+  </page>
+  <page slug="ScaleIOQoS" title="Quality of Service">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="ScaleIOThinProvisioning" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="Backup" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="ScaleIOQoS" body="Yes" value="Yes" control="RadioBox" />
+    <question group="ScaleIOQoS" body="No" value="No" control="RadioBox" />
+  </page>
+
+  <page slug="Backup" title="Backup Option" sub-title="Do you want us to provide you back-up for the environment?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="ScaleIOQoS" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="APIAccess" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="Backup" body="Yes" value="Yes" control="RadioBox">
+      <question group="BackupLocationLabel" body="Do you want this backed-up onsite or off site?" control="Label">
+        <question group="BackupLocation" body="On Site" value="On Site" control="RadioBox" />
+        <question group="BackupLocation" body="Off Site" value="Off Site" control="RadioBox" />
+        <question group="BackupLocation" body="Customer Provided" value="Customer Provided" control="RadioBox" />
+      </question>
+      <question group="BackupPeriod" body="How Often?" control="MultilineTextBox" />
+    </question>
+    <question group="Backup" body="No" value="No" control="RadioBox" />
+  </page>
+
+  <page slug="APIAccess" title="API" sub-title="Do you require API access and integrations with other systems?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="Backup" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="EncrpyionAtRest" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="APIAccess" body="Yes" value="Yes" control="RadioBox">
+      <question group="APIAccessType" body="What systems?" control="MultilineTextBox" />
+    </question>
+    <question group="APIAccess" body="No" value="No" control="RadioBox" />
+  </page>
+
+  <page slug="EncrpyionAtRest" title="Encryption" sub-title="Do you need data encryption at rest?">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="APIAccess" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="Implementation" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="EncrpyionAtRest" body="Yes" value="Yes" control="RadioBox" />
+    <question group="EncrpyionAtRest" body="No" value="No" control="RadioBox" />
+  </page>
+
+  <page slug="Implementation" title="Implementation">
+    <button label="Back" class="glyphicon glyphicon-menu-left" action="goto" target="EncrpyionAtRest" />
+    <button label="Next" class="glyphicon glyphicon-menu-right" action="goto" target="CustomerInfo" />
+    <button label="Save" class="glyphicon glyphicon-save" action="put" target="?" />
+    
+    <question group="ImplementationTimeFrame" body="When do you want this implementation up and running?" control="DropDownBox">
+      <rules>
+        <options>
+          <option value="">(Please Choose)</option>
+          <option value="30 days">30 days</option>
+          <option value="3 months">3 months</option>
+          <option value="6 months">6 months</option>
+          <option value="1 year">1 year</option>
+        </options>
+      </rules>
+    </question>
+  </page>
+
+</form>

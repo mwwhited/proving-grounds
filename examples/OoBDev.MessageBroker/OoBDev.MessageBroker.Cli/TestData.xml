@@ -1,0 +1,27 @@
+﻿<tables xmlns="http://tempuri.org/TestSchema.xsd">
+  <sys.tables name="spt_fallback_db" 
+              object_id="117575457" 
+              schema_id="1" 
+              parent_object_id="0" 
+              type="U " 
+              type_desc="USER_TABLE" 
+              create_date="2003-04-08T09:18:01.557" 
+              modify_date="2017-08-22T19:40:40.763" 
+              is_ms_shipped="1" 
+              is_published="0" 
+              is_schema_published="0" 
+              lob_data_space_id="0" 
+              max_column_id_used="8" 
+              lock_on_bulk_load="0" 
+              uses_ansi_nulls="1" 
+              is_replicated="0" 
+              has_replication_filter="0" 
+              is_merge_published="0" 
+              is_sync_tran_subscribed="0" 
+              has_unchecked_assembly_data="0" 
+              text_in_row_limit="0" large_value_types_out_of_row="0" is_tracked_by_cdc="0" lock_escalation="0" lock_escalation_desc="TABLE" is_filetable="0" is_memory_optimized="0" durability="0" durability_desc="SCHEMA_AND_DATA" temporal_type="0" temporal_type_desc="NON_TEMPORAL_TABLE" is_remote_data_archive_enabled="0" is_external="0" is_node="0" is_edge="0" />
+  <sys.tables name="spt_fallback_dev" object_id="133575514" schema_id="1" parent_object_id="0" type="U " type_desc="USER_TABLE" create_date="2003-04-08T09:18:02.870" modify_date="2017-08-22T19:40:40.770" is_ms_shipped="1" is_published="0" is_schema_published="0" lob_data_space_id="0" max_column_id_used="10" lock_on_bulk_load="0" uses_ansi_nulls="1" is_replicated="0" has_replication_filter="0" is_merge_published="0" is_sync_tran_subscribed="0" has_unchecked_assembly_data="0" text_in_row_limit="0" large_value_types_out_of_row="0" is_tracked_by_cdc="0" lock_escalation="0" lock_escalation_desc="TABLE" is_filetable="0" is_memory_optimized="0" durability="0" durability_desc="SCHEMA_AND_DATA" temporal_type="0" temporal_type_desc="NON_TEMPORAL_TABLE" is_remote_data_archive_enabled="0" is_external="0" is_node="0" is_edge="0" />
+  <sys.tables name="spt_fallback_usg" object_id="149575571" schema_id="1" parent_object_id="0" type="U " type_desc="USER_TABLE" create_date="2003-04-08T09:18:04.180" modify_date="2017-08-22T19:40:40.773" is_ms_shipped="1" is_published="0" is_schema_published="0" lob_data_space_id="0" max_column_id_used="9" lock_on_bulk_load="0" uses_ansi_nulls="1" is_replicated="0" has_replication_filter="0" is_merge_published="0" is_sync_tran_subscribed="0" has_unchecked_assembly_data="0" text_in_row_limit="0" large_value_types_out_of_row="0" is_tracked_by_cdc="0" lock_escalation="0" lock_escalation_desc="TABLE" is_filetable="0" is_memory_optimized="0" durability="0" durability_desc="SCHEMA_AND_DATA" temporal_type="0" temporal_type_desc="NON_TEMPORAL_TABLE" is_remote_data_archive_enabled="0" is_external="0" is_node="0" is_edge="0" />
+  <sys.tables name="spt_monitor" object_id="1803153469" schema_id="1" parent_object_id="0" type="U " type_desc="USER_TABLE" create_date="2017-08-22T19:39:22.077" modify_date="2017-08-22T19:40:40.783" is_ms_shipped="1" is_published="0" is_schema_published="0" lob_data_space_id="0" max_column_id_used="11" lock_on_bulk_load="0" uses_ansi_nulls="1" is_replicated="0" has_replication_filter="0" is_merge_published="0" is_sync_tran_subscribed="0" has_unchecked_assembly_data="0" text_in_row_limit="0" large_value_types_out_of_row="0" is_tracked_by_cdc="0" lock_escalation="0" lock_escalation_desc="TABLE" is_filetable="0" is_memory_optimized="0" durability="0" durability_desc="SCHEMA_AND_DATA" temporal_type="0" temporal_type_desc="NON_TEMPORAL_TABLE" is_remote_data_archive_enabled="0" is_external="0" is_node="0" is_edge="0" />
+  <sys.tables name="MSreplication_options" object_id="2107154552" schema_id="1" parent_object_id="0" type="U " type_desc="USER_TABLE" create_date="2017-08-22T19:40:17.840" modify_date="2017-08-22T19:40:40.787" is_ms_shipped="1" is_published="0" is_schema_published="0" lob_data_space_id="0" max_column_id_used="6" lock_on_bulk_load="0" uses_ansi_nulls="0" is_replicated="0" has_replication_filter="0" is_merge_published="0" is_sync_tran_subscribed="0" has_unchecked_assembly_data="0" text_in_row_limit="0" large_value_types_out_of_row="0" is_tracked_by_cdc="0" lock_escalation="0" lock_escalation_desc="TABLE" is_filetable="0" is_memory_optimized="0" durability="0" durability_desc="SCHEMA_AND_DATA" temporal_type="0" temporal_type_desc="NON_TEMPORAL_TABLE" is_remote_data_archive_enabled="0" is_external="0" is_node="0" is_edge="0" />
+</tables>

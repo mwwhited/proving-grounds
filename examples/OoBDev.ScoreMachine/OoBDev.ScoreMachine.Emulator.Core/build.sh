@@ -1,0 +1,1 @@
+﻿dotnet build -v d OoBDev.ScoreMachine.Emulator.Core.csproj
