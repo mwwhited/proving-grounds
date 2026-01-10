@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="CloudOrchestrator" xmlns="mwtm://ServiceBroker/Project/v1">
+  <Xml-Schema-Collection Schema="MessageBus" Name="GetInvoice.xsd">
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="itrica://CloudOrchestrator/Common" xmlns:t="itrica://CloudOrchestrator/Messages:GetInvoice" targetNamespace="itrica://CloudOrchestrator/Messages:GetInvoice">
+  <xsd:import namespace="itrica://CloudOrchestrator/Common" />
+  <xsd:element name="invoiceNumber" type="t:invoiceNumberType" />
+  <xsd:complexType name="invoiceNumberType">
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:sequence />
+        <xsd:attributeGroup ref="ns1:correlationLink" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:t="itrica://CloudOrchestrator/Common" targetNamespace="itrica://CloudOrchestrator/Common">
+  <xsd:complexType name="noteType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string" />
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:attributeGroup name="correlationLink">
+    <xsd:attribute name="object-id" type="xsd:int" />
+    <xsd:attribute name="source-crm" type="xsd:string" />
+    <xsd:attribute name="source-accounting" type="xsd:string" />
+  </xsd:attributeGroup>
+  <xsd:simpleType name="guid">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>]]></XmlSchema>
+  </Xml-Schema-Collection>
+  <Xml-Schema-Collection Schema="MessageBus" Name="SendInvoice.xsd">
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="itrica://CloudOrchestrator/Model/Invoice" xmlns:t="itrica://CloudOrchestrator/Messages:SendInvoice" targetNamespace="itrica://CloudOrchestrator/Messages:SendInvoice">
+  <xsd:import namespace="itrica://CloudOrchestrator/Model/Invoice" />
+  <xsd:element name="sendInvoice" type="t:sendInvoiceType" />
+  <xsd:complexType name="sendInvoiceType">
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:sequence>
+          <xsd:element ref="ns1:invoice" />
+        </xsd:sequence>
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns5="itrica://CloudOrchestrator/Model/Extension" xmlns:ns4="itrica://CloudOrchestrator/Common" xmlns:ns3="itrica://CloudOrchestrator/Model/LineItem" xmlns:ns2="itrica://CloudOrchestrator/Model/Customer" xmlns:t="itrica://CloudOrchestrator/Model/Invoice" targetNamespace="itrica://CloudOrchestrator/Model/Invoice" elementFormDefault="qualified">
+  <xsd:import namespace="itrica://CloudOrchestrator/Model/Customer" />
+  <xsd:import namespace="itrica://CloudOrchestrator/Model/Extension" />
+  <xsd:import namespace="itrica://CloudOrchestrator/Common" />
+  <xsd:import namespace="itrica://CloudOrchestrator/Model/LineItem" />
+  <xsd:element name="invoice" type="t:invoiceType" />
+  <xsd:attributeGroup name="discountOptions">
+    <xsd:attribute name="discount-percent" type="xsd:decimal" />
+    <xsd:attribute name="discount-value" type="xsd:decimal" />
+  </xsd:attributeGroup>
+  <xsd:complexType name="invoiceType">
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:sequence>
+          <xsd:element ref="ns2:customer" />
+          <xsd:element ref="ns3:lineItem" maxOccurs="unbounded" />
+          <xsd:element name="message" type="ns4:noteType" minOccurs="0" />
+          <xsd:element name="memo" type="ns4:noteType" minOccurs="0" />
+          <xsd:element ref="ns5:extension" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attributeGroup ref="ns4:correlationLink" />
+        <xsd:attributeGroup ref="t:discountOptions" />
+        <xsd:attribute name="terms" type="xsd:string" />
+        <xsd:attribute name="invoice-date" type="xsd:dateTime" use="required" />
+        <xsd:attribute name="due-date" type="xsd:dateTime" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns6="itrica://CloudOrchestrator/Model/Email" xmlns:ns7="itrica://CloudOrchestrator/Model/Phone" xmlns:ns8="itrica://CloudOrchestrator/Model/Url" xmlns:ns9="itrica://CloudOrchestrator/Model/Address" xmlns:ns10="itrica://CloudOrchestrator/Model/Extension" xmlns:ns11="itrica://CloudOrchestrator/Common" xmlns:t="itrica://CloudOrchestrator/Model/Customer" targetNamespace="itrica://CloudOrchestrator/Model/Customer">
+  <xsd:import namespace="itrica://CloudOrchestrator/Model/Email" />
+  <xsd:import namespace="itrica://CloudOrchestrator/Model/Phone" />
+  <xsd:import namespace="itrica://CloudOrchestrator/Model/Url" />
+  <xsd:import namespace="itrica://CloudOrchestrator/Model/Address" />
+  <xsd:import namespace="itrica://CloudOrchestrator/Model/Extension" />
+  <xsd:import namespace="itrica://CloudOrchestrator/Common" />
+  <xsd:element name="customer" type="t:customerType" />
+  <xsd:complexType name="customerType">
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:sequence>
+          <xsd:element ref="ns6:email" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element ref="ns7:phone" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element ref="ns8:url" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element ref="ns9:address" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element ref="ns10:extension" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attributeGroup ref="ns11:correlationLink" />
+        <xsd:attribute name="title" type="xsd:string" />
+        <xsd:attribute name="givenName" type="xsd:string" />
+        <xsd:attribute name="middleName" type="xsd:string" />
+        <xsd:attribute name="familyName" use="required">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:minLength value="1" />
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="suffix" type="xsd:string" />
+        <xsd:attribute name="company" type="xsd:string" />
+        <xsd:attribute name="displayName" type="xsd:string" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:t="itrica://CloudOrchestrator/Model/Email" targetNamespace="itrica://CloudOrchestrator/Model/Email">
+  <xsd:element name="email" type="t:emailType" />
+  <xsd:complexType name="emailType">
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:sequence />
+        <xsd:attribute name="address" type="xsd:string" use="required" />
+        <xsd:attribute name="type" type="xsd:string" />
+        <xsd:attribute name="primary" type="xsd:boolean" default="false" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:t="itrica://CloudOrchestrator/Model/Phone" targetNamespace="itrica://CloudOrchestrator/Model/Phone">
+  <xsd:element name="phone" type="t:phoneType" />
+  <xsd:complexType name="phoneType">
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:sequence />
+        <xsd:attribute name="number" type="xsd:string" use="required" />
+        <xsd:attribute name="type" type="xsd:string" use="required" />
+        <xsd:attribute name="primary" type="xsd:boolean" default="false" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:t="itrica://CloudOrchestrator/Model/Url" targetNamespace="itrica://CloudOrchestrator/Model/Url">
+  <xsd:element name="url" type="t:urlType" />
+  <xsd:complexType name="urlType">
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:sequence />
+        <xsd:attribute name="address" type="xsd:string" use="required" />
+        <xsd:attribute name="type" type="xsd:string" use="required" />
+        <xsd:attribute name="primary" type="xsd:boolean" default="false" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:t="itrica://CloudOrchestrator/Model/Address" targetNamespace="itrica://CloudOrchestrator/Model/Address">
+  <xsd:element name="address" type="t:addressType" />
+  <xsd:complexType name="addressType">
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:sequence />
+        <xsd:attribute name="line1" type="xsd:string" use="required" />
+        <xsd:attribute name="line2" type="xsd:string" />
+        <xsd:attribute name="line3" type="xsd:string" />
+        <xsd:attribute name="city" type="xsd:string" use="required" />
+        <xsd:attribute name="state" type="xsd:string" use="required" />
+        <xsd:attribute name="postalCode" type="xsd:string" use="required" />
+        <xsd:attribute name="country" type="xsd:string" />
+        <xsd:attribute name="primary" type="xsd:boolean" default="false" />
+        <xsd:attribute name="type" type="xsd:string" use="required" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:t="itrica://CloudOrchestrator/Model/Extension" targetNamespace="itrica://CloudOrchestrator/Model/Extension">
+  <xsd:complexType name="extensionType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="scope" type="xsd:string" use="required" />
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:element name="extension" type="t:extensionType" />
+</xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:t="itrica://CloudOrchestrator/Common" targetNamespace="itrica://CloudOrchestrator/Common">
+  <xsd:complexType name="noteType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string" />
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:attributeGroup name="correlationLink">
+    <xsd:attribute name="object-id" type="xsd:int" />
+    <xsd:attribute name="source-crm" type="xsd:string" />
+    <xsd:attribute name="source-accounting" type="xsd:string" />
+  </xsd:attributeGroup>
+  <xsd:simpleType name="guid">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns12="itrica://CloudOrchestrator/Model/Extension" xmlns:ns13="itrica://CloudOrchestrator/Common" xmlns:t="itrica://CloudOrchestrator/Model/LineItem" targetNamespace="itrica://CloudOrchestrator/Model/LineItem">
+  <xsd:import namespace="itrica://CloudOrchestrator/Model/Extension" />
+  <xsd:import namespace="itrica://CloudOrchestrator/Common" />
+  <xsd:element name="lineItem" type="t:lineItemType" />
+  <xsd:complexType name="lineItemType">
+    <xsd:complexContent>
+      <xsd:restriction base="xsd:anyType">
+        <xsd:sequence>
+          <xsd:element ref="ns12:extension" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attributeGroup ref="ns13:correlationLink" />
+        <xsd:attribute name="date" type="xsd:dateTime" />
+        <xsd:attribute name="name" type="xsd:string" />
+        <xsd:attribute name="description" type="xsd:string" />
+        <xsd:attribute name="quantity" type="xsd:decimal" />
+        <xsd:attribute name="cost" type="xsd:decimal" />
+        <xsd:attribute name="total" type="xsd:decimal" />
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>]]></XmlSchema>
+  </Xml-Schema-Collection>
+  <Xml-Schema-Collection Schema="MessageBus" Name="SetInvoiceNumber.xsd">
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="itrica://CloudOrchestrator/Common" xmlns:t="itrica://CloudOrchestrator/Messages:SetInvoiceNumber" targetNamespace="itrica://CloudOrchestrator/Messages:SetInvoiceNumber"><xsd:import namespace="itrica://CloudOrchestrator/Common"/><xsd:element name="invoiceNumber" type="t:invoiceNumberType"/><xsd:complexType name="invoiceNumberType"><xsd:complexContent><xsd:restriction base="xsd:anyType"><xsd:sequence/><xsd:attributeGroup ref="ns1:correlationLink"/></xsd:restriction></xsd:complexContent></xsd:complexType></xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:t="itrica://CloudOrchestrator/Common" targetNamespace="itrica://CloudOrchestrator/Common"><xsd:complexType name="noteType"><xsd:simpleContent><xsd:extension base="xsd:string"/></xsd:simpleContent></xsd:complexType><xsd:attributeGroup name="correlationLink"><xsd:attribute name="object-id" type="xsd:int"/><xsd:attribute name="source-crm" type="xsd:string"/><xsd:attribute name="source-accounting" type="xsd:string"/></xsd:attributeGroup><xsd:simpleType name="guid"><xsd:restriction base="xsd:string"><xsd:pattern value="\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}"/></xsd:restriction></xsd:simpleType></xsd:schema>]]></XmlSchema>
+  </Xml-Schema-Collection>
+  <Xml-Schema-Collection Schema="MessageBus" Name="SetInvoiceStatus.xsd">
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="itrica://CloudOrchestrator/Common" xmlns:t="itrica://CloudOrchestrator/Messages:SetInvoiceStatus" targetNamespace="itrica://CloudOrchestrator/Messages:SetInvoiceStatus"><xsd:import namespace="itrica://CloudOrchestrator/Common"/><xsd:element name="invoiceStatus" type="t:invoiceStatusType"/><xsd:complexType name="invoiceStatusType"><xsd:complexContent><xsd:restriction base="xsd:anyType"><xsd:sequence/><xsd:attributeGroup ref="ns1:correlationLink"/><xsd:attribute name="status" type="xsd:string" use="required"/></xsd:restriction></xsd:complexContent></xsd:complexType></xsd:schema>]]></XmlSchema>
+    <XmlSchema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:t="itrica://CloudOrchestrator/Common" targetNamespace="itrica://CloudOrchestrator/Common"><xsd:complexType name="noteType"><xsd:simpleContent><xsd:extension base="xsd:string"/></xsd:simpleContent></xsd:complexType><xsd:attributeGroup name="correlationLink"><xsd:attribute name="object-id" type="xsd:int"/><xsd:attribute name="source-crm" type="xsd:string"/><xsd:attribute name="source-accounting" type="xsd:string"/></xsd:attributeGroup><xsd:simpleType name="guid"><xsd:restriction base="xsd:string"><xsd:pattern value="\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}"/></xsd:restriction></xsd:simpleType></xsd:schema>]]></XmlSchema>
+  </Xml-Schema-Collection>
+  <Message-Type Name="itrica://CloudOrchestrator/Messages:GetInvoice" Validation="ValidXmlWithSchemaCollection">
+    <Xml-Schema.Ref Schema="MessageBus" Name="GetInvoice.xsd" />
+  </Message-Type>
+  <Message-Type Name="itrica://CloudOrchestrator/Messages:SendInvoiceNumber" Validation="ValidXmlWithSchemaCollection">
+    <Xml-Schema.Ref Schema="MessageBus" Name="GetInvoice.xsd" />
+  </Message-Type>
+  <Message-Type Name="itrica://CloudOrchestrator/Messages:SendInvoice" Validation="ValidXmlWithSchemaCollection">
+    <Xml-Schema.Ref Schema="MessageBus" Name="SendInvoice.xsd" />
+  </Message-Type>
+  <Message-Type Name="itrica://CloudOrchestrator/Messages:SetInvoiceNumber" Validation="ValidXmlWithSchemaCollection">
+    <Xml-Schema.Ref Schema="MessageBus" Name="SetInvoiceNumber.xsd" />
+  </Message-Type>
+  <Message-Type Name="itrica://CloudOrchestrator/Messages:SetInvoiceStatus" Validation="ValidXmlWithSchemaCollection">
+    <Xml-Schema.Ref Schema="MessageBus" Name="SetInvoiceStatus.xsd" />
+  </Message-Type>
+  <Contract Name="itrica://CloudOrchestrator/Contracts:Reauthorize" />
+  <Contract Name="itrica://CloudOrchestrator/Contracts:AccountsReceivable">
+    <Message-Type.Ref Name="itrica://CloudOrchestrator/Messages:GetInvoice" Sent-By="Target" />
+    <Message-Type.Ref Name="itrica://CloudOrchestrator/Messages:SendInvoiceNumber" Sent-By="Initiator" />
+    <Message-Type.Ref Name="itrica://CloudOrchestrator/Messages:SendInvoice" Sent-By="Initiator" />
+    <Message-Type.Ref Name="itrica://CloudOrchestrator/Messages:SetInvoiceNumber" Sent-By="Target" />
+    <Message-Type.Ref Name="itrica://CloudOrchestrator/Messages:SetInvoiceStatus" Sent-By="Target" />
+  </Contract>
+  <Queue Schema="dbo" Name="testqueue" Status="true" Retention="false" Poison-Message-Handling="true">
+    <Activator Schema="dbo" Name="test" Status="true" Max-Queue-Readers="1" />
+  </Queue>
+  <Queue Schema="MessageBus" Name="CustomerRelations" Status="true" Retention="false" Poison-Message-Handling="true">
+    <!--No Activator Defined-->
+  </Queue>
+  <Queue Schema="MessageBus" Name="Accounting" Status="true" Retention="false" Poison-Message-Handling="true">
+    <!--No Activator Defined-->
+  </Queue>
+  <Service Name="itrica://CloudOrchestrator/Services:Accounting">
+    <Queue.Ref Schema="MessageBus" Name="Accounting" />
+    <Contract.Ref Name="itrica://CloudOrchestrator/Contracts:AccountsReceivable" />
+  </Service>
+  <Service Name="itrica://CloudOrchestrator/Services:CustomerRelations">
+    <Queue.Ref Schema="MessageBus" Name="CustomerRelations" />
+    <Contract.Ref Name="itrica://CloudOrchestrator/Contracts:AccountsReceivable" />
+  </Service>
+  <Service Name="test">
+    <Queue.Ref Schema="dbo" Name="testqueue" />
+    <Contract.Ref Name="itrica://CloudOrchestrator/Contracts:Reauthorize" />
+    <Contract.Ref Name="itrica://CloudOrchestrator/Contracts:AccountsReceivable" />
+  </Service>
+  <Conversation Name="CRM to Accounting" Initiator.Ref="itrica://CloudOrchestrator/Services:CustomerRelations" Target.Ref="itrica://CloudOrchestrator/Services:Accounting" />
+  <Conversation Name="Accounting Monitor" Initiator.Ref="itrica://CloudOrchestrator/Services:Accounting" Target.Ref="itrica://CloudOrchestrator/Services:Accounting" />
+  <Conversation-Group Name="ConversationGroup1">
+    <Conversation.Ref Name="CRM to Accounting" />
+    <Conversation.Ref Name="Accounting Monitor" />
+  </Conversation-Group>
+  <!--Date Generated: 1/21/2015 10:56:35 PM-->
+</Project>

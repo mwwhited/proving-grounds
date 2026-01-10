@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "CMS";
+    var siebelClientUrl =
+        !string.IsNullOrWhiteSpace(this.Request.QueryString["dev"]) ? "http://sw10hs6801.bmwgroup.net/customercentralmx/" : //dev URL
+        !string.IsNullOrWhiteSpace(this.Request.QueryString["mock"]) ? "http://web2.bmwgroup.net/Home/Siebel?mock=true" : // local mock
+        this.Url.Action("Siebel", "Home"); //local URL
+    var dfeClientUrl = this.Url.Action("DFE", "Home"); // "http://web1.bmwgroup.net/Home/DFE";
+}
+
+<h2>CMS</h2>@if (!string.IsNullOrWhiteSpace(this.Request.QueryString["dev"]))
+{
+    <h3>Dev</h3>
+}
+else if (!string.IsNullOrWhiteSpace(this.Request.QueryString["mock"]))
+{
+    <h3>Mock</h3>
+}
+else
+{
+    <h3>Local</h3>
+}
+<h4>@siebelClientUrl</h4>
+
+@*
+    <form id="cmsForm" onsubmit="return false;">
+        <div>
+            <label for="market">Market</label>
+            <select id="market">
+                <option value="Mexico">Mexico</option>
+                <option value="USA">USA</option>
+            </select>
+        </div>
+        <div>
+            <label for="operationName">Operation</label>
+            <select id="operationName">
+                <option value="PopAccountServiceRequests">Account Service Requests</option>
+                <option value="PopServiceRequest">Service Request</option>
+                <option value="PopAccountAddresses">Account Addresses</option>
+                <option value="PopAccountRoles">Account Roles</option>
+                <option value="PopContactEmailAudit">Contact Email Audit</option>
+            </select>
+        </div>
+        <div>
+            <label for="srno">SRNO</label>
+            <input id="srno" type="text" value="1-17AC689" />
+        </div>
+        <button id="btn" onclick="$cms.postForm(this)">Call Siebel!</button>
+        <button onclick="$cms.Ready()">Ready</button>
+    </form>
+*@
+
+@section scripts {
+    <script type="text/javascript">
+        var clients = window.$clients = window.$clients || {};
+        clients.Siebel = "@siebelClientUrl";
+        clients.DFE = "@dfeClientUrl";
+    </script>
+
+    <script type="text/javascript" src="~/Scripts/Home/CmsMessageController.js?ts=@DateTime.Now"></script>
+    <script type="text/javascript" src="~/Scripts/Home/SiebelProxy.js?ts=@DateTime.Now"></script>
+    <script type="text/javascript" src="~/Scripts/Home/DfeProxy.js?ts=@DateTime.Now"></script>
+    <script type="text/javascript" src="~/Scripts/Home/CmsClient.js?ts=@DateTime.Now"></script>
+
+    <script type="text/javascript">
+    </script>
+}

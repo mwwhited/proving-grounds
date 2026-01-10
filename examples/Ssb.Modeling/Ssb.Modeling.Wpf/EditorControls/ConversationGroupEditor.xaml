@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Ssb.Modeling.Wpf.EditorControls.ConversationGroupEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:m="clr-namespace:Ssb.Modeling.Models;assembly=Ssb.Modeling.Models"
+             mc:Ignorable="d" 
+             x:Name="root"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Icons.xaml" />
+                <ResourceDictionary Source="../Resources/EnumLists.xaml" />
+                <ResourceDictionary Source="../Resources/TypeConverters.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Conversation Group Name: " />
+        <TextBox Grid.Column="1" Text="{Binding Path=ConversationGroupName}" />
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <TextBlock Text="Conversation: " />
+            <ComboBox x:Name="_conversationGroup2Conversation" DisplayMemberPath="ConversationName" 
+                    ItemsSource="{Binding ElementName=root,Path=ConversationsSource, Mode=OneWay}"
+                    />
+            <Button Grid.Column="2" Tag="Add" 
+                    Command="{Binding Path=AddConversation}" CommandParameter="{Binding ElementName=_conversationGroup2Conversation,Path=SelectedItem}"
+                    Height="24"
+                    >
+                <Image Source="{StaticResource icon-action-add-small}" />
+            </Button>
+            <Button Grid.Column="2" Tag="Delete" 
+                    Command="{Binding Path=DeleteConversation}" CommandParameter="{Binding ElementName=_conversationGroup2Conversations,Path=SelectedItem}"
+                    Height="24"
+                    >
+                <Image Source="{StaticResource icon-action-delete-small}" />
+            </Button>
+        </StackPanel>
+
+        <ListBox x:Name="_conversationGroup2Conversations" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding Conversations, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type m:ConversationModel}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Path=ConversationName}" />
+                        <TextBlock Text="{Binding Path=Initiator.ServiceName}" />
+                        <TextBlock Text="{Binding Path=Target.ServiceName}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

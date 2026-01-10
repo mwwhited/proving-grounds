@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Siebel";
+    var cmsClientUrl = this.Url.Action("CMS", "Home"); // "http://web1.bmwgroup.net/Home/CMS";
+    var dfeClientUrl = this.Url.Action("DFE", "Home"); // "http://web1.bmwgroup.net/Home/DFE";
+}
+
+<h2>Siebel</h2>
+@if (!string.IsNullOrWhiteSpace(this.Request.QueryString["mock"]))
+{
+    <h3>Mock</h3>
+}
+else
+{
+    <h2>Not Mock</h2>
+}
+
+@*
+    <form id="cmsForm" onsubmit="return false;">
+        <div>
+            <label for="operationName">Operation</label>
+            <select id="operationName">
+                <option value="ShowAccount">Show Account</option>
+            </select>
+        </div>
+        <div>
+            <label for="contractAccount">Contract Account</label>
+            <input id="contractAccount" type="text" />
+        </div>
+        <button id="btn" onclick="$siebel.postForm(this)">Call CMS!</button>
+        <button onclick="$cms.HelloWorld('Marco')">Hello World!</button>
+        <button onclick="$siebel.Ready()">Ready</button>
+    </form>
+*@
+
+@section scripts {
+    @*
+        <script type="text/javascript">
+            tools.spin(true, 20);
+        </script>
+    *@
+
+    <script type="text/javascript">
+        var clients = window.$clients = window.$clients || {};
+        clients.CMS = "@cmsClientUrl";
+        clients.DFE = "@dfeClientUrl";
+    </script>
+
+    <script type="text/javascript" src="~/Scripts/Home/SiebelMessageController.js?ts=@DateTime.Now"></script>
+    <script type="text/javascript" src="~/Scripts/Home/CmsProxy.js?ts=@DateTime.Now"></script>
+    <script type="text/javascript" src="~/Scripts/Home/DfeProxy.js?ts=@DateTime.Now"></script>
+    <script type="text/javascript" src="~/Scripts/Home/SiebelClient.js?ts=@DateTime.Now"></script>
+}

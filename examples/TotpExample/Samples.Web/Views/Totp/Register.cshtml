@@ -1,0 +1,32 @@
+﻿@model Samples.Web.Models.TotpShareModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Register</h2>
+
+
+<div class="totp-share">
+    <div>
+        Your Secure Code is:
+        <div class="secret-code">@this.Model.Secret</div>
+    </div>
+    <div class="secret-uri">@this.Model.Uri</div>
+    <div class="secret-qr">
+        <img src="@this.Url.Action("qr", "totp", new { url = this.Model.Uri, })"
+             alt="@this.Model.Secret" />
+    </div>
+</div>
+
+<div>
+    @using (this.Html.BeginForm())
+    {
+        this.Html.AntiForgeryToken();
+        <div>
+            Enter Token
+            <input name="token" type="password" />
+        </div>
+        <input type="submit" value="Register" />
+    }
+</div>

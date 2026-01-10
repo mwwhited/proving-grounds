@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36603.0 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ssb.Modeling.Models", "Ssb.Modeling.Models\Ssb.Modeling.Models.csproj", "{F062F261-DF8A-4721-8326-DA87B61B47B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ssb.Modeling.Wpf", "Ssb.Modeling.Wpf\Ssb.Modeling.Wpf.csproj", "{7C875C5A-73FF-4144-9E75-DE3756C186CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ssb.Designer.Wpf", "Ssb.Designer.Wpf\Ssb.Designer.Wpf.csproj", "{C24C79BA-DA6C-4828-B0D2-3E54A4A046AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8C425C70-F22D-4D5F-BFFF-2D53DCE695A0}"
+	ProjectSection(SolutionItems) = preProject
+		mwtm.one = mwtm.one
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ssb.Modeling.Flow.Wpf", "Ssb.Modeling.Flow.Wpf\Ssb.Modeling.Flow.Wpf.csproj", "{BCE33378-FFE4-43CA-A8F8-B6F2FDBD9B3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INotifyPropertyChangedFactory", "INotifyPropertyChangedFactory\INotifyPropertyChangedFactory.csproj", "{1E5507C4-01DA-46CF-BD27-80ED61CBECA9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F062F261-DF8A-4721-8326-DA87B61B47B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F062F261-DF8A-4721-8326-DA87B61B47B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F062F261-DF8A-4721-8326-DA87B61B47B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F062F261-DF8A-4721-8326-DA87B61B47B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C875C5A-73FF-4144-9E75-DE3756C186CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C875C5A-73FF-4144-9E75-DE3756C186CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C875C5A-73FF-4144-9E75-DE3756C186CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C875C5A-73FF-4144-9E75-DE3756C186CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C24C79BA-DA6C-4828-B0D2-3E54A4A046AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24C79BA-DA6C-4828-B0D2-3E54A4A046AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24C79BA-DA6C-4828-B0D2-3E54A4A046AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24C79BA-DA6C-4828-B0D2-3E54A4A046AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCE33378-FFE4-43CA-A8F8-B6F2FDBD9B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCE33378-FFE4-43CA-A8F8-B6F2FDBD9B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCE33378-FFE4-43CA-A8F8-B6F2FDBD9B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCE33378-FFE4-43CA-A8F8-B6F2FDBD9B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E5507C4-01DA-46CF-BD27-80ED61CBECA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E5507C4-01DA-46CF-BD27-80ED61CBECA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E5507C4-01DA-46CF-BD27-80ED61CBECA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E5507C4-01DA-46CF-BD27-80ED61CBECA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

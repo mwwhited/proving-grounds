@@ -1,0 +1,15 @@
+﻿@model IEnumerable<KeyValuePair<string, string>>
+@{
+    ViewBag.Title = "Recover";
+}
+
+<h2>Recover</h2>
+
+@foreach (var i in this.Model)
+    {
+    <div style="display: inline-block;margin:10px 10px 10px 10px;text-align:center;">
+        <img src="@Url.Action("Qr", new {url=i.Value})" style="width:100px;height:100px;" />
+        <span style="display:block;">@i.Key</span>
+    </div>
+    }
+

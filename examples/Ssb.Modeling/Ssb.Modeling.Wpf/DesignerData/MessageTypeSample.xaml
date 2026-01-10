@@ -1,0 +1,11 @@
+﻿<m:MessageTypeModel 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:m="clr-namespace:Ssb.Modeling.Models;assembly=Ssb.Modeling.Models"
+    MessageTypeName="Message Type 1"
+    Validation="WellFormedXml"
+    >
+    <m:MessageTypeModel.XmlSchemaCollection>
+        <m:XmlSchemaCollectionModel SchemaName="dbo" XmlSchemaCollectionName="Schema 1" />
+    </m:MessageTypeModel.XmlSchemaCollection>
+</m:MessageTypeModel>

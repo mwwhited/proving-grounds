@@ -1,0 +1,8 @@
+﻿<x:Array Type="m:ContractModel" 
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:m="clr-namespace:Ssb.Modeling.Models;assembly=Ssb.Modeling.Models">
+    <m:ContractModel ContractName="Contract 1" />
+    <m:ContractModel ContractName="Contract 2" />
+    <m:ContractModel ContractName="Contract 3" />
+</x:Array>

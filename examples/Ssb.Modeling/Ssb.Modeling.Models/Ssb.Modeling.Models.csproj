@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Ssb.Modeling.Models</RootNamespace>
+    <AssemblyName>Ssb.Modeling.Models</AssemblyName>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="CodeGenerators\ProjectToSql.xslt" />
+    <EmbeddedResource Include="Scripts\ProjectExport.sql" />
+    <EmbeddedResource Include="Scripts\ProjectExportSample.cgx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CodeGenerators\Sample.cgx" />
+    <None Include="CodeGenerators\Sample.sql" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="SharedProjectFile_SccProperties">
+    <SharedProjectFile_ProjectGuid>{2ff9a59d-983e-4387-99a7-7d337cea494d}</SharedProjectFile_ProjectGuid>
+    <SharedProjectFile_SccProjectName>SAK</SharedProjectFile_SccProjectName>
+    <SharedProjectFile_SccAuxPath>SAK</SharedProjectFile_SccAuxPath>
+    <SharedProjectFile_SccLocalPath>SAK</SharedProjectFile_SccLocalPath>
+    <SharedProjectFile_SccProvider>SAK</SharedProjectFile_SccProvider>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>cd33cc54-d9be-4b8e-9a0b-1dafe30a3b78</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>WhitedUS.Totp.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="$(MSBuildThisFileDirectory)Accessors\DefaultCrypto.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Accessors\DefaultPasswordStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Accessors\DispatcherService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Accessors\ICredentialStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Accessors\ICredentialValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Accessors\ICrypto.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Accessors\IDispatcher.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Accessors\INavigator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Accessors\ISettingsStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Accessors\NavigatorEx.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\Base32Encoding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Globals.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObjectLocatorService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Security\EncryptionTools.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Security\OneTimeCode.cs" />
+  </ItemGroup>
+</Project>

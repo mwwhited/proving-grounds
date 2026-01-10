@@ -1,0 +1,17 @@
+﻿<m:QueueModel 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:m="clr-namespace:Ssb.Modeling.Models;assembly=Ssb.Modeling.Models"
+    QueueName="Queue 1"
+    SchemaName="dbo"
+    Status="True"
+    >
+    <m:QueueModel.Activator>
+        <m:InternalActivatorModel
+             SchemaName="dbo"
+             ProcedureName="sp_Handler"
+             MaxQueueReaders="10"
+             Status="true"
+             />
+    </m:QueueModel.Activator>
+</m:QueueModel>

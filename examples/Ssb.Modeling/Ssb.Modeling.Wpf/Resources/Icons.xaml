@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="icon-action-add-tiny" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/add-tiny.png" />
+    <BitmapImage x:Key="icon-action-add-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/add-small.png" />
+    <BitmapImage x:Key="icon-action-delete-tiny" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/delete-tiny.png" />
+    <BitmapImage x:Key="icon-action-delete-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/delete-small.png" />
+
+    <BitmapImage x:Key="icon-action-newFile-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/new-file-medium.png" />
+    <BitmapImage x:Key="icon-action-newFile-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/new-file-small.png" />
+
+    <BitmapImage x:Key="icon-action-openFile-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/open-file-medium.png" />
+    <BitmapImage x:Key="icon-action-openFile-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/open-file-small.png" />
+
+    <BitmapImage x:Key="icon-action-saveFile-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/save-file-medium.png" />
+    <BitmapImage x:Key="icon-action-saveFile-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/save-file-small.png" />
+
+    <BitmapImage x:Key="icon-settings-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/settings-medium.png" />
+    <BitmapImage x:Key="icon-settings-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/settings-small.png" />
+
+    <BitmapImage x:Key="icon-project-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/project-medium.png" />
+    <BitmapImage x:Key="icon-project-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/project-small.png" />
+
+    <BitmapImage x:Key="icon-xmlschema-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/xml-medium.png" />
+    <BitmapImage x:Key="icon-xmlschema-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/xml-small.png" />
+
+    <BitmapImage x:Key="icon-messageType-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/mail-medium.png" />
+    <BitmapImage x:Key="icon-messageType-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/mail-small.png" />
+
+    <BitmapImage x:Key="icon-contract-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/folder-contract-medium.png" />
+    <BitmapImage x:Key="icon-contract-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/folder-contract-small.png" />
+
+    <BitmapImage x:Key="icon-queue-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/chat-blue-medium.png" />
+    <BitmapImage x:Key="icon-queue-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/chat-blue-small.png" />
+
+    <BitmapImage x:Key="icon-service-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/chat-green-medium.png" />
+    <BitmapImage x:Key="icon-service-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/chat-green-small.png" />
+
+    <BitmapImage x:Key="icon-conversation-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/chat-rose-medium.png" />
+    <BitmapImage x:Key="icon-conversation-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/chat-rose-small.png" />
+
+    <BitmapImage x:Key="icon-conversationGroup-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/chat-orange-medium.png" />
+    <BitmapImage x:Key="icon-conversationGroup-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/chat-orange-small.png" />
+
+    <BitmapImage x:Key="icon-createSql-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/new-db-medium.png" />
+    <BitmapImage x:Key="icon-createSql-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/new-db-small.png" />
+
+    <BitmapImage x:Key="icon-getSql-medium" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/download-db-medium.png" />
+    <BitmapImage x:Key="icon-getSql-small" UriSource="pack://application:,,,/Ssb.Modeling.Wpf;component/Images/download-db-small.png" />
+</ResourceDictionary>

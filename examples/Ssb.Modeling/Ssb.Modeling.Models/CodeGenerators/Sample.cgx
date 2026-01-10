@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Name="Project1" xmlns="mwtm://ServiceBroker/Project/v1">
+  <Xml-Schema-Collection Schema="dbo" Name="XmlSchemaCollection1">
+    <XmlSchema>
+      <![CDATA[<xs:schema id='XMLSchema1'
+    targetNamespace='http://tempuri.org/XMLSchema1.xsd'
+    elementFormDefault='qualified'
+    xmlns='http://tempuri.org/XMLSchema1.xsd'
+    xmlns:xs='http://www.w3.org/2001/XMLSchema'
+>
+</xs:schema>]]>
+    </XmlSchema>
+  </Xml-Schema-Collection>
+  <Message-Type Name="MessageType1" Validation="ValidXmlWithSchemaCollection">
+    <Xml-Schema.Ref Schema="dbo" Name="XmlSchemaCollection1" />
+  </Message-Type>
+  <Contract Name="Contract1">
+    <Message-Type.Ref Name="MessageType1" Sent-By="Any" />
+  </Contract>
+  <Queue Schema="dbo" Name="Queue1" Status="true" Retention="false" Poison-Message-Handling="false">
+    <Activator Schema="dbo" Name="sp_Handler1" Status="true" Max-Queue-Readers="10" />
+  </Queue>
+  <Queue Schema="dbo" Name="Queue2" Status="true" Retention="false" Poison-Message-Handling="false" />
+  <Service Name="Service1">
+    <Queue.Ref Schema="dbo" Name="Queue1" />
+    <Contract.Ref Name="Contract1" />
+  </Service>
+  <Conversation Name="Conversation1" Initiator.Ref="Service1" Target.Ref="Service1" />
+  <Conversation-Group Name="ConversationGroup1" />
+  <!--Date Generated: 1/20/2015 11:09:33 AM-->
+</Project>

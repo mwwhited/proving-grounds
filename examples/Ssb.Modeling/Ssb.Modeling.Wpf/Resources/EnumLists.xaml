@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib"
+                    
+                    xmlns:m="clr-namespace:Ssb.Modeling.Models;assembly=Ssb.Modeling.Models">
+
+    <ObjectDataProvider x:Key="messageSender" MethodName="GetValues" ObjectType="{x:Type s:Enum}" >
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="m:MessageSender" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider x:Key="validationType" MethodName="GetValues" ObjectType="{x:Type s:Enum}" >
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="m:ValidationType" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+</ResourceDictionary>

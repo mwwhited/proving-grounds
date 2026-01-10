@@ -1,0 +1,12 @@
+﻿<m:ServiceModel 
+    xmlns:m="clr-namespace:Ssb.Modeling.Models;assembly=Ssb.Modeling.Models"
+    ServiceName="Design Service"
+    >
+    <m:ServiceModel.Contracts>
+        <m:ContractModel ContractName="Contract 1" />
+        <m:ContractModel ContractName="Contract 2" />
+    </m:ServiceModel.Contracts>
+    <m:ServiceModel.Queue>
+        <m:QueueModel SchemaName="dbo" QueueName="Queue1" Status="True" />
+    </m:ServiceModel.Queue>
+</m:ServiceModel>

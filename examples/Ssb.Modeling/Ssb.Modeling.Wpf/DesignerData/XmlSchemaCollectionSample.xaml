@@ -1,0 +1,9 @@
+﻿<m:XmlSchemaCollectionModel 
+    xmlns:m="clr-namespace:Ssb.Modeling.Models;assembly=Ssb.Modeling.Models"
+     SchemaName="dbo" XmlSchemaCollectionName="XML Schema"
+    >
+    <m:XmlSchemaCollectionModel.XmlSchemas>
+        <m:XmlSchemaModel XmlSchema="XSD1" TargetNamespace="X1" />
+        <m:XmlSchemaModel XmlSchema="XSD2" TargetNamespace="X2" />
+    </m:XmlSchemaCollectionModel.XmlSchemas>
+</m:XmlSchemaCollectionModel>

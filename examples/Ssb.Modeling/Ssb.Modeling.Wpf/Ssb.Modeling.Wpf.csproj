@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>Ssb.Modeling.Wpf</RootNamespace>
+    <AssemblyName>Ssb.Modeling.Wpf</AssemblyName>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
+    <PackageReference Include="Fluent.Ribbon" Version="11.0.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ssb.Modeling.Models\Ssb.Modeling.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Exclude all design-time XAML files from compilation -->
+    <Page Remove="DesignerData\*.xaml" />
+    <None Include="DesignerData\*.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Explicitly mark images as embedded resources -->
+    <Resource Include="Images\*.png" />
+  </ItemGroup>
+
+</Project>

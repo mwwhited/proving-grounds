@@ -1,0 +1,11 @@
+﻿<m:ApplicationViewModel 
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:m="clr-namespace:Ssb.Modeling.Models;assembly=Ssb.Modeling.Models"
+    xmlns:md="clr-namespace:Ssb.Modeling.Wpf.DesignerData;assembly=Ssb.Modeling.Wpf"
+    xmlns="clr-namespace:Ssb.Modeling.Models;assembly=Ssb.Modeling.Models" 
+    xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    
+    Project="{x:Static md:ProjectModelSample.DesignerData}"
+    >
+</m:ApplicationViewModel>

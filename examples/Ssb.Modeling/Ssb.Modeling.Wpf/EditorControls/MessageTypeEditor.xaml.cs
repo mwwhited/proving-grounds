@@ -1,0 +1,39 @@
+﻿using Ssb.Modeling.Models;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace Ssb.Modeling.Wpf.EditorControls
+{
+    /// <summary>
+    /// Interaction logic for MessageTypeEditor.xaml
+    /// </summary>
+    public partial class MessageTypeEditor : UserControl
+    {
+        public MessageTypeEditor()
+        {
+            InitializeComponent();
+        }
+
+        public static readonly DependencyProperty XmlSchemaCollectionsSourceProperty =
+            DependencyProperty.Register("XmlSchemaCollectionsSource", typeof(IEnumerable<XmlSchemaCollectionModel>), typeof(MessageTypeEditor));
+        public IEnumerable<XmlSchemaCollectionModel> XmlSchemaCollectionsSource
+        {
+            get { return this.GetValue(XmlSchemaCollectionsSourceProperty) as IEnumerable<XmlSchemaCollectionModel>; }
+            set { this.SetValue(XmlSchemaCollectionsSourceProperty, value); }
+        }
+                
+    }
+}
