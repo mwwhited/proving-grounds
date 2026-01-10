@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<accounting.engine xmlns="oobdev://AccountingEngine/2017/02">
+  <account apr="0.05" base.pmt="1498.54" day="1" financed="50000.00" dt.first="4/1/2017" dt.org="2/20/2017" term="36" />
+  <schedule dt="4/1/2017" bal.st="50000.00" principal="1224.57" interest="273.97" tax="43.84" total="1542.38" bal.end="48775.43" />
+  <schedule dt="5/1/2017" bal.st="48775.43" principal="1298.09" interest="200.45" tax="32.07" total="1530.61" bal.end="47477.34" />
+  <schedule dt="6/1/2017" bal.st="47477.34" principal="1296.92" interest="201.62" tax="32.26" total="1530.80" bal.end="46180.42" />
+  <schedule dt="7/1/2017" bal.st="46180.42" principal="1308.76" interest="189.78" tax="30.36" total="1528.90" bal.end="44871.66" />
+  <schedule dt="8/1/2017" bal.st="44871.66" principal="1307.99" interest="190.55" tax="30.49" total="1529.03" bal.end="43563.67" />
+  <schedule dt="9/1/2017" bal.st="43563.67" principal="1313.54" interest="185.00" tax="29.60" total="1528.14" bal.end="42250.13" />
+  <schedule dt="10/1/2017" bal.st="42250.13" principal="1324.91" interest="173.63" tax="27.78" total="1526.32" bal.end="40925.22" />
+  <schedule dt="11/1/2017" bal.st="40925.22" principal="1324.75" interest="173.79" tax="27.81" total="1526.35" bal.end="39600.47" />
+  <schedule dt="12/1/2017" bal.st="39600.47" principal="1335.80" interest="162.74" tax="26.04" total="1524.58" bal.end="38264.67" />
+  <schedule dt="1/1/2018" bal.st="38264.67" principal="1336.05" interest="162.49" tax="26.00" total="1524.54" bal.end="36928.62" />
+  <schedule dt="2/1/2018" bal.st="36928.62" principal="1341.72" interest="156.82" tax="25.09" total="1523.63" bal.end="35586.90" />
+  <schedule dt="3/1/2018" bal.st="35586.90" principal="1362.04" interest="136.50" tax="21.84" total="1520.38" bal.end="34224.86" />
+  <schedule dt="4/1/2018" bal.st="34224.86" principal="1353.20" interest="145.34" tax="23.25" total="1521.79" bal.end="32871.66" />
+  <schedule dt="5/1/2018" bal.st="32871.66" principal="1363.45" interest="135.09" tax="21.61" total="1520.15" bal.end="31508.21" />
+  <schedule dt="6/1/2018" bal.st="31508.21" principal="1364.74" interest="133.80" tax="21.41" total="1519.95" bal.end="30143.47" />
+  <schedule dt="7/1/2018" bal.st="30143.47" principal="1374.66" interest="123.88" tax="19.82" total="1518.36" bal.end="28768.81" />
+  <schedule dt="8/1/2018" bal.st="28768.81" principal="1376.37" interest="122.17" tax="19.55" total="1518.09" bal.end="27392.44" />
+  <schedule dt="9/1/2018" bal.st="27392.44" principal="1382.22" interest="116.32" tax="18.61" total="1517.15" bal.end="26010.22" />
+  <schedule dt="10/1/2018" bal.st="26010.22" principal="1391.65" interest="106.89" tax="17.10" total="1515.64" bal.end="24618.57" />
+  <schedule dt="11/1/2018" bal.st="24618.57" principal="1394.00" interest="104.54" tax="16.73" total="1515.27" bal.end="23224.57" />
+  <schedule dt="12/1/2018" bal.st="23224.57" principal="1403.10" interest="95.44" tax="15.27" total="1513.81" bal.end="21821.47" />
+  <schedule dt="1/1/2019" bal.st="21821.47" principal="1405.87" interest="92.67" tax="14.83" total="1513.37" bal.end="20415.60" />
+  <schedule dt="2/1/2019" bal.st="20415.60" principal="1411.84" interest="86.70" tax="13.87" total="1512.41" bal.end="19003.76" />
+  <schedule dt="3/1/2019" bal.st="19003.76" principal="1425.65" interest="72.89" tax="11.66" total="1510.20" bal.end="17578.11" />
+  <schedule dt="4/1/2019" bal.st="17578.11" principal="1423.89" interest="74.65" tax="11.94" total="1510.48" bal.end="16154.22" />
+  <schedule dt="5/1/2019" bal.st="16154.22" principal="1432.15" interest="66.39" tax="10.62" total="1509.16" bal.end="14722.07" />
+  <schedule dt="6/1/2019" bal.st="14722.07" principal="1436.02" interest="62.52" tax="10.00" total="1508.54" bal.end="13286.05" />
+  <schedule dt="7/1/2019" bal.st="13286.05" principal="1443.94" interest="54.60" tax="8.74" total="1507.28" bal.end="11842.11" />
+  <schedule dt="8/1/2019" bal.st="11842.11" principal="1448.25" interest="50.29" tax="8.05" total="1506.59" bal.end="10393.86" />
+  <schedule dt="9/1/2019" bal.st="10393.86" principal="1454.40" interest="44.14" tax="7.06" total="1505.60" bal.end="8939.46" />
+  <schedule dt="10/1/2019" bal.st="8939.46" principal="1461.80" interest="36.74" tax="5.88" total="1504.42" bal.end="7477.66" />
+  <schedule dt="11/1/2019" bal.st="7477.66" principal="1466.79" interest="31.75" tax="5.08" total="1503.62" bal.end="6010.87" />
+  <schedule dt="12/1/2019" bal.st="6010.87" principal="1473.84" interest="24.70" tax="3.95" total="1502.49" bal.end="4537.03" />
+  <schedule dt="1/1/2020" bal.st="4537.03" principal="1479.27" interest="19.27" tax="3.08" total="1501.62" bal.end="3057.76" />
+  <schedule dt="2/1/2020" bal.st="3057.76" principal="1485.55" interest="12.99" tax="2.08" total="1500.62" bal.end="1572.21" />
+  <schedule dt="3/1/2020" bal.st="1572.21" principal="1492.29" interest="6.25" tax="1.00" total="1499.54" bal.end="79.92" />
+  <schedule dt="4/1/2020" bal.st="79.92" principal="79.92" interest="0.34" tax="0.05" total="80.31" bal.end="0.00" />
+  <transaction dt.posted="2/20/2017" dt.effective="2/20/2017" amt="50000.00" type="Principal" sub="Originations" cid="1" />
+  <transaction dt.posted="2/20/2017" dt.effective="2/20/2017" amt="-50000.00" type="Funding" sub="Originations" cid="1" />
+  <transaction dt.posted="3/27/2017" dt.effective="4/1/2017" amt="-1224.57" type="Principal" sub="MonthlyBilling" cid="2" />
+  <transaction dt.posted="3/27/2017" dt.effective="4/1/2017" amt="-273.97" type="Interest" sub="MonthlyBilling" cid="2" />
+  <transaction dt.posted="3/27/2017" dt.effective="4/1/2017" amt="-43.84" type="Tax" sub="MonthlyBilling" cid="2" />
+  <transaction dt.posted="4/1/2017" dt.effective="4/1/2017" amt="1542.38" type="Payment" sub="PaymentReceived" cid="2" />
+  <transaction dt.posted="4/26/2017" dt.effective="5/1/2017" amt="-1298.09" type="Principal" sub="MonthlyBilling" cid="3" />
+  <transaction dt.posted="4/26/2017" dt.effective="5/1/2017" amt="-200.45" type="Interest" sub="MonthlyBilling" cid="3" />
+  <transaction dt.posted="4/26/2017" dt.effective="5/1/2017" amt="-32.07" type="Tax" sub="MonthlyBilling" cid="3" />
+  <transaction dt.posted="5/1/2017" dt.effective="5/1/2017" amt="1530.61" type="Payment" sub="PaymentReceived" cid="3" />
+  <transaction dt.posted="5/27/2017" dt.effective="6/1/2017" amt="-1296.92" type="Principal" sub="MonthlyBilling" cid="4" />
+  <transaction dt.posted="5/27/2017" dt.effective="6/1/2017" amt="-201.62" type="Interest" sub="MonthlyBilling" cid="4" />
+  <transaction dt.posted="5/27/2017" dt.effective="6/1/2017" amt="-32.26" type="Tax" sub="MonthlyBilling" cid="4" />
+  <transaction dt.posted="6/1/2017" dt.effective="6/1/2017" amt="1530.80" type="Payment" sub="PaymentReceived" cid="4" />
+  <transaction dt.posted="6/26/2017" dt.effective="7/1/2017" amt="-1308.76" type="Principal" sub="MonthlyBilling" cid="5" />
+  <transaction dt.posted="6/26/2017" dt.effective="7/1/2017" amt="-189.78" type="Interest" sub="MonthlyBilling" cid="5" />
+  <transaction dt.posted="6/26/2017" dt.effective="7/1/2017" amt="-30.36" type="Tax" sub="MonthlyBilling" cid="5" />
+  <transaction dt.posted="7/1/2017" dt.effective="7/1/2017" amt="1528.90" type="Payment" sub="PaymentReceived" cid="5" />
+  <transaction dt.posted="7/27/2017" dt.effective="8/1/2017" amt="-1307.99" type="Principal" sub="MonthlyBilling" cid="6" />
+  <transaction dt.posted="7/27/2017" dt.effective="8/1/2017" amt="-190.55" type="Interest" sub="MonthlyBilling" cid="6" />
+  <transaction dt.posted="7/27/2017" dt.effective="8/1/2017" amt="-30.49" type="Tax" sub="MonthlyBilling" cid="6" />
+  <transaction dt.posted="8/1/2017" dt.effective="8/1/2017" amt="1529.03" type="Payment" sub="PaymentReceived" cid="6" />
+  <transaction dt.posted="8/27/2017" dt.effective="9/1/2017" amt="-1313.54" type="Principal" sub="MonthlyBilling" cid="7" />
+  <transaction dt.posted="8/27/2017" dt.effective="9/1/2017" amt="-185.00" type="Interest" sub="MonthlyBilling" cid="7" />
+  <transaction dt.posted="8/27/2017" dt.effective="9/1/2017" amt="-29.60" type="Tax" sub="MonthlyBilling" cid="7" />
+  <transaction dt.posted="9/1/2017" dt.effective="9/1/2017" amt="1528.14" type="Payment" sub="PaymentReceived" cid="7" />
+  <transaction dt.posted="9/26/2017" dt.effective="10/1/2017" amt="-1324.91" type="Principal" sub="MonthlyBilling" cid="8" />
+  <transaction dt.posted="9/26/2017" dt.effective="10/1/2017" amt="-173.63" type="Interest" sub="MonthlyBilling" cid="8" />
+  <transaction dt.posted="9/26/2017" dt.effective="10/1/2017" amt="-27.78" type="Tax" sub="MonthlyBilling" cid="8" />
+  <transaction dt.posted="10/1/2017" dt.effective="10/1/2017" amt="1526.32" type="Payment" sub="PaymentReceived" cid="8" />
+  <transaction dt.posted="10/27/2017" dt.effective="11/1/2017" amt="-1324.75" type="Principal" sub="MonthlyBilling" cid="9" />
+  <transaction dt.posted="10/27/2017" dt.effective="11/1/2017" amt="-173.79" type="Interest" sub="MonthlyBilling" cid="9" />
+  <transaction dt.posted="10/27/2017" dt.effective="11/1/2017" amt="-27.81" type="Tax" sub="MonthlyBilling" cid="9" />
+  <transaction dt.posted="11/1/2017" dt.effective="11/1/2017" amt="1526.35" type="Payment" sub="PaymentReceived" cid="9" />
+  <transaction dt.posted="11/26/2017" dt.effective="12/1/2017" amt="-1335.80" type="Principal" sub="MonthlyBilling" cid="10" />
+  <transaction dt.posted="11/26/2017" dt.effective="12/1/2017" amt="-162.74" type="Interest" sub="MonthlyBilling" cid="10" />
+  <transaction dt.posted="11/26/2017" dt.effective="12/1/2017" amt="-26.04" type="Tax" sub="MonthlyBilling" cid="10" />
+  <transaction dt.posted="12/1/2017" dt.effective="12/1/2017" amt="1524.58" type="Payment" sub="PaymentReceived" cid="10" />
+  <transaction dt.posted="12/27/2017" dt.effective="1/1/2018" amt="-1336.05" type="Principal" sub="MonthlyBilling" cid="11" />
+  <transaction dt.posted="12/27/2017" dt.effective="1/1/2018" amt="-162.49" type="Interest" sub="MonthlyBilling" cid="11" />
+  <transaction dt.posted="12/27/2017" dt.effective="1/1/2018" amt="-26.00" type="Tax" sub="MonthlyBilling" cid="11" />
+  <transaction dt.posted="1/1/2018" dt.effective="1/1/2018" amt="1524.54" type="Payment" sub="PaymentReceived" cid="11" />
+  <transaction dt.posted="1/27/2018" dt.effective="2/1/2018" amt="-1341.72" type="Principal" sub="MonthlyBilling" cid="12" />
+  <transaction dt.posted="1/27/2018" dt.effective="2/1/2018" amt="-156.82" type="Interest" sub="MonthlyBilling" cid="12" />
+  <transaction dt.posted="1/27/2018" dt.effective="2/1/2018" amt="-25.09" type="Tax" sub="MonthlyBilling" cid="12" />
+  <transaction dt.posted="2/1/2018" dt.effective="2/1/2018" amt="1523.63" type="Payment" sub="PaymentReceived" cid="12" />
+  <transaction dt.posted="2/24/2018" dt.effective="3/1/2018" amt="-1362.04" type="Principal" sub="MonthlyBilling" cid="13" />
+  <transaction dt.posted="2/24/2018" dt.effective="3/1/2018" amt="-136.50" type="Interest" sub="MonthlyBilling" cid="13" />
+  <transaction dt.posted="2/24/2018" dt.effective="3/1/2018" amt="-21.84" type="Tax" sub="MonthlyBilling" cid="13" />
+  <transaction dt.posted="3/1/2018" dt.effective="3/1/2018" amt="1520.38" type="Payment" sub="PaymentReceived" cid="13" />
+  <transaction dt.posted="3/27/2018" dt.effective="4/1/2018" amt="-1353.20" type="Principal" sub="MonthlyBilling" cid="14" />
+  <transaction dt.posted="3/27/2018" dt.effective="4/1/2018" amt="-145.34" type="Interest" sub="MonthlyBilling" cid="14" />
+  <transaction dt.posted="3/27/2018" dt.effective="4/1/2018" amt="-23.25" type="Tax" sub="MonthlyBilling" cid="14" />
+  <transaction dt.posted="4/1/2018" dt.effective="4/1/2018" amt="1521.79" type="Payment" sub="PaymentReceived" cid="14" />
+  <transaction dt.posted="4/26/2018" dt.effective="5/1/2018" amt="-1363.45" type="Principal" sub="MonthlyBilling" cid="15" />
+  <transaction dt.posted="4/26/2018" dt.effective="5/1/2018" amt="-135.09" type="Interest" sub="MonthlyBilling" cid="15" />
+  <transaction dt.posted="4/26/2018" dt.effective="5/1/2018" amt="-21.61" type="Tax" sub="MonthlyBilling" cid="15" />
+  <transaction dt.posted="5/1/2018" dt.effective="5/1/2018" amt="1520.15" type="Payment" sub="PaymentReceived" cid="15" />
+  <transaction dt.posted="5/27/2018" dt.effective="6/1/2018" amt="-1364.74" type="Principal" sub="MonthlyBilling" cid="16" />
+  <transaction dt.posted="5/27/2018" dt.effective="6/1/2018" amt="-133.80" type="Interest" sub="MonthlyBilling" cid="16" />
+  <transaction dt.posted="5/27/2018" dt.effective="6/1/2018" amt="-21.41" type="Tax" sub="MonthlyBilling" cid="16" />
+  <transaction dt.posted="6/1/2018" dt.effective="6/1/2018" amt="1519.95" type="Payment" sub="PaymentReceived" cid="16" />
+  <transaction dt.posted="6/26/2018" dt.effective="7/1/2018" amt="-1374.66" type="Principal" sub="MonthlyBilling" cid="17" />
+  <transaction dt.posted="6/26/2018" dt.effective="7/1/2018" amt="-123.88" type="Interest" sub="MonthlyBilling" cid="17" />
+  <transaction dt.posted="6/26/2018" dt.effective="7/1/2018" amt="-19.82" type="Tax" sub="MonthlyBilling" cid="17" />
+  <transaction dt.posted="7/1/2018" dt.effective="7/1/2018" amt="1518.36" type="Payment" sub="PaymentReceived" cid="17" />
+  <transaction dt.posted="7/27/2018" dt.effective="8/1/2018" amt="-1376.37" type="Principal" sub="MonthlyBilling" cid="18" />
+  <transaction dt.posted="7/27/2018" dt.effective="8/1/2018" amt="-122.17" type="Interest" sub="MonthlyBilling" cid="18" />
+  <transaction dt.posted="7/27/2018" dt.effective="8/1/2018" amt="-19.55" type="Tax" sub="MonthlyBilling" cid="18" />
+  <transaction dt.posted="8/1/2018" dt.effective="8/1/2018" amt="1518.09" type="Payment" sub="PaymentReceived" cid="18" />
+  <transaction dt.posted="8/27/2018" dt.effective="9/1/2018" amt="-1382.22" type="Principal" sub="MonthlyBilling" cid="19" />
+  <transaction dt.posted="8/27/2018" dt.effective="9/1/2018" amt="-116.32" type="Interest" sub="MonthlyBilling" cid="19" />
+  <transaction dt.posted="8/27/2018" dt.effective="9/1/2018" amt="-18.61" type="Tax" sub="MonthlyBilling" cid="19" />
+  <transaction dt.posted="9/1/2018" dt.effective="9/1/2018" amt="1517.15" type="Payment" sub="PaymentReceived" cid="19" />
+  <transaction dt.posted="9/26/2018" dt.effective="10/1/2018" amt="-1391.65" type="Principal" sub="MonthlyBilling" cid="20" />
+  <transaction dt.posted="9/26/2018" dt.effective="10/1/2018" amt="-106.89" type="Interest" sub="MonthlyBilling" cid="20" />
+  <transaction dt.posted="9/26/2018" dt.effective="10/1/2018" amt="-17.10" type="Tax" sub="MonthlyBilling" cid="20" />
+  <transaction dt.posted="10/1/2018" dt.effective="10/1/2018" amt="1515.64" type="Payment" sub="PaymentReceived" cid="20" />
+  <transaction dt.posted="10/27/2018" dt.effective="11/1/2018" amt="-1394.00" type="Principal" sub="MonthlyBilling" cid="21" />
+  <transaction dt.posted="10/27/2018" dt.effective="11/1/2018" amt="-104.54" type="Interest" sub="MonthlyBilling" cid="21" />
+  <transaction dt.posted="10/27/2018" dt.effective="11/1/2018" amt="-16.73" type="Tax" sub="MonthlyBilling" cid="21" />
+  <transaction dt.posted="11/1/2018" dt.effective="11/1/2018" amt="1515.27" type="Payment" sub="PaymentReceived" cid="21" />
+  <transaction dt.posted="11/26/2018" dt.effective="12/1/2018" amt="-1403.10" type="Principal" sub="MonthlyBilling" cid="22" />
+  <transaction dt.posted="11/26/2018" dt.effective="12/1/2018" amt="-95.44" type="Interest" sub="MonthlyBilling" cid="22" />
+  <transaction dt.posted="11/26/2018" dt.effective="12/1/2018" amt="-15.27" type="Tax" sub="MonthlyBilling" cid="22" />
+  <transaction dt.posted="12/1/2018" dt.effective="12/1/2018" amt="1513.81" type="Payment" sub="PaymentReceived" cid="22" />
+  <transaction dt.posted="12/27/2018" dt.effective="1/1/2019" amt="-1405.87" type="Principal" sub="MonthlyBilling" cid="23" />
+  <transaction dt.posted="12/27/2018" dt.effective="1/1/2019" amt="-92.67" type="Interest" sub="MonthlyBilling" cid="23" />
+  <transaction dt.posted="12/27/2018" dt.effective="1/1/2019" amt="-14.83" type="Tax" sub="MonthlyBilling" cid="23" />
+  <transaction dt.posted="1/1/2019" dt.effective="1/1/2019" amt="1513.37" type="Payment" sub="PaymentReceived" cid="23" />
+  <transaction dt.posted="1/27/2019" dt.effective="2/1/2019" amt="-1411.84" type="Principal" sub="MonthlyBilling" cid="24" />
+  <transaction dt.posted="1/27/2019" dt.effective="2/1/2019" amt="-86.70" type="Interest" sub="MonthlyBilling" cid="24" />
+  <transaction dt.posted="1/27/2019" dt.effective="2/1/2019" amt="-13.87" type="Tax" sub="MonthlyBilling" cid="24" />
+  <transaction dt.posted="2/1/2019" dt.effective="2/1/2019" amt="1512.41" type="Payment" sub="PaymentReceived" cid="24" />
+  <transaction dt.posted="2/24/2019" dt.effective="3/1/2019" amt="-1425.65" type="Principal" sub="MonthlyBilling" cid="25" />
+  <transaction dt.posted="2/24/2019" dt.effective="3/1/2019" amt="-72.89" type="Interest" sub="MonthlyBilling" cid="25" />
+  <transaction dt.posted="2/24/2019" dt.effective="3/1/2019" amt="-11.66" type="Tax" sub="MonthlyBilling" cid="25" />
+  <transaction dt.posted="3/1/2019" dt.effective="3/1/2019" amt="1510.20" type="Payment" sub="PaymentReceived" cid="25" />
+  <transaction dt.posted="3/27/2019" dt.effective="4/1/2019" amt="-1423.89" type="Principal" sub="MonthlyBilling" cid="26" />
+  <transaction dt.posted="3/27/2019" dt.effective="4/1/2019" amt="-74.65" type="Interest" sub="MonthlyBilling" cid="26" />
+  <transaction dt.posted="3/27/2019" dt.effective="4/1/2019" amt="-11.94" type="Tax" sub="MonthlyBilling" cid="26" />
+  <transaction dt.posted="4/1/2019" dt.effective="4/1/2019" amt="1510.48" type="Payment" sub="PaymentReceived" cid="26" />
+  <transaction dt.posted="4/26/2019" dt.effective="5/1/2019" amt="-1432.15" type="Principal" sub="MonthlyBilling" cid="27" />
+  <transaction dt.posted="4/26/2019" dt.effective="5/1/2019" amt="-66.39" type="Interest" sub="MonthlyBilling" cid="27" />
+  <transaction dt.posted="4/26/2019" dt.effective="5/1/2019" amt="-10.62" type="Tax" sub="MonthlyBilling" cid="27" />
+  <transaction dt.posted="5/1/2019" dt.effective="5/1/2019" amt="1509.16" type="Payment" sub="PaymentReceived" cid="27" />
+  <transaction dt.posted="5/27/2019" dt.effective="6/1/2019" amt="-1436.02" type="Principal" sub="MonthlyBilling" cid="28" />
+  <transaction dt.posted="5/27/2019" dt.effective="6/1/2019" amt="-62.52" type="Interest" sub="MonthlyBilling" cid="28" />
+  <transaction dt.posted="5/27/2019" dt.effective="6/1/2019" amt="-10.00" type="Tax" sub="MonthlyBilling" cid="28" />
+  <transaction dt.posted="6/1/2019" dt.effective="6/1/2019" amt="1508.54" type="Payment" sub="PaymentReceived" cid="28" />
+  <transaction dt.posted="6/26/2019" dt.effective="7/1/2019" amt="-1443.94" type="Principal" sub="MonthlyBilling" cid="29" />
+  <transaction dt.posted="6/26/2019" dt.effective="7/1/2019" amt="-54.60" type="Interest" sub="MonthlyBilling" cid="29" />
+  <transaction dt.posted="6/26/2019" dt.effective="7/1/2019" amt="-8.74" type="Tax" sub="MonthlyBilling" cid="29" />
+  <transaction dt.posted="7/1/2019" dt.effective="7/1/2019" amt="1507.28" type="Payment" sub="PaymentReceived" cid="29" />
+  <transaction dt.posted="7/27/2019" dt.effective="8/1/2019" amt="-1448.25" type="Principal" sub="MonthlyBilling" cid="30" />
+  <transaction dt.posted="7/27/2019" dt.effective="8/1/2019" amt="-50.29" type="Interest" sub="MonthlyBilling" cid="30" />
+  <transaction dt.posted="7/27/2019" dt.effective="8/1/2019" amt="-8.05" type="Tax" sub="MonthlyBilling" cid="30" />
+  <transaction dt.posted="8/1/2019" dt.effective="8/1/2019" amt="1506.59" type="Payment" sub="PaymentReceived" cid="30" />
+  <transaction dt.posted="8/27/2019" dt.effective="9/1/2019" amt="-1454.40" type="Principal" sub="MonthlyBilling" cid="31" />
+  <transaction dt.posted="8/27/2019" dt.effective="9/1/2019" amt="-44.14" type="Interest" sub="MonthlyBilling" cid="31" />
+  <transaction dt.posted="8/27/2019" dt.effective="9/1/2019" amt="-7.06" type="Tax" sub="MonthlyBilling" cid="31" />
+  <transaction dt.posted="9/1/2019" dt.effective="9/1/2019" amt="1505.60" type="Payment" sub="PaymentReceived" cid="31" />
+  <transaction dt.posted="9/26/2019" dt.effective="10/1/2019" amt="-1461.80" type="Principal" sub="MonthlyBilling" cid="32" />
+  <transaction dt.posted="9/26/2019" dt.effective="10/1/2019" amt="-36.74" type="Interest" sub="MonthlyBilling" cid="32" />
+  <transaction dt.posted="9/26/2019" dt.effective="10/1/2019" amt="-5.88" type="Tax" sub="MonthlyBilling" cid="32" />
+  <transaction dt.posted="10/1/2019" dt.effective="10/1/2019" amt="1504.42" type="Payment" sub="PaymentReceived" cid="32" />
+  <transaction dt.posted="10/27/2019" dt.effective="11/1/2019" amt="-1466.79" type="Principal" sub="MonthlyBilling" cid="33" />
+  <transaction dt.posted="10/27/2019" dt.effective="11/1/2019" amt="-31.75" type="Interest" sub="MonthlyBilling" cid="33" />
+  <transaction dt.posted="10/27/2019" dt.effective="11/1/2019" amt="-5.08" type="Tax" sub="MonthlyBilling" cid="33" />
+  <transaction dt.posted="11/1/2019" dt.effective="11/1/2019" amt="1503.62" type="Payment" sub="PaymentReceived" cid="33" />
+  <transaction dt.posted="11/26/2019" dt.effective="12/1/2019" amt="-1473.84" type="Principal" sub="MonthlyBilling" cid="34" />
+  <transaction dt.posted="11/26/2019" dt.effective="12/1/2019" amt="-24.70" type="Interest" sub="MonthlyBilling" cid="34" />
+  <transaction dt.posted="11/26/2019" dt.effective="12/1/2019" amt="-3.95" type="Tax" sub="MonthlyBilling" cid="34" />
+  <transaction dt.posted="12/1/2019" dt.effective="12/1/2019" amt="1502.49" type="Payment" sub="PaymentReceived" cid="34" />
+  <transaction dt.posted="12/27/2019" dt.effective="1/1/2020" amt="-1479.27" type="Principal" sub="MonthlyBilling" cid="35" />
+  <transaction dt.posted="12/27/2019" dt.effective="1/1/2020" amt="-19.27" type="Interest" sub="MonthlyBilling" cid="35" />
+  <transaction dt.posted="12/27/2019" dt.effective="1/1/2020" amt="-3.08" type="Tax" sub="MonthlyBilling" cid="35" />
+  <transaction dt.posted="1/1/2020" dt.effective="1/1/2020" amt="1501.62" type="Payment" sub="PaymentReceived" cid="35" />
+  <transaction dt.posted="1/27/2020" dt.effective="2/1/2020" amt="-1485.55" type="Principal" sub="MonthlyBilling" cid="36" />
+  <transaction dt.posted="1/27/2020" dt.effective="2/1/2020" amt="-12.99" type="Interest" sub="MonthlyBilling" cid="36" />
+  <transaction dt.posted="1/27/2020" dt.effective="2/1/2020" amt="-2.08" type="Tax" sub="MonthlyBilling" cid="36" />
+  <transaction dt.posted="2/1/2020" dt.effective="2/1/2020" amt="1500.62" type="Payment" sub="PaymentReceived" cid="36" />
+  <transaction dt.posted="2/25/2020" dt.effective="3/1/2020" amt="-1492.29" type="Principal" sub="MonthlyBilling" cid="37" />
+  <transaction dt.posted="2/25/2020" dt.effective="3/1/2020" amt="-6.25" type="Interest" sub="MonthlyBilling" cid="37" />
+  <transaction dt.posted="2/25/2020" dt.effective="3/1/2020" amt="-1.00" type="Tax" sub="MonthlyBilling" cid="37" />
+  <transaction dt.posted="3/1/2020" dt.effective="3/1/2020" amt="1499.54" type="Payment" sub="PaymentReceived" cid="37" />
+  <transaction dt.posted="3/2/2020" dt.effective="3/2/2020" amt="-79.92" type="Principal" sub="TerminationAdjustment" cid="38" />
+  <transaction dt.posted="3/2/2020" dt.effective="3/2/2020" amt="79.92" type="GoodWill" sub="Termination" cid="38" />
+</accounting.engine>
