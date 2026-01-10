@@ -1,0 +1,53 @@
+README for iQs Barcode 128 font and accompanying software
+---------------------------------------------------------
+
+This product is public domain: it is free for personal and commercial use.
+The only requirements are that the author (iQs Partners Finland) is
+mentioned in the product and the author is informed of the use.
+
+For example, you can insert the following text into your About-box or
+some other _visible_ place:
+
+--8<--
+Code128 Font (c) iQs Partners Finland
+http://www.iqs.fi/
+--8<--
+
+This package includes:
+
+  README                      This README file
+  Code128.html                Usage instructions
+  iQsCode128.TTF              The font
+  Barcode.dll                 COM object to generate barcodes
+  Barcode.EXE                 iQs Barcode Generator, an example program
+  Barcode.vbp                 Visual Basic source of the example
+  Barcode.ico
+  Form1.frm
+  Form1.frx
+
+The package can be redistributed but not modifified. iQs Partners Finland
+reserves all rights to the product.
+
+YOU ARE NOT ALLOWED TO SELL THIS PRODUCT OR OTHERWISE PROFIT FROM ITS
+REDISTRIBUTION.
+
+7th March 2000, iQs Partners Finland
+iqs@iqs.fi
+
+
+DISCLAIMER
+----------
+
+The product (including instructions for its use) is provided "as is" without
+warranty of any kind. iQs Partners Finland further disclaims all implied
+warranties including without limitation any implied warranties of
+merchantability or of fitness for a particular purpose. The entire risk
+arising out of the use or performance of the product and documentation remains
+with you.
+
+In no event shall iQs Partners Finland or anyone else involved in the creation,
+production or delivery of the product be liable for any damages whatsoever
+(including, without limitation, damages for loss of business profits, business
+interruption, loss of business information, or other pecuniary loss) arising
+out of the use of or inability to use the product or documentation, even if
+iQs Partners Finland has been advised of the possibility of such damages.

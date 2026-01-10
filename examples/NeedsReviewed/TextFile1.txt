@@ -1,0 +1,429 @@
+var currentShown = "";
+var isDelayHideActive = false;
+var calendarSuffix = "_calendar";
+
+function delayHide(hideMe)
+{
+    return delayHide(hideMe, 2500);
+}
+
+function delayHide(hideMe, period)
+{
+    if (hideMe == null || (hideMe.split && hideMe == ""))
+        return false;
+        
+    if (hideMe.id)
+        hideMe = hideMe.id;
+        
+    if (hideMe.indexOf(calendarSuffix) == -1)
+        hideMe += calendarSuffix;
+        
+    isDelayHideActive = true;
+    setTimeout( "delayHideCallBack('" + hideMe + "')", period);
+    return true;
+}
+
+function clearDelayHide()
+{
+    isDelayHideActive = false;
+    return true;
+}
+
+function delayHideCallBack(hideMe)
+{
+    if (isDelayHideActive)
+        return hideElement(hideMe);
+    return false;
+}
+
+function clearAndHide(hideMe, clearMe)
+{
+    if (hideMe == null || (hideMe.split && hideMe == ""))
+        return false;
+        
+    if (hideMe.split)
+        hideMe = document.getElementById(hideMe);
+        
+    if (hideMe == null)
+        return false;
+        
+    if (clearMe == null || (clearMe.split && clearMe == ""))
+        return false;
+        
+    if (clearMe.split)
+        clearMe = document.getElementById(clearMe);
+        
+    if (clearMe == null)
+        return false;
+        
+    if (!hideElement(hideMe))
+        return false;
+
+    clearMe.value = '';                
+    return true;
+}
+
+function hideElement(me)
+{
+    if (me == null || (me.split && me == ""))
+        return false;
+        
+    if (me.split)
+        me = document.getElementById(me);
+        
+    if (me == null)
+        return false;
+        
+    me.style.visibility="hidden";     
+    
+    if (currentShown != null && currentShown != "" && currentShown == me.id)
+        currentShown = "";
+    
+    return true;
+}        
+
+function showElement(me, near)
+{
+    if (me == null || (me.split && me == ""))
+        return false;
+        
+    if (me.split)
+        me = document.getElementById(me);
+        
+    if (me == null || !me.id || me.id == null || me.id == "")
+        return false;
+        
+    if (near == null || (near.split && near == ""))
+        return false;
+        
+    if (near.split)
+        near = document.getElementById(near);
+        
+    if (near == null || !near.id || near.id == null || near.id == "")
+        return false;
+
+    if (currentShown != null && currentShown != "" && currentShown != me.id)
+        try {hideElement(currentShown) } catch (e) {}
+    
+    clearDelayHide();
+    if (near != null) 
+    {
+        me.style.position="absolute";
+        me.style.top = near.offsetHeight + getTop(near) + "px"; //.offsetTop + 'px';
+        me.style.left = (near.offsetWidth * .25) + getLeft(near) + "px"; //.offsetLeft + 'px';
+    }
+    me.style.visibility="visible";
+    
+    currentShown = me.id;
+    
+    return true;
+}
+
+function getTop(me)
+{
+    if (me == null || me.split)
+        return false;
+    
+    var top = me.offsetTop;
+    while (me.offsetParent != null)
+    {
+        me = me.offsetParent
+        top += me.offsetTop;
+    }
+    return top;
+}
+
+function getLeft(me)
+{
+    if (me == null || me.split)
+        return false;
+    
+    var left = me.offsetLeft;
+    while (me.offsetParent != null)
+    {
+        me = me.offsetParent
+        left += me.offsetLeft;
+    }
+    return left;
+}
+
+function toggleElement(me, near)
+{
+    if (me == null || (me.split && me == ""))
+        return false;
+        
+    if (me.split)
+        me = document.getElementById(me);
+        
+    if (me == null)
+        return false;
+        
+    if (me.style.visibility=="hidden")
+        return showElement(me, near)
+    else
+        return hideElement(me);
+}
+
+function ShowCalendar(near, dateShow, dateSelected)
+{
+    if (near == null)
+        return false;
+
+    if (near.id != null)
+        var cal = document.getElementById(near.id + calendarSuffix);
+    else
+        return false;
+
+    if (cal == null)
+    {           
+        cal = document.createElement('div');                
+        if (cal.id == null || cal.id == "")
+            cal.id = near.id + calendarSuffix;
+        document.body.appendChild(cal);
+        cal.style.visibility = "hidden";
+    }
+        
+    clearDelayHide();  
+    //delayHide(cal,1000);
+    if (cal.style.visibility != "visible")
+    {
+        if (BuildCalendar(cal, near, dateShow, dateSelected))
+            return showElement(cal, near);
+    }
+    
+    return false
+}
+
+function ChangeShowDate(calendar, target, dateShow, dateSelected)
+{
+    if (calendar == null || dateShow == null)
+        return false;
+        
+    if (!dateShow.setMonth)
+        dateShow = new Date(dateShow);
+        
+    if (dateSelected != null && !dateSelected.setMonth)
+        dateSelected = new Date(dateSelected);
+        
+    if (calendar.split) /* is this string? */
+        calendar = document.getElementById(calendar);
+        
+    var month = document.getElementById(calendar.id + "_month").value;
+    var year =  document.getElementById(calendar.id + "_year" ).value;
+        
+    if (month != null) 
+    {
+        month = parseInt(month);
+        dateShow.setMonth(month);
+    }
+        
+    if (year != null)
+    {
+        year = parseInt(year);
+        dateShow.setYear(parseInt(year));
+    }
+                    
+    return BuildCalendar(calendar, target, dateShow, dateSelected);
+}
+
+function SetDate(calendar, target, dateSelected)
+{
+    if (target == null)
+        return false;
+        
+    if (calendar != null && calendar.split) /* is this string? */
+        calendar = document.getElementById(calendar);
+        
+    if (target.split)
+        target = document.getElementById(target);
+        
+    if (dateSelected != null && !dateSelected.setMonth)
+        dateSelected = new Date(dateSelected);
+
+    if (dateSelected == null)
+        target.value = '';
+    else
+        target.value = (dateSelected.getMonth() + 1) + "/" + dateSelected.getDate() + "/" + dateSelected.getFullYear();
+        
+    if (calendar != null)
+        hideElement(calendar);
+}
+
+function BuildCalendar(calendar, target, dateShow, dateSelected)        
+{
+    if (calendar == null || target == null)
+        return false;
+        
+    if (calendar.split) /* is this string? */
+        calendar = document.getElementById(calendar);
+        
+    if (!calendar.id || calendar.id == null || calendar.id == "")
+        return false;
+        
+    if (target.split) /* is this string? */
+        target = document.getElementById(target);
+    
+    if (!target.id || target.id == null || target.id == "")
+        return false;
+        
+    if (dateShow != null && !dateShow.setMonth)
+        dateShow = new Date(dateShow);
+        
+    if (dateSelected != null && !dateSelected.setMonth)
+    {
+        if (dateSelected.split)
+            dateSelected = new Date(dateSelected);
+        else if (dateSelected.value != null && dateSelected.value != "")
+            dateSelected = new Date(dateSelected.value);
+        else
+            dateSelected = null;
+    }
+
+    var days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+    var dateToday = new Date();
+    dateToday = new Date((dateToday.getMonth() + 1) + "/" + dateToday.getDate() + "/" + dateToday.getFullYear());                
+
+    if (dateShow == null)
+    {
+        if (dateSelected == null)
+            dateShow = new Date(dateToday.valueOf());            
+        else
+            dateShow = new Date(dateSelected.valueOf());            
+    }
+    dateShow.setDate(1);                
+    
+    /* var dateSelect */
+                
+    var dateCurrent = new Date(dateShow.valueOf());
+    if (dateCurrent.getDay() != 0)
+        dateCurrent.setDate(dateShow.getDate() - dateShow.getDay());
+    
+    var dateShowMonth = dateShow.getMonth();
+    var dateShowYear = dateShow.getFullYear();
+    
+    var dateCheck = new Date(dateShow.valueOf());
+    dateCheck.setMonth(dateShow.getMonth() + 1)
+    dateCheck.setDate(0);
+    var dateShowLastOfMonth = dateCheck.getDate();
+    
+    var calTable = "<table class='cal' ";
+    calTable += "onmouseover=\"clearDelayHide();\" ";
+    //calTable += "onmouseout=\"delayHide('" + calendar.id + "', 500);\" ";
+    calTable += ">";
+
+    //Header Month - Year
+    calTable += "<tr class='calTitle'>";
+    calTable += "<td class='calClear'>";
+    calTable += "<span onclick=\"clearAndHide('" + calendar.id + "','" + target.id + "')\">C</span>";
+    calTable += "</td><td class='calMonthYear' colspan='5'>";
+
+    //Build month list
+    calTable += "<select id='" + calendar.id + "_month' "
+    calTable += "class='calMonth' ";
+    calTable += "onchange=\"ChangeShowDate('" + calendar.id + "','" + target.id + "','" + dateShow + "','" + dateSelected + "')\" ";
+    calTable += ">";
+    for (var m = 0; m < 12; m++)
+    {
+        calTable += "<option value='" + m + "'";
+        if (m == dateShowMonth)
+            calTable += " selected='selected' ";
+        calTable += ">" + months[m] + "</option>";
+    }
+    calTable += "</select>&nbsp;";
+    
+    //Build year list
+    calTable += "<select id='" + calendar.id + "_year' "
+    calTable += "class='calYear' ";
+    calTable += "onchange=\"ChangeShowDate('" + calendar.id + "','" + target.id + "','" + dateShow + "','" + dateSelected + "')\" ";
+    calTable += ">";
+    for (var m = (dateShowYear - 4); m < (5 + dateShowYear); m++)
+    {
+        calTable += "<option value='" + m + "' ";
+        if (m == dateShowYear)
+            calTable += "selected='selected' ";
+        calTable += ">" + m + "</option>";
+    }
+    calTable += "</select>&nbsp;";            
+    calTable += "</td>";
+    calTable += "<td class='calClose'>";
+    calTable += "<span onclick=\"hideElement('" + calendar.id + "')\">X</span>";
+    calTable += "</td></tr>";
+
+    // Days of Week
+    calTable += "<tr class='calDayHeaderRow'>";
+    for (var i = 0; i < 7; i++)
+        calTable += "<td class='calDayHeader'>" + days[i] + "</td>";
+    calTable += "</tr>";
+    
+    var weekDays = days;
+    var calDayClass = 'calDay';
+    
+    // Days            
+    // check length of month
+    var monthWeeks = 5;
+    if ((35 - dateShow.getDay())< dateShowLastOfMonth)
+        monthWeeks = 6;
+    
+    for (var j = 0; j < monthWeeks; j++) //Week
+    {
+        calTable += "<tr class='calWeek'>";
+        for (var i = 0; i < 7; i++) //Day
+        {                    
+            if (dateSelected != null &&
+                dateCurrent.getMonth() == dateSelected.getMonth() &&
+                dateCurrent.getDate() == dateSelected.getDate() &&
+                dateCurrent.getYear() == dateSelected.getYear())
+                calDayClass = "calDaySelected";
+            else if (dateCurrent.getMonth() == dateToday.getMonth() &&
+                     dateCurrent.getDate() == dateToday.getDate() &&
+                     dateCurrent.getYear() == dateToday.getYear())
+                calDayClass = "calToday";
+            else if (dateCurrent.getMonth() != dateShowMonth)
+                calDayClass="calDayOtherMonth";
+            else if (days[dateCurrent.getDay()] == "S")
+                calDayClass = "calWeekend";
+            else
+                calDayClass = "calDay";
+            
+            // Display Date
+            calTable += "<td class='" + calDayClass + "' ";// + "'>";
+            calTable += "onmouseover=\"changeStyle(this,'calDayHoverOver')\" ";
+            calTable += "onmouseout=\"changeStyle(this,'" + calDayClass + "')\" ";
+
+            calTable += "onclick=\"SetDate('" + calendar.id + "','" + target.id + "','" + dateCurrent + "');\" ";
+            calTable += ">";
+            calTable += dateCurrent.getDate();
+            calTable += "</td>";
+            
+            if (dateCurrent.getMonth() == dateShowMonth && dateCurrent.getDate() == dateShowLastOfMonth)
+            {
+                dateCurrent.setDate(1);
+                var currentMonth = dateCurrent.getMonth();
+                if (currentMonth >= 12)
+                {
+                    dateCurrent.setMonth(1);
+                    dateCurrent.setFullYear(dateCurrent.getFullYear() + 1);
+                }
+                else
+                    dateCurrent.setMonth(dateCurrent.getMonth() + 1);
+            }
+            else 
+                dateCurrent.setDate(dateCurrent.getDate() + 1);
+        }
+        calTable += "</tr>";
+    }          
+    calTable += "</table>";
+    calendar.innerHTML = calTable;
+    return true;	    
+}    
+
+function changeStyle(me, newClassName)
+{
+    if (me == null || !me.className)
+        return false;
+        
+    me.className=newClassName;
+    return true;
+}
