@@ -1,0 +1,2497 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CarMaintenanceLogModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BillingDocuments">
+          <Key>
+            <PropertyRef Name="BillingDocument" />
+          </Key>
+          <Property Name="BillingDocument" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DownloadedDate" Type="datetime" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+          <Property Name="VendorID" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PaidDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmployeeProjects">
+          <Key>
+            <PropertyRef Name="EmployeProjectID" />
+          </Key>
+          <Property Name="EmployeProjectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Invoices">
+          <Key>
+            <PropertyRef Name="InvoiceID" />
+          </Key>
+          <Property Name="InvoiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="InvoiceDate" Type="date" />
+          <Property Name="DueDate" Type="date" />
+          <Property Name="TermsID" Type="int" Nullable="false" />
+          <Property Name="TermsAndConditions" Type="nvarchar(max)" />
+          <Property Name="InvoiceStatusCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RenderedInvoiceMime" Type="nvarchar" MaxLength="256" />
+          <Property Name="RenderedInvoice" Type="varbinary(max)" />
+          <Property Name="InvoiceNumber" Type="int" />
+          <Property Name="PaidDate" Type="datetime" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+          <Property Name="HasRenderedInvoice" Type="int" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LineItems">
+          <Key>
+            <PropertyRef Name="LineItemID" />
+          </Key>
+          <Property Name="LineItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Quantity" Type="float" Nullable="false" />
+          <Property Name="UnitPrice" Type="float" Nullable="false" />
+          <Property Name="TaxRate" Type="float" />
+          <Property Name="ExtendedAmount" Type="float" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="TaxAmount" Type="float" StoreGeneratedPattern="Computed" />
+          <Property Name="TotalAmount" Type="float" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="InvoiceID" Type="int" />
+        </EntityType>
+        <EntityType Name="Projects">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="HourlyRate" Type="float" />
+          <Property Name="DefaultMiles" Type="float" />
+          <Property Name="DefaultTermID" Type="int" />
+        </EntityType>
+        <EntityType Name="Terms">
+          <Key>
+            <PropertyRef Name="TermID" />
+          </Key>
+          <Property Name="TermID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Details" Type="nvarchar(max)" />
+          <Property Name="Rules" Type="xml" />
+        </EntityType>
+        <EntityType Name="Vendors">
+          <Key>
+            <PropertyRef Name="VendorID" />
+          </Key>
+          <Property Name="VendorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="WebSite" Type="nvarchar" MaxLength="256" />
+          <Property Name="Username" Type="nvarchar" MaxLength="128" />
+          <Property Name="Password" Type="nvarchar" MaxLength="128" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="50" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="128" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="128" />
+          <Property Name="City" Type="nvarchar" MaxLength="128" />
+          <Property Name="State" Type="nvarchar" MaxLength="128" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccountingEmail" Type="nvarchar" MaxLength="256" />
+          <Property Name="ContractEmail" Type="nvarchar" MaxLength="256" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="256" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="uniqueidentifier" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="DefaultCarID" Type="int" />
+        </EntityType>
+        <EntityType Name="Notes">
+          <Key>
+            <PropertyRef Name="NoteID" />
+          </Key>
+          <Property Name="NoteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Note" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Complete" Type="bit" />
+        </EntityType>
+        <EntityType Name="ReportedTimeLogs">
+          <Key>
+            <PropertyRef Name="ReportedTimeLogID" />
+          </Key>
+          <Property Name="ReportedTimeLogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Month" Type="int" Nullable="false" />
+          <Property Name="Week" Type="int" Nullable="false" />
+          <Property Name="FirstOfWeek" Type="date" Nullable="false" />
+          <Property Name="Rendering" Type="varbinary(max)" />
+          <Property Name="HasRendering" Type="int" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeLogs">
+          <Key>
+            <PropertyRef Name="TimeLogID" />
+          </Key>
+          <Property Name="TimeLogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="StartBreak" Type="time" Precision="7" />
+          <Property Name="EndBreak" Type="time" Precision="7" />
+          <Property Name="EndTIme" Type="time" Precision="7" />
+          <Property Name="Note" Type="nvarchar" MaxLength="265" />
+          <Property Name="InvoiceID" Type="int" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="Miles" Type="float" />
+          <Property Name="Hours" Type="float" StoreGeneratedPattern="Computed" />
+          <Property Name="CarID" Type="int" />
+          <Property Name="ReportedTimeLogID" Type="int" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="TransactionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="Credit" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="Debit" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Related" Type="int" />
+        </EntityType>
+        <EntityType Name="Cars">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DriverID" Type="int" Nullable="false" />
+          <Property Name="Make" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Model" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="SubModel" Type="nvarchar" MaxLength="100" />
+          <Property Name="StartingMiles" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="PurchasedDate" Type="datetime" />
+          <Property Name="SoldDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Drivers">
+          <Key>
+            <PropertyRef Name="DriverID" />
+          </Key>
+          <Property Name="DriverID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="UserID" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="FillUps">
+          <Key>
+            <PropertyRef Name="FillUpID" />
+          </Key>
+          <Property Name="FillUpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="CostPerGallon" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Gallons" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Octane" Type="int" Nullable="false" />
+          <Property Name="TankMiles" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="TotalMiles" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Station" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="ExtendedCost" Type="decimal" Precision="14" Scale="4" StoreGeneratedPattern="Computed" />
+          <Property Name="MilesPerGallon" Type="decimal" Precision="14" Scale="4" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="InsurancePayments">
+          <Key>
+            <PropertyRef Name="InsurancePaymentID" />
+          </Key>
+          <Property Name="InsurancePaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="PaidTo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="MaintenanceSchedules">
+          <Key>
+            <PropertyRef Name="MaintenanceScheduleID" />
+          </Key>
+          <Property Name="MaintenanceScheduleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Miles" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="WorkItems" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CompletedOn" Type="datetime" />
+          <Property Name="IsComplete" Type="bit" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="OilChanges">
+          <Key>
+            <PropertyRef Name="OilChangeID" />
+          </Key>
+          <Property Name="OilChangeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="ChangeMiles" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="OilBrand" Type="nvarchar" MaxLength="100" />
+          <Property Name="FilterBrand" Type="nvarchar" MaxLength="100" />
+          <Property Name="Quarts" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="OilCost" Type="decimal" Precision="14" Scale="4" />
+          <Property Name="FilterCost" Type="decimal" Precision="14" Scale="4" />
+          <Property Name="LaborCost" Type="decimal" Precision="14" Scale="4" />
+          <Property Name="TaxRate" Type="decimal" Precision="4" Scale="4" />
+          <Property Name="OtherCost" Type="decimal" Precision="14" Scale="4" />
+          <Property Name="Location" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="ExtendedCost" Type="decimal" Precision="14" Scale="4" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="OtherServices">
+          <Key>
+            <PropertyRef Name="OtherServiceID" />
+          </Key>
+          <Property Name="OtherServiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Miles" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Item" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Cost" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Rate" Type="decimal" Precision="4" Scale="4" Nullable="false" />
+          <Property Name="Location" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="ExtendedCost" Type="decimal" Precision="14" Scale="4" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Payments">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="PaidTo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Stations">
+          <Key>
+            <PropertyRef Name="StationID" />
+          </Key>
+          <Property Name="StationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="256" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="256" />
+          <Property Name="City" Type="nvarchar" MaxLength="256" />
+          <Property Name="State" Type="nvarchar" MaxLength="256" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="Tires">
+          <Key>
+            <PropertyRef Name="TireID" />
+          </Key>
+          <Property Name="TireID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Miles" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Make" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Model" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Cost" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="TaxRate" Type="decimal" Precision="4" Scale="4" Nullable="false" />
+          <Property Name="WarrantyMonths" Type="int" Nullable="false" />
+          <Property Name="WarrantyMiles" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="ExpireDate" Type="datetime" StoreGeneratedPattern="Computed" />
+          <Property Name="ExpireMiles" Type="decimal" Precision="15" Scale="4" StoreGeneratedPattern="Computed" />
+          <Property Name="ExtendedCost" Type="decimal" Precision="14" Scale="4" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarMaintenanceLog.Accounting.Vehicles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Vehicles">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" />
+          <Property Name="Cost" Type="decimal" Precision="38" Scale="4" />
+          <Property Name="LoggedMiles" Type="float" />
+          <Property Name="TotalMiles" Type="decimal" Precision="15" Scale="4" />
+          <Property Name="PercentBusiness" Type="nvarchar" MaxLength="11" />
+          <Property Name="Expense" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarMaintenanceLog.Hours.DetailedTimeLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="DetailedTimeLog">
+          <Key>
+            <PropertyRef Name="TimeLogID" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="StartTime" />
+          </Key>
+          <Property Name="TimeLogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvoiceID" Type="int" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="CarID" Type="int" />
+          <Property Name="Year" Type="int" />
+          <Property Name="Month" Type="int" />
+          <Property Name="Week" Type="int" />
+          <Property Name="DoW" Type="int" />
+          <Property Name="DayOfWeek" Type="varchar" MaxLength="9" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="StartBreak" Type="time" Precision="7" />
+          <Property Name="EndBreak" Type="time" Precision="7" />
+          <Property Name="EndTIme" Type="time" Precision="7" />
+          <Property Name="Note" Type="nvarchar" MaxLength="265" />
+          <Property Name="Miles" Type="float" />
+          <Property Name="Hours" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarMaintenanceLog.Hours.TimeSheets' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TimeSheets">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="InvoiceID" Type="int" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" />
+          <Property Name="Month" Type="int" />
+          <Property Name="Week" Type="int" />
+          <Property Name="FirstOfWeek" Type="date" />
+          <Property Name="Miles" Type="float" />
+          <Property Name="TotalHours" Type="float" />
+          <Property Name="Saturday" Type="float" />
+          <Property Name="Sunday" Type="float" />
+          <Property Name="Monday" Type="float" />
+          <Property Name="Tuesday" Type="float" />
+          <Property Name="Wednesday" Type="float" />
+          <Property Name="Thursday" Type="float" />
+          <Property Name="Friday" Type="float" />
+          <Property Name="Row_Order" Type="bigint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarMaintenanceLog.Loans.SlidingBalance' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SlidingBalance">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+            <PropertyRef Name="CustomerID" />
+            <PropertyRef Name="DateTime" />
+            <PropertyRef Name="Currency" />
+          </Key>
+          <Property Name="TransactionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="Credit" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="Debit" Type="decimal" Precision="18" Scale="8" />
+          <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="Balance" Type="decimal" Precision="38" Scale="8" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'CarMaintenanceLog.Vehicles.CarCosts_RolledUp' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="CarCosts_RolledUp">
+          <Property Name="CarID" Type="int" />
+          <Property Name="Year" Type="int" />
+          <Property Name="Month" Type="int" />
+          <Property Name="Amount" Type="decimal" Precision="38" Scale="4" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarMaintenanceLog.Vehicles.CombinedCosts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CombinedCosts">
+          <Key>
+            <PropertyRef Name="RowID" />
+            <PropertyRef Name="RowSource" />
+            <PropertyRef Name="CarID" />
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="RowID" Type="int" Nullable="false" />
+          <Property Name="RowSource" Type="varchar" MaxLength="17" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="14" Scale="4" />
+          <Property Name="TotalMiles" Type="decimal" Precision="14" Scale="4" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarMaintenanceLog.Vehicles.CostsPerCar' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CostsPerCar">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="FillUps" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="InsurancePayments" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="Payments" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="OilChanges" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="OtherServices" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="Tires" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="TotalCost" Type="decimal" Precision="12" Scale="2" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarMaintenanceLog.Vehicles.DriverCarMaintenance' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="DriverCarMaintenance">
+          <Key>
+            <PropertyRef Name="DriverID" />
+            <PropertyRef Name="CarID" />
+            <PropertyRef Name="MaintenanceScheduleID" />
+            <PropertyRef Name="Driver" />
+            <PropertyRef Name="Make" />
+            <PropertyRef Name="Model" />
+            <PropertyRef Name="TotalMiles" />
+            <PropertyRef Name="ScheduledMiles" />
+            <PropertyRef Name="WorkItems" />
+          </Key>
+          <Property Name="DriverID" Type="int" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="MaintenanceScheduleID" Type="int" Nullable="false" />
+          <Property Name="Driver" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Make" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Model" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SubModel" Type="nvarchar" MaxLength="100" />
+          <Property Name="TotalMiles" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="ScheduledMiles" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="DueIn" Type="decimal" Precision="15" Scale="4" />
+          <Property Name="WorkItems" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CompletedOn" Type="datetime" />
+          <Property Name="IsComplete" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarMaintenanceLog.Vehicles.FillUps_Locations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FillUps_Locations">
+          <Key>
+            <PropertyRef Name="FillUpID" />
+            <PropertyRef Name="CarID" />
+            <PropertyRef Name="DriverID" />
+            <PropertyRef Name="Station" />
+            <PropertyRef Name="TankMiles" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Make" />
+            <PropertyRef Name="Model" />
+          </Key>
+          <Property Name="StationID" Type="int" />
+          <Property Name="FillUpID" Type="int" Nullable="false" />
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="DriverID" Type="int" Nullable="false" />
+          <Property Name="Station" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="256" />
+          <Property Name="City" Type="nvarchar" MaxLength="256" />
+          <Property Name="State" Type="nvarchar" MaxLength="256" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="256" />
+          <Property Name="TankMiles" Type="decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Make" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Model" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="OrderNumber" Type="bigint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarMaintenanceLog.Vehicles.SummaryCosts_Yearly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SummaryCosts_Yearly">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" />
+          <Property Name="YearlyCost" Type="decimal" Precision="38" Scale="4" />
+          <Property Name="TotalMiles" Type="decimal" Precision="14" Scale="4" />
+          <Property Name="MilesThisYear" Type="decimal" Precision="15" Scale="4" />
+          <Property Name="CostDifferenceYear" Type="decimal" Precision="38" Scale="4" />
+          <Property Name="CostPerMile" Type="decimal" Precision="38" Scale="6" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CarMaintenanceLog.Vehicles.TotalMiles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TotalMiles">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="TotalMiles" Type="decimal" Precision="14" Scale="4" />
+        </EntityType>
+        <Association Name="FK_BillingDocuments_Vendors">
+          <End Role="Vendors" Type="Self.Vendors" Multiplicity="1" />
+          <End Role="BillingDocuments" Type="Self.BillingDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendors">
+              <PropertyRef Name="VendorID" />
+            </Principal>
+            <Dependent Role="BillingDocuments">
+              <PropertyRef Name="VendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeProjects_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="EmployeeProjects" Type="Self.EmployeeProjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="EmployeeProjects">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeProjects_Projects">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="EmployeeProjects" Type="Self.EmployeeProjects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="EmployeeProjects">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Cars">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="0..1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="DefaultCarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoices_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoices_Terms">
+          <End Role="Terms" Type="Self.Terms" Multiplicity="1" />
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Terms">
+              <PropertyRef Name="TermID" />
+            </Principal>
+            <Dependent Role="Invoices">
+              <PropertyRef Name="TermsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LineItems_Invoices">
+          <End Role="Invoices" Type="Self.Invoices" Multiplicity="0..1" />
+          <End Role="LineItems" Type="Self.LineItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoices">
+              <PropertyRef Name="InvoiceID" />
+            </Principal>
+            <Dependent Role="LineItems">
+              <PropertyRef Name="InvoiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Terms">
+          <End Role="Terms" Type="Self.Terms" Multiplicity="0..1" />
+          <End Role="Projects" Type="Self.Projects" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Terms">
+              <PropertyRef Name="TermID" />
+            </Principal>
+            <Dependent Role="Projects">
+              <PropertyRef Name="DefaultTermID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReportedTimeLogs_Projects">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="ReportedTimeLogs" Type="Self.ReportedTimeLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="ReportedTimeLogs">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeLogs_Cars">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="0..1" />
+          <End Role="TimeLogs" Type="Self.TimeLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="TimeLogs">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeLogs_Projects">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="TimeLogs" Type="Self.TimeLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="TimeLogs">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeLogs_ReportedTimeLogs">
+          <End Role="ReportedTimeLogs" Type="Self.ReportedTimeLogs" Multiplicity="0..1" />
+          <End Role="TimeLogs" Type="Self.TimeLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReportedTimeLogs">
+              <PropertyRef Name="ReportedTimeLogID" />
+            </Principal>
+            <Dependent Role="TimeLogs">
+              <PropertyRef Name="ReportedTimeLogID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Cars_to_Drivers">
+          <End Role="Drivers" Type="Self.Drivers" Multiplicity="1" />
+          <End Role="Cars" Type="Self.Cars" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drivers">
+              <PropertyRef Name="DriverID" />
+            </Principal>
+            <Dependent Role="Cars">
+              <PropertyRef Name="DriverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_FillUps_to_Cars">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
+          <End Role="FillUps" Type="Self.FillUps" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="FillUps">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_InsurancePayments_to_Cars">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
+          <End Role="InsurancePayments" Type="Self.InsurancePayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="InsurancePayments">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_MaintenanceSchedules_to_Cars">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
+          <End Role="MaintenanceSchedules" Type="Self.MaintenanceSchedules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="MaintenanceSchedules">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_OilChanges_to_Cars">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
+          <End Role="OilChanges" Type="Self.OilChanges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="OilChanges">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_OtherServices_to_Cars">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
+          <End Role="OtherServices" Type="Self.OtherServices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="OtherServices">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Payments_to_Cars">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Tires_to_Cars">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
+          <End Role="Tires" Type="Self.Tires" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="Tires">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetInvoiceXML" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Accounting">
+          <Parameter Name="InvoiceID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CalculateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="Hours" ReturnType="float">
+          <Parameter Name="StartTime" Type="time" Mode="In" />
+          <Parameter Name="StartBreak" Type="time" Mode="In" />
+          <Parameter Name="EndBreak" Type="time" Mode="In" />
+          <Parameter Name="EndTime" Type="time" Mode="In" />
+        </Function>
+        <Function Name="CreateAndRegisterReportedTimeLogs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Hours" />
+        <Function Name="XmlSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Vehicles" />
+        <EntityContainer Name="CarMaintenanceLogModelStoreContainer">
+          <EntitySet Name="BillingDocuments" EntityType="Self.BillingDocuments" Schema="Accounting" store:Type="Tables" />
+          <EntitySet Name="EmployeeProjects" EntityType="Self.EmployeeProjects" Schema="Accounting" store:Type="Tables" />
+          <EntitySet Name="Invoices" EntityType="Self.Invoices" Schema="Accounting" store:Type="Tables" />
+          <EntitySet Name="LineItems" EntityType="Self.LineItems" Schema="Accounting" store:Type="Tables" />
+          <EntitySet Name="Projects" EntityType="Self.Projects" Schema="Accounting" store:Type="Tables" />
+          <EntitySet Name="Terms" EntityType="Self.Terms" Schema="Accounting" store:Type="Tables" />
+          <EntitySet Name="Vendors" EntityType="Self.Vendors" Schema="Accounting" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="Common" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="Common" store:Type="Tables" />
+          <EntitySet Name="Notes" EntityType="Self.Notes" Schema="Common" store:Type="Tables" />
+          <EntitySet Name="ReportedTimeLogs" EntityType="Self.ReportedTimeLogs" Schema="Hours" store:Type="Tables" />
+          <EntitySet Name="TimeLogs" EntityType="Self.TimeLogs" Schema="Hours" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="Loans" store:Type="Tables" />
+          <EntitySet Name="Cars" EntityType="Self.Cars" Schema="Vehicles" store:Type="Tables" />
+          <EntitySet Name="Drivers" EntityType="Self.Drivers" Schema="Vehicles" store:Type="Tables" />
+          <EntitySet Name="FillUps" EntityType="Self.FillUps" Schema="Vehicles" store:Type="Tables" />
+          <EntitySet Name="InsurancePayments" EntityType="Self.InsurancePayments" Schema="Vehicles" store:Type="Tables" />
+          <EntitySet Name="MaintenanceSchedules" EntityType="Self.MaintenanceSchedules" Schema="Vehicles" store:Type="Tables" />
+          <EntitySet Name="OilChanges" EntityType="Self.OilChanges" Schema="Vehicles" store:Type="Tables" />
+          <EntitySet Name="OtherServices" EntityType="Self.OtherServices" Schema="Vehicles" store:Type="Tables" />
+          <EntitySet Name="Payments" EntityType="Self.Payments" Schema="Vehicles" store:Type="Tables" />
+          <EntitySet Name="Stations" EntityType="Self.Stations" Schema="Vehicles" store:Type="Tables" />
+          <EntitySet Name="Tires" EntityType="Self.Tires" Schema="Vehicles" store:Type="Tables" />
+          <EntitySet Name="Vehicles" EntityType="Self.Vehicles" store:Type="Views" store:Schema="Accounting">
+            <DefiningQuery>SELECT 
+    [Vehicles].[CarID] AS [CarID], 
+    [Vehicles].[Year] AS [Year], 
+    [Vehicles].[Cost] AS [Cost], 
+    [Vehicles].[LoggedMiles] AS [LoggedMiles], 
+    [Vehicles].[TotalMiles] AS [TotalMiles], 
+    [Vehicles].[PercentBusiness] AS [PercentBusiness], 
+    [Vehicles].[Expense] AS [Expense]
+    FROM [Accounting].[Vehicles] AS [Vehicles]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="DetailedTimeLog" EntityType="Self.DetailedTimeLog" store:Type="Views" store:Schema="Hours">
+            <DefiningQuery>SELECT 
+    [DetailedTimeLog].[TimeLogID] AS [TimeLogID], 
+    [DetailedTimeLog].[InvoiceID] AS [InvoiceID], 
+    [DetailedTimeLog].[ProjectID] AS [ProjectID], 
+    [DetailedTimeLog].[CarID] AS [CarID], 
+    [DetailedTimeLog].[Year] AS [Year], 
+    [DetailedTimeLog].[Month] AS [Month], 
+    [DetailedTimeLog].[Week] AS [Week], 
+    [DetailedTimeLog].[DoW] AS [DoW], 
+    [DetailedTimeLog].[DayOfWeek] AS [DayOfWeek], 
+    [DetailedTimeLog].[Date] AS [Date], 
+    [DetailedTimeLog].[StartTime] AS [StartTime], 
+    [DetailedTimeLog].[StartBreak] AS [StartBreak], 
+    [DetailedTimeLog].[EndBreak] AS [EndBreak], 
+    [DetailedTimeLog].[EndTIme] AS [EndTIme], 
+    [DetailedTimeLog].[Note] AS [Note], 
+    [DetailedTimeLog].[Miles] AS [Miles], 
+    [DetailedTimeLog].[Hours] AS [Hours]
+    FROM [Hours].[DetailedTimeLog] AS [DetailedTimeLog]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TimeSheets" EntityType="Self.TimeSheets" store:Type="Views" store:Schema="Hours">
+            <DefiningQuery>SELECT 
+    [TimeSheets].[InvoiceID] AS [InvoiceID], 
+    [TimeSheets].[ProjectID] AS [ProjectID], 
+    [TimeSheets].[Year] AS [Year], 
+    [TimeSheets].[Month] AS [Month], 
+    [TimeSheets].[Week] AS [Week], 
+    [TimeSheets].[FirstOfWeek] AS [FirstOfWeek], 
+    [TimeSheets].[Miles] AS [Miles], 
+    [TimeSheets].[TotalHours] AS [TotalHours], 
+    [TimeSheets].[Saturday] AS [Saturday], 
+    [TimeSheets].[Sunday] AS [Sunday], 
+    [TimeSheets].[Monday] AS [Monday], 
+    [TimeSheets].[Tuesday] AS [Tuesday], 
+    [TimeSheets].[Wednesday] AS [Wednesday], 
+    [TimeSheets].[Thursday] AS [Thursday], 
+    [TimeSheets].[Friday] AS [Friday], 
+    [TimeSheets].[Row_Order] AS [Row_Order]
+    FROM [Hours].[TimeSheets] AS [TimeSheets]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SlidingBalance" EntityType="Self.SlidingBalance" store:Type="Views" store:Schema="Loans">
+            <DefiningQuery>SELECT 
+    [SlidingBalance].[TransactionID] AS [TransactionID], 
+    [SlidingBalance].[CustomerID] AS [CustomerID], 
+    [SlidingBalance].[Credit] AS [Credit], 
+    [SlidingBalance].[Debit] AS [Debit], 
+    [SlidingBalance].[Note] AS [Note], 
+    [SlidingBalance].[DateTime] AS [DateTime], 
+    [SlidingBalance].[Currency] AS [Currency], 
+    [SlidingBalance].[Balance] AS [Balance]
+    FROM [Loans].[SlidingBalance] AS [SlidingBalance]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CombinedCosts" EntityType="Self.CombinedCosts" store:Type="Views" store:Schema="Vehicles">
+            <DefiningQuery>SELECT 
+    [CombinedCosts].[RowID] AS [RowID], 
+    [CombinedCosts].[RowSource] AS [RowSource], 
+    [CombinedCosts].[CarID] AS [CarID], 
+    [CombinedCosts].[Date] AS [Date], 
+    [CombinedCosts].[Amount] AS [Amount], 
+    [CombinedCosts].[TotalMiles] AS [TotalMiles]
+    FROM [Vehicles].[CombinedCosts] AS [CombinedCosts]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CostsPerCar" EntityType="Self.CostsPerCar" store:Type="Views" store:Schema="Vehicles">
+            <DefiningQuery>SELECT 
+    [CostsPerCar].[CarID] AS [CarID], 
+    [CostsPerCar].[FillUps] AS [FillUps], 
+    [CostsPerCar].[InsurancePayments] AS [InsurancePayments], 
+    [CostsPerCar].[Payments] AS [Payments], 
+    [CostsPerCar].[OilChanges] AS [OilChanges], 
+    [CostsPerCar].[OtherServices] AS [OtherServices], 
+    [CostsPerCar].[Tires] AS [Tires], 
+    [CostsPerCar].[TotalCost] AS [TotalCost]
+    FROM [Vehicles].[CostsPerCar] AS [CostsPerCar]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="DriverCarMaintenance" EntityType="Self.DriverCarMaintenance" store:Type="Views" store:Schema="Vehicles">
+            <DefiningQuery>SELECT 
+    [DriverCarMaintenance].[DriverID] AS [DriverID], 
+    [DriverCarMaintenance].[CarID] AS [CarID], 
+    [DriverCarMaintenance].[MaintenanceScheduleID] AS [MaintenanceScheduleID], 
+    [DriverCarMaintenance].[Driver] AS [Driver], 
+    [DriverCarMaintenance].[Make] AS [Make], 
+    [DriverCarMaintenance].[Model] AS [Model], 
+    [DriverCarMaintenance].[SubModel] AS [SubModel], 
+    [DriverCarMaintenance].[TotalMiles] AS [TotalMiles], 
+    [DriverCarMaintenance].[ScheduledMiles] AS [ScheduledMiles], 
+    [DriverCarMaintenance].[DueIn] AS [DueIn], 
+    [DriverCarMaintenance].[WorkItems] AS [WorkItems], 
+    [DriverCarMaintenance].[CompletedOn] AS [CompletedOn], 
+    [DriverCarMaintenance].[IsComplete] AS [IsComplete]
+    FROM [Vehicles].[DriverCarMaintenance] AS [DriverCarMaintenance]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="FillUps_Locations" EntityType="Self.FillUps_Locations" store:Type="Views" store:Schema="Vehicles">
+            <DefiningQuery>SELECT 
+    [FillUps_Locations].[StationID] AS [StationID], 
+    [FillUps_Locations].[FillUpID] AS [FillUpID], 
+    [FillUps_Locations].[CarID] AS [CarID], 
+    [FillUps_Locations].[DriverID] AS [DriverID], 
+    [FillUps_Locations].[Station] AS [Station], 
+    [FillUps_Locations].[Address1] AS [Address1], 
+    [FillUps_Locations].[City] AS [City], 
+    [FillUps_Locations].[State] AS [State], 
+    [FillUps_Locations].[ZipCode] AS [ZipCode], 
+    [FillUps_Locations].[TankMiles] AS [TankMiles], 
+    [FillUps_Locations].[Date] AS [Date], 
+    [FillUps_Locations].[Year] AS [Year], 
+    [FillUps_Locations].[Make] AS [Make], 
+    [FillUps_Locations].[Model] AS [Model], 
+    [FillUps_Locations].[OrderNumber] AS [OrderNumber]
+    FROM [Vehicles].[FillUps_Locations] AS [FillUps_Locations]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SummaryCosts_Yearly" EntityType="Self.SummaryCosts_Yearly" store:Type="Views" store:Schema="Vehicles">
+            <DefiningQuery>SELECT 
+    [SummaryCosts_Yearly].[CarID] AS [CarID], 
+    [SummaryCosts_Yearly].[Year] AS [Year], 
+    [SummaryCosts_Yearly].[YearlyCost] AS [YearlyCost], 
+    [SummaryCosts_Yearly].[TotalMiles] AS [TotalMiles], 
+    [SummaryCosts_Yearly].[MilesThisYear] AS [MilesThisYear], 
+    [SummaryCosts_Yearly].[CostDifferenceYear] AS [CostDifferenceYear], 
+    [SummaryCosts_Yearly].[CostPerMile] AS [CostPerMile]
+    FROM [Vehicles].[SummaryCosts_Yearly] AS [SummaryCosts_Yearly]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TotalMiles" EntityType="Self.TotalMiles" store:Type="Views" store:Schema="Vehicles">
+            <DefiningQuery>SELECT 
+    [TotalMiles].[CarID] AS [CarID], 
+    [TotalMiles].[TotalMiles] AS [TotalMiles]
+    FROM [Vehicles].[TotalMiles] AS [TotalMiles]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_BillingDocuments_Vendors" Association="Self.FK_BillingDocuments_Vendors">
+            <End Role="Vendors" EntitySet="Vendors" />
+            <End Role="BillingDocuments" EntitySet="BillingDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeProjects_Employees" Association="Self.FK_EmployeeProjects_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="EmployeeProjects" EntitySet="EmployeeProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeProjects_Projects" Association="Self.FK_EmployeeProjects_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="EmployeeProjects" EntitySet="EmployeeProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Cars" Association="Self.FK_Employees_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoices_Customers" Association="Self.FK_Invoices_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoices_Terms" Association="Self.FK_Invoices_Terms">
+            <End Role="Terms" EntitySet="Terms" />
+            <End Role="Invoices" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LineItems_Invoices" Association="Self.FK_LineItems_Invoices">
+            <End Role="Invoices" EntitySet="Invoices" />
+            <End Role="LineItems" EntitySet="LineItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Customers" Association="Self.FK_Projects_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Terms" Association="Self.FK_Projects_Terms">
+            <End Role="Terms" EntitySet="Terms" />
+            <End Role="Projects" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReportedTimeLogs_Projects" Association="Self.FK_ReportedTimeLogs_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="ReportedTimeLogs" EntitySet="ReportedTimeLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeLogs_Cars" Association="Self.FK_TimeLogs_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="TimeLogs" EntitySet="TimeLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeLogs_Projects" Association="Self.FK_TimeLogs_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="TimeLogs" EntitySet="TimeLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeLogs_ReportedTimeLogs" Association="Self.FK_TimeLogs_ReportedTimeLogs">
+            <End Role="ReportedTimeLogs" EntitySet="ReportedTimeLogs" />
+            <End Role="TimeLogs" EntitySet="TimeLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_Customers" Association="Self.FK_Transactions_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Cars_to_Drivers" Association="Self.FK_Vehicles_Cars_to_Drivers">
+            <End Role="Drivers" EntitySet="Drivers" />
+            <End Role="Cars" EntitySet="Cars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_FillUps_to_Cars" Association="Self.FK_Vehicles_FillUps_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="FillUps" EntitySet="FillUps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_InsurancePayments_to_Cars" Association="Self.FK_Vehicles_InsurancePayments_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="InsurancePayments" EntitySet="InsurancePayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_MaintenanceSchedules_to_Cars" Association="Self.FK_Vehicles_MaintenanceSchedules_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="MaintenanceSchedules" EntitySet="MaintenanceSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_OilChanges_to_Cars" Association="Self.FK_Vehicles_OilChanges_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="OilChanges" EntitySet="OilChanges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_OtherServices_to_Cars" Association="Self.FK_Vehicles_OtherServices_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="OtherServices" EntitySet="OtherServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Payments_to_Cars" Association="Self.FK_Vehicles_Payments_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Tires_to_Cars" Association="Self.FK_Vehicles_Tires_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="Tires" EntitySet="Tires" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CarMaintenanceLogModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DriverID" Type="Int32" Nullable="false" />
+          <Property Name="Make" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="SubModel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StartingMiles" Type="Decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PurchasedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Driver" Relationship="Self.FK_Vehicles_Cars_to_Drivers" FromRole="Cars" ToRole="Drivers" />
+          <NavigationProperty Name="FillUps" Relationship="Self.FK_Vehicles_FillUps_to_Cars" FromRole="Cars" ToRole="FillUps" />
+          <NavigationProperty Name="InsurancePayments" Relationship="Self.FK_Vehicles_InsurancePayments_to_Cars" FromRole="Cars" ToRole="InsurancePayments" />
+          <NavigationProperty Name="MaintenanceSchedules" Relationship="Self.FK_Vehicles_MaintenanceSchedules_to_Cars" FromRole="Cars" ToRole="MaintenanceSchedules" />
+          <NavigationProperty Name="OilChanges" Relationship="Self.FK_Vehicles_OilChanges_to_Cars" FromRole="Cars" ToRole="OilChanges" />
+          <NavigationProperty Name="OtherServices" Relationship="Self.FK_Vehicles_OtherServices_to_Cars" FromRole="Cars" ToRole="OtherServices" />
+          <NavigationProperty Name="Payments" Relationship="Self.FK_Vehicles_Payments_to_Cars" FromRole="Cars" ToRole="Payments" />
+          <NavigationProperty Name="Tires" Relationship="Self.FK_Vehicles_Tires_to_Cars" FromRole="Cars" ToRole="Tires" />
+          <NavigationProperty Name="TimeLogs" Relationship="CarMaintenanceLogModel.FK_TimeLogs_Cars" FromRole="Car" ToRole="TimeLog" />
+          <Property Name="SoldDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employees" Relationship="CarMaintenanceLogModel.FK_Employees_Cars" FromRole="Car" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="DriverID" />
+          </Key>
+          <Property Name="DriverID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Cars" Relationship="Self.FK_Vehicles_Cars_to_Drivers" FromRole="Drivers" ToRole="Cars" />
+          <Property Name="UserID" Type="Guid" />
+        </EntityType>
+        <EntityType Name="FillUp">
+          <Key>
+            <PropertyRef Name="FillUpID" />
+          </Key>
+          <Property Name="FillUpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CostPerGallon" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Gallons" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Octane" Type="Int32" Nullable="false" />
+          <Property Name="TankMiles" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="TotalMiles" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Station" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExtendedCost" Type="Decimal" Precision="14" Scale="4" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="MilesPerGallon" Type="Decimal" Precision="14" Scale="4" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Vehicles_FillUps_to_Cars" FromRole="FillUps" ToRole="Cars" />
+        </EntityType>
+        <EntityType Name="InsurancePayment">
+          <Key>
+            <PropertyRef Name="InsurancePaymentID" />
+          </Key>
+          <Property Name="InsurancePaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Amount" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="PaidTo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Vehicles_InsurancePayments_to_Cars" FromRole="InsurancePayments" ToRole="Cars" />
+        </EntityType>
+        <EntityType Name="MaintenanceSchedule">
+          <Key>
+            <PropertyRef Name="MaintenanceScheduleID" />
+          </Key>
+          <Property Name="MaintenanceScheduleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="Miles" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="WorkItems" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompletedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsComplete" Type="Boolean" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Vehicles_MaintenanceSchedules_to_Cars" FromRole="MaintenanceSchedules" ToRole="Cars" />
+        </EntityType>
+        <EntityType Name="OilChange">
+          <Key>
+            <PropertyRef Name="OilChangeID" />
+          </Key>
+          <Property Name="OilChangeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ChangeMiles" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="OilBrand" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FilterBrand" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Quarts" Type="Decimal" Precision="7" Scale="4" />
+          <Property Name="OilCost" Type="Decimal" Precision="14" Scale="4" />
+          <Property Name="FilterCost" Type="Decimal" Precision="14" Scale="4" />
+          <Property Name="LaborCost" Type="Decimal" Precision="14" Scale="4" />
+          <Property Name="TaxRate" Type="Decimal" Precision="4" Scale="4" />
+          <Property Name="OtherCost" Type="Decimal" Precision="14" Scale="4" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExtendedCost" Type="Decimal" Precision="14" Scale="4" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Vehicles_OilChanges_to_Cars" FromRole="OilChanges" ToRole="Cars" />
+        </EntityType>
+        <EntityType Name="OtherService">
+          <Key>
+            <PropertyRef Name="OtherServiceID" />
+          </Key>
+          <Property Name="OtherServiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Miles" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Item" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cost" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Rate" Type="Decimal" Precision="4" Scale="4" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExtendedCost" Type="Decimal" Precision="14" Scale="4" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Vehicles_OtherServices_to_Cars" FromRole="OtherServices" ToRole="Cars" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Amount" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="PaidTo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Vehicles_Payments_to_Cars" FromRole="Payments" ToRole="Cars" />
+        </EntityType>
+        <EntityType Name="Tire">
+          <Key>
+            <PropertyRef Name="TireID" />
+          </Key>
+          <Property Name="TireID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Miles" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Make" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cost" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="TaxRate" Type="Decimal" Precision="4" Scale="4" Nullable="false" />
+          <Property Name="WarrantyMonths" Type="Int32" Nullable="false" />
+          <Property Name="WarrantyMiles" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExpireDate" Type="DateTime" annotation:StoreGeneratedPattern="Computed" Precision="3" />
+          <Property Name="ExpireMiles" Type="Decimal" Precision="15" Scale="4" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ExtendedCost" Type="Decimal" Precision="14" Scale="4" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Vehicles_Tires_to_Cars" FromRole="Tires" ToRole="Cars" />
+        </EntityType>
+        <EntityType Name="CombinedCost">
+          <Key>
+            <PropertyRef Name="RowID" />
+            <PropertyRef Name="RowSource" />
+            <PropertyRef Name="CarID" />
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="RowID" Type="Int32" Nullable="false" />
+          <Property Name="RowSource" Type="String" MaxLength="17" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Amount" Type="Decimal" Precision="14" Scale="4" />
+          <Property Name="TotalMiles" Type="Decimal" Precision="14" Scale="4" />
+        </EntityType>
+        <EntityType Name="CostsPerCar">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="FillUps" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="InsurancePayments" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="Payments" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="OilChanges" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="OtherServices" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="Tires" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="TotalCost" Type="Decimal" Precision="12" Scale="2" />
+        </EntityType>
+        <EntityType Name="DriverCarMaintenance">
+          <Key>
+            <PropertyRef Name="DriverID" />
+            <PropertyRef Name="CarID" />
+            <PropertyRef Name="MaintenanceScheduleID" />
+            <PropertyRef Name="Driver" />
+            <PropertyRef Name="Make" />
+            <PropertyRef Name="Model" />
+            <PropertyRef Name="TotalMiles" />
+            <PropertyRef Name="ScheduledMiles" />
+            <PropertyRef Name="WorkItems" />
+          </Key>
+          <Property Name="DriverID" Type="Int32" Nullable="false" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="MaintenanceScheduleID" Type="Int32" Nullable="false" />
+          <Property Name="Driver" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Make" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SubModel" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TotalMiles" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="ScheduledMiles" Type="Decimal" Precision="14" Scale="4" Nullable="false" />
+          <Property Name="DueIn" Type="Decimal" Precision="15" Scale="4" />
+          <Property Name="WorkItems" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompletedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsComplete" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="SummaryCosts_Yearly">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="YearlyCost" Type="Decimal" Precision="38" Scale="4" />
+          <Property Name="TotalMiles" Type="Decimal" Precision="14" Scale="4" />
+          <Property Name="MilesThisYear" Type="Decimal" Precision="15" Scale="4" />
+          <Property Name="CostDifferenceYear" Type="Decimal" Precision="38" Scale="4" />
+          <Property Name="CostPerMile" Type="Decimal" Precision="38" Scale="6" />
+        </EntityType>
+        <EntityType Name="TotalMile">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="TotalMiles" Type="Decimal" Precision="14" Scale="4" />
+        </EntityType>
+        <Association Name="FK_Vehicles_Cars_to_Drivers">
+          <End Role="Drivers" Type="Self.Driver" Multiplicity="1" />
+          <End Role="Cars" Type="Self.Car" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drivers">
+              <PropertyRef Name="DriverID" />
+            </Principal>
+            <Dependent Role="Cars">
+              <PropertyRef Name="DriverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_FillUps_to_Cars">
+          <End Role="Cars" Type="Self.Car" Multiplicity="1" />
+          <End Role="FillUps" Type="Self.FillUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="FillUps">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_InsurancePayments_to_Cars">
+          <End Role="Cars" Type="Self.Car" Multiplicity="1" />
+          <End Role="InsurancePayments" Type="Self.InsurancePayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="InsurancePayments">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_MaintenanceSchedules_to_Cars">
+          <End Role="Cars" Type="Self.Car" Multiplicity="1" />
+          <End Role="MaintenanceSchedules" Type="Self.MaintenanceSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="MaintenanceSchedules">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_OilChanges_to_Cars">
+          <End Role="Cars" Type="Self.Car" Multiplicity="1" />
+          <End Role="OilChanges" Type="CarMaintenanceLogModel.OilChange" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="OilChanges">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_OtherServices_to_Cars">
+          <End Role="Cars" Type="Self.Car" Multiplicity="1" />
+          <End Role="OtherServices" Type="Self.OtherService" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="OtherServices">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Payments_to_Cars">
+          <End Role="Cars" Type="Self.Car" Multiplicity="1" />
+          <End Role="Payments" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="Payments">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicles_Tires_to_Cars">
+          <End Role="Cars" Type="Self.Car" Multiplicity="1" />
+          <End Role="Tires" Type="Self.Tire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="Tires">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CarMaintenanceLogEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cars" EntityType="Self.Car" />
+          <EntitySet Name="Drivers" EntityType="Self.Driver" />
+          <EntitySet Name="FillUps" EntityType="Self.FillUp" />
+          <EntitySet Name="InsurancePayments" EntityType="Self.InsurancePayment" />
+          <EntitySet Name="MaintenanceSchedules" EntityType="Self.MaintenanceSchedule" />
+          <EntitySet Name="OilChanges1" EntityType="CarMaintenanceLogModel.OilChange" />
+          <EntitySet Name="OtherServices" EntityType="Self.OtherService" />
+          <EntitySet Name="Payments" EntityType="Self.Payment" />
+          <EntitySet Name="Tires" EntityType="Self.Tire" />
+          <EntitySet Name="CombinedCosts" EntityType="Self.CombinedCost" />
+          <EntitySet Name="CostsPerCars" EntityType="Self.CostsPerCar" />
+          <EntitySet Name="DriverCarMaintenances" EntityType="Self.DriverCarMaintenance" />
+          <EntitySet Name="SummaryCosts_Yearly" EntityType="Self.SummaryCosts_Yearly" />
+          <EntitySet Name="TotalMiles" EntityType="Self.TotalMile" />
+          <AssociationSet Name="FK_Vehicles_Cars_to_Drivers" Association="Self.FK_Vehicles_Cars_to_Drivers">
+            <End Role="Drivers" EntitySet="Drivers" />
+            <End Role="Cars" EntitySet="Cars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_FillUps_to_Cars" Association="Self.FK_Vehicles_FillUps_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="FillUps" EntitySet="FillUps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_InsurancePayments_to_Cars" Association="Self.FK_Vehicles_InsurancePayments_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="InsurancePayments" EntitySet="InsurancePayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_MaintenanceSchedules_to_Cars" Association="Self.FK_Vehicles_MaintenanceSchedules_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="MaintenanceSchedules" EntitySet="MaintenanceSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_OilChanges_to_Cars" Association="Self.FK_Vehicles_OilChanges_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="OilChanges" EntitySet="OilChanges1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_OtherServices_to_Cars" Association="Self.FK_Vehicles_OtherServices_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="OtherServices" EntitySet="OtherServices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Payments_to_Cars" Association="Self.FK_Vehicles_Payments_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicles_Tires_to_Cars" Association="Self.FK_Vehicles_Tires_to_Cars">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="Tires" EntitySet="Tires" />
+          </AssociationSet>
+          <EntitySet Name="Invoices" EntityType="CarMaintenanceLogModel.Invoice" />
+          <EntitySet Name="LineItems" EntityType="CarMaintenanceLogModel.LineItem" />
+          <EntitySet Name="Projects" EntityType="CarMaintenanceLogModel.Project" />
+          <EntitySet Name="Terms" EntityType="CarMaintenanceLogModel.Term" />
+          <EntitySet Name="Customers" EntityType="CarMaintenanceLogModel.Customer" />
+          <EntitySet Name="Notes" EntityType="CarMaintenanceLogModel.Note" />
+          <EntitySet Name="TimeLogs" EntityType="CarMaintenanceLogModel.TimeLog" />
+          <EntitySet Name="Transactions" EntityType="CarMaintenanceLogModel.Transaction" />
+          <EntitySet Name="Stations" EntityType="CarMaintenanceLogModel.Station" />
+          <EntitySet Name="Vehicles" EntityType="CarMaintenanceLogModel.Vehicle" />
+          <EntitySet Name="DetailedTimeLogs" EntityType="CarMaintenanceLogModel.DetailedTimeLog" />
+          <EntitySet Name="TimeSheets" EntityType="CarMaintenanceLogModel.TimeSheet" />
+          <EntitySet Name="SlidingBalances" EntityType="CarMaintenanceLogModel.SlidingBalance" />
+          <EntitySet Name="FillUps_Locations" EntityType="CarMaintenanceLogModel.FillUps_Locations" />
+          <AssociationSet Name="FK_Invoices_Customers" Association="CarMaintenanceLogModel.FK_Invoices_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Invoice" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoices_Terms" Association="CarMaintenanceLogModel.FK_Invoices_Terms">
+            <End Role="Term" EntitySet="Terms" />
+            <End Role="Invoice" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LineItems_Invoices" Association="CarMaintenanceLogModel.FK_LineItems_Invoices">
+            <End Role="Invoice" EntitySet="Invoices" />
+            <End Role="LineItem" EntitySet="LineItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Customers" Association="CarMaintenanceLogModel.FK_Projects_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeLogs_Projects" Association="CarMaintenanceLogModel.FK_TimeLogs_Projects">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="TimeLog" EntitySet="TimeLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transactions_Customers" Association="CarMaintenanceLogModel.FK_Transactions_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Transaction" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeLogs_Cars" Association="CarMaintenanceLogModel.FK_TimeLogs_Cars">
+            <End Role="Car" EntitySet="Cars" />
+            <End Role="TimeLog" EntitySet="TimeLogs" />
+          </AssociationSet>
+          <FunctionImport Name="XmlSummary" ReturnType="Collection(String)" />
+          <EntitySet Name="ReportedTimeLogs" EntityType="CarMaintenanceLogModel.ReportedTimeLog" />
+          <AssociationSet Name="FK_ReportedTimeLogs_Projects" Association="CarMaintenanceLogModel.FK_ReportedTimeLogs_Projects">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ReportedTimeLog" EntitySet="ReportedTimeLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeLogs_ReportedTimeLogs" Association="CarMaintenanceLogModel.FK_TimeLogs_ReportedTimeLogs">
+            <End Role="ReportedTimeLog" EntitySet="ReportedTimeLogs" />
+            <End Role="TimeLog" EntitySet="TimeLogs" />
+          </AssociationSet>
+          <FunctionImport Name="CreateAndRegisterReportedTimeLogs" ReturnType="Collection(CarMaintenanceLogModel.CreateAndRegisterReportedTimeLogs_Result)" />
+          <EntitySet Name="BillingDocuments" EntityType="CarMaintenanceLogModel.BillingDocument" />
+          <EntitySet Name="Vendors" EntityType="CarMaintenanceLogModel.Vendor" />
+          <AssociationSet Name="FK_BillingDocuments_Vendors" Association="CarMaintenanceLogModel.FK_BillingDocuments_Vendors">
+            <End Role="Vendor" EntitySet="Vendors" />
+            <End Role="BillingDocument" EntitySet="BillingDocuments" />
+          </AssociationSet>
+          <FunctionImport Name="GetInvoiceXML" ReturnType="Collection(String)">
+          <Parameter Name="InvoiceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="EmployeeProjects" EntityType="CarMaintenanceLogModel.EmployeeProject" />
+          <EntitySet Name="Employees" EntityType="CarMaintenanceLogModel.Employee" />
+          <AssociationSet Name="FK_EmployeeProjects_Employees" Association="CarMaintenanceLogModel.FK_EmployeeProjects_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeProject" EntitySet="EmployeeProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeProjects_Projects" Association="CarMaintenanceLogModel.FK_EmployeeProjects_Projects">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="EmployeeProject" EntitySet="EmployeeProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Projects_Terms" Association="CarMaintenanceLogModel.FK_Projects_Terms">
+            <End Role="Term" EntitySet="Terms" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Cars" Association="CarMaintenanceLogModel.FK_Employees_Cars">
+            <End Role="Car" EntitySet="Cars" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="InvoiceID" />
+          </Key>
+          <Property Name="InvoiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceDate" Type="DateTime" Precision="0" />
+          <Property Name="DueDate" Type="DateTime" Precision="0" />
+          <Property Name="TermsID" Type="Int32" Nullable="false" />
+          <Property Name="TermsAndConditions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceStatusCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RenderedInvoice" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="InvoiceNumber" Type="Int32" />
+          <NavigationProperty Name="Customer" Relationship="CarMaintenanceLogModel.FK_Invoices_Customers" FromRole="Invoice" ToRole="Customer" />
+          <NavigationProperty Name="Term" Relationship="CarMaintenanceLogModel.FK_Invoices_Terms" FromRole="Invoice" ToRole="Term" />
+          <NavigationProperty Name="LineItems" Relationship="CarMaintenanceLogModel.FK_LineItems_Invoices" FromRole="Invoice" ToRole="LineItem" />
+          <Property Name="PaidDate" Type="DateTime" Precision="3" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HasRenderedInvoice" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="RenderedInvoiceMime" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LineItem">
+          <Key>
+            <PropertyRef Name="LineItemID" />
+          </Key>
+          <Property Name="LineItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Double" Nullable="false" />
+          <Property Name="UnitPrice" Type="Double" Nullable="false" />
+          <Property Name="TaxRate" Type="Double" />
+          <Property Name="ExtendedAmount" Type="Double" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="TaxAmount" Type="Double" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="TotalAmount" Type="Double" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="InvoiceID" Type="Int32" />
+          <NavigationProperty Name="Invoice" Relationship="CarMaintenanceLogModel.FK_LineItems_Invoices" FromRole="LineItem" ToRole="Invoice" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="HourlyRate" Type="Double" />
+          <NavigationProperty Name="Customer" Relationship="CarMaintenanceLogModel.FK_Projects_Customers" FromRole="Project" ToRole="Customer" />
+          <NavigationProperty Name="TimeLogs" Relationship="CarMaintenanceLogModel.FK_TimeLogs_Projects" FromRole="Project" ToRole="TimeLog" />
+          <NavigationProperty Name="ReportedTimeLogs" Relationship="CarMaintenanceLogModel.FK_ReportedTimeLogs_Projects" FromRole="Project" ToRole="ReportedTimeLog" />
+          <Property Name="DefaultMiles" Type="Double" />
+          <NavigationProperty Name="EmployeeProjects" Relationship="CarMaintenanceLogModel.FK_EmployeeProjects_Projects" FromRole="Project" ToRole="EmployeeProject" />
+          <Property Name="DefaultTermID" Type="Int32" />
+          <NavigationProperty Name="Term" Relationship="CarMaintenanceLogModel.FK_Projects_Terms" FromRole="Project" ToRole="Term" />
+        </EntityType>
+        <EntityType Name="Term">
+          <Key>
+            <PropertyRef Name="TermID" />
+          </Key>
+          <Property Name="TermID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Rules" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Invoices" Relationship="CarMaintenanceLogModel.FK_Invoices_Terms" FromRole="Term" ToRole="Invoice" />
+          <NavigationProperty Name="Projects" Relationship="CarMaintenanceLogModel.FK_Projects_Terms" FromRole="Term" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountingEmail" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ContractEmail" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Invoices" Relationship="CarMaintenanceLogModel.FK_Invoices_Customers" FromRole="Customer" ToRole="Invoice" />
+          <NavigationProperty Name="Projects" Relationship="CarMaintenanceLogModel.FK_Projects_Customers" FromRole="Customer" ToRole="Project" />
+          <NavigationProperty Name="Transactions" Relationship="CarMaintenanceLogModel.FK_Transactions_Customers" FromRole="Customer" ToRole="Transaction" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="NoteID" />
+          </Key>
+          <Property Name="NoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Note1" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Complete" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="TimeLog">
+          <Key>
+            <PropertyRef Name="TimeLogID" />
+          </Key>
+          <Property Name="TimeLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="StartBreak" Type="Time" Precision="7" />
+          <Property Name="EndBreak" Type="Time" Precision="7" />
+          <Property Name="EndTIme" Type="Time" Precision="7" />
+          <Property Name="Note" Type="String" MaxLength="265" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceID" Type="Int32" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="Miles" Type="Double" />
+          <Property Name="Hours" Type="Double" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="CarID" Type="Int32" />
+          <NavigationProperty Name="Project" Relationship="CarMaintenanceLogModel.FK_TimeLogs_Projects" FromRole="TimeLog" ToRole="Project" />
+          <NavigationProperty Name="Car" Relationship="CarMaintenanceLogModel.FK_TimeLogs_Cars" FromRole="TimeLog" ToRole="Car" />
+          <Property Name="ReportedTimeLogID" Type="Int32" />
+          <NavigationProperty Name="ReportedTimeLog" Relationship="CarMaintenanceLogModel.FK_TimeLogs_ReportedTimeLogs" FromRole="TimeLog" ToRole="ReportedTimeLog" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="TransactionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="Credit" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="Debit" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customer" Relationship="CarMaintenanceLogModel.FK_Transactions_Customers" FromRole="Transaction" ToRole="Customer" />
+          <Property Name="Related" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Station">
+          <Key>
+            <PropertyRef Name="StationID" />
+          </Key>
+          <Property Name="StationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Vehicle">
+          <Key>
+            <PropertyRef Name="CarID" />
+          </Key>
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="Cost" Type="Decimal" Precision="38" Scale="4" />
+          <Property Name="LoggedMiles" Type="Double" />
+          <Property Name="TotalMiles" Type="Decimal" Precision="15" Scale="4" />
+          <Property Name="PercentBusiness" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="Expense" Type="Double" />
+        </EntityType>
+        <EntityType Name="DetailedTimeLog">
+          <Key>
+            <PropertyRef Name="TimeLogID" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="StartTime" />
+          </Key>
+          <Property Name="TimeLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceID" Type="Int32" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="CarID" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="Month" Type="Int32" />
+          <Property Name="Week" Type="Int32" />
+          <Property Name="DoW" Type="Int32" />
+          <Property Name="DayOfWeek" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="StartBreak" Type="Time" Precision="7" />
+          <Property Name="EndBreak" Type="Time" Precision="7" />
+          <Property Name="EndTIme" Type="Time" Precision="7" />
+          <Property Name="Note" Type="String" MaxLength="265" FixedLength="false" Unicode="true" />
+          <Property Name="Miles" Type="Double" />
+          <Property Name="Hours" Type="Double" />
+        </EntityType>
+        <EntityType Name="TimeSheet">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="InvoiceID" Type="Int32" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="Month" Type="Int32" />
+          <Property Name="Week" Type="Int32" />
+          <Property Name="FirstOfWeek" Type="DateTime" Precision="0" />
+          <Property Name="Miles" Type="Double" />
+          <Property Name="TotalHours" Type="Double" />
+          <Property Name="Saturday" Type="Double" />
+          <Property Name="Sunday" Type="Double" />
+          <Property Name="Monday" Type="Double" />
+          <Property Name="Tuesday" Type="Double" />
+          <Property Name="Wednesday" Type="Double" />
+          <Property Name="Thursday" Type="Double" />
+          <Property Name="Friday" Type="Double" />
+          <Property Name="Row_Order" Type="Int64" />
+        </EntityType>
+        <EntityType Name="SlidingBalance">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+            <PropertyRef Name="CustomerID" />
+            <PropertyRef Name="DateTime" />
+            <PropertyRef Name="Currency" />
+          </Key>
+          <Property Name="TransactionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="Credit" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="Debit" Type="Decimal" Precision="18" Scale="8" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Balance" Type="Decimal" Precision="38" Scale="8" />
+        </EntityType>
+        <EntityType Name="FillUps_Locations">
+          <Key>
+            <PropertyRef Name="FillUpID" />
+            <PropertyRef Name="CarID" />
+            <PropertyRef Name="DriverID" />
+            <PropertyRef Name="Station" />
+            <PropertyRef Name="TankMiles" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Make" />
+            <PropertyRef Name="Model" />
+          </Key>
+          <Property Name="StationID" Type="Int32" />
+          <Property Name="FillUpID" Type="Int32" Nullable="false" />
+          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="DriverID" Type="Int32" Nullable="false" />
+          <Property Name="Station" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="TankMiles" Type="Decimal" Nullable="false" Precision="14" Scale="4" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Make" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OrderNumber" Type="Int64" />
+        </EntityType>
+        <Association Name="FK_Invoices_Customers">
+          <End Type="CarMaintenanceLogModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="CarMaintenanceLogModel.Invoice" Role="Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoices_Terms">
+          <End Type="CarMaintenanceLogModel.Term" Role="Term" Multiplicity="1" />
+          <End Type="CarMaintenanceLogModel.Invoice" Role="Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="TermID" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="TermsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LineItems_Invoices">
+          <End Type="CarMaintenanceLogModel.Invoice" Role="Invoice" Multiplicity="0..1" />
+          <End Type="CarMaintenanceLogModel.LineItem" Role="LineItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="InvoiceID" />
+            </Principal>
+            <Dependent Role="LineItem">
+              <PropertyRef Name="InvoiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Customers">
+          <End Type="CarMaintenanceLogModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="CarMaintenanceLogModel.Project" Role="Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeLogs_Projects">
+          <End Type="CarMaintenanceLogModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="CarMaintenanceLogModel.TimeLog" Role="TimeLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="TimeLog">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transactions_Customers">
+          <End Type="CarMaintenanceLogModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="CarMaintenanceLogModel.Transaction" Role="Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Transaction">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeLogs_Cars">
+          <End Type="CarMaintenanceLogModel.Car" Role="Car" Multiplicity="0..1" />
+          <End Type="CarMaintenanceLogModel.TimeLog" Role="TimeLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="TimeLog">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ReportedTimeLog">
+          <Key>
+            <PropertyRef Name="ReportedTimeLogID" />
+          </Key>
+          <Property Name="ReportedTimeLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="Week" Type="Int32" Nullable="false" />
+          <Property Name="FirstOfWeek" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Rendering" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Project" Relationship="CarMaintenanceLogModel.FK_ReportedTimeLogs_Projects" FromRole="ReportedTimeLog" ToRole="Project" />
+          <NavigationProperty Name="TimeLogs" Relationship="CarMaintenanceLogModel.FK_TimeLogs_ReportedTimeLogs" FromRole="ReportedTimeLog" ToRole="TimeLog" />
+          <Property Name="HasRendering" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <Association Name="FK_ReportedTimeLogs_Projects">
+          <End Type="CarMaintenanceLogModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="CarMaintenanceLogModel.ReportedTimeLog" Role="ReportedTimeLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="ReportedTimeLog">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeLogs_ReportedTimeLogs">
+          <End Type="CarMaintenanceLogModel.ReportedTimeLog" Role="ReportedTimeLog" Multiplicity="0..1" />
+          <End Type="CarMaintenanceLogModel.TimeLog" Role="TimeLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReportedTimeLog">
+              <PropertyRef Name="ReportedTimeLogID" />
+            </Principal>
+            <Dependent Role="TimeLog">
+              <PropertyRef Name="ReportedTimeLogID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="CreateAndRegisterReportedTimeLogs_Result">
+          <Property Type="Int32" Name="ErrorNumber" Nullable="true" />
+          <Property Type="String" Name="ErrorMessage" Nullable="true" MaxLength="4000" />
+        </ComplexType>
+        <EntityType Name="BillingDocument">
+          <Key>
+            <PropertyRef Name="BillingDocument1" />
+          </Key>
+          <Property Name="BillingDocument1" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DownloadedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VendorID" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PaidDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Vendor" Relationship="CarMaintenanceLogModel.FK_BillingDocuments_Vendors" FromRole="BillingDocument" ToRole="Vendor" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="VendorID" />
+          </Key>
+          <Property Name="VendorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="WebSite" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BillingDocuments" Relationship="CarMaintenanceLogModel.FK_BillingDocuments_Vendors" FromRole="Vendor" ToRole="BillingDocument" />
+        </EntityType>
+        <Association Name="FK_BillingDocuments_Vendors">
+          <End Type="CarMaintenanceLogModel.Vendor" Role="Vendor" Multiplicity="1" />
+          <End Type="CarMaintenanceLogModel.BillingDocument" Role="BillingDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendor">
+              <PropertyRef Name="VendorID" />
+            </Principal>
+            <Dependent Role="BillingDocument">
+              <PropertyRef Name="VendorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmployeeProject">
+          <Key>
+            <PropertyRef Name="EmployeProjectID" />
+          </Key>
+          <Property Name="EmployeProjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="CarMaintenanceLogModel.FK_EmployeeProjects_Employees" FromRole="EmployeeProject" ToRole="Employee" />
+          <NavigationProperty Name="Project" Relationship="CarMaintenanceLogModel.FK_EmployeeProjects_Projects" FromRole="EmployeeProject" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Guid" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EmployeeProjects" Relationship="CarMaintenanceLogModel.FK_EmployeeProjects_Employees" FromRole="Employee" ToRole="EmployeeProject" />
+          <Property Name="DefaultCarID" Type="Int32" />
+          <NavigationProperty Name="Car" Relationship="CarMaintenanceLogModel.FK_Employees_Cars" FromRole="Employee" ToRole="Car" />
+        </EntityType>
+        <Association Name="FK_EmployeeProjects_Employees">
+          <End Type="CarMaintenanceLogModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="CarMaintenanceLogModel.EmployeeProject" Role="EmployeeProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="EmployeeProject">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeProjects_Projects">
+          <End Type="CarMaintenanceLogModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="CarMaintenanceLogModel.EmployeeProject" Role="EmployeeProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="EmployeeProject">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Projects_Terms">
+          <End Type="CarMaintenanceLogModel.Term" Role="Term" Multiplicity="0..1" />
+          <End Type="CarMaintenanceLogModel.Project" Role="Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Term">
+              <PropertyRef Name="TermID" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="DefaultTermID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Cars">
+          <End Type="CarMaintenanceLogModel.Car" Role="Car" Multiplicity="0..1" />
+          <End Type="CarMaintenanceLogModel.Employee" Role="Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="CarID" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="DefaultCarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CarMaintenanceLogModelStoreContainer" CdmEntityContainer="CarMaintenanceLogEntities">
+          <EntitySetMapping Name="Cars">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Car">
+              <MappingFragment StoreEntitySet="Cars">
+                <ScalarProperty Name="SoldDate" ColumnName="SoldDate" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="Make" ColumnName="Make" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="SubModel" ColumnName="SubModel" />
+                <ScalarProperty Name="StartingMiles" ColumnName="StartingMiles" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="PurchasedDate" ColumnName="PurchasedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Drivers">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Driver">
+              <MappingFragment StoreEntitySet="Drivers">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FillUps">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.FillUp">
+              <MappingFragment StoreEntitySet="FillUps">
+                <ScalarProperty Name="FillUpID" ColumnName="FillUpID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="CostPerGallon" ColumnName="CostPerGallon" />
+                <ScalarProperty Name="Gallons" ColumnName="Gallons" />
+                <ScalarProperty Name="Octane" ColumnName="Octane" />
+                <ScalarProperty Name="TankMiles" ColumnName="TankMiles" />
+                <ScalarProperty Name="TotalMiles" ColumnName="TotalMiles" />
+                <ScalarProperty Name="Station" ColumnName="Station" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ExtendedCost" ColumnName="ExtendedCost" />
+                <ScalarProperty Name="MilesPerGallon" ColumnName="MilesPerGallon" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InsurancePayments">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.InsurancePayment">
+              <MappingFragment StoreEntitySet="InsurancePayments">
+                <ScalarProperty Name="InsurancePaymentID" ColumnName="InsurancePaymentID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaidTo" ColumnName="PaidTo" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MaintenanceSchedules">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.MaintenanceSchedule">
+              <MappingFragment StoreEntitySet="MaintenanceSchedules">
+                <ScalarProperty Name="MaintenanceScheduleID" ColumnName="MaintenanceScheduleID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Miles" ColumnName="Miles" />
+                <ScalarProperty Name="WorkItems" ColumnName="WorkItems" />
+                <ScalarProperty Name="CompletedOn" ColumnName="CompletedOn" />
+                <ScalarProperty Name="IsComplete" ColumnName="IsComplete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OilChanges1">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.OilChange">
+              <MappingFragment StoreEntitySet="OilChanges">
+                <ScalarProperty Name="OilChangeID" ColumnName="OilChangeID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ChangeMiles" ColumnName="ChangeMiles" />
+                <ScalarProperty Name="OilBrand" ColumnName="OilBrand" />
+                <ScalarProperty Name="FilterBrand" ColumnName="FilterBrand" />
+                <ScalarProperty Name="Quarts" ColumnName="Quarts" />
+                <ScalarProperty Name="OilCost" ColumnName="OilCost" />
+                <ScalarProperty Name="FilterCost" ColumnName="FilterCost" />
+                <ScalarProperty Name="LaborCost" ColumnName="LaborCost" />
+                <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
+                <ScalarProperty Name="OtherCost" ColumnName="OtherCost" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ExtendedCost" ColumnName="ExtendedCost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OtherServices">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.OtherService">
+              <MappingFragment StoreEntitySet="OtherServices">
+                <ScalarProperty Name="OtherServiceID" ColumnName="OtherServiceID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Miles" ColumnName="Miles" />
+                <ScalarProperty Name="Item" ColumnName="Item" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="ExtendedCost" ColumnName="ExtendedCost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Payment">
+              <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaidTo" ColumnName="PaidTo" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tires">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Tire">
+              <MappingFragment StoreEntitySet="Tires">
+                <ScalarProperty Name="TireID" ColumnName="TireID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Miles" ColumnName="Miles" />
+                <ScalarProperty Name="Make" ColumnName="Make" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
+                <ScalarProperty Name="WarrantyMonths" ColumnName="WarrantyMonths" />
+                <ScalarProperty Name="WarrantyMiles" ColumnName="WarrantyMiles" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="ExpireMiles" ColumnName="ExpireMiles" />
+                <ScalarProperty Name="ExtendedCost" ColumnName="ExtendedCost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CombinedCosts">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.CombinedCost">
+              <MappingFragment StoreEntitySet="CombinedCosts">
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="RowSource" ColumnName="RowSource" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="TotalMiles" ColumnName="TotalMiles" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CostsPerCars">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.CostsPerCar">
+              <MappingFragment StoreEntitySet="CostsPerCar">
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="FillUps" ColumnName="FillUps" />
+                <ScalarProperty Name="InsurancePayments" ColumnName="InsurancePayments" />
+                <ScalarProperty Name="Payments" ColumnName="Payments" />
+                <ScalarProperty Name="OilChanges" ColumnName="OilChanges" />
+                <ScalarProperty Name="OtherServices" ColumnName="OtherServices" />
+                <ScalarProperty Name="Tires" ColumnName="Tires" />
+                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DriverCarMaintenances">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.DriverCarMaintenance">
+              <MappingFragment StoreEntitySet="DriverCarMaintenance">
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="MaintenanceScheduleID" ColumnName="MaintenanceScheduleID" />
+                <ScalarProperty Name="Driver" ColumnName="Driver" />
+                <ScalarProperty Name="Make" ColumnName="Make" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="SubModel" ColumnName="SubModel" />
+                <ScalarProperty Name="TotalMiles" ColumnName="TotalMiles" />
+                <ScalarProperty Name="ScheduledMiles" ColumnName="ScheduledMiles" />
+                <ScalarProperty Name="DueIn" ColumnName="DueIn" />
+                <ScalarProperty Name="WorkItems" ColumnName="WorkItems" />
+                <ScalarProperty Name="CompletedOn" ColumnName="CompletedOn" />
+                <ScalarProperty Name="IsComplete" ColumnName="IsComplete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SummaryCosts_Yearly">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.SummaryCosts_Yearly">
+              <MappingFragment StoreEntitySet="SummaryCosts_Yearly">
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="YearlyCost" ColumnName="YearlyCost" />
+                <ScalarProperty Name="TotalMiles" ColumnName="TotalMiles" />
+                <ScalarProperty Name="MilesThisYear" ColumnName="MilesThisYear" />
+                <ScalarProperty Name="CostDifferenceYear" ColumnName="CostDifferenceYear" />
+                <ScalarProperty Name="CostPerMile" ColumnName="CostPerMile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TotalMiles">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.TotalMile">
+              <MappingFragment StoreEntitySet="TotalMiles">
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="TotalMiles" ColumnName="TotalMiles" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoices">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Invoice">
+              <MappingFragment StoreEntitySet="Invoices">
+                <ScalarProperty Name="RenderedInvoiceMime" ColumnName="RenderedInvoiceMime" />
+                <ScalarProperty Name="HasRenderedInvoice" ColumnName="HasRenderedInvoice" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="PaidDate" ColumnName="PaidDate" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="RenderedInvoice" ColumnName="RenderedInvoice" />
+                <ScalarProperty Name="InvoiceStatusCode" ColumnName="InvoiceStatusCode" />
+                <ScalarProperty Name="TermsAndConditions" ColumnName="TermsAndConditions" />
+                <ScalarProperty Name="TermsID" ColumnName="TermsID" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LineItems">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.LineItem">
+              <MappingFragment StoreEntitySet="LineItems">
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="TaxAmount" ColumnName="TaxAmount" />
+                <ScalarProperty Name="ExtendedAmount" ColumnName="ExtendedAmount" />
+                <ScalarProperty Name="TaxRate" ColumnName="TaxRate" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LineItemID" ColumnName="LineItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Project">
+              <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="DefaultTermID" ColumnName="DefaultTermID" />
+                <ScalarProperty Name="DefaultMiles" ColumnName="DefaultMiles" />
+                <ScalarProperty Name="HourlyRate" ColumnName="HourlyRate" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Terms">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Term">
+              <MappingFragment StoreEntitySet="Terms">
+                <ScalarProperty Name="Rules" ColumnName="Rules" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TermID" ColumnName="TermID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ContractEmail" ColumnName="ContractEmail" />
+                <ScalarProperty Name="AccountingEmail" ColumnName="AccountingEmail" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notes">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Note">
+              <MappingFragment StoreEntitySet="Notes">
+                <ScalarProperty Name="Complete" ColumnName="Complete" />
+                <ScalarProperty Name="Note1" ColumnName="Note" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="NoteID" ColumnName="NoteID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeLogs">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.TimeLog">
+              <MappingFragment StoreEntitySet="TimeLogs">
+                <ScalarProperty Name="ReportedTimeLogID" ColumnName="ReportedTimeLogID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="Hours" ColumnName="Hours" />
+                <ScalarProperty Name="Miles" ColumnName="Miles" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="EndTIme" ColumnName="EndTIme" />
+                <ScalarProperty Name="EndBreak" ColumnName="EndBreak" />
+                <ScalarProperty Name="StartBreak" ColumnName="StartBreak" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TimeLogID" ColumnName="TimeLogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="Related" ColumnName="Related" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stations">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Station">
+              <MappingFragment StoreEntitySet="Stations">
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StationID" ColumnName="StationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehicles">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Vehicle">
+              <MappingFragment StoreEntitySet="Vehicles">
+                <ScalarProperty Name="Expense" ColumnName="Expense" />
+                <ScalarProperty Name="PercentBusiness" ColumnName="PercentBusiness" />
+                <ScalarProperty Name="TotalMiles" ColumnName="TotalMiles" />
+                <ScalarProperty Name="LoggedMiles" ColumnName="LoggedMiles" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DetailedTimeLogs">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.DetailedTimeLog">
+              <MappingFragment StoreEntitySet="DetailedTimeLog">
+                <ScalarProperty Name="Hours" ColumnName="Hours" />
+                <ScalarProperty Name="Miles" ColumnName="Miles" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="EndTIme" ColumnName="EndTIme" />
+                <ScalarProperty Name="EndBreak" ColumnName="EndBreak" />
+                <ScalarProperty Name="StartBreak" ColumnName="StartBreak" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="DayOfWeek" ColumnName="DayOfWeek" />
+                <ScalarProperty Name="DoW" ColumnName="DoW" />
+                <ScalarProperty Name="Week" ColumnName="Week" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+                <ScalarProperty Name="TimeLogID" ColumnName="TimeLogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeSheets">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.TimeSheet">
+              <MappingFragment StoreEntitySet="TimeSheets">
+                <ScalarProperty Name="Row_Order" ColumnName="Row_Order" />
+                <ScalarProperty Name="Friday" ColumnName="Friday" />
+                <ScalarProperty Name="Thursday" ColumnName="Thursday" />
+                <ScalarProperty Name="Wednesday" ColumnName="Wednesday" />
+                <ScalarProperty Name="Tuesday" ColumnName="Tuesday" />
+                <ScalarProperty Name="Monday" ColumnName="Monday" />
+                <ScalarProperty Name="Sunday" ColumnName="Sunday" />
+                <ScalarProperty Name="Saturday" ColumnName="Saturday" />
+                <ScalarProperty Name="TotalHours" ColumnName="TotalHours" />
+                <ScalarProperty Name="Miles" ColumnName="Miles" />
+                <ScalarProperty Name="FirstOfWeek" ColumnName="FirstOfWeek" />
+                <ScalarProperty Name="Week" ColumnName="Week" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="InvoiceID" ColumnName="InvoiceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SlidingBalances">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.SlidingBalance">
+              <MappingFragment StoreEntitySet="SlidingBalance">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FillUps_Locations">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.FillUps_Locations">
+              <MappingFragment StoreEntitySet="FillUps_Locations">
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Make" ColumnName="Make" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TankMiles" ColumnName="TankMiles" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Station" ColumnName="Station" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="CarID" ColumnName="CarID" />
+                <ScalarProperty Name="FillUpID" ColumnName="FillUpID" />
+                <ScalarProperty Name="StationID" ColumnName="StationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="XmlSummary" FunctionName="CarMaintenanceLogModel.Store.XmlSummary" />
+          <EntitySetMapping Name="ReportedTimeLogs">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.ReportedTimeLog">
+              <MappingFragment StoreEntitySet="ReportedTimeLogs">
+                <ScalarProperty Name="HasRendering" ColumnName="HasRendering" />
+                <ScalarProperty Name="Rendering" ColumnName="Rendering" />
+                <ScalarProperty Name="FirstOfWeek" ColumnName="FirstOfWeek" />
+                <ScalarProperty Name="Week" ColumnName="Week" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="ReportedTimeLogID" ColumnName="ReportedTimeLogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CreateAndRegisterReportedTimeLogs" FunctionName="CarMaintenanceLogModel.Store.CreateAndRegisterReportedTimeLogs">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CarMaintenanceLogModel.CreateAndRegisterReportedTimeLogs_Result">
+                <ScalarProperty Name="ErrorNumber" ColumnName="ErrorNumber" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="BillingDocuments">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.BillingDocument">
+              <MappingFragment StoreEntitySet="BillingDocuments">
+                <ScalarProperty Name="PaidDate" ColumnName="PaidDate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="DownloadedDate" ColumnName="DownloadedDate" />
+                <ScalarProperty Name="BillingDocument1" ColumnName="BillingDocument" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendors">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Vendor">
+              <MappingFragment StoreEntitySet="Vendors">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetInvoiceXML" FunctionName="CarMaintenanceLogModel.Store.GetInvoiceXML" />
+          <EntitySetMapping Name="EmployeeProjects">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.EmployeeProject">
+              <MappingFragment StoreEntitySet="EmployeeProjects">
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="EmployeProjectID" ColumnName="EmployeProjectID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="CarMaintenanceLogModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="DefaultCarID" ColumnName="DefaultCarID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,35 @@
+﻿[
+  {
+    "CarID": 1,
+    "Make": "Dodge",
+    "Model": "Charger",
+    "SubModel": "SE",
+    "Notes": "Sedan",
+    "Year": 2006,
+    "PurchasedDate": "2005-06-20T00:00:00",
+    "StartingMiles": 13.00,
+    "DriverID": 1
+  },
+  {
+    "CarID": 2,
+    "Make": "Infiniti",
+    "Model": "G37",
+    "SubModel": null,
+    "Notes": "Convertible",
+    "Year": 2009,
+    "PurchasedDate": "2013-06-04T00:00:00",
+    "StartingMiles": 19908.00,
+    "DriverID": 1
+  },
+  {
+    "CarID": 3,
+    "Make": "Infiniti",
+    "Model": "Q50s",
+    "SubModel": "Sport",
+    "Notes": "Sedan",
+    "Year": 2015,
+    "PurchasedDate": "2015-10-17T00:00:00",
+    "StartingMiles": 20.00,
+    "DriverID": 1
+  }
+]

@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>CarMaintenanceLog.Db</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{0aae562c-2fc3-4df1-9e48-093be1edf16b}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>CarMaintenanceLog.Db</RootNamespace>
+    <AssemblyName>CarMaintenanceLog.Db</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunSqlCodeAnalysis>False</RunSqlCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Vehicles\" />
+    <Folder Include="Vehicles\Tables\" />
+    <Folder Include="Vehicles\Views\" />
+    <Folder Include="Security\" />
+    <Folder Include="Vehicles\Stored Procedures\" />
+    <Folder Include="Loans\" />
+    <Folder Include="Loans\Tables\" />
+    <Folder Include="Hours\" />
+    <Folder Include="Hours\Tables\" />
+    <Folder Include="Common\" />
+    <Folder Include="Common\Tables\" />
+    <Folder Include="Accounting\" />
+    <Folder Include="Accounting\Tables\" />
+    <Folder Include="Loans\Views\" />
+    <Folder Include="Accounting\Views\" />
+    <Folder Include="Hours\Functions\" />
+    <Folder Include="Service Broker\" />
+    <Folder Include="Hours\Views\" />
+    <Folder Include="Hours\Stored Procedures\" />
+    <Folder Include="Accounting\Stored Procedures\" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Vehicles\Tables\MaintenanceSchedules.sql" />
+    <Build Include="Vehicles\Tables\Tires.sql" />
+    <Build Include="Vehicles\Tables\FillUps.sql" />
+    <Build Include="Vehicles\Tables\OtherServices.sql" />
+    <Build Include="Vehicles\Tables\OilChanges.sql" />
+    <Build Include="Vehicles\Tables\Cars.sql" />
+    <Build Include="Vehicles\Tables\InsurancePayments.sql" />
+    <Build Include="Vehicles\Tables\Payments.sql" />
+    <Build Include="Vehicles\Tables\Drivers.sql" />
+    <Build Include="Vehicles\Views\CarCosts_RolledUp.sql" />
+    <Build Include="Vehicles\Views\DriverCarMaintenance.sql" />
+    <Build Include="Vehicles\Views\TotalMiles.sql" />
+    <Build Include="Vehicles\Views\CostsPerCar.sql" />
+    <Build Include="Vehicles\Views\CombinedCosts.sql" />
+    <Build Include="Security\Vehicles.sql" />
+    <Build Include="Vehicles\Views\SummaryCosts_Yearly.sql" />
+    <Build Include="Vehicles\Stored Procedures\XmlSummary.sql" />
+    <Build Include="Vehicles\Tables\Stations.sql" />
+    <Build Include="Vehicles\Views\FillUps_Locations.sql" />
+    <Build Include="Loans\Tables\Transactions.sql" />
+    <Build Include="Hours\Tables\TimeLogs.sql" />
+    <Build Include="Common\Tables\Notes.sql" />
+    <Build Include="Common\Tables\Customers.sql" />
+    <Build Include="Accounting\Tables\Projects.sql" />
+    <Build Include="Accounting\Tables\Terms.sql" />
+    <Build Include="Accounting\Tables\Invoices.sql" />
+    <Build Include="Accounting\Tables\LineItems.sql" />
+    <Build Include="Loans\Views\SlidingBalance.sql" />
+    <Build Include="Accounting\Views\Vehicles.sql" />
+    <Build Include="Security\WHITED_CmlService.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="Hours\Functions\CalculateTime.sql" />
+    <Build Include="Security\Loans.sql" />
+    <Build Include="Security\Hours.sql" />
+    <Build Include="Security\Common.sql" />
+    <Build Include="Security\Accounting.sql" />
+    <Build Include="Service Broker\oobdev___Schemas_MessageBus_SaveData.sql" />
+    <Build Include="Security\MessageBus.sql" />
+    <Build Include="Hours\Views\TimeSheets.sql" />
+    <Build Include="Hours\Views\DetailedTimeLog.sql" />
+    <Build Include="Hours\Tables\ReportedTimeLogs.sql" />
+    <Build Include="Hours\Stored Procedures\CreateAndRegisterReportedTimeLogs.sql" />
+    <Build Include="Accounting\Stored Procedures\GetInvoiceXML.sql" />
+    <Build Include="Accounting\Tables\Vendors.sql" />
+    <Build Include="Accounting\Tables\BillingDocuments.sql" />
+    <Build Include="Common\Tables\Employees.sql" />
+    <Build Include="Accounting\Tables\EmployeeProjects.sql" />
+    <Build Include="Service Broker\UserInterface.sql" />
+    <Build Include="Service Broker\Repository.sql" />
+    <Build Include="Service Broker\Commands.sql" />
+    <Build Include="dbo\Tables\AspNetUsers.sql" />
+    <Build Include="dbo\Tables\AspNetUserRoles.sql" />
+    <Build Include="dbo\Tables\AspNetUserLogins.sql" />
+    <Build Include="dbo\Tables\AspNetUserClaims.sql" />
+    <Build Include="dbo\Tables\AspNetRoles.sql" />
+    <Build Include="dbo\Tables\__MigrationHistory.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Db2Proj.scmp" />
+    <None Include="Lan2GD.scmp" />
+    <None Include="Copy of Db2Proj.scmp" />
+    <None Include="ProjectToAzure.scmp" />
+    <None Include="CarMaintenanceLog.Db.publish.xml" />
+  </ItemGroup>
+</Project>

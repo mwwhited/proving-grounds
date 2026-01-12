@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<timelog xmlns="oobdev://Schemas/Entities/Hours/TimeLog"
+         id="1"
+         date="2015-03-16"
+         
+         start="08:00:00"
+         break.start="11:00:00"
+         break.end="12:00:00"
+         end="17:00:00"
+         
+         note="Hello World!"
+         
+         invoice.id="1"
+         project.id="1"
+         
+         miles="60.4"
+         car.id="1"
+         />

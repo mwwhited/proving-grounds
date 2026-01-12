@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="19b3407855834436937e52c4a973b014" Name="Diagram1" ZoomLevel="57">
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Car" Width="1.5" PointX="9.375" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Driver" Width="1.5" PointX="0.75" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.FillUp" Width="1.5" PointX="15" PointY="22.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.InsurancePayment" Width="1.5" PointX="9.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.MaintenanceSchedule" Width="1.5" PointX="5.25" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.OilChange" Width="1.5" PointX="5.25" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.OtherService" Width="1.5" PointX="9.125" PointY="25.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Payment" Width="1.5" PointX="15" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Tire" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.CombinedCost" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.CostsPerCar" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.DriverCarMaintenance" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.SummaryCosts_Yearly" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.TotalMile" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Vehicles_Cars_to_Drivers" ManuallyRouted="false" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Vehicles_FillUps_to_Cars" ManuallyRouted="false" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Vehicles_InsurancePayments_to_Cars" ManuallyRouted="false" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Vehicles_MaintenanceSchedules_to_Cars" ManuallyRouted="false" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Vehicles_OilChanges_to_Cars" ManuallyRouted="false" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Vehicles_OtherServices_to_Cars" ManuallyRouted="false" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Vehicles_Payments_to_Cars" ManuallyRouted="false" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Vehicles_Tires_to_Cars" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Invoice" Width="1.5" PointX="23" PointY="16.125" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.LineItem" Width="1.5" PointX="23" PointY="22.875" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Project" Width="1.5" PointX="17.875" PointY="11.375" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Term" Width="1.5" PointX="22.875" PointY="10.875" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Customer" Width="1.5" PointX="20.625" PointY="15.5" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Note" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.TimeLog" Width="1.5" PointX="15" PointY="13.625" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Transaction" Width="1.5" PointX="20.5" PointY="21.5" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Station" Width="1.5" PointX="9.75" PointY="3.75" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Vehicle" Width="1.5" PointX="19" PointY="0.875" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.DetailedTimeLog" Width="1.5" PointX="11.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.TimeSheet" Width="1.5" PointX="0.75" PointY="11.75" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.SlidingBalance" Width="1.5" PointX="16.5" PointY="0.875" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.FillUps_Locations" Width="1.5" PointX="14.125" PointY="0.75" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Invoices_Customers" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Invoices_Terms" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_LineItems_Invoices" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Projects_Customers" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_TimeLogs_Projects" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Transactions_Customers" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_TimeLogs_Cars" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.ReportedTimeLog" Width="1.5" PointX="17.875" PointY="16.25" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_ReportedTimeLogs_Projects" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_TimeLogs_ReportedTimeLogs" ManuallyRouted="false" >
+        </AssociationConnector>
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.BillingDocument" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Vendor" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_BillingDocuments_Vendors" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.EmployeeProject" Width="1.5" PointX="15" PointY="10.375" />
+        <EntityTypeShape EntityType="CarMaintenanceLogModel.Employee" Width="1.5" PointX="10.375" PointY="11" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_EmployeeProjects_Employees" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_EmployeeProjects_Projects" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Projects_Terms" />
+        <AssociationConnector Association="CarMaintenanceLogModel.FK_Employees_Cars" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

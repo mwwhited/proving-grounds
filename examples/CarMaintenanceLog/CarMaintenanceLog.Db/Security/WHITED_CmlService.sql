@@ -1,0 +1,24 @@
+﻿--CREATE USER [WHITED\CmlService] FOR LOGIN [WHITED\CmlService];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

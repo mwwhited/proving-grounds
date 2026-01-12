@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SaveData"
+    targetNamespace="oobdev://Schemas/MessageBus/SaveData"
+    elementFormDefault="qualified"
+    xmlns="oobdev://Schemas/MessageBus/SaveData"
+    xmlns:mstns="oobdev://Schemas/MessageBus/SaveData"
+    xmlns:c="oobdev://Schemas/Common"
+           
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:import namespace="oobdev://Schemas/Common" schemaLocation="./Common.xsd" />
+  
+  <xs:complexType name="saveType">
+    <xs:sequence>
+      <xs:element name="save.payload" type="savePayloadType" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="request-user-id" type="c:guid" use="required"  />
+    <xs:attribute name="scope" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="savePayloadType">
+    <xs:sequence>
+      <xs:any namespace="##any" minOccurs="1" maxOccurs="unbounded" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="save" type="saveType"/>
+
+</xs:schema>
+
+
+<!--<save xmlns="oobdev://Schemas/MessageBus/SaveData"
+      request-user-id="XXX-UserID-XXX"
+      scope="--db-schema--"
+      >
+  <save.payload>
+
+  </save.payload>
+</save>-->

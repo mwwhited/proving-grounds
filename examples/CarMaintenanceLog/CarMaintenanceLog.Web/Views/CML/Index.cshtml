@@ -1,0 +1,349 @@
+﻿@{
+    ViewBag.Title = "Car Maintenance Log";
+
+    // https://angularjs.org/
+}
+
+<div id="location"></div>
+<div ng-app="driverApp" ng-controller="DriversController">
+    <div ng-repeat="driver in Drivers">
+        <h1 ng-click="selectDriver(driver)">{{driver.Name}}</h1>
+
+        <div ng-controller="CarsController" ng-if="driver.DriverID == SelectedDriver.DriverID">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Year</th>
+                        <th>Total Miles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="car in Cars" ng-click="selectCar(car)" ng-class="{'selected': car.CarID == SelectedCar.CarID}">
+                        <td>{{car.Make}}</td>
+                        <td>{{car.Model}} / {{car.SubModel}}</td>
+                        <td>{{car.Year}}</td>
+                        <td>{{car.TotalMiles}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ul class="nav nav-tabs" id="car-tab-set">
+                <li class="active"><a show-tab href="#CarDetails">Details</a></li>
+                <li ng-if="SelectedCar"><a show-tab href="#FillUp">Fill-up</a></li>
+                <li ng-if="SelectedCar"><a show-tab href="#OilChange">Oil Changes</a></li>
+                <li ng-if="SelectedCar"><a show-tab href="#MaintenanceSchedule">Maintenance Schedule</a></li>
+                <li ng-if="SelectedCar"><a show-tab href="#OtherService">Other Services</a></li>
+            </ul>
+
+            <div class="tab-content">
+
+                <div class="tab-pane active" id="CarDetails">
+                    <div class="btn-toolbar">
+                        <button class="btn" ng-click="clearCar()">Clear</button>
+                        <button class="btn" ng-click="newCar()">New</button>
+                        <button class="btn" ng-click="saveCar()">Save</button>
+                    </div>
+                    <fieldset>
+                        <label>Car Details</label>
+                        <div>
+                            <label>Make:</label> <input ng-model="SelectedCar.Make" />
+                        </div>
+                        <div>
+                            <label>Model:</label> <input ng-model="SelectedCar.Model" />
+                        </div>
+                        <div>
+                            <label>SubModel:</label> <input ng-model="SelectedCar.SubModel" />
+                        </div>
+                        <div>
+                            <label>Notes:</label><input ng-model="SelectedCar.Notes" />
+                        </div>
+                        <div>
+                            <label>Year:</label> <input ng-model="SelectedCar.Year" />
+                        </div>
+                        <div>
+                            <label>PurchasedDate:</label> <input ng-model="SelectedCar.PurchasedDate" type="datetime" />
+                        </div>
+                        <div>
+                            <label>StartingMiles:</label> <input ng-model="SelectedCar.StartingMiles" type="number" />
+                        </div>
+                    </fieldset>
+                </div>
+                
+                <div class="tab-pane" id="FillUp">
+                    <div ng-controller="FillupController">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Cost Per Gallon</th>
+                                    <th>Gallons</th>
+                                    <th>Octane</th>
+                                    <th>Tank Miles</th>
+                                    <th>Extended Cost</th>
+                                    <th>Miles Per Gallon</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="fillUp in FillUps" ng-click="selectFillup(fillUp)" ng-class="{'selected': fillUp.FillUpID == SelectedFillup.FillUpID}">
+                                    <td>{{fillUp.Date}}</td>
+                                    <td>{{fillUp.CostPerGallon}}</td>
+                                    <td>{{fillUp.Gallons}}</td>
+                                    <td>{{fillUp.Octane}}</td>
+                                    <td>{{fillUp.TankMiles}}</td>
+                                    <td>{{fillUp.ExtendedCost}}</td>
+                                    <td>{{fillUp.MilesPerGallon}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="btn-toolbar">
+                            <button class="btn" ng-click="clearFillup()">Clear</button>
+                            <button class="btn" ng-click="newFillup()">New</button>
+                            <button class="btn" ng-click="saveFillup()">Save</button>
+                        </div>
+
+                        <div ng-if="SelectedFillup">
+                            <fieldset>
+                                <label>Fillup</label>
+
+                                <div>
+                                    <label>Date:</label> <input ng-model="SelectedFillup.Date" type="datetime" />
+                                </div>
+                                <div>
+                                    <label>Cost Per Gallon:</label> <input ng-model="SelectedFillup.CostPerGallon" type="number" />
+                                </div>
+                                <div>
+                                    <label>Gallons:</label> <input ng-model="SelectedFillup.Gallons" type="number" />
+                                </div>
+                                <div>
+                                    <label>Octane:</label> <input ng-model="SelectedFillup.Octane" type="number" />
+                                </div>
+                                <div>
+                                    <label>Tank Miles:</label> <input ng-model="SelectedFillup.TankMiles" type="number" />
+                                </div>
+                                <div>
+                                    <label>Total Miles:</label> <input ng-model="SelectedFillup.TotalMiles" type="number" />
+                                </div>
+
+                                <div>
+                                    <label>Station:</label><input ng-model="SelectedFillup.Station" list="stationList" />
+                                    <datalist ng-controller="StationController" id="stationList">
+                                        <option data-ng-repeat="station in Stations" value="{{station.Name}}">{{station.Name}}</option>
+                                    </datalist>
+                                </div>
+                                <div>
+                                    <label>Notes:</label> <input ng-model="SelectedFillup.Notes" />
+                                </div>
+
+                                <div>
+                                    <label>Extended Cost:</label> <span>{{Calc_ExtendedCost(SelectedFillup)}}</span>
+                                </div>
+                                <div>
+                                    <label>Miles Per Gallon:</label> <span>{{Calc_MilesPerGallon(SelectedFillup)}}</span>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="OilChange">
+                    <div ng-controller="OilChangeController">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Change Miles</th>
+                                    <th>Oil Brand</th>
+                                    <th>Filter Brand</th>
+                                    <th>Quarts</th>
+                                    <th>Extended Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="oilChange in OilChanges" ng-click="selectOilChange(oilChange)" ng-class="{'selected': oilChange.OilChangeID == SelectedOilChange.OilChangeID}">
+                                    <td>{{oilChange.Date}}</td>
+                                    <td>{{oilChange.ChangeMiles}}</td>
+                                    <td>{{oilChange.OilBrand}}</td>
+                                    <td>{{oilChange.FilterBrand}}</td>
+                                    <td>{{oilChange.Quarts}}</td>
+                                    <td>{{oilChange.ExtendedCost}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="btn-toolbar">
+                            <button class="btn" ng-click="clearOilChange()">Clear</button>
+                            <button class="btn" ng-click="newOilChange()">New</button>
+                            <button class="btn" ng-click="saveOilChange()">Save</button>
+                        </div>
+
+                        <div ng-if="SelectedOilChange">
+                            <fieldset>
+                                <label>Oil Change</label>
+
+                                <div>
+                                    <label>Date:</label> <input ng-model="SelectedOilChange.Date" type="datetime" />
+                                </div>
+                                <div>
+                                    <label>Change Miles:</label> <input ng-model="SelectedOilChange.ChangeMiles" type="number" />
+                                </div>
+                                <div>
+                                    <label>FilterBrand:</label> <input ng-model="SelectedOilChange.FilterBrand" />
+                                </div>
+                                <div>
+                                    <label>Quarts:</label> <input ng-model="SelectedOilChange.Quarts" type="number" />
+                                </div>
+                                <div>
+                                    <label>Filter Cost:</label> <input ng-model="SelectedOilChange.FilterCost" type="number" />
+                                </div>
+                                <div>
+                                    <label>Labor Cost:</label> <input ng-model="SelectedOilChange.LaborCost" type="number" />
+                                </div>
+                                <div>
+                                    <label>Tax Rate:</label> <input ng-model="SelectedOilChange.TaxRate" type="number" />
+                                </div>
+                                <div>
+                                    <label>Other Cost:</label> <input ng-model="SelectedOilChange.OtherCost" type="number" />
+                                </div>
+
+                                <div>
+                                    <label>Location:</label> <textarea>{{SelectedOilChange.Location}}</textarea>
+                                </div>
+                                <div>
+                                    <label>Notes:</label> <textarea>{{SelectedOilChange.Notes}}</textarea>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="MaintenanceSchedule">
+                    <div ng-controller="MaintenanceScheduleController">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Miles</th>
+                                    <th>Work Items</th>
+                                    <th>Completed On</th>
+                                    <th>Is Complete</th>
+                                    <th>Past Due</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="maintenanceSchedule in MaintenanceSchedules" ng-click="selectMaintenanceSchedule(maintenanceSchedule)" ng-class="{'selected': maintenanceSchedule.MaintenanceScheduleID == SelectedMaintenanceSchedule.MaintenanceScheduleID}">
+                                    <td>{{maintenanceSchedule.Miles}}</td>
+                                    <td>{{maintenanceSchedule.WorkItems}}</td>
+                                    <td>{{maintenanceSchedule.CompletedOn}}</td>
+                                    <td>{{maintenanceSchedule.IsComplete}}</td>
+                                    <td>{{maintenanceSchedule.PastDue}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="btn-toolbar">
+                            <button class="btn" ng-click="clearMaintenanceSchedule()">Clear</button>
+                            <button class="btn" ng-click="newMaintenanceSchedule()">New</button>
+                            <button class="btn" ng-click="saveMaintenanceSchedule()">Save</button>
+                        </div>
+
+                        <div ng-if="SelectedMaintenanceSchedule">
+                            <fieldset>
+                                <label>Maintenance Schedule</label>
+
+                                <div>
+                                    <label>Miles:</label> <input ng-model="SelectedMaintenanceSchedule.Miles" type="number" />
+                                </div>
+                                <div>
+                                    <label>Work Items:</label> <input ng-model="SelectedMaintenanceSchedule.WorkItems" type="text" />
+                                </div>
+                                <div>
+                                    <label>Completed On:</label> <input ng-model="SelectedMaintenanceSchedule.CompletedOn" type="datetime" />
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="OtherService">
+                    <div ng-controller="OtherServiceController">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Miles</th>
+                                    <th>Item</th>
+                                    <th>Location</th>
+                                    <th>Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="otherService in OtherServices" ng-click="selectOtherService(otherService)" ng-class="{'selected': otherService.OtherServiceID == SelectedOtherService.OtherServiceID}">
+                                    <td>{{otherService.Date}}</td>
+                                    <td>{{otherService.Miles}}</td>
+                                    <td>{{otherService.Item}}</td>
+                                    <td>{{otherService.Location}}</td>
+                                    <td>{{otherService.ExtendedCost}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="btn-toolbar">
+                            <button class="btn" ng-click="clearOtherServices()">Clear</button>
+                            <button class="btn" ng-click="newOtherServices()">New</button>
+                            <button class="btn" ng-click="saveOtherServices()">Save</button>
+                        </div>
+
+                        <div ng-if="SelectedMaintenanceSchedule">
+                            <fieldset>
+                                <label>Maintenance Schedule</label>
+
+                                <div>
+                                    <label>Miles:</label> <input ng-model="SelectedOtherService.Date" type="datetime" />
+                                </div>
+                                <div>
+                                    <label>Item:</label> <input ng-model="SelectedOtherService.Miles" type="number" />
+                                </div>
+                                <div>
+                                    <label>Completed On:</label> <input ng-model="SelectedOtherService.Item" type="text" />
+                                </div>
+                                <div>
+                                    <label>Cost:</label> <input ng-model="SelectedOtherService.Cost" type="number" />
+                                </div>
+                                <div>
+                                    <label>Rate:</label> <input ng-model="SelectedOtherService.Rate" type="number" />
+                                </div>
+                                <div>
+                                    <label>Location:</label> <input ng-model="SelectedOtherService.Location" type="text" />
+                                </div>
+                                <div>
+                                    <label>Notes:</label> <input ng-model="SelectedOtherService.Notes" type="text" />
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/CML/Index")
+    <script type="text/javascript">
+        // http://stackoverflow.com/questions/551894/whats-the-best-way-to-store-co-ordinates-longitude-latitude-from-google-maps
+        //// http://www.w3schools.com/HTML/html5_geolocation.asp
+        //var x = document.getElementById("location");
+        //function getLocation() {
+        //    if (navigator.geolocation) {
+        //        navigator.geolocation.getCurrentPosition(showPosition);
+        //    } else {
+        //        x.innerHTML = "Geolocation is not supported by this browser.";
+        //    }
+        //}
+        //function showPosition(position) {
+        //    x.innerHTML = "Latitude: " + position.coords.latitude +
+        //    "<br>Longitude: " + position.coords.longitude;
+        //}
+
+        //getLocation();
+    </script>
+}

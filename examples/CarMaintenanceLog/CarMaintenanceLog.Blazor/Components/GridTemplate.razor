@@ -1,0 +1,78 @@
+﻿@typeparam TItem
+
+<div id="@Id">
+    @if (Items == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        @if (SelectedItem == null || Display == null)
+        {
+            <table>
+                @if (Header != null)
+                {
+                    <thead>
+                        <tr>@Header</tr>
+                    </thead>
+                }
+                <tbody>
+                    @foreach (var item in Items)
+                    {
+                        <tr class="@((item.Equals(SelectedItem) ? "selected-row" : ""))" @onclick="e => SelectItem(item)">@Row(item)</tr>
+                    }
+                </tbody>
+                @if (Footer != null)
+                {
+                    <tfoot>
+                        <tr>@Footer</tr>
+                    </tfoot>
+                }
+            </table>
+        }
+        else
+        {
+            <div>
+                <fieldset>
+                    @if (Legend != null)
+                    {
+                        <legend>@Legend(SelectedItem)</legend>
+                    }
+                    <a class="dismiss" @onclick="e => SelectItem(default)">🗙</a>
+                    @Display(SelectedItem)
+                </fieldset>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem> Legend { get; set; }
+
+    [Parameter]
+    public RenderFragment Header { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem> Row { get; set; }
+
+    [Parameter]
+    public RenderFragment Footer { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem> Display { get; set; }
+
+    [Parameter]
+    public IReadOnlyList<TItem> Items { get; set; }
+
+    [Parameter]
+    public TItem SelectedItem { get; set; }
+
+    void SelectItem(TItem item)
+    {
+        SelectedItem = item;
+    }
+}

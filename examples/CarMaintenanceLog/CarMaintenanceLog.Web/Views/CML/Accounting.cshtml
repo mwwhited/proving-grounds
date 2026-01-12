@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "Car Maintenance Log";
+
+    // https://angularjs.org/
+}
+
+<div id="location"></div>
+<div ng-app="accountingApp" ng-controller="CustomerController">
+
+    <div ng-controller="CustomerController">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="c in Customers" ng-click="selectCustomer(c)" ng-class="{'selected': c.CustomerID == SelectedCustomer.CustomerID}">
+                    <td>{{c.CompanyName}}</td>
+                    <td>{{c.FirstName}} {{c.LastName}}</td>
+                    <td>{{c.AccountingEmail}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div ng-if="SelectedCustomer">
+            <ul class="nav nav-tabs" id="customer-tab-set">
+                <li class="active"><a show-tab href="#Invoices">Invoices</a></li>
+                <li><a show-tab href="#TimeLog">Time Log</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="Invoices">
+                    <div ng-controller="InvoiceController">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Invoice Date</th>
+                                    <th>Invoice Number</th>
+                                    <th>Due Date</th>
+                                    <th>Invoice Status</th>
+
+                                    <th>Paid Date</th>
+                                    <th>Image</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="i in Invoices" ng-click="selectInvoice(i)" ng-class="{'selected': i.InvoiceID == SelectedInvoice.InvoiceID}">
+                                    <td>{{i.InvoiceDate}}</td>
+                                    <td>{{i.InvoiceNumber}}</td>
+                                    <td>{{i.DueDate}}</td>
+                                    <td>{{i.InvoiceStatusCode}}</td>
+                                    <td>{{i.PaidDate}}</td>
+                                    <td><a ng-if="i.HasRenderedInvoice" ng-click="downloadPdf(i)" title="Download"><i class="fa fa-file-pdf-o"></i>Download</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        @*<div class="btn-toolbar">
+                                <button class="btn" ng-click="clearCar()">Clear</button>
+                                <button class="btn" ng-click="newCar()">New</button>
+                                <button class="btn" ng-click="saveCar()">Save</button>
+                            </div>
+                            <fieldset>
+                                <label>Car Details</label>
+                                <div>
+                                    <label>Make:</label> <input ng-model="SelectedCar.Make" />
+                                </div>
+                                <div>
+                                    <label>Model:</label> <input ng-model="SelectedCar.Model" />
+                                </div>
+                                <div>
+                                    <label>SubModel:</label> <input ng-model="SelectedCar.SubModel" />
+                                </div>
+                                <div>
+                                    <label>Notes:</label><input ng-model="SelectedCar.Notes" />
+                                </div>
+                                <div>
+                                    <label>Year:</label> <input ng-model="SelectedCar.Year" />
+                                </div>
+                                <div>
+                                    <label>PurchasedDate:</label> <input ng-model="SelectedCar.PurchasedDate" type="datetime" />
+                                </div>
+                                <div>
+                                    <label>StartingMiles:</label> <input ng-model="SelectedCar.StartingMiles" type="number" />
+                                </div>
+                            </fieldset>*@
+                    </div>
+
+                </div>
+
+                <div class="tab-pane" id="TimeLog">
+                    <div ng-controller="TimeLogController">
+
+                        <fieldset>
+                            <div>
+                                <label>Project:</label>
+                                <select ng-model="SelectedProject"
+                                        ng-options="p.Name for p in Projects"></select>
+                            </div>
+                        </fieldset>
+
+                        <h3>month bread crumbs</h3>
+                        <h3>sheet per month</h3>
+
+                        <h3>details</h3>
+
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+
+                                    <th>Start</th>
+                                    <th>Start Break</th>
+                                    <th>End Break</th>
+                                    <th>End</th>
+
+                                    <th>Hours</th>
+                                    @*<th>Note</th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="t in TimeLogs" ng-click="selectTimeLog(t)" ng-class="{'selected': t.TimeLogID == SelectedTimeLog.TimeLogID}">
+                                    <td>{{t.Date}}</td>
+
+                                    <td>{{t.StartTime}}</td>
+                                    <td>{{t.StartBreak}}</td>
+                                    <td>{{t.EndBreak}}</td>
+                                    <td>{{t.EndTime}}</td>
+
+                                    <td>{{t.Hours}}</td>
+
+                                    @*<td>{{t.Note}}</td>*@
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        @*<div>{{SelectedProject}}</div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/FileSaver")
+    @Scripts.Render("~/bundles/CML/Accounting")
+}

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mobile.Views.Home.HomeCarousel"
+             Title="Consultant Buddy">
+  <ContentPage Title="Mileage">
+    <StackLayout>
+      <Label Text="CarouselPage, you can swipe left and right to browse through additional pages." Margin="5" />
+      <Label Text="Red" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5" />
+      <BoxView Color="White" VerticalOptions="FillAndExpand" />
+    </StackLayout>
+  </ContentPage>
+  <ContentPage Title="Billing">
+    <StackLayout>
+      <Label Text="Green" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5"  />
+      <BoxView Color="Gray" VerticalOptions="FillAndExpand" />
+    </StackLayout>
+  </ContentPage>
+  <ContentPage Title="Account">
+    <StackLayout>
+      <Label Text="Blue" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" Margin="5"  />
+      <BoxView Color="Black" VerticalOptions="FillAndExpand" />
+    </StackLayout>
+  </ContentPage>
+</CarouselPage>

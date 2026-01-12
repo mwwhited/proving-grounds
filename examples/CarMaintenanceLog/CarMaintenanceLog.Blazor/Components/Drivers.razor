@@ -1,0 +1,42 @@
+﻿@page "/drivers"
+
+@inject CarMaintenanceLogDbContext CmlDb
+
+<GridTemplate id="drivers-data" Items="drivers">
+    <Header>
+        <th>Driver ID</th>
+        <th>Name</th>
+    </Header>
+    <Row>
+        <td>@context.DriverId</td>
+        <td>@context.Name</td>
+    </Row>
+
+    <Legend>@context.Name</Legend>
+    <Display>
+        <Cars Driver="@context" />
+    </Display>
+</GridTemplate>
+
+
+@code {
+    DriverModel[] drivers = null;
+
+    IQueryable<DriverModel> ListDrivers()
+    {
+        //TODO: add filter for user id
+        var query = from d in CmlDb.Drivers
+                    select new DriverModel
+                    {
+                        DriverId = d.DriverId,
+                        Name = d.Name,
+                        UserId = d.UserId,
+                    };
+        return query;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        drivers = await ListDrivers().ToArrayAsync();
+    }
+}

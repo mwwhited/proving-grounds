@@ -1,0 +1,40 @@
+﻿@page "/queuetests"
+
+@inject CarMaintenanceLog.Abstractions.Messaging.ISendMessages _mesg
+@inject CarMaintenanceLog.Abstractions.Hubs.ICentralHubClient _client
+
+<div>
+    <input type="text" @bind-value="message" />
+    <button @onclick="async e=> await SendMessageAsync()">Send</button>
+
+
+    <h4>@response</h4>
+</div>
+
+@code  {
+    string message = null;
+    string response = null;
+
+    protected override void OnInitialized()
+    {
+        _client.OnReceived = mesg =>
+        {
+            response = mesg;
+            return Task.FromResult(0);
+        };
+        base.OnInitialized();
+    }
+
+    Task Received(string mesg)
+    {
+        response = mesg;
+        return Task.FromResult(0);
+    }
+
+    async Task SendMessageAsync()
+    {
+        await _client.SendMessageAsync(message);
+        await _mesg.SendAsync(new { message = message ?? "--NULL--" });
+    }
+}
+

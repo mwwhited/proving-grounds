@@ -1,0 +1,58 @@
+﻿@inject CarMaintenanceLogDbContext CmlDb
+
+@if (Driver == null)
+{
+    <h4>No Driver Selected!</h4>
+}
+else
+{
+    <h4>Driver ID: @Driver.DriverId</h4>
+    <GridTemplate Id="cars-data" Items="cars">
+        <Header>
+            <th>Car Id</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Sub Model</th>
+            <th>Year</th>
+            <th>Starting Miles</th>
+        </Header>
+        <Row>
+            <td>@context.CarId</td>
+            <td>@context.Make</td>
+            <td>@context.Model</td>
+            <td>@context.SubModel</td>
+            <td>@context.Year</td>
+            <td>@context.StartingMiles</td>
+        </Row>
+    </GridTemplate>
+}
+
+@code {
+    [Parameter]
+    public DriverModel Driver { get; set; }
+
+    CarModel[] cars = null;
+
+    IQueryable<CarModel> ListCar(int driverId)
+    {
+        var query = from d in CmlDb.Cars
+                    where d.DriverId == driverId
+                    select new CarModel
+                    {
+                        DriverId = d.DriverId,
+                        CarId = d.CarId,
+                        Make = d.Make,
+                        Model = d.Model,
+                        SubModel = d.SubModel,
+                        Year = d.Year,
+                        StartingMiles = d.StartingMiles,
+                    };
+        return query;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        cars = await ListCar(Driver?.DriverId ?? 0).ToArrayAsync();
+        await base.OnParametersSetAsync();
+    }
+}
