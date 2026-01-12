@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CECB9564-B2A2-4CBA-8A8B-DCDFC7CAD5D8}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WhitedUS.ImageStore.TestHarness</RootNamespace>
+    <AssemblyName>WhitedUS.ImageStore.TestHarness</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WhitedUS.Common\WhitedUS.Common.csproj">
+      <Project>{222EC2A1-15CD-47A1-AC33-D3D8C5DC9945}</Project>
+      <Name>WhitedUS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WhitedUS.Drawing\WhitedUS.Drawing.csproj">
+      <Project>{56CF7260-5AEC-4E62-9ED2-D83F14B940E9}</Project>
+      <Name>WhitedUS.Drawing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WhitedUS.ImageStore.Data\WhitedUS.ImageStore.Data.csproj">
+      <Project>{FB4E3A6E-2296-4050-B3FA-68274D847D18}</Project>
+      <Name>WhitedUS.ImageStore.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WhitedUS.ImageStore.Models\WhitedUS.ImageStore.Models.csproj">
+      <Project>{55FBB7DD-44B7-42C3-BF8A-749E060FD81F}</Project>
+      <Name>WhitedUS.ImageStore.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WhitedUS.ImageStore.Services\WhitedUS.ImageStore.Services.csproj">
+      <Project>{E08FC3F7-B292-4E94-BE38-37F7D0801938}</Project>
+      <Name>WhitedUS.ImageStore.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\WhitedUS.ImageStore.Data\App.Config">
+      <Link>App.Config</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,18 @@
+﻿@model IQueryable<WhitedUS.Web.Security.AuthClaimModel>
+
+@{
+    ViewBag.Title = "OpenIDClaims";
+}
+
+<h2>OpenID Claims</h2>
+
+<table>
+    <tbody>
+        @foreach (var authClaim in this.Model) 
+        { 
+            <tr>
+                <td>@authClaim.ClaimString</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,40 @@
+﻿@model IQueryable<WhitedUS.MediaLibrary.Models.MediaTypeModel>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+
+@if (this.Request.IsAuthenticated) {
+    <p>
+        @Html.ActionLink("Create", "Create")
+    </p>
+}
+
+@{
+    Html.Telerik()
+        .Grid(this.Model)
+        .Name("MediaListGrid")
+        .Columns(c=>{
+            c.Template(
+                    @<span>
+                        @if (this.Request.IsAuthenticated) {
+                            @Html.ActionLink("Edit", "Edit", "MediaTypes", new { Area = "MediaLibrary", id = item.LocalID, }, new { })
+                        }
+                        @Html.ActionLink("Detail", "Details", "MediaTypes", new { Area = "MediaLibrary", id = item.LocalID, }, new { })
+                    </span>
+                ).Title("Commands").Width(100);
+            c.Bound(o => o.Name).Filterable(true).Width(300);
+            c.Bound(o => o.CodeType.Name).Filterable(true).Title("Code Type").Width(150);
+        })
+        //.Scrollable(scrolling=>scrolling.Enabled(true))
+        .Pageable(paging=>paging.Enabled(true))
+        .Sortable(sorting=>sorting.Enabled(true))
+        .Filterable(filtering => filtering.Enabled(true))
+        //.Groupable(grouping=>grouping.Enabled(true))
+        .Footer(true)
+        //.DataKeys(keys=>keys.Add(o=>o.LocalID))
+        .Render()
+        ;
+}

@@ -1,0 +1,17 @@
+<photoAlbums path="2009" service="http://www.whited.us/AlphaSite/Services/PhotoRest.svc">
+  <photoAlbum name="01122009_Me" path="2009\01122009_Me" />
+  <photoAlbum name="01242009_GrandmaGrandpa" path="2009\01242009_GrandmaGrandpa" />
+  <photoAlbum name="01252009_Mom" path="2009\01252009_Mom" />
+  <photoAlbum name="01282009_Electronics" path="2009\01282009_Electronics" />
+  <photoAlbum name="02172009_Electronics" path="2009\02172009_Electronics" />
+  <photoAlbum name="02202009_Electronics" path="2009\02202009_Electronics" />
+  <photoAlbum name="02272009_NewLens" path="2009\02272009_NewLens" />
+  <photoAlbum name="03032009_Moon" path="2009\03032009_Moon" />
+  <photoAlbum name="03072009_Blacklick" path="2009\03072009_Blacklick" />
+  <photoAlbum name="03092009_Electronics" path="2009\03092009_Electronics" />
+  <photoAlbum name="03172009_Neighboorhood" path="2009\03172009_Neighboorhood" />
+  <photoAlbum name="03222009_Random" path="2009\03222009_Random" />
+  <photoAlbum name="03282009_Moms" path="2009\03282009_Moms" />
+  <photoAlbum name="03292009_Dads" path="2009\03292009_Dads" />
+  <photo name="test" path="2009" hash="c5980b0386696cc7f6f16b46bdf76965" />
+</photoAlbums>

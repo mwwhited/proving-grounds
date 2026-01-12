@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<folders>
+  <folder folderId="3" rowId="932414F6-7066-4EC8-B740-DD838C7A76FA" structureId="/" name="Root" mappedPath="\" creationTime="2011-10-20T00:00:00" lastAccessTime="2011-10-20T00:00:00" lastWriteTime="2011-10-20T00:00:00" />
+  <folder folderId="39" rowId="B654E25C-EB19-4FF2-A204-82470F3E07B7" structureId="/1/" name="Photos" mappedPath="\\homeserver\Photos" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+  <folder folderId="44" rowId="960764AC-CD76-4EFE-8F9D-54588CCBF78C" structureId="/1/1/" name="2003" mappedPath="\\homeserver\Photos\2003" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+  <folder folderId="45" rowId="21680C23-D4D1-4CC8-91FA-B5FAABAB5485" structureId="/1/2/" name="2004" mappedPath="\\homeserver\Photos\2004" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+  <folder folderId="46" rowId="221A81A5-65B6-4A79-BBBE-199032868BDF" structureId="/1/3/" name="2005" mappedPath="\\homeserver\Photos\2005" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+  <folder folderId="47" rowId="EA081AEE-6FC8-4390-BE70-32CE87641FCF" structureId="/1/4/" name="2006" mappedPath="\\homeserver\Photos\2006" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+  <folder folderId="48" rowId="AB078D5C-444C-462E-80A2-510C0508C898" structureId="/1/5/" name="2007" mappedPath="\\homeserver\Photos\2007" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+  <folder folderId="49" rowId="65A6C960-A440-41D2-85A3-99400887422F" structureId="/1/6/" name="2008" mappedPath="\\homeserver\Photos\2008" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+  <folder folderId="50" rowId="D319946E-1950-4A62-A146-15A7AD609F3E" structureId="/1/7/" name="2009" mappedPath="\\homeserver\Photos\2009" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+  <folder folderId="51" rowId="9B31BDC0-F12E-4488-98A1-D8C745710C40" structureId="/1/8/" name="2010" mappedPath="\\homeserver\Photos\2010" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+  <folder folderId="52" rowId="363CE151-CFAF-4390-8BCC-4AC57746BBF7" structureId="/1/9/" name="2011" mappedPath="\\homeserver\Photos\2011" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+  <folder folderId="53" rowId="8DC513F8-84A2-4E4C-ABD9-D40DAC530CBD" structureId="/0/" name="other" mappedPath="\\homeserver\other" creationTime="2011-10-22T00:00:00" lastAccessTime="2011-10-22T00:00:00" lastWriteTime="2011-10-22T00:00:00" />
+</folders>
+<!--
+SELECT
+  [FolderID]			"@folderId"
+  ,[RowID]			"@rowId"
+  ,[StructureID]		"@structureId"
+  ,[Name]				"@name"
+  ,[MappedPath]		"@mappedPath"
+  ,[CreationTime]		"@creationTime"
+  ,[LastAccessTime]	"@lastAccessTime"
+  ,[LastWriteTime]	"@lastWriteTime"
+FROM [Folders]
+FOR XML PATH('folder'), ROOT('folders')
+-->

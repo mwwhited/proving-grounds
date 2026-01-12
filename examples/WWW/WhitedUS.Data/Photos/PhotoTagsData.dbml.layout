@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="PhotoTagsData">
+  <DataContextMoniker Name="/PhotoTagsDataDataContext" />
+  <nestedChildShapes>
+    <classShape Id="fba06fb7-3232-415f-8be3-e070d7a83dad" absoluteBounds="5.625, 2.375, 2, 1.9631982421875">
+      <DataClassMoniker Name="/PhotoTagsDataDataContext/Image" />
+      <nestedChildShapes>
+        <elementListCompartment Id="67284966-3f1b-4a49-b40a-4bf6a56ae064" absoluteBounds="5.64, 2.835, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1aa0a6e5-21be-431f-9516-06330d281d8b" absoluteBounds="2.125, 2.375, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/PhotoTagsDataDataContext/Tag" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e9baa97d-6eb9-4a82-9d2a-82d7f6a11e3b" absoluteBounds="2.14, 2.835, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.625 : 2.97199625651042); (4.125 : 2.97199625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/PhotoTagsDataDataContext/Image/Image_Tag" />
+      <nodes>
+        <classShapeMoniker Id="fba06fb7-3232-415f-8be3-e070d7a83dad" />
+        <classShapeMoniker Id="1aa0a6e5-21be-431f-9516-06330d281d8b" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

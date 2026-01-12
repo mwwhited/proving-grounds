@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="MediaCollectionData">
+  <DataContextMoniker Name="/MediaCollectionDataDataContext" />
+  <nestedChildShapes>
+    <classShape Id="aa6caf5e-fa7b-444d-aabf-9c7f6a461cec" absoluteBounds="0.75, 0.75, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/MediaCollectionDataDataContext/CodeType" />
+      <nestedChildShapes>
+        <elementListCompartment Id="07302359-6118-4175-9ada-8346e7680920" absoluteBounds="0.76500000000000012, 1.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a678306b-66b9-411d-83e3-50243f9dbfbe" absoluteBounds="3.75, 0.75, 2, 1.1939925130208327">
+      <DataClassMoniker Name="/MediaCollectionDataDataContext/Genre" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5a81903d-6b8c-4480-a2bc-96570727fce1" absoluteBounds="3.765, 1.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="712e318d-2231-4b77-9ce9-9218cf8ed7b9" absoluteBounds="0.75, 3.75, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/MediaCollectionDataDataContext/GenreMedia" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1ecc684c-7fa3-4ed8-bca8-f1830e44b838" absoluteBounds="0.76500000000000012, 4.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5d6b0710-8728-4652-b8dd-fe85849761e0" absoluteBounds="3.75, 2.75, 2, 3.1170068359375005">
+      <DataClassMoniker Name="/MediaCollectionDataDataContext/Media" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9189b2cf-108e-420f-acb6-e3c6dacc0ead" absoluteBounds="3.7649999999999997, 3.21, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="29f54517-c5d0-4c87-80fa-76d88ac979a9" absoluteBounds="6.75, 0.75, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/MediaCollectionDataDataContext/MediaType" />
+      <nestedChildShapes>
+        <elementListCompartment Id="983ac800-b08d-4d51-a8bb-a42cc694a680" absoluteBounds="6.765, 1.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

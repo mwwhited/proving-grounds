@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="MyAuthentication" Class="DataMyAuthenticationDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=TROJAN\SQLEXPRESS;Initial Catalog=MyAuthentication;Integrated Security=True" SettingsObjectName="WhitedUS.Security.Properties.Settings" SettingsPropertyName="MyAuthenticationConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.MySession" Member="MySessions">
+    <Type Name="MySession">
+      <Column Name="UniqueID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ApplicationID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DateExpired" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DateLocked" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LockedId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Locked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SessionItems" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Flags" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="MyUser_MySession" Member="MyUser" ThisKey="UserID" Type="MyUser" IsForeignKey="true" />
+      <Association Name="MyApplication_MySession" Member="MyApplication" ThisKey="ApplicationID" Type="MyApplication" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MyUser" Member="MyUsers">
+    <Type Name="MyUser">
+      <Column Name="UniqueID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EmailAddress" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="IsDisabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordHash" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DateLastLogin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateLastActivity" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateLastPasswordChange" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateLastLocked" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ChangePasswordQuestion" Type="System.String" DbType="NVarChar(1024)" CanBeNull="true" />
+      <Column Name="ChangePasswordAnswerHash" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="MyUser_MySession" Member="MySessions" OtherKey="UserID" Type="MySession" />
+      <Association Name="MyUser_MyUserApplicationRole" Member="MyUserApplicationRoles" OtherKey="UserID" Type="MyUserApplicationRole" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MyRole" Member="MyRoles">
+    <Type Name="MyRole">
+      <Column Name="UniqueID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RoleName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DateModified" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MyRole_MyApplicationRole" Member="MyApplicationRoles" OtherKey="RoleID" Type="MyApplicationRole" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MyApplication" Member="MyApplications">
+    <Type Name="MyApplication">
+      <Column Name="UniqueID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ApplicationName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DateModified" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IsEnabled" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="MyApplication_MySession" Member="MySessions" OtherKey="ApplicationID" Type="MySession" />
+      <Association Name="MyApplication_MyApplicationRole" Member="MyApplicationRoles" OtherKey="ApplicationID" Type="MyApplicationRole" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MyApplicationRole" Member="MyApplicationRoles">
+    <Type Name="MyApplicationRole">
+      <Column Name="ApplicationID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="RoleID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="UniqueID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="MyApplicationRole_MyUserApplicationRole" Member="MyUserApplicationRoles" OtherKey="ApplicationRoleID" Type="MyUserApplicationRole" />
+      <Association Name="MyApplication_MyApplicationRole" Member="MyApplication" ThisKey="ApplicationID" Type="MyApplication" IsForeignKey="true" />
+      <Association Name="MyRole_MyApplicationRole" Member="MyRole" ThisKey="RoleID" Type="MyRole" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MyUserApplicationRole" Member="MyUserApplicationRoles">
+    <Type Name="MyUserApplicationRole">
+      <Column Name="UserID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ApplicationRoleID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="MyApplicationRole_MyUserApplicationRole" Member="MyApplicationRole" ThisKey="ApplicationRoleID" Type="MyApplicationRole" IsForeignKey="true" />
+      <Association Name="MyUser_MyUserApplicationRole" Member="MyUser" ThisKey="UserID" Type="MyUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

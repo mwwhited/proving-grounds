@@ -1,0 +1,7 @@
+﻿ALTER TABLE [dbo].[GenreMedia]
+    ADD CONSTRAINT [FK_GenreMedia_Media1] FOREIGN KEY ([MediaID]) REFERENCES [dbo].[Media] ([LocalID]) ON DELETE NO ACTION ON UPDATE NO ACTION NOT FOR REPLICATION;
+
+
+GO
+ALTER TABLE [dbo].[GenreMedia] NOCHECK CONSTRAINT [FK_GenreMedia_Media1];
+

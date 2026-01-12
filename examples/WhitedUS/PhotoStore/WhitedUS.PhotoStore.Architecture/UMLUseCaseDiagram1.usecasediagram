@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<useCaseModelRoot xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="68dac21b-57b7-4d8d-bd45-07ebf1d63c2f" name="UMLUseCaseDiagram1" linkedPackageId="86a52925-18a5-4072-9760-80e030425310" xmlns="http://schemas.microsoft.com/dsltools/UseCaseModel">
+  <profileInstances>
+    <packageHasProfileInstances Id="2c52f5de-3475-4d22-ac99-810d6abb82e1">
+      <profileInstance Id="cb0f4699-1523-494d-b2d4-3ea9620a7384" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="b1ddf2e2-657b-4e3e-9243-f5f2fdacf6df">
+      <profileInstance Id="90730c9a-7229-4635-a082-e57565d866f9" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <useCaseModelRootHasTypes>
+      <actor Id="8c401ca5-095d-4ed9-a30a-95f8639b762f" name="Anonymous" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="cc04db24-2298-4c33-ad9a-c40a718e8e2c" />
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="947fc7c2-d180-4d8b-a9ac-29e60cf58cfd" name="User" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="27635891-677d-410f-ae9d-f8d0a2399834" />
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="373125cb-2584-4754-9e28-415974e41190" name="Author" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="8ca5277e-e45f-4f18-890b-81fd61df5544" />
+        <targetEnds>
+          <association Id="13a54dff-10d4-4463-8930-add238e7921a" isDerived="false" sourceEndRoleName="Author" targetEndRoleName="Manage Journal Entry" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="dbbe2867-ab5c-4448-aafc-e38136658e1b" LastKnownName="Manage Journal Entry" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="53460350-30f7-4620-a168-8501ffbeb940" name="Author" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="6a27d0be-2acf-4a81-b2c1-d884420aa340" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="54814020-8dc4-49d7-a35a-56e8f524eda8" name="Manage Journal Entry" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="96fb1e44-3924-40bc-b54e-4c3461c390ce" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="bdab7ef6-a551-44af-8bc5-a60b11cfa1d6" />
+          </association>
+        </targetEnds>
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="97f377db-56c7-4fa2-9054-e7630f8225e0" name="Admin" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="ebc057c7-af17-4513-a2a2-6926bf008e7b" />
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="dbbe2867-ab5c-4448-aafc-e38136658e1b" name="Manage Journal Entry" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="d924e3d5-16f7-42a9-8a50-fafbfe7d144d" />
+      </useCase>
+    </useCaseModelRootHasTypes>
+  </packagedElements>
+  <package Id="86a52925-18a5-4072-9760-80e030425310" name="WhitedUS.PhotoStore.Architecture">
+    <elementDefinition Id="38754314-5dea-4b40-8558-0e82af9ec88e" />
+  </package>
+</useCaseModelRoot>

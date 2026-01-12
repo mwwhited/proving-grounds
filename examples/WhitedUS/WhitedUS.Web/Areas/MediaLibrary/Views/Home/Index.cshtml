@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Media Library";
+}
+
+<h2>Media Library</h2>
+
+    <nav>
+        <ul>
+            <li>Media
+                <ul id="menu">
+                    <li>@Html.ActionLink("List", "List", "Media", new { Area = "MediaLibrary", }, new { })</li>
+                    @if (this.Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Create", "Create", "Media", new { Area = "MediaLibrary", }, new { })</li>
+                    }
+                </ul>
+            </li>
+
+            <li>Media Types
+                <ul id="menu">
+                    <li>@Html.ActionLink("List", "List", "MediaTypes", new { Area = "MediaLibrary", }, new { })</li>
+                    @if (this.Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Create", "Create", "MediaTypes", new { Area = "MediaLibrary", }, new { })</li>
+                    }
+                </ul>
+            </li>
+
+        </ul>
+    </nav>

@@ -1,0 +1,618 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="StackBoardModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="StackBoardModelStoreContainer">
+          <EntitySet Name="Groups" EntityType="StackBoardModel.Store.Groups" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Priorities" EntityType="StackBoardModel.Store.Priorities" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="States" EntityType="StackBoardModel.Store.States" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Tasks" EntityType="StackBoardModel.Store.Tasks" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TaskTypes" EntityType="StackBoardModel.Store.TaskTypes" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_States_TaskTypes" Association="StackBoardModel.Store.FK_States_TaskTypes">
+            <End Role="TaskTypes" EntitySet="TaskTypes" />
+            <End Role="States" EntitySet="States" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Groups" Association="StackBoardModel.Store.FK_Tasks_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Priorities" Association="StackBoardModel.Store.FK_Tasks_Priorities">
+            <End Role="Priorities" EntitySet="Priorities" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_States" Association="StackBoardModel.Store.FK_Tasks_States">
+            <End Role="States" EntitySet="States" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_TaskTypes" Association="StackBoardModel.Store.FK_Tasks_TaskTypes">
+            <End Role="TaskTypes" EntitySet="TaskTypes" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <!--Errors Found During Generation:
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'HId' in table 'StackBoard.dbo.Groups' was excluded.
+      -->
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="HIdString" Type="nvarchar" StoreGeneratedPattern="Computed" />
+          <Property Name="HIdLevel" Type="smallint" StoreGeneratedPattern="Computed" />
+          <Property Name="ParentID" Type="int" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Priorities">
+          <Key>
+            <PropertyRef Name="PriorityID" />
+          </Key>
+          <Property Name="PriorityID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Weight" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="States">
+          <Key>
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="StateID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="TaskTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'HId' in table 'StackBoard.dbo.Tasks' was excluded.
+      -->
+        <EntityType Name="Tasks">
+          <Key>
+            <PropertyRef Name="TaskID" />
+          </Key>
+          <Property Name="TaskID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TaskTypeID" Type="int" Nullable="false" />
+          <Property Name="GroupID" Type="int" Nullable="false" />
+          <Property Name="Subject" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="StateID" Type="int" Nullable="false" />
+          <Property Name="PriorityID" Type="int" Nullable="false" />
+          <Property Name="DueDate" Type="datetime" />
+          <Property Name="MetaData" Type="xml" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="HIdString" Type="nvarchar" StoreGeneratedPattern="Computed" />
+          <Property Name="HIdLevel" Type="smallint" StoreGeneratedPattern="Computed" />
+          <Property Name="ParentID" Type="int" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="TaskTypes">
+          <Key>
+            <PropertyRef Name="TaskTypeID" />
+          </Key>
+          <Property Name="TaskTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="HandlerType" Type="nvarchar(max)" />
+          <Property Name="Configuration" Type="xml" />
+        </EntityType>
+        <Association Name="FK_States_TaskTypes">
+          <End Role="TaskTypes" Type="StackBoardModel.Store.TaskTypes" Multiplicity="1" />
+          <End Role="States" Type="StackBoardModel.Store.States" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskTypes">
+              <PropertyRef Name="TaskTypeID" />
+            </Principal>
+            <Dependent Role="States">
+              <PropertyRef Name="TaskTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Groups">
+          <End Role="Groups" Type="StackBoardModel.Store.Groups" Multiplicity="1" />
+          <End Role="Tasks" Type="StackBoardModel.Store.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Priorities">
+          <End Role="Priorities" Type="StackBoardModel.Store.Priorities" Multiplicity="1" />
+          <End Role="Tasks" Type="StackBoardModel.Store.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Priorities">
+              <PropertyRef Name="PriorityID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="PriorityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_States">
+          <End Role="States" Type="StackBoardModel.Store.States" Multiplicity="1" />
+          <End Role="Tasks" Type="StackBoardModel.Store.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="States">
+              <PropertyRef Name="StateID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_TaskTypes">
+          <End Role="TaskTypes" Type="StackBoardModel.Store.TaskTypes" Multiplicity="1" />
+          <End Role="Tasks" Type="StackBoardModel.Store.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskTypes">
+              <PropertyRef Name="TaskTypeID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="TaskTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Group_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="groupId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Group_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="parentId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Group_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="groupId" Type="int" Mode="In" />
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="parentId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Groups_ExportAllXml" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Priority_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="priorityId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Priority_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="weight" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Priority_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="priorityId" Type="int" Mode="In" />
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="weight" Type="int" Mode="In" />
+        </Function>
+        <Function Name="State_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="stateId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="State_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="taskTypeID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="State_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="stateId" Type="int" Mode="In" />
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="taskTypeID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Task_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="taskId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Task_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="subject" Type="nvarchar" Mode="In" />
+          <Parameter Name="description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="taskTypeId" Type="int" Mode="In" />
+          <Parameter Name="groupId" Type="int" Mode="In" />
+          <Parameter Name="stateId" Type="int" Mode="In" />
+          <Parameter Name="priorityId" Type="int" Mode="In" />
+          <Parameter Name="parentId" Type="int" Mode="In" />
+          <Parameter Name="dueDate" Type="datetime" Mode="In" />
+          <Parameter Name="metaData" Type="xml" Mode="In" />
+        </Function>
+        <Function Name="Task_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="taskId" Type="int" Mode="In" />
+          <Parameter Name="subject" Type="nvarchar" Mode="In" />
+          <Parameter Name="description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="taskTypeId" Type="int" Mode="In" />
+          <Parameter Name="groupId" Type="int" Mode="In" />
+          <Parameter Name="stateId" Type="int" Mode="In" />
+          <Parameter Name="priorityId" Type="int" Mode="In" />
+          <Parameter Name="parentId" Type="int" Mode="In" />
+          <Parameter Name="dueDate" Type="datetime" Mode="In" />
+          <Parameter Name="metaData" Type="xml" Mode="In" />
+        </Function>
+        <Function Name="TaskType_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="taskTypeID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="TaskType_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="handlerType" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="configuration" Type="xml" Mode="In" />
+        </Function>
+        <Function Name="TaskType_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="taskTypeId" Type="int" Mode="In" />
+          <Parameter Name="name" Type="nvarchar" Mode="In" />
+          <Parameter Name="description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="handlerType" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="configuration" Type="xml" Mode="In" />
+        </Function>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StackBoardModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="StackBoardEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Groups" EntityType="StackBoardModel.Group" />
+          <EntitySet Name="Priorities" EntityType="StackBoardModel.Priority" />
+          <EntitySet Name="States" EntityType="StackBoardModel.State" />
+          <EntitySet Name="Tasks" EntityType="StackBoardModel.Task" />
+          <EntitySet Name="TaskTypes" EntityType="StackBoardModel.TaskType" />
+          <AssociationSet Name="FK_Tasks_Groups" Association="StackBoardModel.FK_Tasks_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_Priorities" Association="StackBoardModel.FK_Tasks_Priorities">
+            <End Role="Priorities" EntitySet="Priorities" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_States_TaskTypes" Association="StackBoardModel.FK_States_TaskTypes">
+            <End Role="TaskTypes" EntitySet="TaskTypes" />
+            <End Role="States" EntitySet="States" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_States" Association="StackBoardModel.FK_Tasks_States">
+            <End Role="States" EntitySet="States" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tasks_TaskTypes" Association="StackBoardModel.FK_Tasks_TaskTypes">
+            <End Role="TaskTypes" EntitySet="TaskTypes" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <FunctionImport Name="GroupExport" ReturnType="Collection(String)" />
+        </EntityContainer>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="GroupID" />
+          </Key>
+          <Property Name="GroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="HIdString" Type="String" MaxLength="4000" Unicode="true" FixedLength="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="HIdLevel" Type="Int16" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ParentID" Type="Int32" annotation:StoreGeneratedPattern="Computed" Nullable="true" />
+          <NavigationProperty Name="Tasks" Relationship="StackBoardModel.FK_Tasks_Groups" FromRole="Groups" ToRole="Tasks" />
+        </EntityType>
+        <EntityType Name="Priority">
+          <Key>
+            <PropertyRef Name="PriorityID" />
+          </Key>
+          <Property Name="PriorityID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Tasks" Relationship="StackBoardModel.FK_Tasks_Priorities" FromRole="Priorities" ToRole="Tasks" />
+          <Property Type="Int32" Name="Weight" Nullable="false" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="StateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="TaskTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TaskType" Relationship="StackBoardModel.FK_States_TaskTypes" FromRole="States" ToRole="TaskTypes" />
+          <NavigationProperty Name="Tasks" Relationship="StackBoardModel.FK_Tasks_States" FromRole="States" ToRole="Tasks" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="TaskID" />
+          </Key>
+          <Property Name="TaskID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskTypeID" Type="Int32" Nullable="false" />
+          <Property Name="GroupID" Type="Int32" Nullable="false" />
+          <Property Name="Subject" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="StateID" Type="Int32" Nullable="false" />
+          <Property Name="PriorityID" Type="Int32" Nullable="false" />
+          <Property Name="DueDate" Type="DateTime" />
+          <Property Name="MetaData" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" />
+          <Property Name="HIdString" Type="String" MaxLength="4000" Unicode="true" FixedLength="false" annotation:StoreGeneratedPattern="Computed" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
+          <Property Name="HIdLevel" Type="Int16" annotation:StoreGeneratedPattern="Computed" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Private" />
+          <Property Name="ParentID" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Group" Relationship="StackBoardModel.FK_Tasks_Groups" FromRole="Tasks" ToRole="Groups" />
+          <NavigationProperty Name="Priority" Relationship="StackBoardModel.FK_Tasks_Priorities" FromRole="Tasks" ToRole="Priorities" />
+          <NavigationProperty Name="State" Relationship="StackBoardModel.FK_Tasks_States" FromRole="Tasks" ToRole="States" />
+          <NavigationProperty Name="TaskType" Relationship="StackBoardModel.FK_Tasks_TaskTypes" FromRole="Tasks" ToRole="TaskTypes" />
+        </EntityType>
+        <EntityType Name="TaskType">
+          <Key>
+            <PropertyRef Name="TaskTypeID" />
+          </Key>
+          <Property Name="TaskTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Configuration" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="States" Relationship="StackBoardModel.FK_States_TaskTypes" FromRole="TaskTypes" ToRole="States" />
+          <NavigationProperty Name="Tasks" Relationship="StackBoardModel.FK_Tasks_TaskTypes" FromRole="TaskTypes" ToRole="Tasks" />
+          <Property Type="String" Name="HandlerType" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Tasks_Groups">
+          <End Role="Groups" Type="StackBoardModel.Group" Multiplicity="1" />
+          <End Role="Tasks" Type="StackBoardModel.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="GroupID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_Priorities">
+          <End Role="Priorities" Type="StackBoardModel.Priority" Multiplicity="1" />
+          <End Role="Tasks" Type="StackBoardModel.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Priorities">
+              <PropertyRef Name="PriorityID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="PriorityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_States_TaskTypes">
+          <End Role="TaskTypes" Type="StackBoardModel.TaskType" Multiplicity="1" />
+          <End Role="States" Type="StackBoardModel.State" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskTypes">
+              <PropertyRef Name="TaskTypeID" />
+            </Principal>
+            <Dependent Role="States">
+              <PropertyRef Name="TaskTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_States">
+          <End Role="States" Type="StackBoardModel.State" Multiplicity="1" />
+          <End Role="Tasks" Type="StackBoardModel.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="States">
+              <PropertyRef Name="StateID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tasks_TaskTypes">
+          <End Role="TaskTypes" Type="StackBoardModel.TaskType" Multiplicity="1" />
+          <End Role="Tasks" Type="StackBoardModel.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskTypes">
+              <PropertyRef Name="TaskTypeID" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="TaskTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="StackBoardModelStoreContainer" CdmEntityContainer="StackBoardEntities">
+          <EntitySetMapping Name="Groups"><EntityTypeMapping TypeName="StackBoardModel.Group"><MappingFragment StoreEntitySet="Groups">
+            <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="HIdString" ColumnName="HIdString" />
+            <ScalarProperty Name="HIdLevel" ColumnName="HIdLevel" />
+            <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          </MappingFragment></EntityTypeMapping>
+            <EntityTypeMapping TypeName="StackBoardModel.Group">
+              <ModificationFunctionMapping>
+                <DeleteFunction FunctionName="StackBoardModel.Store.Group_Delete" >
+                  <ScalarProperty Name="GroupID" ParameterName="groupId" />
+                </DeleteFunction>
+                <UpdateFunction FunctionName="StackBoardModel.Store.Group_Update" >
+                  <ScalarProperty Name="ParentID" ParameterName="parentId" Version="Current" />
+                  <ScalarProperty Name="Description" ParameterName="description" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="name" Version="Current" />
+                  <ScalarProperty Name="GroupID" ParameterName="groupId" Version="Current" />
+                </UpdateFunction>
+                <InsertFunction FunctionName="StackBoardModel.Store.Group_Insert" >
+                  <ScalarProperty Name="ParentID" ParameterName="parentId" />
+                  <ScalarProperty Name="Description" ParameterName="description" />
+                  <ScalarProperty Name="Name" ParameterName="name" />
+                  <ResultBinding Name="GroupID" ColumnName="GroupID" />
+                </InsertFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Priorities"><EntityTypeMapping TypeName="StackBoardModel.Priority"><MappingFragment StoreEntitySet="Priorities">
+            <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="PriorityID" ColumnName="PriorityID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+          </MappingFragment></EntityTypeMapping>
+            <EntityTypeMapping TypeName="StackBoardModel.Priority">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="StackBoardModel.Store.Priority_Insert" >
+                  <ScalarProperty Name="Weight" ParameterName="weight" />
+                  <ScalarProperty Name="Description" ParameterName="description" />
+                  <ScalarProperty Name="Name" ParameterName="name" />
+                  <ResultBinding Name="PriorityID" ColumnName="PriorityID" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="StackBoardModel.Store.Priority_Update" >
+                  <ScalarProperty Name="Weight" ParameterName="weight" Version="Current" />
+                  <ScalarProperty Name="Description" ParameterName="description" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="name" Version="Current" />
+                  <ScalarProperty Name="PriorityID" ParameterName="priorityId" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="StackBoardModel.Store.Priority_Delete" >
+                  <ScalarProperty Name="PriorityID" ParameterName="priorityId" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="States"><EntityTypeMapping TypeName="StackBoardModel.State"><MappingFragment StoreEntitySet="States">
+            <ScalarProperty Name="StateID" ColumnName="StateID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="TaskTypeID" ColumnName="TaskTypeID" />
+          </MappingFragment></EntityTypeMapping>
+            <EntityTypeMapping TypeName="StackBoardModel.State">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="StackBoardModel.Store.State_Insert" >
+                  <ScalarProperty Name="TaskTypeID" ParameterName="taskTypeID" />
+                  <ScalarProperty Name="Description" ParameterName="description" />
+                  <ScalarProperty Name="Name" ParameterName="name" />
+                  <ResultBinding Name="StateID" ColumnName="StateID" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="StackBoardModel.Store.State_Update" >
+                  <ScalarProperty Name="TaskTypeID" ParameterName="taskTypeID" Version="Current" />
+                  <ScalarProperty Name="Description" ParameterName="description" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="name" Version="Current" />
+                  <ScalarProperty Name="StateID" ParameterName="stateId" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="StackBoardModel.Store.State_Delete" >
+                  <ScalarProperty Name="StateID" ParameterName="stateId" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Tasks"><EntityTypeMapping TypeName="StackBoardModel.Task"><MappingFragment StoreEntitySet="Tasks">
+            <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+            <ScalarProperty Name="TaskTypeID" ColumnName="TaskTypeID" />
+            <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+            <ScalarProperty Name="Subject" ColumnName="Subject" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="StateID" ColumnName="StateID" />
+            <ScalarProperty Name="PriorityID" ColumnName="PriorityID" />
+            <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+            <ScalarProperty Name="MetaData" ColumnName="MetaData" />
+            <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+            <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+            <ScalarProperty Name="HIdString" ColumnName="HIdString" />
+            <ScalarProperty Name="HIdLevel" ColumnName="HIdLevel" />
+            <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          </MappingFragment></EntityTypeMapping>
+            <EntityTypeMapping TypeName="StackBoardModel.Task">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="StackBoardModel.Store.Task_Insert" >
+                <ScalarProperty Name="MetaData" ParameterName="metaData" />
+                  <ScalarProperty Name="DueDate" ParameterName="dueDate" />
+                  <ScalarProperty Name="ParentID" ParameterName="parentId" />
+                  <ScalarProperty Name="PriorityID" ParameterName="priorityId" />
+                  <ScalarProperty Name="StateID" ParameterName="stateId" />
+                  <ScalarProperty Name="GroupID" ParameterName="groupId" />
+                  <ScalarProperty Name="TaskTypeID" ParameterName="taskTypeId" />
+                  <ScalarProperty Name="Description" ParameterName="description" />
+                  <ScalarProperty Name="Subject" ParameterName="subject" />
+                  <ResultBinding Name="TaskID" ColumnName="TaskID" />
+                  <ResultBinding Name="CreatedDate" ColumnName="CreatedDate" />
+                  <ResultBinding Name="ModifiedDate" ColumnName="ModifiedDate" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="StackBoardModel.Store.Task_Update" >
+                  <ScalarProperty Name="MetaData" ParameterName="metaData" Version="Current" />
+                  <ScalarProperty Name="DueDate" ParameterName="dueDate" Version="Current" />
+                  <ScalarProperty Name="ParentID" ParameterName="parentId" Version="Current" />
+                  <ScalarProperty Name="PriorityID" ParameterName="priorityId" Version="Current" />
+                  <ScalarProperty Name="StateID" ParameterName="stateId" Version="Current" />
+                  <ScalarProperty Name="GroupID" ParameterName="groupId" Version="Current" />
+                  <ScalarProperty Name="TaskTypeID" ParameterName="taskTypeId" Version="Current" />
+                  <ScalarProperty Name="Description" ParameterName="description" Version="Current" />
+                  <ScalarProperty Name="Subject" ParameterName="subject" Version="Current" />
+                  <ScalarProperty Name="TaskID" ParameterName="taskId" Version="Current" />
+                  <ResultBinding Name="CreatedDate" ColumnName="CreatedDate" />
+                  <ResultBinding Name="ModifiedDate" ColumnName="ModifiedDate" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="StackBoardModel.Store.Task_Delete" >
+                  <ScalarProperty Name="TaskID" ParameterName="taskId" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="TaskTypes"><EntityTypeMapping TypeName="StackBoardModel.TaskType"><MappingFragment StoreEntitySet="TaskTypes">
+            <ScalarProperty Name="HandlerType" ColumnName="HandlerType" />
+                <ScalarProperty Name="TaskTypeID" ColumnName="TaskTypeID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="Configuration" ColumnName="Configuration" />
+          </MappingFragment></EntityTypeMapping>
+            <EntityTypeMapping TypeName="StackBoardModel.TaskType">
+              <ModificationFunctionMapping>
+                <DeleteFunction FunctionName="StackBoardModel.Store.TaskType_Delete" >
+                  <ScalarProperty Name="TaskTypeID" ParameterName="taskTypeID" />
+                </DeleteFunction>
+                <UpdateFunction FunctionName="StackBoardModel.Store.TaskType_Update" >
+                  <ScalarProperty Name="HandlerType" ParameterName="handlerType" Version="Current" />
+                  <ScalarProperty Name="TaskTypeID" ParameterName="taskTypeId" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="name" Version="Current" />
+                  <ScalarProperty Name="Description" ParameterName="description" Version="Current" />
+                  <ScalarProperty Name="Configuration" ParameterName="configuration" Version="Current" />
+                </UpdateFunction>
+                <InsertFunction FunctionName="StackBoardModel.Store.TaskType_Insert" >
+                  <ScalarProperty Name="HandlerType" ParameterName="handlerType" />
+                  <ScalarProperty Name="Configuration" ParameterName="configuration" />
+                  <ScalarProperty Name="Description" ParameterName="description" />
+                  <ScalarProperty Name="Name" ParameterName="name" />
+                  <ResultBinding Name="TaskTypeID" ColumnName="TaskTypeID" />
+                </InsertFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping></EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GroupExport" FunctionName="StackBoardModel.Store.Groups_ExportAllXml" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="StackBoardModel">
+        <EntityTypeShape EntityType="StackBoardModel.Group" Width="1.5" PointX="3" PointY="0.75" Height="2.364889322916667" IsExpanded="true" />
+        <EntityTypeShape EntityType="StackBoardModel.Priority" Width="1.5" PointX="3" PointY="7.875" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="StackBoardModel.State" Width="1.5" PointX="3" PointY="4.125" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="StackBoardModel.Task" Width="1.5" PointX="5.25" PointY="3" Height="4.4802050781250031" IsExpanded="true" />
+        <EntityTypeShape EntityType="StackBoardModel.TaskType" Width="1.5" PointX="0.75" PointY="3.625" Height="2.3648893229166656" IsExpanded="true" />
+        <AssociationConnector Association="StackBoardModel.FK_Tasks_Groups" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="1.8749995" />
+          <ConnectorPoint PointX="6" PointY="1.8749995" />
+          <ConnectorPoint PointX="6" PointY="3" />
+        </AssociationConnector>
+        <AssociationConnector Association="StackBoardModel.FK_Tasks_Priorities" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="8.21875" />
+          <ConnectorPoint PointX="5.46875" PointY="8.21875" />
+          <ConnectorPoint PointX="5.46875" PointY="7.4802050781250031" />
+        </AssociationConnector>
+        <AssociationConnector Association="StackBoardModel.FK_States_TaskTypes" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="5.0574446614583328" />
+          <ConnectorPoint PointX="3" PointY="5.0574446614583328" />
+        </AssociationConnector>
+        <AssociationConnector Association="StackBoardModel.FK_Tasks_States" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="5.2112939453125" />
+          <ConnectorPoint PointX="5.25" PointY="5.2112939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="StackBoardModel.FK_Tasks_TaskTypes" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="3.84375" />
+          <ConnectorPoint PointX="5.25" PointY="3.84375" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

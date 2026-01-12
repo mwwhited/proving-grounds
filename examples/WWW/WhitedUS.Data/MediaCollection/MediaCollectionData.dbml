@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="mediaCollection" Class="MediaCollectionDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=TROJAN\SQLEXPRESS;Initial Catalog=mediaCollection;Integrated Security=True" SettingsObjectName="WhitedUS.Data.Properties.Settings" SettingsPropertyName="mediaCollectionConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.CodeTypes" Member="CodeTypes">
+    <Type Name="CodeType">
+      <Column Name="CodeTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodeType" Member="Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CodeTypeLong" Member="LongName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CodeTypeURL" Member="BaseUrl" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Genre" Member="Genres">
+    <Type Name="Genre">
+      <Column Name="GenreID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Genre" Member="Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GenreMedia" Member="GenreMedias">
+    <Type Name="GenreMedia">
+      <Column Name="GenreMediaID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Genre" Member="GenreID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Media" Member="MediaID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Media" Member="Medias">
+    <Type Name="Media">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Rating" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Year" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Format" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Length" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MediaType" Member="MediaTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Have" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="BoxTitle" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="DiskNumber" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MediaTypes" Member="MediaTypes">
+    <Type Name="MediaType">
+      <Column Name="MediaTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MediaType" Member="Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CodeType" Member="CodeTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

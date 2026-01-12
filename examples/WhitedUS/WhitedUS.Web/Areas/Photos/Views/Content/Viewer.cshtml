@@ -1,0 +1,146 @@
+﻿@model DirectoryPageModel
+@{
+    this.ViewBag.Title = "Viewer";
+
+    var baseUrl = this.Url.Action("Access", "Content", new { area = "Photos", pathInfo = "", });
+    var exifUrl = this.Url.Action("EXIF", "Content", new { area = "Photos", pathInfo = "", });
+
+    var _model = this.Model;
+    var _current = this.Model.Data.FirstOrDefault() ?? new FileModel();
+    var _exif = new MetaDataModel();
+}
+       
+           
+@if (false)
+{
+    <script src="../../../../Scripts/jquery-1.8.2-vsdoc.js" type="text/javascript"></script> 
+    <script src="../../../../Scripts/jquery.linq-vsdoc.js" type="text/javascript"></script> 
+    <script src="../../../../Scripts/knockout-2.1.0.debug.js" type="text/javascript"></script> 
+    <script src="../../../../Scripts/knockout.validation.debug.js" type="text/javascript"></script> 
+}
+
+@section Header{
+    <script src="@Url.Content("~/Areas/Photos/Scripts/Viewer.js")" type="text/javascript"></script> 
+
+    <script type="text/javascript">
+        var viewerUrl = '@baseUrl';
+        var viewerExifUrl = '@exifUrl';
+
+        var viewModel = {
+            model: ko.mapping.fromJS(@_model.ToJson()),
+            current: ko.mapping.fromJS(@_current.ToJson()),
+            exif: ko.mapping.fromJS(@_exif.ToJson()),
+        };
+
+        $(function () {                 
+            ko.applyBindings(viewModel); 
+            loadViewer();
+            $(window).hashchange(function () {
+                loadViewer();
+            });
+        });
+    </script>
+
+    <style>
+        #photoViewer-Panel
+        {
+            background-color: #cccc00;
+        }
+        #photoViewer-Thumbs
+        {
+            width: 500px;
+        }
+        #photoViewer-Thumbs-Photos
+        {
+            width: 2560px;
+            height: 128px;
+            overflow: auto;
+        }
+        #photoViewer-Thumbs-Photos.span
+        {
+            width: 128px;
+            height: 128px;
+        }
+    </style>
+}
+
+<h2>Viewer</h2>
+
+<div id="photoViewer">
+    <div>
+        <a id="photoViewer-Set-Parent" data-bind="attr: { href: '#/' + model.Parent() }"><span id="photoViewer-Parent-Name" data-bind="text: model.ParentName"></span></a>/<span id="photoViewer-Name" data-bind="text: model.Name"></span>
+        (<span id="photoViewer-Name" data-bind="text: model.Page"></span>)
+    </div>
+    <div id="photoViewer-Panel" data-bind="if: viewModel.current.Type() == 'File'">
+        <table>
+            <tr>
+                <td>
+                    <img data-bind="attr: { src: viewerUrl + '/' + current.Path() + '?factor=11', title: current.Name  }" />
+                </td>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr data-bind="if: current.Name">
+                                <td class="exif-header">Name</td>
+                                    <td class="exif-data" data-bind="text: current.Name"></td>
+                            </tr>
+                            <tr data-bind="if: current.Path">
+                                <td class="exif-header">Path</td>
+                                    <td class="exif-data" data-bind="text: current.Path"></td>
+                            </tr>
+                            <tr data-bind="if: exif.ImageEXIF_Make && exif.ImageEXIF_Model">
+                                <td class="exif-header">Make/Model</td>
+                                <td>
+                                    <span class="exif-data" data-bind="text: exif.ImageEXIF_Make"></span>/<span class="exif-data" data-bind="text: exif.ImageEXIF_Model"></span>
+                                </td>
+                            </tr>
+                        
+                            <tr data-bind="if: exif.MaxFactor">
+                                <td class="exif-header">Max Factor</td>
+                                    <td class="exif-data" data-bind="text: exif.MaxFactor"></td>
+                            </tr>
+                            <tr data-bind="if: exif.Image_Width && exif.Image_Height">
+                                <td class="exif-header">Dimensions</td>
+                                <td>
+                                    <span class="exif-data" data-bind="text: exif.Image_Height"></span>x<span class="exif-data" data-bind="text: exif.Image_Width"></span>
+                                </td>
+                            </tr>
+                            <tr data-bind="if: exif.ImageEXIF_DateTimeDigitized">
+                                <td class="exif-header">Taken</td>
+                                    <td class="exif-data" data-bind="text: exif.ImageEXIF_DateTimeDigitized"></td>
+                            </tr>
+                            <tr data-bind="if: exif.ImageEXIF_FNumber">
+                                <td class="exif-header">f/Stop</td>
+                                    <td class="exif-data" data-bind="text: exif.ImageEXIF_FNumber"></td>
+                            </tr>
+                            <tr data-bind="if: exif.ImageEXIF_FocalLengthIn35mmFilm">
+                                <td class="exif-header">Focal Length</td>
+                                    <td class="exif-data" data-bind="text: exif.ImageEXIF_FocalLengthIn35mmFilm"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <a id="photoViewer-Panel-Back">&lt;&lt;</a>
+        <a id="photoViewer-Panel-Play">|&gt;</a>
+        <a id="photoViewer-Panel-Stop">[]</a>
+        <a id="photoViewer-Panel-Next">&gt;&gt;</a>
+    </div>
+    <div id="photoViewer-Thumbs">
+        <a id="photoViewer-Thumbs-Back">&lt;&lt;</a>
+        <div id="photoViewer-Thumbs-Photos" data-bind="foreach: model.Data">
+            <span data-bind="if: Type() == 'Directory'">
+                <a data-bind="attr: { href: '#/' + Path() }">
+                    <img data-bind="attr: { src: viewerUrl + '/' + Thumbnail() + '?factor=7', title: Name  }" />
+                </a>
+            </span>
+            <span data-bind="if: Type() == 'File'">
+                <a data-bind="click: showImage">
+                    <img data-bind="attr: { src: viewerUrl + '/' + Path() + '?factor=7', title: Name  }" />
+                </a>
+            </span>
+        </div>
+        <a id="photoViewer-Thumbs-Next">&gt;&gt;</a>
+    </div>
+</div>

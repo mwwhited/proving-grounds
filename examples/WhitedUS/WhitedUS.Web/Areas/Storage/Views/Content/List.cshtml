@@ -1,0 +1,9 @@
+﻿@model IEnumerable<WhitedUS.Shared.Models.ContentModel>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+
+@Html.Telerik().Grid(this.Model).Name("FolderGrid").Pageable(paging => paging.Enabled(true));

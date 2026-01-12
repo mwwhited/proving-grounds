@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="3150d298-5abd-4162-a753-9dbd344f00cb" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:5160/Services/NetworkRelay.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="NetworkRelay.xsd" MetadataType="Schema" ID="4c9b47c1-84d9-437d-9335-55f1b05e26bc" SourceId="1" SourceUrl="http://localhost:5160/Services/NetworkRelay.svc?xsd=xsd0" />
+    <MetadataFile FileName="NetworkRelay.disco" MetadataType="Disco" ID="58f62b16-28eb-4f0f-80e5-de84c3018fc8" SourceId="1" SourceUrl="http://localhost:5160/Services/NetworkRelay.svc?disco" />
+    <MetadataFile FileName="NetworkRelay.wsdl" MetadataType="Wsdl" ID="979829de-bfb8-482a-86cc-c88787f2571f" SourceId="1" SourceUrl="http://localhost:5160/Services/NetworkRelay.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="NetworkRelay1.xsd" MetadataType="Schema" ID="b9c861c6-7497-4d09-b851-b998433a860f" SourceId="1" SourceUrl="http://localhost:5160/Services/NetworkRelay.svc?xsd=xsd2" />
+    <MetadataFile FileName="ConnectionService2.wsdl" MetadataType="Wsdl" ID="07700fd6-3aae-4d64-9b4d-62ea65840922" SourceId="1" SourceUrl="http://localhost:5160/Services/NetworkRelay.svc?wsdl" />
+    <MetadataFile FileName="NetworkRelay2.xsd" MetadataType="Schema" ID="b2994fd1-4771-4db9-94de-8a85c3dc53ca" SourceId="1" SourceUrl="http://localhost:5160/Services/NetworkRelay.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

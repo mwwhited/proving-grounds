@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="ChattyData">
+  <DataContextMoniker Name="/ChattyDataDataContext" />
+  <nestedChildShapes>
+    <classShape Id="8d9b4bc5-2848-4187-a021-3cc59485f440" absoluteBounds="5.875, 3.875, 2, 1.7708968098958327">
+      <DataClassMoniker Name="/ChattyDataDataContext/MessageQueue" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8c79abef-8d84-493a-afbc-9dfb81f3ecda" absoluteBounds="5.89, 4.335, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

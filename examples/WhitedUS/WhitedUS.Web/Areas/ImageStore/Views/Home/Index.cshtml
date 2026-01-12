@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Image Store";
+}
+
+<h2>Image Store</h2>
+
+<nav>
+    <ul id="menu">
+        <li>@Html.ActionLink("Folders", "Index", "Folder", new { Area = "ImageStore", }, new { })</li>
+        <li>@Html.ActionLink("Contents", "Index", "Content", new { Area = "ImageStore", }, new { })</li>
+    </ul>
+</nav>

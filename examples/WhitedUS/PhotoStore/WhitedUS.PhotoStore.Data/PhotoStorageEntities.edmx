@@ -1,0 +1,879 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PhotoStoreModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="PhotoStoreModelStoreContainer">
+          <EntitySet Name="BasePaths" EntityType="PhotoStoreModel.Store.BasePaths" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ResourceAttributes" EntityType="PhotoStoreModel.Store.ResourceAttributes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ResourceAttributeTypes" EntityType="PhotoStoreModel.Store.ResourceAttributeTypes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Resources" EntityType="PhotoStoreModel.Store.Resources" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ResourceTags" EntityType="PhotoStoreModel.Store.ResourceTags" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ResourceTypes" EntityType="PhotoStoreModel.Store.ResourceTypes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Scalings" EntityType="PhotoStoreModel.Store.Scalings" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Tags" EntityType="PhotoStoreModel.Store.Tags" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ResourceMetaData" EntityType="PhotoStoreModel.Store.ResourceMetaData" store:Type="Views" store:Schema="dbo" store:Name="ResourceMetaData">
+            <DefiningQuery>SELECT 
+      [ResourceMetaData].[ResourceID] AS [ResourceID], 
+      [ResourceMetaData].[Folder] AS [Folder], 
+      [ResourceMetaData].[Name] AS [Name], 
+      [ResourceMetaData].[ImageEXIF_ApertureValue] AS [ImageEXIF_ApertureValue], 
+      [ResourceMetaData].[ImageEXIF_ColorSpace] AS [ImageEXIF_ColorSpace], 
+      [ResourceMetaData].[ImageEXIF_CompressedBitsPerPixel] AS [ImageEXIF_CompressedBitsPerPixel], 
+      [ResourceMetaData].[ImageEXIF_Contrast] AS [ImageEXIF_Contrast], 
+      [ResourceMetaData].[ImageEXIF_CustomRendered] AS [ImageEXIF_CustomRendered], 
+      [ResourceMetaData].[ImageEXIF_DateTimeDigitized] AS [ImageEXIF_DateTimeDigitized], 
+      [ResourceMetaData].[ImageEXIF_DateTimeOriginal] AS [ImageEXIF_DateTimeOriginal], 
+      [ResourceMetaData].[ImageEXIF_DateTimeValue] AS [ImageEXIF_DateTimeValue], 
+      [ResourceMetaData].[ImageEXIF_DigitalZoomRatio] AS [ImageEXIF_DigitalZoomRatio], 
+      [ResourceMetaData].[ImageEXIF_ExifVersion] AS [ImageEXIF_ExifVersion], 
+      [ResourceMetaData].[ImageEXIF_ExposureBiasValue] AS [ImageEXIF_ExposureBiasValue], 
+      [ResourceMetaData].[ImageEXIF_ExposureMode] AS [ImageEXIF_ExposureMode], 
+      [ResourceMetaData].[ImageEXIF_ExposureProgram] AS [ImageEXIF_ExposureProgram], 
+      [ResourceMetaData].[ImageEXIF_ExposureTime] AS [ImageEXIF_ExposureTime], 
+      [ResourceMetaData].[ImageEXIF_FileSource] AS [ImageEXIF_FileSource], 
+      [ResourceMetaData].[ImageEXIF_Flash] AS [ImageEXIF_Flash], 
+      [ResourceMetaData].[ImageEXIF_FlashpixVersion] AS [ImageEXIF_FlashpixVersion], 
+      [ResourceMetaData].[ImageEXIF_FNumber] AS [ImageEXIF_FNumber], 
+      [ResourceMetaData].[ImageEXIF_FocalLength] AS [ImageEXIF_FocalLength], 
+      [ResourceMetaData].[ImageEXIF_FocalLengthIn35mmFilm] AS [ImageEXIF_FocalLengthIn35mmFilm], 
+      [ResourceMetaData].[ImageEXIF_FocalPlaneResolutionUnit] AS [ImageEXIF_FocalPlaneResolutionUnit], 
+      [ResourceMetaData].[ImageEXIF_FocalPlaneXResolution] AS [ImageEXIF_FocalPlaneXResolution], 
+      [ResourceMetaData].[ImageEXIF_FocalPlaneYResolution] AS [ImageEXIF_FocalPlaneYResolution], 
+      [ResourceMetaData].[ImageEXIF_GainControl] AS [ImageEXIF_GainControl], 
+      [ResourceMetaData].[ImageEXIF_ImageDescription] AS [ImageEXIF_ImageDescription], 
+      [ResourceMetaData].[ImageEXIF_ImageUniqueId] AS [ImageEXIF_ImageUniqueId], 
+      [ResourceMetaData].[ImageEXIF_ISOSpeedRatings] AS [ImageEXIF_ISOSpeedRatings], 
+      [ResourceMetaData].[ImageEXIF_JPEGInterchangeFormat] AS [ImageEXIF_JPEGInterchangeFormat], 
+      [ResourceMetaData].[ImageEXIF_JPEGInterchangeFormatLength] AS [ImageEXIF_JPEGInterchangeFormatLength], 
+      [ResourceMetaData].[ImageEXIF_LightSource] AS [ImageEXIF_LightSource], 
+      [ResourceMetaData].[ImageEXIF_Make] AS [ImageEXIF_Make], 
+      [ResourceMetaData].[ImageEXIF_MaxApertureValue] AS [ImageEXIF_MaxApertureValue], 
+      [ResourceMetaData].[ImageEXIF_MeteringMode] AS [ImageEXIF_MeteringMode], 
+      [ResourceMetaData].[ImageEXIF_Model] AS [ImageEXIF_Model], 
+      [ResourceMetaData].[ImageEXIF_Orientation] AS [ImageEXIF_Orientation], 
+      [ResourceMetaData].[ImageEXIF_OtherProperties] AS [ImageEXIF_OtherProperties], 
+      [ResourceMetaData].[ImageEXIF_PixelXDimension] AS [ImageEXIF_PixelXDimension], 
+      [ResourceMetaData].[ImageEXIF_PixelYDimension] AS [ImageEXIF_PixelYDimension], 
+      [ResourceMetaData].[ImageEXIF_ResolutionUnit] AS [ImageEXIF_ResolutionUnit], 
+      [ResourceMetaData].[ImageEXIF_Saturation] AS [ImageEXIF_Saturation], 
+      [ResourceMetaData].[ImageEXIF_SceneCaptureType] AS [ImageEXIF_SceneCaptureType], 
+      [ResourceMetaData].[ImageEXIF_SceneType] AS [ImageEXIF_SceneType], 
+      [ResourceMetaData].[ImageEXIF_SensingMethod] AS [ImageEXIF_SensingMethod], 
+      [ResourceMetaData].[ImageEXIF_Sharpness] AS [ImageEXIF_Sharpness], 
+      [ResourceMetaData].[ImageEXIF_ShutterSpeedValue] AS [ImageEXIF_ShutterSpeedValue], 
+      [ResourceMetaData].[ImageEXIF_Software] AS [ImageEXIF_Software], 
+      [ResourceMetaData].[ImageEXIF_SubjectDistanceRange] AS [ImageEXIF_SubjectDistanceRange], 
+      [ResourceMetaData].[ImageEXIF_SubSecTime] AS [ImageEXIF_SubSecTime], 
+      [ResourceMetaData].[ImageEXIF_SubSecTimeDigitized] AS [ImageEXIF_SubSecTimeDigitized], 
+      [ResourceMetaData].[ImageEXIF_SubSecTimeOriginal] AS [ImageEXIF_SubSecTimeOriginal], 
+      [ResourceMetaData].[ImageEXIF_UserComment] AS [ImageEXIF_UserComment], 
+      [ResourceMetaData].[ImageEXIF_WhiteBalance] AS [ImageEXIF_WhiteBalance], 
+      [ResourceMetaData].[ImageEXIF_XResolution] AS [ImageEXIF_XResolution], 
+      [ResourceMetaData].[ImageEXIF_YResolution] AS [ImageEXIF_YResolution], 
+      [ResourceMetaData].[ImageEXIF_YCbCrPositioning] AS [ImageEXIF_YCbCrPositioning], 
+      [ResourceMetaData].[Image_Height] AS [Image_Height], 
+      [ResourceMetaData].[Image_Width] AS [Image_Width]
+      FROM [dbo].[ResourceMetaData] AS [ResourceMetaData]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TagSummaryData" EntityType="PhotoStoreModel.Store.TagSummaryData" store:Type="Views" store:Schema="dbo" store:Name="TagSummaryData">
+            <DefiningQuery>SELECT 
+      [TagSummaryData].[TagID] AS [TagID], 
+      [TagSummaryData].[Label] AS [Label], 
+      [TagSummaryData].[Count] AS [Count], 
+      [TagSummaryData].[Total] AS [Total], 
+      [TagSummaryData].[Percent] AS [Percent], 
+      [TagSummaryData].[Tier] AS [Tier]
+      FROM [dbo].[TagSummaryData] AS [TagSummaryData]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ResourceAttributes_ResourceAttributeTypes" Association="PhotoStoreModel.Store.FK_ResourceAttributes_ResourceAttributeTypes">
+            <End Role="ResourceAttributeTypes" EntitySet="ResourceAttributeTypes" />
+            <End Role="ResourceAttributes" EntitySet="ResourceAttributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResourceAttributes_Resources" Association="PhotoStoreModel.Store.FK_ResourceAttributes_Resources">
+            <End Role="Resources" EntitySet="Resources" />
+            <End Role="ResourceAttributes" EntitySet="ResourceAttributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resources_BasePaths" Association="PhotoStoreModel.Store.FK_Resources_BasePaths">
+            <End Role="BasePaths" EntitySet="BasePaths" />
+            <End Role="Resources" EntitySet="Resources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resources_ResourceTypes" Association="PhotoStoreModel.Store.FK_Resources_ResourceTypes">
+            <End Role="ResourceTypes" EntitySet="ResourceTypes" />
+            <End Role="Resources" EntitySet="Resources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResourceTags_Resources" Association="PhotoStoreModel.Store.FK_ResourceTags_Resources">
+            <End Role="Resources" EntitySet="Resources" />
+            <End Role="ResourceTags" EntitySet="ResourceTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResourceTags_Tags" Association="PhotoStoreModel.Store.FK_ResourceTags_Tags">
+            <End Role="Tags" EntitySet="Tags" />
+            <End Role="ResourceTags" EntitySet="ResourceTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scalings_Resources" Association="PhotoStoreModel.Store.FK_Scalings_Resources">
+            <End Role="Resources" EntitySet="Resources" />
+            <End Role="Scalings" EntitySet="Scalings" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="BasePaths">
+          <Key>
+            <PropertyRef Name="BasePathID" />
+          </Key>
+          <Property Name="BasePathID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Path" Type="nvarchar" Nullable="false" MaxLength="512" />
+        </EntityType>
+        <EntityType Name="ResourceAttributes">
+          <Key>
+            <PropertyRef Name="ResourceAttributeID" />
+          </Key>
+          <Property Name="ResourceAttributeID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceAttributeTypeID" Type="int" Nullable="false" />
+          <Property Name="ResourceID" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResourceAttributeTypes">
+          <Key>
+            <PropertyRef Name="ResourceAttributeTypeID" />
+          </Key>
+          <Property Name="ResourceAttributeTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AttributeGroup" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="AttributeName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Attribute" Type="nvarchar" StoreGeneratedPattern="Computed" />
+          <Property Name="FieldType" Type="nvarchar" MaxLength="50" />
+          <Property Name="FieldLength" Type="int" />
+        </EntityType>
+        <EntityType Name="Resources">
+          <Key>
+            <PropertyRef Name="ResourceID" />
+          </Key>
+          <Property Name="ResourceID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceTypeID" Type="int" Nullable="false" />
+          <Property Name="BasePathID" Type="int" Nullable="false" />
+          <Property Name="Folder" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Extension" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="MaxFactor" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResourceTags">
+          <Key>
+            <PropertyRef Name="ResourceTagID" />
+          </Key>
+          <Property Name="ResourceTagID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceID" Type="int" Nullable="false" />
+          <Property Name="TagID" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResourceTypes">
+          <Key>
+            <PropertyRef Name="ResourceTypeID" />
+          </Key>
+          <Property Name="ResourceTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="MimeType" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Extension" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Scalings">
+          <Key>
+            <PropertyRef Name="ScallingID" />
+          </Key>
+          <Property Name="ScallingID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceID" Type="int" Nullable="false" />
+          <Property Name="Factor" Type="tinyint" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tags">
+          <Key>
+            <PropertyRef Name="TagID" />
+          </Key>
+          <Property Name="TagID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'PhotoStore.dbo.ResourceMetaData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="ResourceMetaData">
+          <Key>
+            <PropertyRef Name="ResourceID" />
+            
+            
+          </Key>
+          <Property Name="ResourceID" Type="int" Nullable="false" />
+          <Property Name="Folder" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="ImageEXIF_ApertureValue" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ColorSpace" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_CompressedBitsPerPixel" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_Contrast" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_CustomRendered" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_DateTimeDigitized" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_DateTimeOriginal" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_DateTimeValue" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_DigitalZoomRatio" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ExifVersion" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ExposureBiasValue" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ExposureMode" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ExposureProgram" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ExposureTime" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_FileSource" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_Flash" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_FlashpixVersion" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_FNumber" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_FocalLength" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_FocalLengthIn35mmFilm" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_FocalPlaneResolutionUnit" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_FocalPlaneXResolution" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_FocalPlaneYResolution" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_GainControl" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ImageDescription" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ImageUniqueId" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ISOSpeedRatings" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_JPEGInterchangeFormat" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_JPEGInterchangeFormatLength" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_LightSource" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_Make" Type="nvarchar" MaxLength="128" />
+          <Property Name="ImageEXIF_MaxApertureValue" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_MeteringMode" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_Model" Type="nvarchar" MaxLength="128" />
+          <Property Name="ImageEXIF_Orientation" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_OtherProperties" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_PixelXDimension" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_PixelYDimension" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ResolutionUnit" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_Saturation" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_SceneCaptureType" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_SceneType" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_SensingMethod" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_Sharpness" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_ShutterSpeedValue" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_Software" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_SubjectDistanceRange" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_SubSecTime" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_SubSecTimeDigitized" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_SubSecTimeOriginal" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_UserComment" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_WhiteBalance" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_XResolution" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_YResolution" Type="nvarchar(max)" />
+          <Property Name="ImageEXIF_YCbCrPositioning" Type="nvarchar(max)" />
+          <Property Name="Image_Height" Type="nvarchar(max)" />
+          <Property Name="Image_Width" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'PhotoStore.dbo.TagSummaryData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="TagSummaryData">
+          <Key>
+            <PropertyRef Name="TagID" />
+            <PropertyRef Name="Label" />
+          </Key>
+          <Property Name="TagID" Type="int" Nullable="false" />
+          <Property Name="Label" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Count" Type="int" />
+          <Property Name="Total" Type="int" />
+          <Property Name="Percent" Type="float" />
+          <Property Name="Tier" Type="int" />
+        </EntityType>
+        <Association Name="FK_ResourceAttributes_ResourceAttributeTypes">
+          <End Role="ResourceAttributeTypes" Type="PhotoStoreModel.Store.ResourceAttributeTypes" Multiplicity="1" />
+          <End Role="ResourceAttributes" Type="PhotoStoreModel.Store.ResourceAttributes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResourceAttributeTypes">
+              <PropertyRef Name="ResourceAttributeTypeID" />
+            </Principal>
+            <Dependent Role="ResourceAttributes">
+              <PropertyRef Name="ResourceAttributeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResourceAttributes_Resources">
+          <End Role="Resources" Type="PhotoStoreModel.Store.Resources" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResourceAttributes" Type="PhotoStoreModel.Store.ResourceAttributes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resources">
+              <PropertyRef Name="ResourceID" />
+            </Principal>
+            <Dependent Role="ResourceAttributes">
+              <PropertyRef Name="ResourceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resources_BasePaths">
+          <End Role="BasePaths" Type="PhotoStoreModel.Store.BasePaths" Multiplicity="1" />
+          <End Role="Resources" Type="PhotoStoreModel.Store.Resources" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BasePaths">
+              <PropertyRef Name="BasePathID" />
+            </Principal>
+            <Dependent Role="Resources">
+              <PropertyRef Name="BasePathID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resources_ResourceTypes">
+          <End Role="ResourceTypes" Type="PhotoStoreModel.Store.ResourceTypes" Multiplicity="1" />
+          <End Role="Resources" Type="PhotoStoreModel.Store.Resources" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResourceTypes">
+              <PropertyRef Name="ResourceTypeID" />
+            </Principal>
+            <Dependent Role="Resources">
+              <PropertyRef Name="ResourceTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResourceTags_Resources">
+          <End Role="Resources" Type="PhotoStoreModel.Store.Resources" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResourceTags" Type="PhotoStoreModel.Store.ResourceTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resources">
+              <PropertyRef Name="ResourceID" />
+            </Principal>
+            <Dependent Role="ResourceTags">
+              <PropertyRef Name="ResourceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResourceTags_Tags">
+          <End Role="Tags" Type="PhotoStoreModel.Store.Tags" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResourceTags" Type="PhotoStoreModel.Store.ResourceTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tags">
+              <PropertyRef Name="TagID" />
+            </Principal>
+            <Dependent Role="ResourceTags">
+              <PropertyRef Name="TagID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scalings_Resources">
+          <End Role="Resources" Type="PhotoStoreModel.Store.Resources" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Scalings" Type="PhotoStoreModel.Store.Scalings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resources">
+              <PropertyRef Name="ResourceID" />
+            </Principal>
+            <Dependent Role="Scalings">
+              <PropertyRef Name="ResourceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <!--Errors Found During Generation:
+      warning 6013: The table/view 'PhotoStore.dbo.MakeModelSummaryData' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="MakeModelSummaryData">
+        <Property Name="Make" Type="nvarchar" MaxLength="128" />
+        <Property Name="Model" Type="nvarchar" MaxLength="128" />
+        <Property Name="Count" Type="int" />
+      </EntityType>-->
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PhotoStoreModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="PhotoStoreEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BasePaths" EntityType="PhotoStoreModel.BasePath" />
+          <EntitySet Name="ResourceAttributes" EntityType="PhotoStoreModel.ResourceAttribute" />
+          <EntitySet Name="ResourceAttributeTypes" EntityType="PhotoStoreModel.ResourceAttributeType" />
+          <EntitySet Name="Resources" EntityType="PhotoStoreModel.Resource" />
+          <EntitySet Name="ResourceTypes" EntityType="PhotoStoreModel.ResourceType" />
+          <EntitySet Name="Scalings" EntityType="PhotoStoreModel.Scaling" />
+          <AssociationSet Name="FK_Resources_BasePaths" Association="PhotoStoreModel.FK_Resources_BasePaths">
+            <End Role="BasePaths" EntitySet="BasePaths" />
+            <End Role="Resources" EntitySet="Resources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResourceAttributes_ResourceAttributeTypes" Association="PhotoStoreModel.FK_ResourceAttributes_ResourceAttributeTypes">
+            <End Role="ResourceAttributeTypes" EntitySet="ResourceAttributeTypes" />
+            <End Role="ResourceAttributes" EntitySet="ResourceAttributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResourceAttributes_Resources" Association="PhotoStoreModel.FK_ResourceAttributes_Resources">
+            <End Role="Resources" EntitySet="Resources" />
+            <End Role="ResourceAttributes" EntitySet="ResourceAttributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resources_ResourceTypes" Association="PhotoStoreModel.FK_Resources_ResourceTypes">
+            <End Role="ResourceTypes" EntitySet="ResourceTypes" />
+            <End Role="Resources" EntitySet="Resources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scalings_Resources" Association="PhotoStoreModel.FK_Scalings_Resources">
+            <End Role="Resources" EntitySet="Resources" />
+            <End Role="Scalings" EntitySet="Scalings" />
+          </AssociationSet>
+          <EntitySet Name="ResourceMetaDatas" EntityType="PhotoStoreModel.ResourceMetaData" />
+          <EntitySet Name="ResourceTags" EntityType="PhotoStoreModel.ResourceTag" />
+          <EntitySet Name="Tags" EntityType="PhotoStoreModel.Tag" />
+          <AssociationSet Name="FK_ResourceTags_Resources" Association="PhotoStoreModel.FK_ResourceTags_Resources">
+            <End Role="Resource" EntitySet="Resources" />
+            <End Role="ResourceTag" EntitySet="ResourceTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ResourceTags_Tags" Association="PhotoStoreModel.FK_ResourceTags_Tags">
+            <End Role="Tag" EntitySet="Tags" />
+            <End Role="ResourceTag" EntitySet="ResourceTags" />
+          </AssociationSet>
+          <EntitySet Name="TagSummaryDatas" EntityType="PhotoStoreModel.TagSummaryData" />
+        </EntityContainer>
+        <EntityType Name="BasePath">
+          <Key>
+            <PropertyRef Name="BasePathID" />
+          </Key>
+          <Property Name="BasePathID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Path" Type="String" Nullable="false" MaxLength="512" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Resources" Relationship="PhotoStoreModel.FK_Resources_BasePaths" FromRole="BasePaths" ToRole="Resources" />
+        </EntityType>
+        <EntityType Name="ResourceAttribute">
+          <Key>
+            <PropertyRef Name="ResourceAttributeID" />
+          </Key>
+          <Property Name="ResourceAttributeID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceAttributeTypeID" Type="Int32" Nullable="false" />
+          <Property Name="ResourceID" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ResourceAttributeType" Relationship="PhotoStoreModel.FK_ResourceAttributes_ResourceAttributeTypes" FromRole="ResourceAttributes" ToRole="ResourceAttributeTypes" />
+          <NavigationProperty Name="Resource" Relationship="PhotoStoreModel.FK_ResourceAttributes_Resources" FromRole="ResourceAttributes" ToRole="Resources" />
+        </EntityType>
+        <EntityType Name="ResourceAttributeType">
+          <Key>
+            <PropertyRef Name="ResourceAttributeTypeID" />
+          </Key>
+          <Property Name="ResourceAttributeTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttributeGroup" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="AttributeName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ResourceAttributes" Relationship="PhotoStoreModel.FK_ResourceAttributes_ResourceAttributeTypes" FromRole="ResourceAttributeTypes" ToRole="ResourceAttributes" />
+          <Property Type="String" Name="Attribute" MaxLength="4000" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Type="String" Name="FieldType" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="FieldLength" />
+        </EntityType>
+        <EntityType Name="Resource">
+          <Key>
+            <PropertyRef Name="ResourceID" />
+          </Key>
+          <Property Name="ResourceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceTypeID" Type="Int32" Nullable="false" />
+          <Property Name="BasePathID" Type="Int32" Nullable="false" />
+          <Property Name="Folder" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Extension" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="BasePath" Relationship="PhotoStoreModel.FK_Resources_BasePaths" FromRole="Resources" ToRole="BasePaths" />
+          <NavigationProperty Name="ResourceAttributes" Relationship="PhotoStoreModel.FK_ResourceAttributes_Resources" FromRole="Resources" ToRole="ResourceAttributes" />
+          <NavigationProperty Name="ResourceType" Relationship="PhotoStoreModel.FK_Resources_ResourceTypes" FromRole="Resources" ToRole="ResourceTypes" />
+          <NavigationProperty Name="Scalings" Relationship="PhotoStoreModel.FK_Scalings_Resources" FromRole="Resources" ToRole="Scalings" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" />
+          <Property Type="Byte" Name="MaxFactor" Nullable="false" />
+          <NavigationProperty Name="ResourceTags" Relationship="PhotoStoreModel.FK_ResourceTags_Resources" FromRole="Resource" ToRole="ResourceTag" />
+        </EntityType>
+        <EntityType Name="ResourceType">
+          <Key>
+            <PropertyRef Name="ResourceTypeID" />
+          </Key>
+          <Property Name="ResourceTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="MimeType" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Resources" Relationship="PhotoStoreModel.FK_Resources_ResourceTypes" FromRole="ResourceTypes" ToRole="Resources" />
+          <Property Type="String" Name="Extension" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Scaling">
+          <Key>
+            <PropertyRef Name="ScallingID" />
+          </Key>
+          <Property Name="ScallingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceID" Type="Int32" Nullable="false" />
+          <Property Name="Factor" Type="Byte" Nullable="false" />
+          <Property Name="Data" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Resource" Relationship="PhotoStoreModel.FK_Scalings_Resources" FromRole="Scalings" ToRole="Resources" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Resources_BasePaths">
+          <End Role="BasePaths" Type="PhotoStoreModel.BasePath" Multiplicity="1" />
+          <End Role="Resources" Type="PhotoStoreModel.Resource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BasePaths">
+              <PropertyRef Name="BasePathID" />
+            </Principal>
+            <Dependent Role="Resources">
+              <PropertyRef Name="BasePathID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResourceAttributes_ResourceAttributeTypes">
+          <End Role="ResourceAttributeTypes" Type="PhotoStoreModel.ResourceAttributeType" Multiplicity="1" />
+          <End Role="ResourceAttributes" Type="PhotoStoreModel.ResourceAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResourceAttributeTypes">
+              <PropertyRef Name="ResourceAttributeTypeID" />
+            </Principal>
+            <Dependent Role="ResourceAttributes">
+              <PropertyRef Name="ResourceAttributeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResourceAttributes_Resources">
+          <End Role="Resources" Type="PhotoStoreModel.Resource" Multiplicity="1" />
+          <End Role="ResourceAttributes" Type="PhotoStoreModel.ResourceAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resources">
+              <PropertyRef Name="ResourceID" />
+            </Principal>
+            <Dependent Role="ResourceAttributes">
+              <PropertyRef Name="ResourceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resources_ResourceTypes">
+          <End Role="ResourceTypes" Type="PhotoStoreModel.ResourceType" Multiplicity="1" />
+          <End Role="Resources" Type="PhotoStoreModel.Resource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResourceTypes">
+              <PropertyRef Name="ResourceTypeID" />
+            </Principal>
+            <Dependent Role="Resources">
+              <PropertyRef Name="ResourceTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scalings_Resources">
+          <End Role="Resources" Type="PhotoStoreModel.Resource" Multiplicity="1" />
+          <End Role="Scalings" Type="PhotoStoreModel.Scaling" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resources">
+              <PropertyRef Name="ResourceID" />
+            </Principal>
+            <Dependent Role="Scalings">
+              <PropertyRef Name="ResourceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ResourceMetaData">
+          <Key>
+            <PropertyRef Name="ResourceID" />
+          </Key>
+          <Property Type="Int32" Name="ResourceID" Nullable="false" />
+          <Property Type="String" Name="Folder" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ApertureValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ColorSpace" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_CompressedBitsPerPixel" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_Contrast" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_CustomRendered" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_DateTimeDigitized" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_DateTimeOriginal" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_DateTimeValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_DigitalZoomRatio" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ExifVersion" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ExposureBiasValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ExposureMode" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ExposureProgram" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ExposureTime" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_FileSource" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_Flash" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_FlashpixVersion" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_FNumber" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_FocalLength" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_FocalLengthIn35mmFilm" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_FocalPlaneResolutionUnit" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_FocalPlaneXResolution" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_FocalPlaneYResolution" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_GainControl" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ImageDescription" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ImageUniqueId" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ISOSpeedRatings" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_JPEGInterchangeFormat" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_JPEGInterchangeFormatLength" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_LightSource" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_Make" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_MaxApertureValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_MeteringMode" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_Model" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_Orientation" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_OtherProperties" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_PixelXDimension" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_PixelYDimension" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ResolutionUnit" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_Saturation" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_SceneCaptureType" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_SceneType" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_SensingMethod" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_Sharpness" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_ShutterSpeedValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_Software" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_SubjectDistanceRange" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_SubSecTime" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_SubSecTimeDigitized" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_SubSecTimeOriginal" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_UserComment" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_WhiteBalance" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_XResolution" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_YResolution" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ImageEXIF_YCbCrPositioning" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Image_Height" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Image_Width" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ResourceTag">
+          <Key>
+            <PropertyRef Name="ResourceTagID" />
+          </Key>
+          <Property Type="Int64" Name="ResourceTagID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ResourceID" Nullable="false" />
+          <Property Type="Int32" Name="TagID" Nullable="false" />
+          <NavigationProperty Name="Resource" Relationship="PhotoStoreModel.FK_ResourceTags_Resources" FromRole="ResourceTag" ToRole="Resource" />
+          <NavigationProperty Name="Tag" Relationship="PhotoStoreModel.FK_ResourceTags_Tags" FromRole="ResourceTag" ToRole="Tag" />
+          <Property Type="DateTime" Name="CreatedOn" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="TagID" />
+          </Key>
+          <Property Type="Int32" Name="TagID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Label" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ResourceTags" Relationship="PhotoStoreModel.FK_ResourceTags_Tags" FromRole="Tag" ToRole="ResourceTag" />
+        </EntityType>
+        <Association Name="FK_ResourceTags_Resources">
+          <End Type="PhotoStoreModel.Resource" Role="Resource" Multiplicity="1" />
+          <End Type="PhotoStoreModel.ResourceTag" Role="ResourceTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resource">
+              <PropertyRef Name="ResourceID" />
+            </Principal>
+            <Dependent Role="ResourceTag">
+              <PropertyRef Name="ResourceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ResourceTags_Tags">
+          <End Type="PhotoStoreModel.Tag" Role="Tag" Multiplicity="1" />
+          <End Type="PhotoStoreModel.ResourceTag" Role="ResourceTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="TagID" />
+            </Principal>
+            <Dependent Role="ResourceTag">
+              <PropertyRef Name="TagID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TagSummaryData">
+          <Key>
+            <PropertyRef Name="TagID" />
+            <PropertyRef Name="Label" />
+          </Key>
+          <Property Type="Int32" Name="TagID" Nullable="false" />
+          <Property Type="String" Name="Label" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Count" />
+          <Property Type="Int32" Name="Total" />
+          <Property Type="Double" Name="Percent" />
+          <Property Type="Int32" Name="Tier" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PhotoStoreModelStoreContainer" CdmEntityContainer="PhotoStoreEntities">
+          <EntitySetMapping Name="BasePaths"><EntityTypeMapping TypeName="PhotoStoreModel.BasePath"><MappingFragment StoreEntitySet="BasePaths">
+            <ScalarProperty Name="BasePathID" ColumnName="BasePathID" />
+            <ScalarProperty Name="Path" ColumnName="Path" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ResourceAttributes"><EntityTypeMapping TypeName="PhotoStoreModel.ResourceAttribute"><MappingFragment StoreEntitySet="ResourceAttributes">
+            <ScalarProperty Name="ResourceAttributeID" ColumnName="ResourceAttributeID" />
+            <ScalarProperty Name="ResourceAttributeTypeID" ColumnName="ResourceAttributeTypeID" />
+            <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+            <ScalarProperty Name="Value" ColumnName="Value" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ResourceAttributeTypes"><EntityTypeMapping TypeName="PhotoStoreModel.ResourceAttributeType"><MappingFragment StoreEntitySet="ResourceAttributeTypes">
+            <ScalarProperty Name="FieldLength" ColumnName="FieldLength" />
+                <ScalarProperty Name="FieldType" ColumnName="FieldType" />
+                <ScalarProperty Name="Attribute" ColumnName="Attribute" />
+                <ScalarProperty Name="ResourceAttributeTypeID" ColumnName="ResourceAttributeTypeID" />
+            <ScalarProperty Name="AttributeGroup" ColumnName="AttributeGroup" />
+            <ScalarProperty Name="AttributeName" ColumnName="AttributeName" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Resources"><EntityTypeMapping TypeName="PhotoStoreModel.Resource"><MappingFragment StoreEntitySet="Resources">
+            <ScalarProperty Name="MaxFactor" ColumnName="MaxFactor" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+            <ScalarProperty Name="ResourceTypeID" ColumnName="ResourceTypeID" />
+            <ScalarProperty Name="BasePathID" ColumnName="BasePathID" />
+            <ScalarProperty Name="Folder" ColumnName="Folder" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Extension" ColumnName="Extension" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ResourceTypes"><EntityTypeMapping TypeName="PhotoStoreModel.ResourceType"><MappingFragment StoreEntitySet="ResourceTypes">
+            <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="ResourceTypeID" ColumnName="ResourceTypeID" />
+            <ScalarProperty Name="Label" ColumnName="Label" />
+            <ScalarProperty Name="MimeType" ColumnName="MimeType" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Scalings"><EntityTypeMapping TypeName="PhotoStoreModel.Scaling"><MappingFragment StoreEntitySet="Scalings">
+            <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ScallingID" ColumnName="ScallingID" />
+            <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+            <ScalarProperty Name="Factor" ColumnName="Factor" />
+            <ScalarProperty Name="Data" ColumnName="Data" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ResourceMetaDatas">
+            <EntityTypeMapping TypeName="PhotoStoreModel.ResourceMetaData">
+              <MappingFragment StoreEntitySet="ResourceMetaData">
+                <ScalarProperty Name="Image_Width" ColumnName="Image_Width" />
+                <ScalarProperty Name="Image_Height" ColumnName="Image_Height" />
+                <ScalarProperty Name="ImageEXIF_YCbCrPositioning" ColumnName="ImageEXIF_YCbCrPositioning" />
+                <ScalarProperty Name="ImageEXIF_YResolution" ColumnName="ImageEXIF_YResolution" />
+                <ScalarProperty Name="ImageEXIF_XResolution" ColumnName="ImageEXIF_XResolution" />
+                <ScalarProperty Name="ImageEXIF_WhiteBalance" ColumnName="ImageEXIF_WhiteBalance" />
+                <ScalarProperty Name="ImageEXIF_UserComment" ColumnName="ImageEXIF_UserComment" />
+                <ScalarProperty Name="ImageEXIF_SubSecTimeOriginal" ColumnName="ImageEXIF_SubSecTimeOriginal" />
+                <ScalarProperty Name="ImageEXIF_SubSecTimeDigitized" ColumnName="ImageEXIF_SubSecTimeDigitized" />
+                <ScalarProperty Name="ImageEXIF_SubSecTime" ColumnName="ImageEXIF_SubSecTime" />
+                <ScalarProperty Name="ImageEXIF_SubjectDistanceRange" ColumnName="ImageEXIF_SubjectDistanceRange" />
+                <ScalarProperty Name="ImageEXIF_Software" ColumnName="ImageEXIF_Software" />
+                <ScalarProperty Name="ImageEXIF_ShutterSpeedValue" ColumnName="ImageEXIF_ShutterSpeedValue" />
+                <ScalarProperty Name="ImageEXIF_Sharpness" ColumnName="ImageEXIF_Sharpness" />
+                <ScalarProperty Name="ImageEXIF_SensingMethod" ColumnName="ImageEXIF_SensingMethod" />
+                <ScalarProperty Name="ImageEXIF_SceneType" ColumnName="ImageEXIF_SceneType" />
+                <ScalarProperty Name="ImageEXIF_SceneCaptureType" ColumnName="ImageEXIF_SceneCaptureType" />
+                <ScalarProperty Name="ImageEXIF_Saturation" ColumnName="ImageEXIF_Saturation" />
+                <ScalarProperty Name="ImageEXIF_ResolutionUnit" ColumnName="ImageEXIF_ResolutionUnit" />
+                <ScalarProperty Name="ImageEXIF_PixelYDimension" ColumnName="ImageEXIF_PixelYDimension" />
+                <ScalarProperty Name="ImageEXIF_PixelXDimension" ColumnName="ImageEXIF_PixelXDimension" />
+                <ScalarProperty Name="ImageEXIF_OtherProperties" ColumnName="ImageEXIF_OtherProperties" />
+                <ScalarProperty Name="ImageEXIF_Orientation" ColumnName="ImageEXIF_Orientation" />
+                <ScalarProperty Name="ImageEXIF_Model" ColumnName="ImageEXIF_Model" />
+                <ScalarProperty Name="ImageEXIF_MeteringMode" ColumnName="ImageEXIF_MeteringMode" />
+                <ScalarProperty Name="ImageEXIF_MaxApertureValue" ColumnName="ImageEXIF_MaxApertureValue" />
+                <ScalarProperty Name="ImageEXIF_Make" ColumnName="ImageEXIF_Make" />
+                <ScalarProperty Name="ImageEXIF_LightSource" ColumnName="ImageEXIF_LightSource" />
+                <ScalarProperty Name="ImageEXIF_JPEGInterchangeFormatLength" ColumnName="ImageEXIF_JPEGInterchangeFormatLength" />
+                <ScalarProperty Name="ImageEXIF_JPEGInterchangeFormat" ColumnName="ImageEXIF_JPEGInterchangeFormat" />
+                <ScalarProperty Name="ImageEXIF_ISOSpeedRatings" ColumnName="ImageEXIF_ISOSpeedRatings" />
+                <ScalarProperty Name="ImageEXIF_ImageUniqueId" ColumnName="ImageEXIF_ImageUniqueId" />
+                <ScalarProperty Name="ImageEXIF_ImageDescription" ColumnName="ImageEXIF_ImageDescription" />
+                <ScalarProperty Name="ImageEXIF_GainControl" ColumnName="ImageEXIF_GainControl" />
+                <ScalarProperty Name="ImageEXIF_FocalPlaneYResolution" ColumnName="ImageEXIF_FocalPlaneYResolution" />
+                <ScalarProperty Name="ImageEXIF_FocalPlaneXResolution" ColumnName="ImageEXIF_FocalPlaneXResolution" />
+                <ScalarProperty Name="ImageEXIF_FocalPlaneResolutionUnit" ColumnName="ImageEXIF_FocalPlaneResolutionUnit" />
+                <ScalarProperty Name="ImageEXIF_FocalLengthIn35mmFilm" ColumnName="ImageEXIF_FocalLengthIn35mmFilm" />
+                <ScalarProperty Name="ImageEXIF_FocalLength" ColumnName="ImageEXIF_FocalLength" />
+                <ScalarProperty Name="ImageEXIF_FNumber" ColumnName="ImageEXIF_FNumber" />
+                <ScalarProperty Name="ImageEXIF_FlashpixVersion" ColumnName="ImageEXIF_FlashpixVersion" />
+                <ScalarProperty Name="ImageEXIF_Flash" ColumnName="ImageEXIF_Flash" />
+                <ScalarProperty Name="ImageEXIF_FileSource" ColumnName="ImageEXIF_FileSource" />
+                <ScalarProperty Name="ImageEXIF_ExposureTime" ColumnName="ImageEXIF_ExposureTime" />
+                <ScalarProperty Name="ImageEXIF_ExposureProgram" ColumnName="ImageEXIF_ExposureProgram" />
+                <ScalarProperty Name="ImageEXIF_ExposureMode" ColumnName="ImageEXIF_ExposureMode" />
+                <ScalarProperty Name="ImageEXIF_ExposureBiasValue" ColumnName="ImageEXIF_ExposureBiasValue" />
+                <ScalarProperty Name="ImageEXIF_ExifVersion" ColumnName="ImageEXIF_ExifVersion" />
+                <ScalarProperty Name="ImageEXIF_DigitalZoomRatio" ColumnName="ImageEXIF_DigitalZoomRatio" />
+                <ScalarProperty Name="ImageEXIF_DateTimeValue" ColumnName="ImageEXIF_DateTimeValue" />
+                <ScalarProperty Name="ImageEXIF_DateTimeOriginal" ColumnName="ImageEXIF_DateTimeOriginal" />
+                <ScalarProperty Name="ImageEXIF_DateTimeDigitized" ColumnName="ImageEXIF_DateTimeDigitized" />
+                <ScalarProperty Name="ImageEXIF_CustomRendered" ColumnName="ImageEXIF_CustomRendered" />
+                <ScalarProperty Name="ImageEXIF_Contrast" ColumnName="ImageEXIF_Contrast" />
+                <ScalarProperty Name="ImageEXIF_CompressedBitsPerPixel" ColumnName="ImageEXIF_CompressedBitsPerPixel" />
+                <ScalarProperty Name="ImageEXIF_ColorSpace" ColumnName="ImageEXIF_ColorSpace" />
+                <ScalarProperty Name="ImageEXIF_ApertureValue" ColumnName="ImageEXIF_ApertureValue" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Folder" ColumnName="Folder" />
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResourceTags">
+            <EntityTypeMapping TypeName="PhotoStoreModel.ResourceTag">
+              <MappingFragment StoreEntitySet="ResourceTags">
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="TagID" ColumnName="TagID" />
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+                <ScalarProperty Name="ResourceTagID" ColumnName="ResourceTagID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tags">
+            <EntityTypeMapping TypeName="PhotoStoreModel.Tag">
+              <MappingFragment StoreEntitySet="Tags">
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="TagID" ColumnName="TagID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TagSummaryDatas">
+            <EntityTypeMapping TypeName="PhotoStoreModel.TagSummaryData">
+              <MappingFragment StoreEntitySet="TagSummaryData">
+                <ScalarProperty Name="Tier" ColumnName="Tier" />
+                <ScalarProperty Name="Percent" ColumnName="Percent" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="TagID" ColumnName="TagID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="PhotoStorageEntities" ZoomLevel="64">
+        <EntityTypeShape EntityType="PhotoStoreModel.BasePath" Width="1.5" PointX="3" PointY="0.875" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotoStoreModel.ResourceAttribute" Width="2.125" PointX="6" PointY="3.125" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotoStoreModel.ResourceAttributeType" Width="2" PointX="8.75" PointY="3.125" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotoStoreModel.Resource" Width="2.375" PointX="3" PointY="3.125" Height="2.9417936197916656" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotoStoreModel.ResourceType" Width="1.5" PointX="1" PointY="3.125" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="PhotoStoreModel.Scaling" Width="1.5" PointX="3" PointY="7.125" Height="2.1725878906249996" IsExpanded="true" />
+        <AssociationConnector Association="PhotoStoreModel.FK_Resources_BasePaths" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.75" PointY="2.4706835937499996" />
+          <ConnectorPoint PointX="3.75" PointY="3.125" />
+        </AssociationConnector>
+        <AssociationConnector Association="PhotoStoreModel.FK_ResourceAttributes_ResourceAttributeTypes" ManuallyRouted="false">
+          <ConnectorPoint PointX="8.75" PointY="4.1151432291666667" />
+          <ConnectorPoint PointX="8.125" PointY="4.1151432291666667" />
+        </AssociationConnector>
+        <AssociationConnector Association="PhotoStoreModel.FK_ResourceAttributes_Resources" ManuallyRouted="false">
+          <ConnectorPoint PointX="5.375" PointY="4.2112939453125" />
+          <ConnectorPoint PointX="6" PointY="4.2112939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="PhotoStoreModel.FK_Resources_ResourceTypes" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.5" PointY="4.1151432291666667" />
+          <ConnectorPoint PointX="3" PointY="4.1151432291666667" />
+        </AssociationConnector>
+        <AssociationConnector Association="PhotoStoreModel.FK_Scalings_Resources" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.75" PointY="6.6436979166666656" />
+          <ConnectorPoint PointX="3.75" PointY="7.125" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="PhotoStoreModel.ResourceMetaData" Width="3.125" PointX="11.125" PointY="0.5" Height="12.556865234375003" />
+        <EntityTypeShape EntityType="PhotoStoreModel.ResourceTag" Width="1.5" PointX="6" PointY="5.75" Height="1.9802864583333317" />
+        <EntityTypeShape EntityType="PhotoStoreModel.Tag" Width="1.5" PointX="8.125" PointY="5.75" Height="1.5956835937500031" />
+        <AssociationConnector Association="PhotoStoreModel.FK_ResourceTags_Resources" >
+          <ConnectorPoint PointX="5.375" PointY="6.1968489583333328" />
+          <ConnectorPoint PointX="6" PointY="6.1968489583333328" />
+        </AssociationConnector>
+        <AssociationConnector Association="PhotoStoreModel.FK_ResourceTags_Tags" >
+          <ConnectorPoint PointX="8.125" PointY="6.5478417968750016" />
+          <ConnectorPoint PointX="7.5" PointY="6.5478417968750016" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="PhotoStoreModel.TagSummaryData" Width="2" PointX="8.75" PointY="0.5" Height="2.1725878906249996" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

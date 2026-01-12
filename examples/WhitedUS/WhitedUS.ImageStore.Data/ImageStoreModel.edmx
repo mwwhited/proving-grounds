@@ -1,0 +1,1612 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ImageStoreModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="ImageStoreModelStoreContainer">
+          <EntitySet Name="SessionContexts" EntityType="ImageStoreModel.Store.SessionContexts" store:Type="Tables" Schema="Core" />
+          <EntitySet Name="ContentFrames" EntityType="ImageStoreModel.Store.ContentFrames" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ContentItems" EntityType="ImageStoreModel.Store.ContentItems" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ContentMetaData" EntityType="ImageStoreModel.Store.ContentMetaData" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ContentTiles" EntityType="ImageStoreModel.Store.ContentTiles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ContentTypes" EntityType="ImageStoreModel.Store.ContentTypes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Folders" EntityType="ImageStoreModel.Store.Folders" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FoldersInRoles" EntityType="ImageStoreModel.Store.FoldersInRoles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Roles" EntityType="ImageStoreModel.Store.Roles" store:Type="Views" store:Schema="aspnet" store:Name="Roles">
+            <DefiningQuery>SELECT 
+      [Roles].[ApplicationId] AS [ApplicationId], 
+      [Roles].[RoleId] AS [RoleId], 
+      [Roles].[RoleName] AS [RoleName], 
+      [Roles].[LoweredRoleName] AS [LoweredRoleName], 
+      [Roles].[Description] AS [Description]
+      FROM [aspnet].[Roles] AS [Roles]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Users" EntityType="ImageStoreModel.Store.Users" store:Type="Views" store:Schema="aspnet" store:Name="Users">
+            <DefiningQuery>SELECT 
+      [Users].[ApplicationId] AS [ApplicationId], 
+      [Users].[UserId] AS [UserId], 
+      [Users].[UserName] AS [UserName], 
+      [Users].[LoweredUserName] AS [LoweredUserName], 
+      [Users].[MobileAlias] AS [MobileAlias], 
+      [Users].[IsAnonymous] AS [IsAnonymous], 
+      [Users].[LastActivityDate] AS [LastActivityDate]
+      FROM [aspnet].[Users] AS [Users]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UsersInRoles" EntityType="ImageStoreModel.Store.UsersInRoles" store:Type="Views" store:Schema="aspnet" store:Name="UsersInRoles">
+            <DefiningQuery>SELECT 
+      [UsersInRoles].[UserId] AS [UserId], 
+      [UsersInRoles].[RoleId] AS [RoleId]
+      FROM [aspnet].[UsersInRoles] AS [UsersInRoles]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ExifData" EntityType="ImageStoreModel.Store.ExifData" store:Type="Views" store:Schema="dbo" store:Name="ExifData">
+            <DefiningQuery>SELECT 
+      [ExifData].[ContentItemID] AS [ContentItemID], 
+      [ExifData].[EXIF.ApertureValue] AS [EXIF.ApertureValue], 
+      [ExifData].[EXIF.BrightnessValue] AS [EXIF.BrightnessValue], 
+      [ExifData].[EXIF.ColorSpace] AS [EXIF.ColorSpace], 
+      [ExifData].[EXIF.Contrast] AS [EXIF.Contrast], 
+      [ExifData].[EXIF.DateTimeDigitized] AS [EXIF.DateTimeDigitized], 
+      [ExifData].[EXIF.DateTimeOriginal] AS [EXIF.DateTimeOriginal], 
+      [ExifData].[EXIF.DigitalZoomRatio] AS [EXIF.DigitalZoomRatio], 
+      [ExifData].[EXIF.ExifVersion] AS [EXIF.ExifVersion], 
+      [ExifData].[EXIF.ExposureBiasValue] AS [EXIF.ExposureBiasValue], 
+      [ExifData].[EXIF.ExposureIndex] AS [EXIF.ExposureIndex], 
+      [ExifData].[EXIF.ExposureMode] AS [EXIF.ExposureMode], 
+      [ExifData].[EXIF.ExposureProgram] AS [EXIF.ExposureProgram], 
+      [ExifData].[EXIF.ExposureTime] AS [EXIF.ExposureTime], 
+      [ExifData].[EXIF.FileSource] AS [EXIF.FileSource], 
+      [ExifData].[EXIF.Flash.Fired] AS [EXIF.Flash.Fired], 
+      [ExifData].[EXIF.Flash.FirReturned] AS [EXIF.Flash.FirReturned], 
+      [ExifData].[EXIF.Flash.Function] AS [EXIF.Flash.Function], 
+      [ExifData].[EXIF.Flash.Mode] AS [EXIF.Flash.Mode], 
+      [ExifData].[EXIF.Flash.RedEyeReductionSupport] AS [EXIF.Flash.RedEyeReductionSupport], 
+      [ExifData].[EXIF.FlashEnergy] AS [EXIF.FlashEnergy], 
+      [ExifData].[EXIF.FlashpixVersion] AS [EXIF.FlashpixVersion], 
+      [ExifData].[EXIF.FNumber] AS [EXIF.FNumber], 
+      [ExifData].[EXIF.FocalLength] AS [EXIF.FocalLength], 
+      [ExifData].[EXIF.FocalLengthIn35mmFilm] AS [EXIF.FocalLengthIn35mmFilm], 
+      [ExifData].[EXIF.GainControl] AS [EXIF.GainControl], 
+      [ExifData].[EXIF.ISOSpeedRatings] AS [EXIF.ISOSpeedRatings], 
+      [ExifData].[EXIF.LightSource] AS [EXIF.LightSource], 
+      [ExifData].[EXIF.Make] AS [EXIF.Make], 
+      [ExifData].[EXIF.MaxApertureValue] AS [EXIF.MaxApertureValue], 
+      [ExifData].[EXIF.MeteringMode] AS [EXIF.MeteringMode], 
+      [ExifData].[EXIF.Model] AS [EXIF.Model], 
+      [ExifData].[EXIF.Orientation] AS [EXIF.Orientation], 
+      [ExifData].[EXIF.PlanarConfiguration] AS [EXIF.PlanarConfiguration], 
+      [ExifData].[EXIF.Saturation] AS [EXIF.Saturation], 
+      [ExifData].[EXIF.SceneCaptureType] AS [EXIF.SceneCaptureType], 
+      [ExifData].[EXIF.SceneType] AS [EXIF.SceneType], 
+      [ExifData].[EXIF.SensingMethod] AS [EXIF.SensingMethod], 
+      [ExifData].[EXIF.Sharpness] AS [EXIF.Sharpness], 
+      [ExifData].[EXIF.ShutterSpeedValue] AS [EXIF.ShutterSpeedValue], 
+      [ExifData].[EXIF.SubjectDistance] AS [EXIF.SubjectDistance], 
+      [ExifData].[EXIF.WhiteBalance] AS [EXIF.WhiteBalance]
+      FROM [dbo].[ExifData] AS [ExifData]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Folders_Publish" EntityType="ImageStoreModel.Store.Folders_Publish" store:Type="Views" store:Schema="dbo" store:Name="Folders_Publish">
+            <DefiningQuery>SELECT 
+      [Folders_Publish].[FolderID] AS [FolderID], 
+      [Folders_Publish].[RowID] AS [RowID], 
+      [Folders_Publish].[Name] AS [Name], 
+      [Folders_Publish].[MappedPath] AS [MappedPath], 
+      [Folders_Publish].[IsPublic] AS [IsPublic], 
+      [Folders_Publish].[CreationTime] AS [CreationTime], 
+      [Folders_Publish].[LastAccessTime] AS [LastAccessTime], 
+      [Folders_Publish].[LastWriteTime] AS [LastWriteTime], 
+      [Folders_Publish].[ParentFolderID] AS [ParentFolderID], 
+      [Folders_Publish].[StructureIDString] AS [StructureIDString], 
+      [Folders_Publish].[StructureIDLevel] AS [StructureIDLevel]
+      FROM [dbo].[Folders_Publish] AS [Folders_Publish]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Folders_Read" EntityType="ImageStoreModel.Store.Folders_Read" store:Type="Views" store:Schema="dbo" store:Name="Folders_Read">
+            <DefiningQuery>SELECT 
+      [Folders_Read].[FolderID] AS [FolderID], 
+      [Folders_Read].[RowID] AS [RowID], 
+      [Folders_Read].[Name] AS [Name], 
+      [Folders_Read].[MappedPath] AS [MappedPath], 
+      [Folders_Read].[IsPublic] AS [IsPublic], 
+      [Folders_Read].[CreationTime] AS [CreationTime], 
+      [Folders_Read].[LastAccessTime] AS [LastAccessTime], 
+      [Folders_Read].[LastWriteTime] AS [LastWriteTime], 
+      [Folders_Read].[ParentFolderID] AS [ParentFolderID], 
+      [Folders_Read].[StructureIDString] AS [StructureIDString], 
+      [Folders_Read].[StructureIDLevel] AS [StructureIDLevel]
+      FROM [dbo].[Folders_Read] AS [Folders_Read]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Folders_Write" EntityType="ImageStoreModel.Store.Folders_Write" store:Type="Views" store:Schema="dbo" store:Name="Folders_Write">
+            <DefiningQuery>SELECT 
+      [Folders_Write].[FolderID] AS [FolderID], 
+      [Folders_Write].[RowID] AS [RowID], 
+      [Folders_Write].[Name] AS [Name], 
+      [Folders_Write].[MappedPath] AS [MappedPath], 
+      [Folders_Write].[IsPublic] AS [IsPublic], 
+      [Folders_Write].[CreationTime] AS [CreationTime], 
+      [Folders_Write].[LastAccessTime] AS [LastAccessTime], 
+      [Folders_Write].[LastWriteTime] AS [LastWriteTime], 
+      [Folders_Write].[ParentFolderID] AS [ParentFolderID], 
+      [Folders_Write].[StructureIDString] AS [StructureIDString], 
+      [Folders_Write].[StructureIDLevel] AS [StructureIDLevel]
+      FROM [dbo].[Folders_Write] AS [Folders_Write]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ContentFrames_ContentItems" Association="ImageStoreModel.Store.FK_ContentFrames_ContentItems">
+            <End Role="ContentItems" EntitySet="ContentItems" />
+            <End Role="ContentFrames" EntitySet="ContentFrames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentFrames_ContentTypes" Association="ImageStoreModel.Store.FK_ContentFrames_ContentTypes">
+            <End Role="ContentTypes" EntitySet="ContentTypes" />
+            <End Role="ContentFrames" EntitySet="ContentFrames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentItems_ContentTypes" Association="ImageStoreModel.Store.FK_ContentItems_ContentTypes">
+            <End Role="ContentTypes" EntitySet="ContentTypes" />
+            <End Role="ContentItems" EntitySet="ContentItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentItems_Folders" Association="ImageStoreModel.Store.FK_ContentItems_Folders">
+            <End Role="Folders" EntitySet="Folders" />
+            <End Role="ContentItems" EntitySet="ContentItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentMetaData_ContentItems" Association="ImageStoreModel.Store.FK_ContentMetaData_ContentItems">
+            <End Role="ContentItems" EntitySet="ContentItems" />
+            <End Role="ContentMetaData" EntitySet="ContentMetaData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentTiles_ContentFrames" Association="ImageStoreModel.Store.FK_ContentTiles_ContentFrames">
+            <End Role="ContentFrames" EntitySet="ContentFrames" />
+            <End Role="ContentTiles" EntitySet="ContentTiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentTiles_ContentTypes" Association="ImageStoreModel.Store.FK_ContentTiles_ContentTypes">
+            <End Role="ContentTypes" EntitySet="ContentTypes" />
+            <End Role="ContentTiles" EntitySet="ContentTiles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="SessionContexts">
+          <Key>
+            <PropertyRef Name="SessionContextID" />
+          </Key>
+          <Property Name="SessionContextID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Context" Type="varbinary" Nullable="false" MaxLength="100" StoreGeneratedPattern="Computed" />
+          <Property Name="ContextID" Type="uniqueidentifier" StoreGeneratedPattern="Computed" />
+          <Property Name="ASPNET_UserID" Type="uniqueidentifier" />
+          <Property Name="ApplicationName" Type="nvarchar(max)" />
+          <Property Name="ExecutingAssembly" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="LastUsedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContentFrames">
+          <Key>
+            <PropertyRef Name="ContentFrameID" />
+          </Key>
+          <Property Name="ContentFrameID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RowID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LastWriteTime" Type="datetime" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" />
+          <Property Name="ContentTypeID" Type="int" Nullable="false" />
+          <Property Name="ContentItemID" Type="int" Nullable="false" />
+          <Property Name="Index" Type="int" Nullable="false" />
+          <Property Name="Width" Type="int" Nullable="false" />
+          <Property Name="Height" Type="int" Nullable="false" />
+          <Property Name="Length" Type="bigint" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ContentItems">
+          <Key>
+            <PropertyRef Name="ContentItemID" />
+          </Key>
+          <Property Name="ContentItemID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RowID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="CreationTime" Type="datetime" Nullable="false" />
+          <Property Name="LastAccessTime" Type="datetime" Nullable="false" />
+          <Property Name="LastWriteTime" Type="datetime" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ContentTypeID" Type="int" Nullable="false" />
+          <Property Name="FolderID" Type="int" Nullable="false" />
+          <Property Name="Length" Type="bigint" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ContentMetaData">
+          <Key>
+            <PropertyRef Name="ContentMetaID" />
+          </Key>
+          <Property Name="ContentMetaID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContentItemID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Length" Type="bigint" StoreGeneratedPattern="Computed" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="LastWriteDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContentTiles">
+          <Key>
+            <PropertyRef Name="ContentTileID" />
+          </Key>
+          <Property Name="ContentTileID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContentFrameID" Type="int" Nullable="false" />
+          <Property Name="X" Type="int" Nullable="false" />
+          <Property Name="Y" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ContentTypeID" Type="int" Nullable="false" />
+          <Property Name="LastWriteTime" Type="datetime" Nullable="false" />
+          <Property Name="Length" Type="bigint" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ContentTypes">
+          <Key>
+            <PropertyRef Name="ContentTypeID" />
+          </Key>
+          <Property Name="ContentTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Extension" Type="nvarchar" MaxLength="10" />
+          <Property Name="MimeType" Type="nvarchar" MaxLength="1024" />
+          <Property Name="IsSingleFrame" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'StructureID' in table 'ImageStore.dbo.Folders' was excluded.
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'ParentStructureID' in table 'ImageStore.dbo.Folders' was excluded.
+      -->
+        <EntityType Name="Folders">
+          <Key>
+            <PropertyRef Name="FolderID" />
+          </Key>
+          <Property Name="FolderID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RowID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="MappedPath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsPublic" Type="bit" Nullable="false" />
+          <Property Name="CreationTime" Type="datetime" Nullable="false" />
+          <Property Name="LastAccessTime" Type="datetime" Nullable="false" />
+          <Property Name="LastWriteTime" Type="datetime" Nullable="false" />
+          <Property Name="ParentFolderID" Type="int" StoreGeneratedPattern="Computed" />
+          <Property Name="StructureIDString" Type="nvarchar" StoreGeneratedPattern="Computed" />
+          <Property Name="StructureIDLevel" Type="smallint" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'StructureID' in table 'ImageStore.dbo.FoldersInRoles' was excluded.
+      -->
+        <EntityType Name="FoldersInRoles">
+          <Key>
+            <PropertyRef Name="AssignmentID" />
+          </Key>
+          <Property Name="AssignmentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FolderID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsWriter" Type="bit" Nullable="false" />
+          <Property Name="IsPublisher" Type="bit" Nullable="false" />
+          <Property Name="IsReader" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ImageStore.aspnet.Roles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="Roles">
+          <Key>
+            
+            <PropertyRef Name="RoleId" />
+            
+            
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="LoweredRoleName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ImageStore.aspnet.Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="Users">
+          <Key>
+            
+            <PropertyRef Name="UserId" />
+            
+            
+            
+            
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="LoweredUserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="MobileAlias" Type="nvarchar" MaxLength="16" />
+          <Property Name="IsAnonymous" Type="bit" Nullable="false" />
+          <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ImageStore.aspnet.UsersInRoles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ImageStore.dbo.ExifData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="ExifData">
+          <Key>
+            <PropertyRef Name="ContentItemID" />
+          </Key>
+          <Property Name="ContentItemID" Type="int" Nullable="false" />
+          <Property Name="EXIF.ApertureValue" Type="nvarchar(max)" />
+          <Property Name="EXIF.BrightnessValue" Type="nvarchar(max)" />
+          <Property Name="EXIF.ColorSpace" Type="nvarchar(max)" />
+          <Property Name="EXIF.Contrast" Type="nvarchar(max)" />
+          <Property Name="EXIF.DateTimeDigitized" Type="nvarchar(max)" />
+          <Property Name="EXIF.DateTimeOriginal" Type="nvarchar(max)" />
+          <Property Name="EXIF.DigitalZoomRatio" Type="nvarchar(max)" />
+          <Property Name="EXIF.ExifVersion" Type="nvarchar(max)" />
+          <Property Name="EXIF.ExposureBiasValue" Type="nvarchar(max)" />
+          <Property Name="EXIF.ExposureIndex" Type="nvarchar(max)" />
+          <Property Name="EXIF.ExposureMode" Type="nvarchar(max)" />
+          <Property Name="EXIF.ExposureProgram" Type="nvarchar(max)" />
+          <Property Name="EXIF.ExposureTime" Type="nvarchar(max)" />
+          <Property Name="EXIF.FileSource" Type="nvarchar(max)" />
+          <Property Name="EXIF.Flash.Fired" Type="nvarchar(max)" />
+          <Property Name="EXIF.Flash.FirReturned" Type="nvarchar(max)" />
+          <Property Name="EXIF.Flash.Function" Type="nvarchar(max)" />
+          <Property Name="EXIF.Flash.Mode" Type="nvarchar(max)" />
+          <Property Name="EXIF.Flash.RedEyeReductionSupport" Type="nvarchar(max)" />
+          <Property Name="EXIF.FlashEnergy" Type="nvarchar(max)" />
+          <Property Name="EXIF.FlashpixVersion" Type="nvarchar(max)" />
+          <Property Name="EXIF.FNumber" Type="nvarchar(max)" />
+          <Property Name="EXIF.FocalLength" Type="nvarchar(max)" />
+          <Property Name="EXIF.FocalLengthIn35mmFilm" Type="nvarchar(max)" />
+          <Property Name="EXIF.GainControl" Type="nvarchar(max)" />
+          <Property Name="EXIF.ISOSpeedRatings" Type="nvarchar(max)" />
+          <Property Name="EXIF.LightSource" Type="nvarchar(max)" />
+          <Property Name="EXIF.Make" Type="nvarchar(max)" />
+          <Property Name="EXIF.MaxApertureValue" Type="nvarchar(max)" />
+          <Property Name="EXIF.MeteringMode" Type="nvarchar(max)" />
+          <Property Name="EXIF.Model" Type="nvarchar(max)" />
+          <Property Name="EXIF.Orientation" Type="nvarchar(max)" />
+          <Property Name="EXIF.PlanarConfiguration" Type="nvarchar(max)" />
+          <Property Name="EXIF.Saturation" Type="nvarchar(max)" />
+          <Property Name="EXIF.SceneCaptureType" Type="nvarchar(max)" />
+          <Property Name="EXIF.SceneType" Type="nvarchar(max)" />
+          <Property Name="EXIF.SensingMethod" Type="nvarchar(max)" />
+          <Property Name="EXIF.Sharpness" Type="nvarchar(max)" />
+          <Property Name="EXIF.ShutterSpeedValue" Type="nvarchar(max)" />
+          <Property Name="EXIF.SubjectDistance" Type="nvarchar(max)" />
+          <Property Name="EXIF.WhiteBalance" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ImageStore.dbo.Folders_Publish' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'StructureID' in table 'ImageStore.dbo.Folders_Publish' was excluded.
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'ParentStructureID' in table 'ImageStore.dbo.Folders_Publish' was excluded.
+      -->
+        <EntityType Name="Folders_Publish">
+          <Key>
+            <PropertyRef Name="FolderID" />
+            
+            
+            
+            
+            
+            
+            
+          </Key>
+          <Property Name="FolderID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RowID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="MappedPath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsPublic" Type="bit" Nullable="false" />
+          <Property Name="CreationTime" Type="datetime" Nullable="false" />
+          <Property Name="LastAccessTime" Type="datetime" Nullable="false" />
+          <Property Name="LastWriteTime" Type="datetime" Nullable="false" />
+          <Property Name="ParentFolderID" Type="int" />
+          <Property Name="StructureIDString" Type="nvarchar" />
+          <Property Name="StructureIDLevel" Type="smallint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ImageStore.dbo.Folders_Read' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'StructureID' in table 'ImageStore.dbo.Folders_Read' was excluded.
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'ParentStructureID' in table 'ImageStore.dbo.Folders_Read' was excluded.
+      -->
+        <EntityType Name="Folders_Read">
+          <Key>
+            <PropertyRef Name="FolderID" />
+            
+            
+            
+            
+            
+            
+            
+          </Key>
+          <Property Name="FolderID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RowID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="MappedPath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsPublic" Type="bit" Nullable="false" />
+          <Property Name="CreationTime" Type="datetime" Nullable="false" />
+          <Property Name="LastAccessTime" Type="datetime" Nullable="false" />
+          <Property Name="LastWriteTime" Type="datetime" Nullable="false" />
+          <Property Name="ParentFolderID" Type="int" />
+          <Property Name="StructureIDString" Type="nvarchar" />
+          <Property Name="StructureIDLevel" Type="smallint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ImageStore.dbo.Folders_Write' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'StructureID' in table 'ImageStore.dbo.Folders_Write' was excluded.
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'ParentStructureID' in table 'ImageStore.dbo.Folders_Write' was excluded.
+      -->
+        <EntityType Name="Folders_Write">
+          <Key>
+            <PropertyRef Name="FolderID" />
+            
+            
+            
+            
+            
+            
+            
+          </Key>
+          <Property Name="FolderID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RowID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="MappedPath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsPublic" Type="bit" Nullable="false" />
+          <Property Name="CreationTime" Type="datetime" Nullable="false" />
+          <Property Name="LastAccessTime" Type="datetime" Nullable="false" />
+          <Property Name="LastWriteTime" Type="datetime" Nullable="false" />
+          <Property Name="ParentFolderID" Type="int" />
+          <Property Name="StructureIDString" Type="nvarchar" />
+          <Property Name="StructureIDLevel" Type="smallint" />
+        </EntityType>
+        <Association Name="FK_ContentFrames_ContentItems">
+          <End Role="ContentItems" Type="ImageStoreModel.Store.ContentItems" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ContentFrames" Type="ImageStoreModel.Store.ContentFrames" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentItems">
+              <PropertyRef Name="ContentItemID" />
+            </Principal>
+            <Dependent Role="ContentFrames">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentFrames_ContentTypes">
+          <End Role="ContentTypes" Type="ImageStoreModel.Store.ContentTypes" Multiplicity="1" />
+          <End Role="ContentFrames" Type="ImageStoreModel.Store.ContentFrames" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentTypes">
+              <PropertyRef Name="ContentTypeID" />
+            </Principal>
+            <Dependent Role="ContentFrames">
+              <PropertyRef Name="ContentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentItems_ContentTypes">
+          <End Role="ContentTypes" Type="ImageStoreModel.Store.ContentTypes" Multiplicity="1" />
+          <End Role="ContentItems" Type="ImageStoreModel.Store.ContentItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentTypes">
+              <PropertyRef Name="ContentTypeID" />
+            </Principal>
+            <Dependent Role="ContentItems">
+              <PropertyRef Name="ContentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentItems_Folders">
+          <End Role="Folders" Type="ImageStoreModel.Store.Folders" Multiplicity="1" />
+          <End Role="ContentItems" Type="ImageStoreModel.Store.ContentItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folders">
+              <PropertyRef Name="FolderID" />
+            </Principal>
+            <Dependent Role="ContentItems">
+              <PropertyRef Name="FolderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentMetaData_ContentItems">
+          <End Role="ContentItems" Type="ImageStoreModel.Store.ContentItems" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ContentMetaData" Type="ImageStoreModel.Store.ContentMetaData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentItems">
+              <PropertyRef Name="ContentItemID" />
+            </Principal>
+            <Dependent Role="ContentMetaData">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentTiles_ContentFrames">
+          <End Role="ContentFrames" Type="ImageStoreModel.Store.ContentFrames" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ContentTiles" Type="ImageStoreModel.Store.ContentTiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentFrames">
+              <PropertyRef Name="ContentFrameID" />
+            </Principal>
+            <Dependent Role="ContentTiles">
+              <PropertyRef Name="ContentFrameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentTiles_ContentTypes">
+          <End Role="ContentTypes" Type="ImageStoreModel.Store.ContentTypes" Multiplicity="1" />
+          <End Role="ContentTiles" Type="ImageStoreModel.Store.ContentTiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentTypes">
+              <PropertyRef Name="ContentTypeID" />
+            </Principal>
+            <Dependent Role="ContentTiles">
+              <PropertyRef Name="ContentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SessionContext_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Core" />
+        <Function Name="SessionContext_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Core">
+          <Parameter Name="Aspnet_UserID" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="ApplicationName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="ExecutingAssembly" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="SessionContext_Set" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Core">
+          <Parameter Name="Context" Type="varbinary" Mode="In" />
+        </Function>
+        <Function Name="ContentFrame_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentFrameID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ContentFrame_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Data" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="ContentTypeID" Type="int" Mode="In" />
+          <Parameter Name="ContentItemID" Type="int" Mode="In" />
+          <Parameter Name="Index" Type="int" Mode="In" />
+          <Parameter Name="Width" Type="int" Mode="In" />
+          <Parameter Name="Height" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ContentFrame_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Data" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="ContentTypeID" Type="int" Mode="In" />
+          <Parameter Name="ContentItemID" Type="int" Mode="In" />
+          <Parameter Name="Index" Type="int" Mode="In" />
+          <Parameter Name="Width" Type="int" Mode="In" />
+          <Parameter Name="Height" Type="int" Mode="In" />
+          <Parameter Name="ContentFrameID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ContentItem_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentItemID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ContentItem_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Data" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="ContentTypeID" Type="int" Mode="In" />
+          <Parameter Name="FolderID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ContentItem_Touch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentItemID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ContentItem_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Data" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="ContentTypeID" Type="int" Mode="In" />
+          <Parameter Name="FolderID" Type="int" Mode="In" />
+          <Parameter Name="ContentItemID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ContentMetaData_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentMetaID" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="ContentMetaData_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentItemID" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Value" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="ContentMetaData_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentItemID" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Value" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="ContentMetaID" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="ContentTile_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentTileID" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="ContentTile_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentFrameID" Type="int" Mode="In" />
+          <Parameter Name="X" Type="int" Mode="In" />
+          <Parameter Name="Y" Type="int" Mode="In" />
+          <Parameter Name="Level" Type="int" Mode="In" />
+          <Parameter Name="Data" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="ContentTypeID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ContentTile_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentFrameID" Type="int" Mode="In" />
+          <Parameter Name="X" Type="int" Mode="In" />
+          <Parameter Name="Y" Type="int" Mode="In" />
+          <Parameter Name="Level" Type="int" Mode="In" />
+          <Parameter Name="Data" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="ContentTypeID" Type="int" Mode="In" />
+          <Parameter Name="ContentTileID" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="ContentType_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentTypeID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ContentType_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Extension" Type="nvarchar" Mode="In" />
+          <Parameter Name="MimeType" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsSingleFrame" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="ContentType_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Description" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Extension" Type="nvarchar" Mode="In" />
+          <Parameter Name="MimeType" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsSingleFrame" Type="bit" Mode="In" />
+          <Parameter Name="ContentTypeID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Folder_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FolderID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Folder_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="MappedPath" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="CreationTime" Type="datetime" Mode="In" />
+          <Parameter Name="LastAccessTime" Type="datetime" Mode="In" />
+          <Parameter Name="LastWriteTime" Type="datetime" Mode="In" />
+          <Parameter Name="ParentFolderID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Folder_Reparent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="folderID" Type="int" Mode="In" />
+          <Parameter Name="parentFolderID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Folder_Touch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FolderID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Folder_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="MappedPath" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="CreationTime" Type="datetime" Mode="In" />
+          <Parameter Name="LastAccessTime" Type="datetime" Mode="In" />
+          <Parameter Name="LastWriteTime" Type="datetime" Mode="In" />
+          <Parameter Name="ParentFolderID" Type="int" Mode="In" />
+          <Parameter Name="FolderID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetDeepZoomCollection" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TileSize" Type="int" Mode="In" />
+          <Parameter Name="Format" Type="nvarchar" Mode="In" />
+          <Parameter Name="FolderID" Type="int" Mode="In" />
+          <Parameter Name="Recursive" Type="bit" Mode="In" />
+          <Parameter Name="ContentItemID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetDeepZoomImage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TileSize" Type="int" Mode="In" />
+          <Parameter Name="OverLap" Type="int" Mode="In" />
+          <Parameter Name="Format" Type="nvarchar" Mode="In" />
+          <Parameter Name="ContentFrameID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetUserID" ReturnType="uniqueidentifier" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ImageStoreModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="ImageStoreEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Folders" EntityType="ImageStoreModel.Folder" />
+          <EntitySet Name="ContentFrames" EntityType="ImageStoreModel.ContentFrame" />
+          <EntitySet Name="ContentItems" EntityType="ImageStoreModel.ContentItem" />
+          <EntitySet Name="ContentTiles" EntityType="ImageStoreModel.ContentTile" />
+          <EntitySet Name="ContentTypes" EntityType="ImageStoreModel.ContentType" />
+          <AssociationSet Name="FK_ContentFrames_ContentItems" Association="ImageStoreModel.FK_ContentFrames_ContentItems">
+            <End Role="ContentItem" EntitySet="ContentItems" />
+            <End Role="ContentFrame" EntitySet="ContentFrames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentFrames_ContentTypes" Association="ImageStoreModel.FK_ContentFrames_ContentTypes">
+            <End Role="ContentType" EntitySet="ContentTypes" />
+            <End Role="ContentFrame" EntitySet="ContentFrames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentTiles_ContentFrames" Association="ImageStoreModel.FK_ContentTiles_ContentFrames">
+            <End Role="ContentFrame" EntitySet="ContentFrames" />
+            <End Role="ContentTile" EntitySet="ContentTiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentItems_ContentTypes" Association="ImageStoreModel.FK_ContentItems_ContentTypes">
+            <End Role="ContentType" EntitySet="ContentTypes" />
+            <End Role="ContentItem" EntitySet="ContentItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentItems_Folders" Association="ImageStoreModel.FK_ContentItems_Folders">
+            <End Role="Folder" EntitySet="Folders" />
+            <End Role="ContentItem" EntitySet="ContentItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentTiles_ContentTypes" Association="ImageStoreModel.FK_ContentTiles_ContentTypes">
+            <End Role="ContentType" EntitySet="ContentTypes" />
+            <End Role="ContentTile" EntitySet="ContentTiles" />
+          </AssociationSet>
+          <FunctionImport Name="ContentItemTouch">
+          <Parameter Name="ContentItemID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="ContentMetaDatas" EntityType="ImageStoreModel.ContentMetaData" />
+          <AssociationSet Name="FK_ContentMetaData_ContentItems" Association="ImageStoreModel.FK_ContentMetaData_ContentItems">
+            <End Role="ContentItem" EntitySet="ContentItems" />
+            <End Role="ContentMetaData" EntitySet="ContentMetaDatas" />
+          </AssociationSet>
+          <FunctionImport Name="GetDeepZoomCollection" ReturnType="Collection(String)">
+            <Parameter Name="TileSize" Mode="In" Type="Int32" />
+            <Parameter Name="Format" Mode="In" Type="String" />
+            <Parameter Name="FolderID" Mode="In" Type="Int32" />
+            <Parameter Name="Recursive" Mode="In" Type="Boolean" />
+            <Parameter Name="ContentItemID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetDeepZoomImage" ReturnType="Collection(String)">
+            <Parameter Name="TileSize" Mode="In" Type="Int32" />
+            <Parameter Name="OverLap" Mode="In" Type="Int32" />
+            <Parameter Name="Format" Mode="In" Type="String" />
+            <Parameter Name="ContentFrameID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="ExifDatas" EntityType="ImageStoreModel.ExifData" />
+          <EntitySet Name="Folders_Publish" EntityType="ImageStoreModel.Folders_Publish" />
+          <EntitySet Name="Folders_Read" EntityType="ImageStoreModel.Folders_Read" />
+          <EntitySet Name="Folders_Write" EntityType="ImageStoreModel.Folders_Write" />
+          <EntitySet Name="Roles" EntityType="ImageStoreModel.Role" />
+          <EntitySet Name="Users" EntityType="ImageStoreModel.User" />
+          <AssociationSet Name="RoleUser" Association="ImageStoreModel.RoleUser">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="FoldersInRoles" EntityType="ImageStoreModel.FoldersInRole" />
+          <AssociationSet Name="FK_FoldersInRoles_Folders" Association="ImageStoreModel.FK_FoldersInRoles_Folders">
+            <End Role="Folder" EntitySet="Folders" />
+            <End Role="FoldersInRole" EntitySet="FoldersInRoles" />
+          </AssociationSet>
+          <EntitySet Name="SessionContexts" EntityType="ImageStoreModel.SessionContext" />
+          <FunctionImport Name="SetSessionContext" EntitySet="SessionContexts" ReturnType="Collection(ImageStoreModel.SessionContext)">
+          <Parameter Name="Context" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="GetCurrentContext" EntitySet="SessionContexts" ReturnType="Collection(ImageStoreModel.SessionContext)">
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="Folder">
+          <Key>
+            <PropertyRef Name="FolderID" />
+          </Key>
+          <Property Type="Int32" Name="FolderID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Guid" Name="RowID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MappedPath" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationTime" Nullable="false" />
+          <Property Type="DateTime" Name="LastAccessTime" Nullable="false" />
+          <Property Type="DateTime" Name="LastWriteTime" Nullable="false" />
+          <Property Type="Int32" Name="ParentFolderID" annotation:StoreGeneratedPattern="Computed" />
+          <Property Type="String" Name="StructureIDString" MaxLength="4000" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Type="Int16" Name="StructureIDLevel" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="ContentItems" Relationship="ImageStoreModel.FK_ContentItems_Folders" FromRole="Folder" ToRole="ContentItem" />
+          <Property Type="Boolean" Name="IsPublic" Nullable="false" />
+          <NavigationProperty Name="FoldersInRoles" Relationship="ImageStoreModel.FK_FoldersInRoles_Folders" FromRole="Folder" ToRole="FoldersInRole" />
+        </EntityType>
+        <EntityType Name="ContentFrame">
+          <Key>
+            <PropertyRef Name="ContentFrameID" />
+          </Key>
+          <Property Type="Int32" Name="ContentFrameID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Guid" Name="RowID" Nullable="false" />
+          <Property Type="DateTime" Name="LastWriteTime" Nullable="false" />
+          <Property Type="Binary" Name="Data" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Type="Int32" Name="ContentTypeID" Nullable="false" />
+          <Property Type="Int32" Name="ContentItemID" Nullable="false" />
+          <NavigationProperty Name="ContentItem" Relationship="ImageStoreModel.FK_ContentFrames_ContentItems" FromRole="ContentFrame" ToRole="ContentItem" />
+          <NavigationProperty Name="ContentType" Relationship="ImageStoreModel.FK_ContentFrames_ContentTypes" FromRole="ContentFrame" ToRole="ContentType" />
+          <NavigationProperty Name="ContentTiles" Relationship="ImageStoreModel.FK_ContentTiles_ContentFrames" FromRole="ContentFrame" ToRole="ContentTile" />
+          <Property Type="Int32" Name="Index" Nullable="false" />
+          <Property Type="Int32" Name="Width" Nullable="false" />
+          <Property Type="Int32" Name="Height" Nullable="false" />
+          <Property Type="Int64" Name="Length" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ContentItem">
+          <Key>
+            <PropertyRef Name="ContentItemID" />
+          </Key>
+          <Property Type="Int32" Name="ContentItemID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Guid" Name="RowID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationTime" Nullable="false" />
+          <Property Type="DateTime" Name="LastAccessTime" Nullable="false" />
+          <Property Type="DateTime" Name="LastWriteTime" Nullable="false" />
+          <Property Type="Binary" Name="Data" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Type="Int32" Name="ContentTypeID" Nullable="false" />
+          <Property Type="Int32" Name="FolderID" Nullable="false" />
+          <NavigationProperty Name="ContentFrames" Relationship="ImageStoreModel.FK_ContentFrames_ContentItems" FromRole="ContentItem" ToRole="ContentFrame" />
+          <NavigationProperty Name="ContentType" Relationship="ImageStoreModel.FK_ContentItems_ContentTypes" FromRole="ContentItem" ToRole="ContentType" />
+          <NavigationProperty Name="Folder" Relationship="ImageStoreModel.FK_ContentItems_Folders" FromRole="ContentItem" ToRole="Folder" />
+          <Property Type="Int64" Name="Length" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="ContentMetaDatas" Relationship="ImageStoreModel.FK_ContentMetaData_ContentItems" FromRole="ContentItem" ToRole="ContentMetaData" />
+        </EntityType>
+        <EntityType Name="ContentTile">
+          <Key>
+            <PropertyRef Name="ContentTileID" />
+          </Key>
+          <Property Type="Int64" Name="ContentTileID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ContentFrameID" Nullable="false" />
+          <Property Type="Int32" Name="X" Nullable="false" />
+          <Property Type="Int32" Name="Y" Nullable="false" />
+          <Property Type="Int32" Name="Level" Nullable="false" />
+          <Property Type="Binary" Name="Data" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Type="Int32" Name="ContentTypeID" Nullable="false" />
+          <NavigationProperty Name="ContentFrame" Relationship="ImageStoreModel.FK_ContentTiles_ContentFrames" FromRole="ContentTile" ToRole="ContentFrame" />
+          <NavigationProperty Name="ContentType" Relationship="ImageStoreModel.FK_ContentTiles_ContentTypes" FromRole="ContentTile" ToRole="ContentType" />
+          <Property Type="DateTime" Name="LastWriteTime" Nullable="false" />
+          <Property Type="Int64" Name="Length" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ContentType">
+          <Key>
+            <PropertyRef Name="ContentTypeID" />
+          </Key>
+          <Property Type="Int32" Name="ContentTypeID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Extension" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MimeType" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ContentFrames" Relationship="ImageStoreModel.FK_ContentFrames_ContentTypes" FromRole="ContentType" ToRole="ContentFrame" />
+          <NavigationProperty Name="ContentItems" Relationship="ImageStoreModel.FK_ContentItems_ContentTypes" FromRole="ContentType" ToRole="ContentItem" />
+          <NavigationProperty Name="ContentTiles" Relationship="ImageStoreModel.FK_ContentTiles_ContentTypes" FromRole="ContentType" ToRole="ContentTile" />
+          <Property Type="Boolean" Name="IsSingleFrame" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ContentFrames_ContentItems">
+          <End Type="ImageStoreModel.ContentItem" Role="ContentItem" Multiplicity="1" />
+          <End Type="ImageStoreModel.ContentFrame" Role="ContentFrame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentItem">
+              <PropertyRef Name="ContentItemID" />
+            </Principal>
+            <Dependent Role="ContentFrame">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentFrames_ContentTypes">
+          <End Type="ImageStoreModel.ContentType" Role="ContentType" Multiplicity="1" />
+          <End Type="ImageStoreModel.ContentFrame" Role="ContentFrame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentType">
+              <PropertyRef Name="ContentTypeID" />
+            </Principal>
+            <Dependent Role="ContentFrame">
+              <PropertyRef Name="ContentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentTiles_ContentFrames">
+          <End Type="ImageStoreModel.ContentFrame" Role="ContentFrame" Multiplicity="1" />
+          <End Type="ImageStoreModel.ContentTile" Role="ContentTile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentFrame">
+              <PropertyRef Name="ContentFrameID" />
+            </Principal>
+            <Dependent Role="ContentTile">
+              <PropertyRef Name="ContentFrameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentItems_ContentTypes">
+          <End Type="ImageStoreModel.ContentType" Role="ContentType" Multiplicity="1" />
+          <End Type="ImageStoreModel.ContentItem" Role="ContentItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentType">
+              <PropertyRef Name="ContentTypeID" />
+            </Principal>
+            <Dependent Role="ContentItem">
+              <PropertyRef Name="ContentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentItems_Folders">
+          <End Type="ImageStoreModel.Folder" Role="Folder" Multiplicity="1" />
+          <End Type="ImageStoreModel.ContentItem" Role="ContentItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="FolderID" />
+            </Principal>
+            <Dependent Role="ContentItem">
+              <PropertyRef Name="FolderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentTiles_ContentTypes">
+          <End Type="ImageStoreModel.ContentType" Role="ContentType" Multiplicity="1" />
+          <End Type="ImageStoreModel.ContentTile" Role="ContentTile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentType">
+              <PropertyRef Name="ContentTypeID" />
+            </Principal>
+            <Dependent Role="ContentTile">
+              <PropertyRef Name="ContentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ContentMetaData">
+          <Key>
+            <PropertyRef Name="ContentMetaID" />
+          </Key>
+          <Property Type="Int64" Name="ContentMetaID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ContentItemID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Int64" Name="Length" annotation:StoreGeneratedPattern="Computed" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="DateTime" Name="LastWriteDate" Nullable="false" />
+          <NavigationProperty Name="ContentItem" Relationship="ImageStoreModel.FK_ContentMetaData_ContentItems" FromRole="ContentMetaData" ToRole="ContentItem" />
+        </EntityType>
+        <Association Name="FK_ContentMetaData_ContentItems">
+          <End Type="ImageStoreModel.ContentItem" Role="ContentItem" Multiplicity="1" />
+          <End Type="ImageStoreModel.ContentMetaData" Role="ContentMetaData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentItem">
+              <PropertyRef Name="ContentItemID" />
+            </Principal>
+            <Dependent Role="ContentMetaData">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ExifData">
+          <Key>
+            <PropertyRef Name="ContentItemID" />
+          </Key>
+          <Property Type="Int32" Name="ContentItemID" Nullable="false" />
+          <Property Type="String" Name="EXIF_ApertureValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_BrightnessValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_ColorSpace" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Contrast" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_DateTimeDigitized" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_DateTimeOriginal" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_DigitalZoomRatio" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_ExifVersion" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_ExposureBiasValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_ExposureIndex" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_ExposureMode" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_ExposureProgram" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_ExposureTime" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_FileSource" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Flash_Fired" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Flash_FirReturned" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Flash_Function" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Flash_Mode" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Flash_RedEyeReductionSupport" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_FlashEnergy" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_FlashpixVersion" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_FNumber" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_FocalLength" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_FocalLengthIn35mmFilm" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_GainControl" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_ISOSpeedRatings" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_LightSource" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Make" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_MaxApertureValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_MeteringMode" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Model" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Orientation" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_PlanarConfiguration" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Saturation" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_SceneCaptureType" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_SceneType" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_SensingMethod" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_Sharpness" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_ShutterSpeedValue" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_SubjectDistance" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EXIF_WhiteBalance" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Folders_Publish">
+          <Key>
+            <PropertyRef Name="FolderID" />
+          </Key>
+          <Property Type="Int32" Name="FolderID" Nullable="false" />
+          <Property Type="Guid" Name="RowID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MappedPath" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationTime" Nullable="false" />
+          <Property Type="DateTime" Name="LastAccessTime" Nullable="false" />
+          <Property Type="DateTime" Name="LastWriteTime" Nullable="false" />
+          <Property Type="Int32" Name="ParentFolderID" />
+          <Property Type="String" Name="StructureIDString" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="Int16" Name="StructureIDLevel" />
+          <Property Type="Boolean" Name="IsPublic" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Folders_Read">
+          <Key>
+            <PropertyRef Name="FolderID" />
+          </Key>
+          <Property Type="Int32" Name="FolderID" Nullable="false" />
+          <Property Type="Guid" Name="RowID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MappedPath" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationTime" Nullable="false" />
+          <Property Type="DateTime" Name="LastAccessTime" Nullable="false" />
+          <Property Type="DateTime" Name="LastWriteTime" Nullable="false" />
+          <Property Type="Int32" Name="ParentFolderID" />
+          <Property Type="String" Name="StructureIDString" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="Int16" Name="StructureIDLevel" />
+          <Property Type="Boolean" Name="IsPublic" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Folders_Write">
+          <Key>
+            <PropertyRef Name="FolderID" />
+          </Key>
+          <Property Type="Int32" Name="FolderID" Nullable="false" />
+          <Property Type="Guid" Name="RowID" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MappedPath" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationTime" Nullable="false" />
+          <Property Type="DateTime" Name="LastAccessTime" Nullable="false" />
+          <Property Type="DateTime" Name="LastWriteTime" Nullable="false" />
+          <Property Type="Int32" Name="ParentFolderID" />
+          <Property Type="String" Name="StructureIDString" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="Int16" Name="StructureIDLevel" />
+          <Property Type="Boolean" Name="IsPublic" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="RoleId" Nullable="false" />
+          <Property Type="String" Name="RoleName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LoweredRoleName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="ImageStoreModel.RoleUser" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Type="Guid" Name="ApplicationId" Nullable="false" />
+          <Property Type="Guid" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LoweredUserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="MobileAlias" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsAnonymous" Nullable="false" />
+          <Property Type="DateTime" Name="LastActivityDate" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="ImageStoreModel.RoleUser" FromRole="User" ToRole="Role" />
+        </EntityType>
+        <Association Name="RoleUser">
+          <End Type="ImageStoreModel.Role" Role="Role" Multiplicity="*" />
+          <End Type="ImageStoreModel.User" Role="User" Multiplicity="*" />
+        </Association>
+        <EntityType Name="FoldersInRole">
+          <Key>
+            <PropertyRef Name="AssignmentID" />
+          </Key>
+          <Property Type="Int32" Name="AssignmentID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="FolderID" Nullable="false" />
+          <Property Type="Guid" Name="RoleID" Nullable="false" />
+          <Property Type="Boolean" Name="IsWriter" Nullable="false" />
+          <Property Type="Boolean" Name="IsPublisher" Nullable="false" />
+          <Property Type="Boolean" Name="IsReader" Nullable="false" />
+          <NavigationProperty Name="Folder" Relationship="ImageStoreModel.FK_FoldersInRoles_Folders" FromRole="FoldersInRole" ToRole="Folder" />
+        </EntityType>
+        <Association Name="FK_FoldersInRoles_Folders">
+          <End Type="ImageStoreModel.Folder" Role="Folder" Multiplicity="1" />
+          <End Type="ImageStoreModel.FoldersInRole" Role="FoldersInRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Folder">
+              <PropertyRef Name="FolderID" />
+            </Principal>
+            <Dependent Role="FoldersInRole">
+              <PropertyRef Name="FolderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SessionContext">
+          <Key>
+            <PropertyRef Name="SessionContextID" />
+          </Key>
+          <Property Type="Int64" Name="SessionContextID" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Type="Binary" Name="Context" Nullable="false" MaxLength="100" FixedLength="false" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" annotation:StoreGeneratedPattern="Computed" />
+          <Property Type="Guid" Name="ContextID" annotation:StoreGeneratedPattern="Computed" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Type="Guid" Name="ASPNET_UserID" />
+          <Property Type="String" Name="ApplicationName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ExecutingAssembly" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreatedOn" Nullable="false" />
+          <Property Type="DateTime" Name="LastUsedOn" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ImageStoreModelStoreContainer" CdmEntityContainer="ImageStoreEntities">
+          <EntitySetMapping Name="Folders">
+            <EntityTypeMapping TypeName="ImageStoreModel.Folder">
+              <MappingFragment StoreEntitySet="Folders">
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+                <ScalarProperty Name="StructureIDLevel" ColumnName="StructureIDLevel" />
+                <ScalarProperty Name="StructureIDString" ColumnName="StructureIDString" />
+                <ScalarProperty Name="ParentFolderID" ColumnName="ParentFolderID" />
+                <ScalarProperty Name="LastWriteTime" ColumnName="LastWriteTime" />
+                <ScalarProperty Name="LastAccessTime" ColumnName="LastAccessTime" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="MappedPath" ColumnName="MappedPath" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="ImageStoreModel.Folder">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="ImageStoreModel.Store.Folder_Insert">
+                  <ScalarProperty Name="ParentFolderID" ParameterName="ParentFolderID" />
+                  <ScalarProperty Name="LastWriteTime" ParameterName="LastWriteTime" />
+                  <ScalarProperty Name="LastAccessTime" ParameterName="LastAccessTime" />
+                  <ScalarProperty Name="CreationTime" ParameterName="CreationTime" />
+                  <ScalarProperty Name="MappedPath" ParameterName="MappedPath" />
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ResultBinding Name="FolderID" ColumnName="FolderID" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="ImageStoreModel.Store.Folder_Update">
+                  <ScalarProperty Name="FolderID" ParameterName="FolderID" Version="Current" />
+                  <ScalarProperty Name="ParentFolderID" ParameterName="ParentFolderID" Version="Current" />
+                  <ScalarProperty Name="LastWriteTime" ParameterName="LastWriteTime" Version="Current" />
+                  <ScalarProperty Name="LastAccessTime" ParameterName="LastAccessTime" Version="Current" />
+                  <ScalarProperty Name="CreationTime" ParameterName="CreationTime" Version="Current" />
+                  <ScalarProperty Name="MappedPath" ParameterName="MappedPath" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="ImageStoreModel.Store.Folder_Delete">
+                  <ScalarProperty Name="FolderID" ParameterName="FolderID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContentFrames">
+            <EntityTypeMapping TypeName="ImageStoreModel.ContentFrame">
+              <MappingFragment StoreEntitySet="ContentFrames">
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Width" ColumnName="Width" />
+                <ScalarProperty Name="Index" ColumnName="Index" />
+                <ScalarProperty Name="ContentItemID" ColumnName="ContentItemID" />
+                <ScalarProperty Name="ContentTypeID" ColumnName="ContentTypeID" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="LastWriteTime" ColumnName="LastWriteTime" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="ContentFrameID" ColumnName="ContentFrameID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="ImageStoreModel.ContentFrame">
+              <ModificationFunctionMapping>
+                <DeleteFunction FunctionName="ImageStoreModel.Store.ContentFrame_Delete">
+                  <ScalarProperty Name="ContentFrameID" ParameterName="ContentFrameID" />
+                </DeleteFunction>
+                <UpdateFunction FunctionName="ImageStoreModel.Store.ContentFrame_Update">
+                  <ScalarProperty Name="Height" ParameterName="Height" Version="Current" />
+                  <ScalarProperty Name="Width" ParameterName="Width" Version="Current" />
+                  <ScalarProperty Name="Index" ParameterName="Index" Version="Current" />
+                  <ScalarProperty Name="ContentFrameID" ParameterName="ContentFrameID" Version="Current" />
+                  <ScalarProperty Name="ContentItemID" ParameterName="ContentItemID" Version="Current" />
+                  <ScalarProperty Name="ContentTypeID" ParameterName="ContentTypeID" Version="Current" />
+                  <ScalarProperty Name="Data" ParameterName="Data" Version="Current" />
+                  <ResultBinding Name="LastWriteTime" ColumnName="LastWriteTime" />
+                  <ResultBinding Name="Length" ColumnName="Length" />
+                </UpdateFunction>
+                <InsertFunction FunctionName="ImageStoreModel.Store.ContentFrame_Insert">
+                  <ScalarProperty Name="Height" ParameterName="Height" />
+                  <ScalarProperty Name="Width" ParameterName="Width" />
+                  <ScalarProperty Name="Index" ParameterName="Index" />
+                  <ScalarProperty Name="ContentItemID" ParameterName="ContentItemID" />
+                  <ScalarProperty Name="ContentTypeID" ParameterName="ContentTypeID" />
+                  <ScalarProperty Name="Data" ParameterName="Data" />
+                  <ResultBinding Name="ContentFrameID" ColumnName="ContentFrameID" />
+                  <ResultBinding Name="LastWriteTime" ColumnName="LastWriteTime" />
+                  <ResultBinding Name="Length" ColumnName="Length" />
+                </InsertFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContentItems">
+            <EntityTypeMapping TypeName="ImageStoreModel.ContentItem">
+              <MappingFragment StoreEntitySet="ContentItems">
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+                <ScalarProperty Name="ContentTypeID" ColumnName="ContentTypeID" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="LastWriteTime" ColumnName="LastWriteTime" />
+                <ScalarProperty Name="LastAccessTime" ColumnName="LastAccessTime" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="ContentItemID" ColumnName="ContentItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="ImageStoreModel.ContentItem">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="ImageStoreModel.Store.ContentItem_Insert">
+                  <ScalarProperty Name="FolderID" ParameterName="FolderID" />
+                  <ScalarProperty Name="ContentTypeID" ParameterName="ContentTypeID" />
+                  <ScalarProperty Name="Data" ParameterName="Data" />
+                  <ScalarProperty Name="Description" ParameterName="Description" />
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ResultBinding Name="ContentItemID" ColumnName="ContentItemID" />
+                  <ResultBinding Name="CreationTime" ColumnName="CreationTime" />
+                  <ResultBinding Name="LastAccessTime" ColumnName="LastAccessTime" />
+                  <ResultBinding Name="LastWriteTime" ColumnName="LastWriteTime" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="ImageStoreModel.Store.ContentItem_Update">
+                  <ScalarProperty Name="ContentItemID" ParameterName="ContentItemID" Version="Current" />
+                  <ScalarProperty Name="FolderID" ParameterName="FolderID" Version="Current" />
+                  <ScalarProperty Name="ContentTypeID" ParameterName="ContentTypeID" Version="Current" />
+                  <ScalarProperty Name="Data" ParameterName="Data" Version="Current" />
+                  <ScalarProperty Name="Description" ParameterName="Description" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                  <ResultBinding Name="LastAccessTime" ColumnName="LastAccessTime" />
+                  <ResultBinding Name="LastWriteTime" ColumnName="LastWriteTime" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="ImageStoreModel.Store.ContentItem_Delete">
+                  <ScalarProperty Name="ContentItemID" ParameterName="ContentItemID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContentTiles">
+            <EntityTypeMapping TypeName="ImageStoreModel.ContentTile">
+              <MappingFragment StoreEntitySet="ContentTiles">
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="LastWriteTime" ColumnName="LastWriteTime" />
+                <ScalarProperty Name="ContentTypeID" ColumnName="ContentTypeID" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Y" ColumnName="Y" />
+                <ScalarProperty Name="X" ColumnName="X" />
+                <ScalarProperty Name="ContentFrameID" ColumnName="ContentFrameID" />
+                <ScalarProperty Name="ContentTileID" ColumnName="ContentTileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="ImageStoreModel.ContentTile">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="ImageStoreModel.Store.ContentTile_Insert">
+                  <ScalarProperty Name="ContentTypeID" ParameterName="ContentTypeID" />
+                  <ScalarProperty Name="Data" ParameterName="Data" />
+                  <ScalarProperty Name="Level" ParameterName="Level" />
+                  <ScalarProperty Name="Y" ParameterName="Y" />
+                  <ScalarProperty Name="X" ParameterName="X" />
+                  <ScalarProperty Name="ContentFrameID" ParameterName="ContentFrameID" />
+                  <ResultBinding Name="ContentTileID" ColumnName="ContentTileID" />
+                  <ResultBinding Name="LastWriteTime" ColumnName="LastWriteTime" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="ImageStoreModel.Store.ContentTile_Update">
+                  <ScalarProperty Name="ContentTileID" ParameterName="ContentTileID" Version="Current" />
+                  <ScalarProperty Name="ContentTypeID" ParameterName="ContentTypeID" Version="Current" />
+                  <ScalarProperty Name="Data" ParameterName="Data" Version="Current" />
+                  <ScalarProperty Name="Level" ParameterName="Level" Version="Current" />
+                  <ScalarProperty Name="Y" ParameterName="Y" Version="Current" />
+                  <ScalarProperty Name="X" ParameterName="X" Version="Current" />
+                  <ScalarProperty Name="ContentFrameID" ParameterName="ContentFrameID" Version="Current" />
+                  <ResultBinding Name="LastWriteTime" ColumnName="LastWriteTime" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="ImageStoreModel.Store.ContentTile_Delete">
+                  <ScalarProperty Name="ContentTileID" ParameterName="ContentTileID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContentTypes">
+            <EntityTypeMapping TypeName="ImageStoreModel.ContentType">
+              <MappingFragment StoreEntitySet="ContentTypes">
+                <ScalarProperty Name="IsSingleFrame" ColumnName="IsSingleFrame" />
+                <ScalarProperty Name="MimeType" ColumnName="MimeType" />
+                <ScalarProperty Name="Extension" ColumnName="Extension" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ContentTypeID" ColumnName="ContentTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="ImageStoreModel.ContentType">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="ImageStoreModel.Store.ContentType_Insert">
+                  <ScalarProperty Name="IsSingleFrame" ParameterName="IsSingleFrame" />
+                  <ScalarProperty Name="MimeType" ParameterName="MimeType" />
+                  <ScalarProperty Name="Extension" ParameterName="Extension" />
+                  <ScalarProperty Name="Description" ParameterName="Description" />
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ResultBinding Name="ContentTypeID" ColumnName="ContentTypeID" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="ImageStoreModel.Store.ContentType_Update">
+                  <ScalarProperty Name="IsSingleFrame" ParameterName="IsSingleFrame" Version="Current" />
+                  <ScalarProperty Name="ContentTypeID" ParameterName="ContentTypeID" Version="Current" />
+                  <ScalarProperty Name="MimeType" ParameterName="MimeType" Version="Current" />
+                  <ScalarProperty Name="Extension" ParameterName="Extension" Version="Current" />
+                  <ScalarProperty Name="Description" ParameterName="Description" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="ImageStoreModel.Store.ContentType_Delete">
+                  <ScalarProperty Name="ContentTypeID" ParameterName="ContentTypeID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ContentItemTouch" FunctionName="ImageStoreModel.Store.ContentItem_Touch" />
+          <EntitySetMapping Name="ContentMetaDatas">
+            <EntityTypeMapping TypeName="ImageStoreModel.ContentMetaData">
+              <MappingFragment StoreEntitySet="ContentMetaData">
+                <ScalarProperty Name="LastWriteDate" ColumnName="LastWriteDate" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ContentItemID" ColumnName="ContentItemID" />
+                <ScalarProperty Name="ContentMetaID" ColumnName="ContentMetaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="ImageStoreModel.ContentMetaData">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="ImageStoreModel.Store.ContentMetaData_Insert">
+                  <ScalarProperty Name="Value" ParameterName="Value" />
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ScalarProperty Name="ContentItemID" ParameterName="ContentItemID" />
+                  <ResultBinding Name="ContentMetaID" ColumnName="ContentMetaID" />
+                  <ResultBinding Name="Length" ColumnName="Length" />
+                  <ResultBinding Name="CreationDate" ColumnName="CreationDate" />
+                  <ResultBinding Name="LastWriteDate" ColumnName="LastWriteDate" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="ImageStoreModel.Store.ContentMetaData_Update">
+                  <ScalarProperty Name="ContentMetaID" ParameterName="ContentMetaID" Version="Current" />
+                  <ScalarProperty Name="Value" ParameterName="Value" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                  <ScalarProperty Name="ContentItemID" ParameterName="ContentItemID" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="ImageStoreModel.Store.ContentMetaData_Delete">
+                  <ScalarProperty Name="ContentMetaID" ParameterName="ContentMetaID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetDeepZoomCollection" FunctionName="ImageStoreModel.Store.GetDeepZoomCollection" />
+          <FunctionImportMapping FunctionImportName="GetDeepZoomImage" FunctionName="ImageStoreModel.Store.GetDeepZoomImage" />
+          <EntitySetMapping Name="ExifDatas">
+            <EntityTypeMapping TypeName="ImageStoreModel.ExifData">
+              <MappingFragment StoreEntitySet="ExifData">
+                <ScalarProperty Name="EXIF_WhiteBalance" ColumnName="EXIF.WhiteBalance" />
+                <ScalarProperty Name="EXIF_SubjectDistance" ColumnName="EXIF.SubjectDistance" />
+                <ScalarProperty Name="EXIF_ShutterSpeedValue" ColumnName="EXIF.ShutterSpeedValue" />
+                <ScalarProperty Name="EXIF_Sharpness" ColumnName="EXIF.Sharpness" />
+                <ScalarProperty Name="EXIF_SensingMethod" ColumnName="EXIF.SensingMethod" />
+                <ScalarProperty Name="EXIF_SceneType" ColumnName="EXIF.SceneType" />
+                <ScalarProperty Name="EXIF_SceneCaptureType" ColumnName="EXIF.SceneCaptureType" />
+                <ScalarProperty Name="EXIF_Saturation" ColumnName="EXIF.Saturation" />
+                <ScalarProperty Name="EXIF_PlanarConfiguration" ColumnName="EXIF.PlanarConfiguration" />
+                <ScalarProperty Name="EXIF_Orientation" ColumnName="EXIF.Orientation" />
+                <ScalarProperty Name="EXIF_Model" ColumnName="EXIF.Model" />
+                <ScalarProperty Name="EXIF_MeteringMode" ColumnName="EXIF.MeteringMode" />
+                <ScalarProperty Name="EXIF_MaxApertureValue" ColumnName="EXIF.MaxApertureValue" />
+                <ScalarProperty Name="EXIF_Make" ColumnName="EXIF.Make" />
+                <ScalarProperty Name="EXIF_LightSource" ColumnName="EXIF.LightSource" />
+                <ScalarProperty Name="EXIF_ISOSpeedRatings" ColumnName="EXIF.ISOSpeedRatings" />
+                <ScalarProperty Name="EXIF_GainControl" ColumnName="EXIF.GainControl" />
+                <ScalarProperty Name="EXIF_FocalLengthIn35mmFilm" ColumnName="EXIF.FocalLengthIn35mmFilm" />
+                <ScalarProperty Name="EXIF_FocalLength" ColumnName="EXIF.FocalLength" />
+                <ScalarProperty Name="EXIF_FNumber" ColumnName="EXIF.FNumber" />
+                <ScalarProperty Name="EXIF_FlashpixVersion" ColumnName="EXIF.FlashpixVersion" />
+                <ScalarProperty Name="EXIF_FlashEnergy" ColumnName="EXIF.FlashEnergy" />
+                <ScalarProperty Name="EXIF_Flash_RedEyeReductionSupport" ColumnName="EXIF.Flash.RedEyeReductionSupport" />
+                <ScalarProperty Name="EXIF_Flash_Mode" ColumnName="EXIF.Flash.Mode" />
+                <ScalarProperty Name="EXIF_Flash_Function" ColumnName="EXIF.Flash.Function" />
+                <ScalarProperty Name="EXIF_Flash_FirReturned" ColumnName="EXIF.Flash.FirReturned" />
+                <ScalarProperty Name="EXIF_Flash_Fired" ColumnName="EXIF.Flash.Fired" />
+                <ScalarProperty Name="EXIF_FileSource" ColumnName="EXIF.FileSource" />
+                <ScalarProperty Name="EXIF_ExposureTime" ColumnName="EXIF.ExposureTime" />
+                <ScalarProperty Name="EXIF_ExposureProgram" ColumnName="EXIF.ExposureProgram" />
+                <ScalarProperty Name="EXIF_ExposureMode" ColumnName="EXIF.ExposureMode" />
+                <ScalarProperty Name="EXIF_ExposureIndex" ColumnName="EXIF.ExposureIndex" />
+                <ScalarProperty Name="EXIF_ExposureBiasValue" ColumnName="EXIF.ExposureBiasValue" />
+                <ScalarProperty Name="EXIF_ExifVersion" ColumnName="EXIF.ExifVersion" />
+                <ScalarProperty Name="EXIF_DigitalZoomRatio" ColumnName="EXIF.DigitalZoomRatio" />
+                <ScalarProperty Name="EXIF_DateTimeOriginal" ColumnName="EXIF.DateTimeOriginal" />
+                <ScalarProperty Name="EXIF_DateTimeDigitized" ColumnName="EXIF.DateTimeDigitized" />
+                <ScalarProperty Name="EXIF_Contrast" ColumnName="EXIF.Contrast" />
+                <ScalarProperty Name="EXIF_ColorSpace" ColumnName="EXIF.ColorSpace" />
+                <ScalarProperty Name="EXIF_BrightnessValue" ColumnName="EXIF.BrightnessValue" />
+                <ScalarProperty Name="EXIF_ApertureValue" ColumnName="EXIF.ApertureValue" />
+                <ScalarProperty Name="ContentItemID" ColumnName="ContentItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Folders_Publish">
+            <EntityTypeMapping TypeName="ImageStoreModel.Folders_Publish">
+              <MappingFragment StoreEntitySet="Folders_Publish">
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+                <ScalarProperty Name="StructureIDLevel" ColumnName="StructureIDLevel" />
+                <ScalarProperty Name="StructureIDString" ColumnName="StructureIDString" />
+                <ScalarProperty Name="ParentFolderID" ColumnName="ParentFolderID" />
+                <ScalarProperty Name="LastWriteTime" ColumnName="LastWriteTime" />
+                <ScalarProperty Name="LastAccessTime" ColumnName="LastAccessTime" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="MappedPath" ColumnName="MappedPath" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Folders_Read">
+            <EntityTypeMapping TypeName="ImageStoreModel.Folders_Read">
+              <MappingFragment StoreEntitySet="Folders_Read">
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+                <ScalarProperty Name="StructureIDLevel" ColumnName="StructureIDLevel" />
+                <ScalarProperty Name="StructureIDString" ColumnName="StructureIDString" />
+                <ScalarProperty Name="ParentFolderID" ColumnName="ParentFolderID" />
+                <ScalarProperty Name="LastWriteTime" ColumnName="LastWriteTime" />
+                <ScalarProperty Name="LastAccessTime" ColumnName="LastAccessTime" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="MappedPath" ColumnName="MappedPath" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Folders_Write">
+            <EntityTypeMapping TypeName="ImageStoreModel.Folders_Write">
+              <MappingFragment StoreEntitySet="Folders_Write">
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+                <ScalarProperty Name="StructureIDLevel" ColumnName="StructureIDLevel" />
+                <ScalarProperty Name="StructureIDString" ColumnName="StructureIDString" />
+                <ScalarProperty Name="ParentFolderID" ColumnName="ParentFolderID" />
+                <ScalarProperty Name="LastWriteTime" ColumnName="LastWriteTime" />
+                <ScalarProperty Name="LastAccessTime" ColumnName="LastAccessTime" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="MappedPath" ColumnName="MappedPath" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="ImageStoreModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LoweredRoleName" ColumnName="LoweredRoleName" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ImageStoreModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+                <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
+                <ScalarProperty Name="MobileAlias" ColumnName="MobileAlias" />
+                <ScalarProperty Name="LoweredUserName" ColumnName="LoweredUserName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="RoleUser" TypeName="ImageStoreModel.RoleUser" StoreEntitySet="UsersInRoles">
+            <EndProperty Name="User">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="Role">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="FoldersInRoles">
+            <EntityTypeMapping TypeName="ImageStoreModel.FoldersInRole">
+              <MappingFragment StoreEntitySet="FoldersInRoles">
+                <ScalarProperty Name="IsReader" ColumnName="IsReader" />
+                <ScalarProperty Name="IsPublisher" ColumnName="IsPublisher" />
+                <ScalarProperty Name="IsWriter" ColumnName="IsWriter" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+                <ScalarProperty Name="AssignmentID" ColumnName="AssignmentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SessionContexts">
+            <EntityTypeMapping TypeName="ImageStoreModel.SessionContext">
+              <MappingFragment StoreEntitySet="SessionContexts">
+                <ScalarProperty Name="LastUsedOn" ColumnName="LastUsedOn" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ExecutingAssembly" ColumnName="ExecutingAssembly" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="ASPNET_UserID" ColumnName="ASPNET_UserID" />
+                <ScalarProperty Name="ContextID" ColumnName="ContextID" />
+                <ScalarProperty Name="Context" ColumnName="Context" />
+                <ScalarProperty Name="SessionContextID" ColumnName="SessionContextID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="ImageStoreModel.SessionContext">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="ImageStoreModel.Store.SessionContext_Insert">
+                  <ScalarProperty Name="ASPNET_UserID" ParameterName="Aspnet_UserID" />
+                  <ScalarProperty Name="ExecutingAssembly" ParameterName="ExecutingAssembly" />
+                  <ScalarProperty Name="ApplicationName" ParameterName="ApplicationName" />
+                  <ResultBinding Name="SessionContextID" ColumnName="SessionContextID" />
+                  <ResultBinding Name="Context" ColumnName="Context" />
+                  <ResultBinding Name="ContextID" ColumnName="ContextID" />
+                  <ResultBinding Name="CreatedOn" ColumnName="CreatedOn" />
+                  <ResultBinding Name="LastUsedOn" ColumnName="LastUsedOn" />
+                </InsertFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SetSessionContext" FunctionName="ImageStoreModel.Store.SessionContext_Set" />
+          <FunctionImportMapping FunctionImportName="GetCurrentContext" FunctionName="ImageStoreModel.Store.SessionContext_Get" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="ImageStoreModel">
+        <EntityTypeShape EntityType="ImageStoreModel.Folder" Width="1.5" PointX="7" PointY="0.875" Height="3.5186979166666656" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentFrame" Width="1.5" PointX="12.5" PointY="0.5" Height="3.5186979166666665" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentItem" Width="1.875" PointX="9.625" PointY="1.875" Height="3.9033007812499996" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentTile" Width="1.5" PointX="15.625" PointY="2.125" Height="3.1340950520833326" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentType" Width="1.5" PointX="12.5" PointY="4.75" Height="2.7494921874999996" />
+        <AssociationConnector Association="ImageStoreModel.FK_ContentFrames_ContentItems" >
+          <ConnectorPoint PointX="11.5" PointY="2.9468489583333333" />
+          <ConnectorPoint PointX="12.5" PointY="2.9468489583333333" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentFrames_ContentTypes" >
+          <ConnectorPoint PointX="13.25" PointY="4.75" />
+          <ConnectorPoint PointX="13.25" PointY="4.0186979166666665" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentTiles_ContentFrames" >
+          <ConnectorPoint PointX="14" PointY="3.0718489583333333" />
+          <ConnectorPoint PointX="15.625" PointY="3.0718489583333333" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentItems_ContentTypes" >
+          <ConnectorPoint PointX="12.5" PointY="5.264150390625" />
+          <ConnectorPoint PointX="11.5" PointY="5.264150390625" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentItems_Folders" >
+          <ConnectorPoint PointX="8.5" PointY="3.1343489583333328" />
+          <ConnectorPoint PointX="9.625" PointY="3.1343489583333328" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentTiles_ContentTypes" >
+          <ConnectorPoint PointX="14" PointY="5.0045475260416659" />
+          <ConnectorPoint PointX="15.625" PointY="5.0045475260416659" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ImageStoreModel.ContentMetaData" Width="1.875" PointX="9.75" PointY="6.875" Height="2.5571907552083317" />
+        <AssociationConnector Association="ImageStoreModel.FK_ContentMetaData_ContentItems" >
+          <ConnectorPoint PointX="10.96875" PointY="5.77830078125" />
+          <ConnectorPoint PointX="10.96875" PointY="6.875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ImageStoreModel.ExifData" Width="2.875" PointX="5.625" PointY="5" Height="9.095439453125" />
+        <EntityTypeShape EntityType="ImageStoreModel.Folders_Publish" Width="1.5" PointX="15.125" PointY="10.75" Height="3.1340950520833335" />
+        <EntityTypeShape EntityType="ImageStoreModel.Folders_Read" Width="1.5" PointX="16.875" PointY="10.75" Height="3.1340950520833335" />
+        <EntityTypeShape EntityType="ImageStoreModel.Folders_Write" Width="1.5" PointX="13.375" PointY="10.75" Height="3.1340950520833335" />
+        <EntityTypeShape EntityType="ImageStoreModel.Role" Width="1.5" PointX="2.625" PointY="0.875" Height="2.3648893229166661" />
+        <EntityTypeShape EntityType="ImageStoreModel.User" Width="1.5" PointX="0.625" PointY="0.875" Height="2.5571907552083317" />
+        <AssociationConnector Association="ImageStoreModel.RoleUser">
+          <ConnectorPoint PointX="2.625" PointY="2.0574446614583328" />
+          <ConnectorPoint PointX="2.125" PointY="2.0574446614583328" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ImageStoreModel.FoldersInRole" Width="1.5" PointX="4.75" PointY="0.875" Height="2.3648893229166674" />
+        <AssociationConnector Association="ImageStoreModel.FK_FoldersInRoles_Folders" >
+          <ConnectorPoint PointX="7" PointY="2.0574446614583337" />
+          <ConnectorPoint PointX="6.25" PointY="2.0574446614583337" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ImageStoreModel.SessionContext" Width="1.875" PointX="0.75" PointY="4.75" Height="2.1725878906250031" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

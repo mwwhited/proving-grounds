@@ -1,0 +1,945 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ImageStoreModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="ImageStoreModelStoreContainer">
+          <EntitySet Name="Sessions" EntityType="ImageStoreModel.Store.Sessions" store:Type="Tables" Schema="Logging" />
+          <EntitySet Name="Applications" EntityType="ImageStoreModel.Store.Applications" store:Type="Tables" Schema="Security" />
+          <EntitySet Name="Roles" EntityType="ImageStoreModel.Store.Roles" store:Type="Tables" Schema="Security" />
+          <EntitySet Name="Users" EntityType="ImageStoreModel.Store.Users" store:Type="Tables" Schema="Security" />
+          <EntitySet Name="UsersInRoles" EntityType="ImageStoreModel.Store.UsersInRoles" store:Type="Tables" Schema="Security" />
+          <EntitySet Name="ContentData" EntityType="ImageStoreModel.Store.ContentData" store:Type="Tables" Schema="Storage" />
+          <EntitySet Name="ContentItems" EntityType="ImageStoreModel.Store.ContentItems" store:Type="Tables" Schema="Storage" />
+          <EntitySet Name="ContentItemsInRoles" EntityType="ImageStoreModel.Store.ContentItemsInRoles" store:Type="Tables" Schema="Storage" />
+          <EntitySet Name="ContentMetaData" EntityType="ImageStoreModel.Store.ContentMetaData" store:Type="Tables" Schema="Storage" />
+          <EntitySet Name="ContentMetaTypes" EntityType="ImageStoreModel.Store.ContentMetaTypes" store:Type="Tables" Schema="Storage" />
+          <EntitySet Name="ContentTiles" EntityType="ImageStoreModel.Store.ContentTiles" store:Type="Tables" Schema="Storage" />
+          <EntitySet Name="ContentTypes" EntityType="ImageStoreModel.Store.ContentTypes" store:Type="Tables" Schema="Storage" />
+          <AssociationSet Name="FK_ContentData_ContentItems" Association="ImageStoreModel.Store.FK_ContentData_ContentItems">
+            <End Role="ContentItems" EntitySet="ContentItems" />
+            <End Role="ContentData" EntitySet="ContentData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentItems_ContentTypes" Association="ImageStoreModel.Store.FK_ContentItems_ContentTypes">
+            <End Role="ContentTypes" EntitySet="ContentTypes" />
+            <End Role="ContentItems" EntitySet="ContentItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentItemsInRoles_ContentItems" Association="ImageStoreModel.Store.FK_ContentItemsInRoles_ContentItems">
+            <End Role="ContentItems" EntitySet="ContentItems" />
+            <End Role="ContentItemsInRoles" EntitySet="ContentItemsInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentItemsInRoles_Roles" Association="ImageStoreModel.Store.FK_ContentItemsInRoles_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="ContentItemsInRoles" EntitySet="ContentItemsInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentMetaData_ContentItems1" Association="ImageStoreModel.Store.FK_ContentMetaData_ContentItems1">
+            <End Role="ContentItems" EntitySet="ContentItems" />
+            <End Role="ContentMetaData" EntitySet="ContentMetaData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentMetaData_ContentMetaTypes" Association="ImageStoreModel.Store.FK_ContentMetaData_ContentMetaTypes">
+            <End Role="ContentMetaTypes" EntitySet="ContentMetaTypes" />
+            <End Role="ContentMetaData" EntitySet="ContentMetaData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentTiles_ContentItems" Association="ImageStoreModel.Store.FK_ContentTiles_ContentItems">
+            <End Role="ContentData" EntitySet="ContentData" />
+            <End Role="ContentTiles" EntitySet="ContentTiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentTiles_ContentTypes" Association="ImageStoreModel.Store.FK_ContentTiles_ContentTypes">
+            <End Role="ContentTypes" EntitySet="ContentTypes" />
+            <End Role="ContentTiles" EntitySet="ContentTiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roles_Applications" Association="ImageStoreModel.Store.FK_Roles_Applications">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_Users" Association="ImageStoreModel.Store.FK_Sessions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersInRoles_Roles" Association="ImageStoreModel.Store.FK_UsersInRoles_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="UsersInRoles" EntitySet="UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersInRoles_Users" Association="ImageStoreModel.Store.FK_UsersInRoles_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersInRoles" EntitySet="UsersInRoles" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContextInfo" Type="binary" Nullable="false" MaxLength="128" />
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EntryPoint" Type="nvarchar(max)" />
+          <Property Name="EntryPointVersion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Executing" Type="nvarchar(max)" />
+          <Property Name="ExecutingVersion" Type="nvarchar" MaxLength="50" />
+          <Property Name="StartedTime" Type="datetime" Nullable="false" />
+          <Property Name="LastUsedTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="ApplicationID" />
+          </Key>
+          <Property Name="ApplicationID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="EnablePasswordReset" Type="bit" Nullable="false" />
+          <Property Name="MaxInvalidPasswordAttempts" Type="int" Nullable="false" />
+          <Property Name="MinRequiredNonAlphanumericCharacters" Type="int" Nullable="false" />
+          <Property Name="MinRequiredPasswordLength" Type="int" Nullable="false" />
+          <Property Name="PasswordAttemptWindow" Type="int" Nullable="false" />
+          <Property Name="PasswordStrengthRegularExpression" Type="nvarchar(max)" />
+          <Property Name="RequiresQuestionAndAnswer" Type="bit" Nullable="false" />
+          <Property Name="RequiresUniqueEmail" Type="bit" Nullable="false" />
+          <Property Name="InvalidPasswordWindow" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="ApplicationID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="512" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="PasswordCrypt" Type="nvarchar" MaxLength="256" />
+          <Property Name="IsServiceAccount" Type="bit" Nullable="false" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="IsLockedOut" Type="bit" Nullable="false" />
+          <Property Name="IsOnline" Type="bit" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLockoutDate" Type="datetime" Nullable="false" />
+          <Property Name="LastLoginDate" Type="datetime" Nullable="false" />
+          <Property Name="LastPasswordChangedDate" Type="datetime" Nullable="false" />
+          <Property Name="RecoveryQuestion" Type="nvarchar(max)" />
+          <Property Name="RecoveryAnswer" Type="nvarchar" MaxLength="256" />
+          <Property Name="FailedPasswordCount" Type="int" Nullable="false" />
+          <Property Name="FailedPasswordWindowsStart" Type="datetime" Nullable="false" />
+          <Property Name="FailedAnswerCount" Type="int" Nullable="false" />
+          <Property Name="FailedAnswerWindowsStart" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UsersInRoles">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContentData">
+          <Key>
+            <PropertyRef Name="ContentDataID" />
+          </Key>
+          <Property Name="ContentDataID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RowID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Length" Type="bigint" StoreGeneratedPattern="Computed" />
+          <Property Name="ContentItemID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'StructureID' in table 'ImageStore.Storage.ContentItems' was excluded.
+      warning 6005: The data type 'hierarchyid' is not supported; the column 'ParentStructureID' in table 'ImageStore.Storage.ContentItems' was excluded.
+      -->
+        <EntityType Name="ContentItems">
+          <Key>
+            <PropertyRef Name="ContentItemID" />
+          </Key>
+          <Property Name="ContentItemID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContentTypeID" Type="int" Nullable="false" />
+          <Property Name="RowID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="MappedPath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreationTime" Type="datetime" Nullable="false" />
+          <Property Name="LastAccessTime" Type="datetime" Nullable="false" />
+          <Property Name="LastWriteTime" Type="datetime" Nullable="false" />
+          <Property Name="StructureIDLevel" Type="smallint" StoreGeneratedPattern="Computed" />
+          <Property Name="ParentID" Type="int" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ContentItemsInRoles">
+          <Key>
+            <PropertyRef Name="AssignmentID" />
+          </Key>
+          <Property Name="AssignmentID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContentItemID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="List" Type="bit" Nullable="false" />
+          <Property Name="Read" Type="bit" Nullable="false" />
+          <Property Name="Write" Type="bit" Nullable="false" />
+          <Property Name="Publish" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContentMetaData">
+          <Key>
+            <PropertyRef Name="ContentMetaDataID" />
+          </Key>
+          <Property Name="ContentMetaDataID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContentItemID" Type="int" Nullable="false" />
+          <Property Name="ContentMetaTypeID" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Length" Type="bigint" StoreGeneratedPattern="Computed" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="LastWriteDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContentMetaTypes">
+          <Key>
+            <PropertyRef Name="ContentMetaTypeID" />
+          </Key>
+          <Property Name="ContentMetaTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="ClrType" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ContentTiles">
+          <Key>
+            <PropertyRef Name="ContentTileID" />
+          </Key>
+          <Property Name="ContentTileID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContentItemID" Type="int" Nullable="false" />
+          <Property Name="X" Type="int" Nullable="false" />
+          <Property Name="Y" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+          <Property Name="Data" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ContentTypeID" Type="int" Nullable="false" />
+          <Property Name="LastWriteTime" Type="datetime" Nullable="false" />
+          <Property Name="Length" Type="bigint" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="ContentTypes">
+          <Key>
+            <PropertyRef Name="ContentTypeID" />
+          </Key>
+          <Property Name="ContentTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Extension" Type="nvarchar" MaxLength="10" />
+          <Property Name="MimeType" Type="nvarchar" MaxLength="1024" />
+          <Property Name="IsSingleFrame" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ContentData_ContentItems">
+          <End Role="ContentItems" Type="ImageStoreModel.Store.ContentItems" Multiplicity="0..1" />
+          <End Role="ContentData" Type="ImageStoreModel.Store.ContentData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentItems">
+              <PropertyRef Name="ContentItemID" />
+            </Principal>
+            <Dependent Role="ContentData">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentItems_ContentTypes">
+          <End Role="ContentTypes" Type="ImageStoreModel.Store.ContentTypes" Multiplicity="1" />
+          <End Role="ContentItems" Type="ImageStoreModel.Store.ContentItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentTypes">
+              <PropertyRef Name="ContentTypeID" />
+            </Principal>
+            <Dependent Role="ContentItems">
+              <PropertyRef Name="ContentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentItemsInRoles_ContentItems">
+          <End Role="ContentItems" Type="ImageStoreModel.Store.ContentItems" Multiplicity="1" />
+          <End Role="ContentItemsInRoles" Type="ImageStoreModel.Store.ContentItemsInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentItems">
+              <PropertyRef Name="ContentItemID" />
+            </Principal>
+            <Dependent Role="ContentItemsInRoles">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentItemsInRoles_Roles">
+          <End Role="Roles" Type="ImageStoreModel.Store.Roles" Multiplicity="1" />
+          <End Role="ContentItemsInRoles" Type="ImageStoreModel.Store.ContentItemsInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="ContentItemsInRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentMetaData_ContentItems1">
+          <End Role="ContentItems" Type="ImageStoreModel.Store.ContentItems" Multiplicity="1" />
+          <End Role="ContentMetaData" Type="ImageStoreModel.Store.ContentMetaData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentItems">
+              <PropertyRef Name="ContentItemID" />
+            </Principal>
+            <Dependent Role="ContentMetaData">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentMetaData_ContentMetaTypes">
+          <End Role="ContentMetaTypes" Type="ImageStoreModel.Store.ContentMetaTypes" Multiplicity="1" />
+          <End Role="ContentMetaData" Type="ImageStoreModel.Store.ContentMetaData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentMetaTypes">
+              <PropertyRef Name="ContentMetaTypeID" />
+            </Principal>
+            <Dependent Role="ContentMetaData">
+              <PropertyRef Name="ContentMetaTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentTiles_ContentItems">
+          <End Role="ContentData" Type="ImageStoreModel.Store.ContentData" Multiplicity="1" />
+          <End Role="ContentTiles" Type="ImageStoreModel.Store.ContentTiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentData">
+              <PropertyRef Name="ContentDataID" />
+            </Principal>
+            <Dependent Role="ContentTiles">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentTiles_ContentTypes">
+          <End Role="ContentTypes" Type="ImageStoreModel.Store.ContentTypes" Multiplicity="1" />
+          <End Role="ContentTiles" Type="ImageStoreModel.Store.ContentTiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentTypes">
+              <PropertyRef Name="ContentTypeID" />
+            </Principal>
+            <Dependent Role="ContentTiles">
+              <PropertyRef Name="ContentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roles_Applications">
+          <End Role="Applications" Type="ImageStoreModel.Store.Applications" Multiplicity="1" />
+          <End Role="Roles" Type="ImageStoreModel.Store.Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationID" />
+            </Principal>
+            <Dependent Role="Roles">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_Users">
+          <End Role="Users" Type="ImageStoreModel.Store.Users" Multiplicity="1" />
+          <End Role="Sessions" Type="ImageStoreModel.Store.Sessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersInRoles_Roles">
+          <End Role="Roles" Type="ImageStoreModel.Store.Roles" Multiplicity="1" />
+          <End Role="UsersInRoles" Type="ImageStoreModel.Store.UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="UsersInRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersInRoles_Users">
+          <End Role="Users" Type="ImageStoreModel.Store.Users" Multiplicity="1" />
+          <End Role="UsersInRoles" Type="ImageStoreModel.Store.UsersInRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UsersInRoles">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ImageStoreModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="SharedEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Sessions" EntityType="ImageStoreModel.Session" />
+          <EntitySet Name="Applications" EntityType="ImageStoreModel.Application" />
+          <EntitySet Name="Roles" EntityType="ImageStoreModel.Role" />
+          <EntitySet Name="ContentDatas" EntityType="ImageStoreModel.ContentData" />
+          <EntitySet Name="ContentItems" EntityType="ImageStoreModel.ContentItem" />
+          <EntitySet Name="ContentItemsInRoles" EntityType="ImageStoreModel.ContentItemsInRole" />
+          <EntitySet Name="ContentMetaDatas" EntityType="ImageStoreModel.ContentMetaData" />
+          <EntitySet Name="ContentMetaTypes" EntityType="ImageStoreModel.ContentMetaType" />
+          <EntitySet Name="ContentTiles" EntityType="ImageStoreModel.ContentTile" />
+          <EntitySet Name="ContentTypes" EntityType="ImageStoreModel.ContentType" />
+          <AssociationSet Name="FK_Roles_Applications" Association="ImageStoreModel.FK_Roles_Applications">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentItemsInRoles_Roles" Association="ImageStoreModel.FK_ContentItemsInRoles_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="ContentItemsInRoles" EntitySet="ContentItemsInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentData_ContentItems" Association="ImageStoreModel.FK_ContentData_ContentItems">
+            <End Role="ContentItems" EntitySet="ContentItems" />
+            <End Role="ContentData" EntitySet="ContentDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentTiles_ContentItems" Association="ImageStoreModel.FK_ContentTiles_ContentItems">
+            <End Role="ContentData" EntitySet="ContentDatas" />
+            <End Role="ContentTiles" EntitySet="ContentTiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentItems_ContentTypes" Association="ImageStoreModel.FK_ContentItems_ContentTypes">
+            <End Role="ContentTypes" EntitySet="ContentTypes" />
+            <End Role="ContentItems" EntitySet="ContentItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentItemsInRoles_ContentItems" Association="ImageStoreModel.FK_ContentItemsInRoles_ContentItems">
+            <End Role="ContentItems" EntitySet="ContentItems" />
+            <End Role="ContentItemsInRoles" EntitySet="ContentItemsInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentMetaData_ContentItems1" Association="ImageStoreModel.FK_ContentMetaData_ContentItems1">
+            <End Role="ContentItems" EntitySet="ContentItems" />
+            <End Role="ContentMetaData" EntitySet="ContentMetaDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentMetaData_ContentMetaTypes" Association="ImageStoreModel.FK_ContentMetaData_ContentMetaTypes">
+            <End Role="ContentMetaTypes" EntitySet="ContentMetaTypes" />
+            <End Role="ContentMetaData" EntitySet="ContentMetaDatas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContentTiles_ContentTypes" Association="ImageStoreModel.FK_ContentTiles_ContentTypes">
+            <End Role="ContentTypes" EntitySet="ContentTypes" />
+            <End Role="ContentTiles" EntitySet="ContentTiles" />
+          </AssociationSet>
+          <EntitySet Name="Users" EntityType="ImageStoreModel.User" />
+          <AssociationSet Name="FK_Sessions_Users" Association="ImageStoreModel.FK_Sessions_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Session" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="UsersInRoles1" Association="ImageStoreModel.UsersInRoles">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContextInfo" Type="Binary" Nullable="false" MaxLength="128" FixedLength="true" />
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="EntryPoint" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="EntryPointVersion" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Executing" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ExecutingVersion" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="StartedTime" Type="DateTime" Nullable="false" />
+          <Property Name="LastUsedTime" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="ImageStoreModel.FK_Sessions_Users" FromRole="Session" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="ApplicationID" />
+          </Key>
+          <Property Name="ApplicationID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Roles" Relationship="ImageStoreModel.FK_Roles_Applications" FromRole="Applications" ToRole="Roles" />
+          <Property Type="Boolean" Name="EnablePasswordReset" Nullable="false" />
+          <Property Type="Int32" Name="MaxInvalidPasswordAttempts" Nullable="false" />
+          <Property Type="Int32" Name="MinRequiredNonAlphanumericCharacters" Nullable="false" />
+          <Property Type="Int32" Name="MinRequiredPasswordLength" Nullable="false" />
+          <Property Type="Int32" Name="PasswordAttemptWindow" Nullable="false" />
+          <Property Type="String" Name="PasswordStrengthRegularExpression" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="RequiresQuestionAndAnswer" Nullable="false" />
+          <Property Type="Boolean" Name="RequiresUniqueEmail" Nullable="false" />
+          <Property Type="DateTime" Name="InvalidPasswordWindow" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ApplicationID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Application" Relationship="ImageStoreModel.FK_Roles_Applications" FromRole="Roles" ToRole="Applications" />
+          <NavigationProperty Name="ContentItemsInRoles" Relationship="ImageStoreModel.FK_ContentItemsInRoles_Roles" FromRole="Roles" ToRole="ContentItemsInRoles" />
+          <NavigationProperty Name="Users" Relationship="ImageStoreModel.UsersInRoles" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ContentData">
+          <Key>
+            <PropertyRef Name="ContentDataID" />
+          </Key>
+          <Property Name="ContentDataID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RowID" Type="Guid" Nullable="false" />
+          <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="Length" Type="Int64" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ContentItemID" Type="Int32" />
+          <NavigationProperty Name="ContentItem" Relationship="ImageStoreModel.FK_ContentData_ContentItems" FromRole="ContentData" ToRole="ContentItems" />
+          <NavigationProperty Name="ContentTiles" Relationship="ImageStoreModel.FK_ContentTiles_ContentItems" FromRole="ContentData" ToRole="ContentTiles" />
+        </EntityType>
+        <EntityType Name="ContentItem">
+          <Key>
+            <PropertyRef Name="ContentItemID" />
+          </Key>
+          <Property Name="ContentItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContentTypeID" Type="Int32" Nullable="false" />
+          <Property Name="RowID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="MappedPath" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CreationTime" Type="DateTime" Nullable="false" />
+          <Property Name="LastAccessTime" Type="DateTime" Nullable="false" />
+          <Property Name="LastWriteTime" Type="DateTime" Nullable="false" />
+          <Property Name="StructureIDLevel" Type="Int16" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ParentID" Type="Int32" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="ContentDatas" Relationship="ImageStoreModel.FK_ContentData_ContentItems" FromRole="ContentItems" ToRole="ContentData" />
+          <NavigationProperty Name="ContentType" Relationship="ImageStoreModel.FK_ContentItems_ContentTypes" FromRole="ContentItems" ToRole="ContentTypes" />
+          <NavigationProperty Name="ContentItemsInRoles" Relationship="ImageStoreModel.FK_ContentItemsInRoles_ContentItems" FromRole="ContentItems" ToRole="ContentItemsInRoles" />
+          <NavigationProperty Name="ContentMetaDatas" Relationship="ImageStoreModel.FK_ContentMetaData_ContentItems1" FromRole="ContentItems" ToRole="ContentMetaData" />
+        </EntityType>
+        <EntityType Name="ContentItemsInRole">
+          <Key>
+            <PropertyRef Name="AssignmentID" />
+          </Key>
+          <Property Name="AssignmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContentItemID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Guid" Nullable="false" />
+          <Property Name="List" Type="Boolean" Nullable="false" />
+          <Property Name="Read" Type="Boolean" Nullable="false" />
+          <Property Name="Write" Type="Boolean" Nullable="false" />
+          <Property Name="Publish" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="ImageStoreModel.FK_ContentItemsInRoles_Roles" FromRole="ContentItemsInRoles" ToRole="Roles" />
+          <NavigationProperty Name="ContentItem" Relationship="ImageStoreModel.FK_ContentItemsInRoles_ContentItems" FromRole="ContentItemsInRoles" ToRole="ContentItems" />
+        </EntityType>
+        <EntityType Name="ContentMetaData">
+          <Key>
+            <PropertyRef Name="ContentMetaDataID" />
+          </Key>
+          <Property Name="ContentMetaDataID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContentItemID" Type="Int32" Nullable="false" />
+          <Property Name="ContentMetaTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Length" Type="Int64" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <Property Name="LastWriteDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="ContentItem" Relationship="ImageStoreModel.FK_ContentMetaData_ContentItems1" FromRole="ContentMetaData" ToRole="ContentItems" />
+          <NavigationProperty Name="ContentMetaType" Relationship="ImageStoreModel.FK_ContentMetaData_ContentMetaTypes" FromRole="ContentMetaData" ToRole="ContentMetaTypes" />
+        </EntityType>
+        <EntityType Name="ContentMetaType">
+          <Key>
+            <PropertyRef Name="ContentMetaTypeID" />
+          </Key>
+          <Property Name="ContentMetaTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ClrType" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="ContentMetaDatas" Relationship="ImageStoreModel.FK_ContentMetaData_ContentMetaTypes" FromRole="ContentMetaTypes" ToRole="ContentMetaData" />
+        </EntityType>
+        <EntityType Name="ContentTile">
+          <Key>
+            <PropertyRef Name="ContentTileID" />
+          </Key>
+          <Property Name="ContentTileID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContentItemID" Type="Int32" Nullable="false" />
+          <Property Name="X" Type="Int32" Nullable="false" />
+          <Property Name="Y" Type="Int32" Nullable="false" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <Property Name="Data" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ContentTypeID" Type="Int32" Nullable="false" />
+          <Property Name="LastWriteTime" Type="DateTime" Nullable="false" />
+          <Property Name="Length" Type="Int64" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="ContentData" Relationship="ImageStoreModel.FK_ContentTiles_ContentItems" FromRole="ContentTiles" ToRole="ContentData" />
+          <NavigationProperty Name="ContentType" Relationship="ImageStoreModel.FK_ContentTiles_ContentTypes" FromRole="ContentTiles" ToRole="ContentTypes" />
+        </EntityType>
+        <EntityType Name="ContentType">
+          <Key>
+            <PropertyRef Name="ContentTypeID" />
+          </Key>
+          <Property Name="ContentTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Extension" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="MimeType" Type="String" MaxLength="1024" Unicode="true" FixedLength="false" />
+          <Property Name="IsSingleFrame" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ContentItems" Relationship="ImageStoreModel.FK_ContentItems_ContentTypes" FromRole="ContentTypes" ToRole="ContentItems" />
+          <NavigationProperty Name="ContentTiles" Relationship="ImageStoreModel.FK_ContentTiles_ContentTypes" FromRole="ContentTypes" ToRole="ContentTiles" />
+        </EntityType>
+        <Association Name="FK_Roles_Applications">
+          <End Role="Applications" Type="ImageStoreModel.Application" Multiplicity="1" />
+          <End Role="Roles" Type="ImageStoreModel.Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationID" />
+            </Principal>
+            <Dependent Role="Roles">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentItemsInRoles_Roles">
+          <End Role="Roles" Type="ImageStoreModel.Role" Multiplicity="1" />
+          <End Role="ContentItemsInRoles" Type="ImageStoreModel.ContentItemsInRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="ContentItemsInRoles">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentData_ContentItems">
+          <End Role="ContentItems" Type="ImageStoreModel.ContentItem" Multiplicity="0..1" />
+          <End Role="ContentData" Type="ImageStoreModel.ContentData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentItems">
+              <PropertyRef Name="ContentItemID" />
+            </Principal>
+            <Dependent Role="ContentData">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentTiles_ContentItems">
+          <End Role="ContentData" Type="ImageStoreModel.ContentData" Multiplicity="1" />
+          <End Role="ContentTiles" Type="ImageStoreModel.ContentTile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentData">
+              <PropertyRef Name="ContentDataID" />
+            </Principal>
+            <Dependent Role="ContentTiles">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentItems_ContentTypes">
+          <End Role="ContentTypes" Type="ImageStoreModel.ContentType" Multiplicity="1" />
+          <End Role="ContentItems" Type="ImageStoreModel.ContentItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentTypes">
+              <PropertyRef Name="ContentTypeID" />
+            </Principal>
+            <Dependent Role="ContentItems">
+              <PropertyRef Name="ContentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentItemsInRoles_ContentItems">
+          <End Role="ContentItems" Type="ImageStoreModel.ContentItem" Multiplicity="1" />
+          <End Role="ContentItemsInRoles" Type="ImageStoreModel.ContentItemsInRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentItems">
+              <PropertyRef Name="ContentItemID" />
+            </Principal>
+            <Dependent Role="ContentItemsInRoles">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentMetaData_ContentItems1">
+          <End Role="ContentItems" Type="ImageStoreModel.ContentItem" Multiplicity="1" />
+          <End Role="ContentMetaData" Type="ImageStoreModel.ContentMetaData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentItems">
+              <PropertyRef Name="ContentItemID" />
+            </Principal>
+            <Dependent Role="ContentMetaData">
+              <PropertyRef Name="ContentItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentMetaData_ContentMetaTypes">
+          <End Role="ContentMetaTypes" Type="ImageStoreModel.ContentMetaType" Multiplicity="1" />
+          <End Role="ContentMetaData" Type="ImageStoreModel.ContentMetaData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentMetaTypes">
+              <PropertyRef Name="ContentMetaTypeID" />
+            </Principal>
+            <Dependent Role="ContentMetaData">
+              <PropertyRef Name="ContentMetaTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContentTiles_ContentTypes">
+          <End Role="ContentTypes" Type="ImageStoreModel.ContentType" Multiplicity="1" />
+          <End Role="ContentTiles" Type="ImageStoreModel.ContentTile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContentTypes">
+              <PropertyRef Name="ContentTypeID" />
+            </Principal>
+            <Dependent Role="ContentTiles">
+              <PropertyRef Name="ContentTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Type="Guid" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PasswordCrypt" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsServiceAccount" Nullable="false" />
+          <Property Type="Boolean" Name="IsApproved" Nullable="false" />
+          <Property Type="Boolean" Name="IsLockedOut" Nullable="false" />
+          <Property Type="Boolean" Name="IsOnline" Nullable="false" />
+          <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+          <Property Type="DateTime" Name="LastActivityDate" Nullable="false" />
+          <Property Type="DateTime" Name="LastLockoutDate" Nullable="false" />
+          <Property Type="DateTime" Name="LastLoginDate" Nullable="false" />
+          <Property Type="DateTime" Name="LastPasswordChangedDate" Nullable="false" />
+          <Property Type="String" Name="RecoveryQuestion" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="RecoveryAnswer" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Sessions" Relationship="ImageStoreModel.FK_Sessions_Users" FromRole="User" ToRole="Session" />
+          <NavigationProperty Name="Roles" Relationship="ImageStoreModel.UsersInRoles" FromRole="User" ToRole="Role" />
+          <Property Type="Int32" Name="FailedPasswordCount" Nullable="false" />
+          <Property Type="DateTime" Name="FailedPasswordWindowsStart" Nullable="false" />
+          <Property Type="Int32" Name="FailedAnswerCount" Nullable="false" />
+          <Property Type="DateTime" Name="FailedAnswerWindowsStart" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Sessions_Users">
+          <End Type="ImageStoreModel.User" Role="User" Multiplicity="1" />
+          <End Type="ImageStoreModel.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UsersInRoles">
+          <End Type="ImageStoreModel.Role" Role="Role" Multiplicity="*" />
+          <End Type="ImageStoreModel.User" Role="User" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ImageStoreModelStoreContainer" CdmEntityContainer="SharedEntities">
+          <EntitySetMapping Name="Sessions"><EntityTypeMapping TypeName="ImageStoreModel.Session"><MappingFragment StoreEntitySet="Sessions">
+            <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+            <ScalarProperty Name="ContextInfo" ColumnName="ContextInfo" />
+            <ScalarProperty Name="UserID" ColumnName="UserID" />
+            <ScalarProperty Name="EntryPoint" ColumnName="EntryPoint" />
+            <ScalarProperty Name="EntryPointVersion" ColumnName="EntryPointVersion" />
+            <ScalarProperty Name="Executing" ColumnName="Executing" />
+            <ScalarProperty Name="ExecutingVersion" ColumnName="ExecutingVersion" />
+            <ScalarProperty Name="StartedTime" ColumnName="StartedTime" />
+            <ScalarProperty Name="LastUsedTime" ColumnName="LastUsedTime" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Applications"><EntityTypeMapping TypeName="ImageStoreModel.Application"><MappingFragment StoreEntitySet="Applications">
+            <ScalarProperty Name="InvalidPasswordWindow" ColumnName="InvalidPasswordWindow" />
+                <ScalarProperty Name="RequiresUniqueEmail" ColumnName="RequiresUniqueEmail" />
+                <ScalarProperty Name="RequiresQuestionAndAnswer" ColumnName="RequiresQuestionAndAnswer" />
+                <ScalarProperty Name="PasswordStrengthRegularExpression" ColumnName="PasswordStrengthRegularExpression" />
+                <ScalarProperty Name="PasswordAttemptWindow" ColumnName="PasswordAttemptWindow" />
+                <ScalarProperty Name="MinRequiredPasswordLength" ColumnName="MinRequiredPasswordLength" />
+                <ScalarProperty Name="MinRequiredNonAlphanumericCharacters" ColumnName="MinRequiredNonAlphanumericCharacters" />
+                <ScalarProperty Name="MaxInvalidPasswordAttempts" ColumnName="MaxInvalidPasswordAttempts" />
+                <ScalarProperty Name="EnablePasswordReset" ColumnName="EnablePasswordReset" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Roles"><EntityTypeMapping TypeName="ImageStoreModel.Role"><MappingFragment StoreEntitySet="Roles">
+            <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ContentDatas"><EntityTypeMapping TypeName="ImageStoreModel.ContentData"><MappingFragment StoreEntitySet="ContentData">
+            <ScalarProperty Name="ContentDataID" ColumnName="ContentDataID" />
+            <ScalarProperty Name="RowID" ColumnName="RowID" />
+            <ScalarProperty Name="Data" ColumnName="Data" />
+            <ScalarProperty Name="Length" ColumnName="Length" />
+            <ScalarProperty Name="ContentItemID" ColumnName="ContentItemID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ContentItems"><EntityTypeMapping TypeName="ImageStoreModel.ContentItem"><MappingFragment StoreEntitySet="ContentItems">
+            <ScalarProperty Name="ContentItemID" ColumnName="ContentItemID" />
+            <ScalarProperty Name="ContentTypeID" ColumnName="ContentTypeID" />
+            <ScalarProperty Name="RowID" ColumnName="RowID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="MappedPath" ColumnName="MappedPath" />
+            <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+            <ScalarProperty Name="LastAccessTime" ColumnName="LastAccessTime" />
+            <ScalarProperty Name="LastWriteTime" ColumnName="LastWriteTime" />
+            <ScalarProperty Name="StructureIDLevel" ColumnName="StructureIDLevel" />
+            <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ContentItemsInRoles"><EntityTypeMapping TypeName="ImageStoreModel.ContentItemsInRole"><MappingFragment StoreEntitySet="ContentItemsInRoles">
+            <ScalarProperty Name="AssignmentID" ColumnName="AssignmentID" />
+            <ScalarProperty Name="ContentItemID" ColumnName="ContentItemID" />
+            <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+            <ScalarProperty Name="List" ColumnName="List" />
+            <ScalarProperty Name="Read" ColumnName="Read" />
+            <ScalarProperty Name="Write" ColumnName="Write" />
+            <ScalarProperty Name="Publish" ColumnName="Publish" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ContentMetaDatas"><EntityTypeMapping TypeName="ImageStoreModel.ContentMetaData"><MappingFragment StoreEntitySet="ContentMetaData">
+            <ScalarProperty Name="ContentMetaDataID" ColumnName="ContentMetaDataID" />
+            <ScalarProperty Name="ContentItemID" ColumnName="ContentItemID" />
+            <ScalarProperty Name="ContentMetaTypeID" ColumnName="ContentMetaTypeID" />
+            <ScalarProperty Name="Value" ColumnName="Value" />
+            <ScalarProperty Name="Length" ColumnName="Length" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+            <ScalarProperty Name="LastWriteDate" ColumnName="LastWriteDate" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ContentMetaTypes"><EntityTypeMapping TypeName="ImageStoreModel.ContentMetaType"><MappingFragment StoreEntitySet="ContentMetaTypes">
+            <ScalarProperty Name="ContentMetaTypeID" ColumnName="ContentMetaTypeID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="ClrType" ColumnName="ClrType" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ContentTiles"><EntityTypeMapping TypeName="ImageStoreModel.ContentTile"><MappingFragment StoreEntitySet="ContentTiles">
+            <ScalarProperty Name="ContentTileID" ColumnName="ContentTileID" />
+            <ScalarProperty Name="ContentItemID" ColumnName="ContentItemID" />
+            <ScalarProperty Name="X" ColumnName="X" />
+            <ScalarProperty Name="Y" ColumnName="Y" />
+            <ScalarProperty Name="Level" ColumnName="Level" />
+            <ScalarProperty Name="Data" ColumnName="Data" />
+            <ScalarProperty Name="ContentTypeID" ColumnName="ContentTypeID" />
+            <ScalarProperty Name="LastWriteTime" ColumnName="LastWriteTime" />
+            <ScalarProperty Name="Length" ColumnName="Length" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="ContentTypes"><EntityTypeMapping TypeName="ImageStoreModel.ContentType"><MappingFragment StoreEntitySet="ContentTypes">
+            <ScalarProperty Name="ContentTypeID" ColumnName="ContentTypeID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="Extension" ColumnName="Extension" />
+            <ScalarProperty Name="MimeType" ColumnName="MimeType" />
+            <ScalarProperty Name="IsSingleFrame" ColumnName="IsSingleFrame" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ImageStoreModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="FailedAnswerWindowsStart" ColumnName="FailedAnswerWindowsStart" />
+                <ScalarProperty Name="FailedAnswerCount" ColumnName="FailedAnswerCount" />
+                <ScalarProperty Name="FailedPasswordWindowsStart" ColumnName="FailedPasswordWindowsStart" />
+                <ScalarProperty Name="FailedPasswordCount" ColumnName="FailedPasswordCount" />
+                <ScalarProperty Name="RecoveryAnswer" ColumnName="RecoveryAnswer" />
+                <ScalarProperty Name="RecoveryQuestion" ColumnName="RecoveryQuestion" />
+                <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="LastLockoutDate" ColumnName="LastLockoutDate" />
+                <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+                <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="IsServiceAccount" ColumnName="IsServiceAccount" />
+                <ScalarProperty Name="PasswordCrypt" ColumnName="PasswordCrypt" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="UsersInRoles1" TypeName="ImageStoreModel.UsersInRoles" StoreEntitySet="UsersInRoles">
+            <EndProperty Name="User">
+              <ScalarProperty Name="UserID" ColumnName="UserID" />
+            </EndProperty>
+            <EndProperty Name="Role">
+              <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="SharedEntities">
+        <EntityTypeShape EntityType="ImageStoreModel.Session" Width="1.875" PointX="12" PointY="6.375" Height="2.9417936197916656" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageStoreModel.Application" Width="3.125" PointX="11.75" PointY="1" Height="3.3263964843749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageStoreModel.Role" Width="2" PointX="8.75" PointY="1" Height="2.3648893229166656" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentData" Width="2" PointX="2.875" PointY="8.5" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentItem" Width="1.875" PointX="2.875" PointY="3.375" Height="3.9033007812499987" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentItemsInRole" Width="2" PointX="5.25" PointY="1" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentMetaData" Width="1.875" PointX="5.875" PointY="4.5" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentMetaType" Width="2" PointX="5.875" PointY="8" Height="1.9802864583333317" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentTile" Width="1.5" PointX="0.625" PointY="8.625" Height="3.1340950520833317" IsExpanded="true" />
+        <EntityTypeShape EntityType="ImageStoreModel.ContentType" Width="1.5" PointX="0.75" PointY="4.5" Height="2.5571907552083317" IsExpanded="true" />
+        <AssociationConnector Association="ImageStoreModel.FK_Roles_Applications" ManuallyRouted="false">
+          <ConnectorPoint PointX="11.75" PointY="2.2785953776041667" />
+          <ConnectorPoint PointX="10.75" PointY="2.2785953776041667" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentItemsInRoles_Roles" ManuallyRouted="false">
+          <ConnectorPoint PointX="8.75" PointY="2.2785953776041667" />
+          <ConnectorPoint PointX="7.25" PointY="2.2785953776041667" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentData_ContentItems" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.8125" PointY="7.2783007812499987" />
+          <ConnectorPoint PointX="3.8125" PointY="8.5" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentTiles_ContentItems" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.875" PointY="9.7449446614583337" />
+          <ConnectorPoint PointX="2.125" PointY="9.7449446614583337" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentItems_ContentTypes" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="5.7785953776041659" />
+          <ConnectorPoint PointX="2.875" PointY="5.7785953776041659" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentItemsInRoles_ContentItems" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.8125" PointY="3.375" />
+          <ConnectorPoint PointX="3.8125" PointY="2.1874994999999995" />
+          <ConnectorPoint PointX="5.25" PointY="2.1874994999999995" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentMetaData_ContentItems1" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.75" PointY="5.87474609375" />
+          <ConnectorPoint PointX="5.875" PointY="5.87474609375" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentMetaData_ContentMetaTypes" ManuallyRouted="false">
+          <ConnectorPoint PointX="6.8125" PointY="8" />
+          <ConnectorPoint PointX="6.8125" PointY="7.2494921875" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.FK_ContentTiles_ContentTypes" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.4375" PointY="7.0571907552083317" />
+          <ConnectorPoint PointX="1.4375" PointY="8.625" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ImageStoreModel.User" Width="2.125" PointX="8.875" PointY="5.75" Height="5.2494108072916656" />
+        <AssociationConnector Association="ImageStoreModel.FK_Sessions_Users" >
+          <ConnectorPoint PointX="11" PointY="7.8458968098958328" />
+          <ConnectorPoint PointX="12" PointY="7.8458968098958328" />
+        </AssociationConnector>
+        <AssociationConnector Association="ImageStoreModel.UsersInRoles" >
+          <ConnectorPoint PointX="9.8125" PointY="3.3648893229166656" />
+          <ConnectorPoint PointX="9.8125" PointY="5.75" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

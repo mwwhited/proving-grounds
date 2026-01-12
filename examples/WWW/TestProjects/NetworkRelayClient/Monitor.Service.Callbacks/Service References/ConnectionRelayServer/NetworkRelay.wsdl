@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://www.whited.us/2008/01/RelayService" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" targetNamespace="http://www.whited.us/2008/01/RelayService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.whited.us/2008/01/RelayService/Imports">
+      <xsd:import schemaLocation="http://localhost:5160/Services/NetworkRelay.svc?xsd=xsd0" namespace="http://www.whited.us/2008/01/RelayService" />
+      <xsd:import schemaLocation="http://localhost:5160/Services/NetworkRelay.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:5160/Services/NetworkRelay.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WhitedUS.Services.NetworkRelay" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="NetworkRelay_Connect_InputMessage">
+    <wsdl:part name="parameters" element="tns:Connect" />
+  </wsdl:message>
+  <wsdl:message name="DataMessage">
+    <wsdl:part name="parameters" element="tns:DataMessage" />
+  </wsdl:message>
+  <wsdl:message name="DataMessage_Headers">
+    <wsdl:part name="DataPacketSize" element="tns:DataPacketSize" />
+    <wsdl:part name="SequenceNumber" element="tns:SequenceNumber" />
+  </wsdl:message>
+  <wsdl:message name="EventMessage">
+    <wsdl:part name="parameters" element="tns:EventMessage" />
+  </wsdl:message>
+  <wsdl:message name="EventMessage_Headers">
+    <wsdl:part name="EventType" element="tns:EventType" />
+  </wsdl:message>
+  <wsdl:message name="NetworkRelay_SendSystemEvent_OutputMessage" />
+  <wsdl:message name="NetworkRelay_LoopbackWithCallBack_InputMessage">
+    <wsdl:part name="parameters" element="tns:LoopbackWithCallBack" />
+  </wsdl:message>
+  <wsdl:message name="NetworkRelay_Loopback_InputMessage">
+    <wsdl:part name="parameters" element="tns:Loopback" />
+  </wsdl:message>
+  <wsdl:message name="NetworkRelay_Loopback_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoopbackResponse" />
+  </wsdl:message>
+  <wsdl:message name="NetworkRelay_Disconnect_InputMessage">
+    <wsdl:part name="parameters" element="tns:Disconnect" />
+  </wsdl:message>
+  <wsdl:message name="NetworkRelay_CallbackSystemEvent_InputCallbackMessage" />
+  <wsdl:message name="NetworkRelay_ReturnLoopBack_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:ReturnLoopBack" />
+  </wsdl:message>
+  <wsdl:portType msc:usingSession="true" name="NetworkRelay">
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Connect">
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/Connect" message="tns:NetworkRelay_Connect_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendData">
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/SendData" name="DataMessage" message="tns:DataMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendSystemEvent">
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/SendSystemEvent" name="EventMessage" message="tns:EventMessage" />
+      <wsdl:output wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/SendSystemEventResponse" message="tns:NetworkRelay_SendSystemEvent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="LoopbackWithCallBack">
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/LoopbackWithCallBack" message="tns:NetworkRelay_LoopbackWithCallBack_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Loopback">
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/Loopback" message="tns:NetworkRelay_Loopback_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/LoopbackResponse" message="tns:NetworkRelay_Loopback_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="true" name="Disconnect">
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/Disconnect" message="tns:NetworkRelay_Disconnect_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendData">
+      <wsdl:output wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/SendData" name="DataMessage" message="tns:DataMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CallbackSystemEvent">
+      <wsdl:output wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/CallbackSystemEvent" name="EventMessage" message="tns:EventMessage" />
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/CallbackSystemEventResponse" message="tns:NetworkRelay_CallbackSystemEvent_InputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ReturnLoopBack">
+      <wsdl:output wsaw:Action="http://www.whited.us/2008/01/RelayService/NetworkRelay/ReturnLoopBack" message="tns:NetworkRelay_ReturnLoopBack_OutputCallbackMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

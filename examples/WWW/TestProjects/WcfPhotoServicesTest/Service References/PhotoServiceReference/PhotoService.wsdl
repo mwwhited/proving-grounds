@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://www.whited.us/2008/11/PhotoService" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" targetNamespace="http://www.whited.us/2008/11/PhotoService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.whited.us/2008/11/PhotoService/Imports">
+      <xsd:import namespace="http://www.whited.us/2008/11/PhotoService" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IPhotoServiceContract_GetDirectories_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDirectories" />
+  </wsdl:message>
+  <wsdl:message name="IPhotoServiceContract_GetDirectories_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDirectoriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPhotoServiceContract_GetPhotoNames_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPhotoNames" />
+  </wsdl:message>
+  <wsdl:message name="IPhotoServiceContract_GetPhotoNames_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPhotoNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPhotoServiceContract_GetImage_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetImage" />
+  </wsdl:message>
+  <wsdl:message name="IPhotoServiceContract_GetImage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetImageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPhotoServiceContract_GetImageResized_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetImageResized" />
+  </wsdl:message>
+  <wsdl:message name="IPhotoServiceContract_GetImageResized_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetImageResizedResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IPhotoServiceContract">
+    <wsdl:operation name="GetDirectories">
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/11/PhotoService/IPhotoServiceContract/GetDirectories" message="tns:IPhotoServiceContract_GetDirectories_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.whited.us/2008/11/PhotoService/IPhotoServiceContract/GetDirectoriesResponse" message="tns:IPhotoServiceContract_GetDirectories_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPhotoNames">
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/11/PhotoService/IPhotoServiceContract/GetPhotoNames" message="tns:IPhotoServiceContract_GetPhotoNames_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.whited.us/2008/11/PhotoService/IPhotoServiceContract/GetPhotoNamesResponse" message="tns:IPhotoServiceContract_GetPhotoNames_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetImage">
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/11/PhotoService/IPhotoServiceContract/GetImage" message="tns:IPhotoServiceContract_GetImage_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.whited.us/2008/11/PhotoService/IPhotoServiceContract/GetImageResponse" message="tns:IPhotoServiceContract_GetImage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetImageResized">
+      <wsdl:input wsaw:Action="http://www.whited.us/2008/11/PhotoService/IPhotoServiceContract/GetImageResized" message="tns:IPhotoServiceContract_GetImageResized_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.whited.us/2008/11/PhotoService/IPhotoServiceContract/GetImageResizedResponse" message="tns:IPhotoServiceContract_GetImageResized_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

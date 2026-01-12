@@ -1,0 +1,3 @@
+﻿ALTER TABLE [dbo].[Tasks]
+    ADD CONSTRAINT [FK_Tasks_Groups] FOREIGN KEY ([GroupID]) REFERENCES [dbo].[Groups] ([GroupID]) ON DELETE NO ACTION ON UPDATE NO ACTION;
+

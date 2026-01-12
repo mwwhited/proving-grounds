@@ -1,0 +1,5 @@
+﻿ALTER TABLE [dbo].[ResourceTags]
+    ADD CONSTRAINT [FK_ResourceTags_Tags] FOREIGN KEY ([TagID]) REFERENCES [dbo].[Tags] ([TagID]) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+
+

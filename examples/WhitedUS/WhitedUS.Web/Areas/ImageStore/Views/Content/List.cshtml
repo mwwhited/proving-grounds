@@ -1,0 +1,41 @@
+﻿@model IQueryable<WhitedUS.ImageStore.Models.ContentItemSimpleModel>
+
+@{
+    ViewBag.Title = "List Folders";
+}
+
+<h2>List Folders</h2>
+
+@{
+    this.Html
+        .Telerik()
+        .Grid(this.Model)
+        .Name("ContentGrid")
+        .Columns(cols =>
+        {
+            cols.Template(
+                @<a href="@this.Html.ResolveRoute(new{area="ImageStore", controller="Content", action="Item", id=item.ContentItemID })">
+                    <img src="@this.Html.ResolveRoute(new { area = "ImageStore", controller = "Content", action = "Item", id = item.ContentItemID, maxsize=150 })" 
+                         alt="@item.Name (@item.ContentItemID)" />
+                </a>
+                ).Title("Thumbnail");
+            cols.Bound(col => col.Name);
+            cols.Bound(col => col.Length);
+            cols.Bound(col => col.LastAccessTime);
+            cols.Bound(col => col.LastWriteTime);
+        })
+        .Pageable()
+        .Scrollable(s=>s.Height(320))
+        .Sortable()
+        .Render();    
+}
+
+            @*
+                @<a href="@Url.Content("/ImageStore/Content/Item/" + item.ContentItemID + "?maxsize=2000")">
+                    <img alt="@item.Name (@item.ContentItemID)" 
+                         src="@Url.Content("/ImageStore/Content/Item/" + item.ContentItemID + "?maxsize=150")" 
+                        />
+                </a>*@
+
+
+

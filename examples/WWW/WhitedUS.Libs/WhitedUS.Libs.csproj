@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4239FE33-388D-4549-AD67-F54C04EEF0A1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WhitedUS.Libs</RootNamespace>
+    <AssemblyName>WhitedUS.Libs</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\WhitedUS.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Speech">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CompressedFiles\PKZip\CompressionMethodType.cs" />
+    <Compile Include="CompressedFiles\PKZip\LocalFileHeader.cs" />
+    <Compile Include="CompressedFiles\PKZip\Utilities.cs" />
+    <Compile Include="CompressedFiles\PngPack\Utilities.cs" />
+    <Compile Include="CompressedFiles\TarGZip\TarFileType.cs" />
+    <Compile Include="CompressedFiles\TarGZip\TarHeader.cs" />
+    <Compile Include="CompressedFiles\TarGZip\Utilities.cs" />
+    <Compile Include="Converters\ByteArrayConverters.cs" />
+    <Compile Include="Converters\DynamicMethodTools.cs" />
+    <Compile Include="Converters\GenericParser.CastTo.cs" />
+    <Compile Include="Converters\GenericParser.ConvertTo.cs" />
+    <Compile Include="Converters\GenericParser.CreateInstance.cs" />
+    <Compile Include="Converters\GenericParser.Properties.cs" />
+    <Compile Include="Converters\GenericParser.TryParse.cs" />
+    <Compile Include="Converters\ObjectConverters.cs" />
+    <Compile Include="Graphics\Exif\ContrastType.cs" />
+    <Compile Include="Graphics\Exif\CustomRenderedType.cs" />
+    <Compile Include="Graphics\Exif\ExifSRational.cs" />
+    <Compile Include="Graphics\Exif\ColorSpaceType.cs" />
+    <Compile Include="Graphics\Exif\CompressionType.cs" />
+    <Compile Include="Graphics\Exif\ExifData.cs" />
+    <Compile Include="Graphics\Exif\ExifIdType.cs" />
+    <Compile Include="Graphics\Exif\ExifRational.cs" />
+    <Compile Include="Graphics\Exif\ExifType.cs" />
+    <Compile Include="Graphics\Exif\ExifTypeIdAttribute.cs" />
+    <Compile Include="Graphics\Exif\ExifTypeUtilities.cs" />
+    <Compile Include="Graphics\Exif\ExposureModeType.cs" />
+    <Compile Include="Graphics\Exif\ExposureProgramType.cs" />
+    <Compile Include="Graphics\Exif\FileSourceType.cs" />
+    <Compile Include="Graphics\Exif\FlashType.cs" />
+    <Compile Include="Graphics\Exif\FocalPlaneResolutionUnitType.cs" />
+    <Compile Include="Graphics\Exif\GainControlType.cs" />
+    <Compile Include="Graphics\Exif\LightSourceType.cs" />
+    <Compile Include="Graphics\Exif\MeteringModeType.cs" />
+    <Compile Include="Graphics\Exif\OrientationType.cs" />
+    <Compile Include="Graphics\Exif\OtherExifData.cs" />
+    <Compile Include="Graphics\Exif\PhotoMetricInterpertationType.cs" />
+    <Compile Include="Graphics\Exif\PlanarConfigurationType.cs" />
+    <Compile Include="Graphics\Exif\SaturationType.cs" />
+    <Compile Include="Graphics\Exif\SceneCaptureTypeType.cs" />
+    <Compile Include="Graphics\Exif\SceneTypeType.cs" />
+    <Compile Include="Graphics\Exif\SensingMethodType.cs" />
+    <Compile Include="Graphics\Exif\SharpnessType.cs" />
+    <Compile Include="Graphics\Exif\SubjectDistanceRangeType.cs" />
+    <Compile Include="Graphics\Exif\WhiteBalanceType.cs" />
+    <Compile Include="Graphics\Exif\YCbCrPositioningType.cs" />
+    <Compile Include="Graphics\Exif\YCbCrSubsamplingType.cs" />
+    <Compile Include="X12\Isa.cs" />
+    <Compile Include="X12\IX12Segment.cs" />
+    <Compile Include="X12\X12Reader.cs" />
+    <Compile Include="Security\Crypt\ApacheMd5Crypt.cs" />
+    <Compile Include="Security\Crypt\ICrypt.cs" />
+    <Compile Include="Security\Crypt\Md5Crypt.cs" />
+    <Compile Include="Security\Crypt\UnixCrypt.cs" />
+    <Compile Include="Converters\MagicConverters.cs" />
+    <Compile Include="Converters\MemoryStreamConverters.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Converters\StringConverters.cs" />
+    <Compile Include="Converters\TimeConverters\TimeMagic.cs" />
+    <Compile Include="X12\X12Separators.cs" />
+    <Compile Include="Xml\Linq\ObjectTools.cs" />
+    <Compile Include="Xml\Linq\ReflectionTools.cs" />
+    <Compile Include="Xml\Linq\XmlLinq.cs" />
+    <Compile Include="Xml\XmlObjectReader.cs" />
+    <Compile Include="Xml\XmlObjectWriter.cs" />
+    <Compile Include="Xml\XPath\XPathObjectNavigator.cs" />
+    <Compile Include="Xml\Xsl\ExtensionObjectToolSet.cs" />
+    <Compile Include="Xml\Xsl\INamespaceResolvable.cs" />
+    <Compile Include="Xml\Xsl\XsltLinqArgumentList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Security\Crypt\Notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\WhitedUS.snk">
+      <Link>WhitedUS.snk</Link>
+    </None>
+    <None Include="X12\850_x12.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

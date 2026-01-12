@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@if (false)
+{
+    <script src="../../../../Scripts/jquery-1.8.0-vsdoc.js" type="text/javascript"></script> 
+    <script src="../../../../Scripts/knockout-2.1.0.debug.js" type="text/javascript"></script> 
+}
+
+@section Header{
+    <script src="@Url.Content("~/Areas/Administration/Scripts/UserModel.js")" type="text/javascript"></script>  
+    <style type="text/css">
+            table * tr th 
+            {
+                text-align:center;
+            }
+            
+            table.for-layout 
+            {
+                width: 100%;
+                border-style: none;
+            }
+            table.for-layout tr td
+            {
+                width: 33%;
+                vertical-align: top;
+                border-style: none;
+            }
+            table.for-data 
+            {
+                width: 100%;
+            }
+    </style>
+}
+
+<h2>Users</h2>
+
+<table class="for-data">
+    <thead>
+        <tr>
+            <th><a data-bind="click: listUsers">Refresh</a></th>
+            <th colspan="9">&nbsp;</th>
+        </tr>
+        <tr>
+            <th>User Name</th>
+            <th>Comment</th>
+            <th>Email</th>
+            <th>Is Approved</th>
+            @*<th>User ID</th>*@
+            <th>Is Locked out</th>  
+            <th>Is Online</th>  
+            <th>Last Activity</th>  
+            <th>Last Lockout</th> 
+            <th>Last Login</th>  
+            @*<th>Last Password Changed Date</th>*@
+            <th>Creation Date</th> 
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Users">
+        <tr data-bind="click: $parent.selectUser">
+            <td data-bind="text: UserName"></td>
+            <td data-bind="text: Comment"></td>
+            <td data-bind="email: Email"></td>
+            <td data-bind="text: IsApproved"></td>
+            @*<td data-bind="text: UserID"></td>*@
+            <td data-bind="text: IsLockedOut"></td>
+            <td data-bind="text: IsOnline"></td>
+            <td data-bind="date: LastActivityDate"></td>
+            <td data-bind="date: LastLockoutDate"></td>
+            <td data-bind="date: LastLoginDate"></td>
+            @*<td data-bind="date: LastPasswordChangedDate"></td>*@
+            <td data-bind="date: CreationDate"></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th><a data-bind="click: listUsers">Refresh</a></th>
+            <th colspan="9">            
+                <span>
+                    <a data-bind="click: function() {$root.changePage(1)}"><span>&lt;</span></a>&nbsp;
+                </span>
+                <span data-bind="foreach: ko.utils.range(1, $root.TotalPageCount)">
+                    <span>
+                        <a data-bind="click: $parent.changePage"><span data-bind="text: $data"></span></a>&nbsp;
+                    </span>
+                </span>
+                <span>
+                    <a data-bind="click: function() {$root.changePage($root.TotalPageCount) }"><span>&gt;</span></a>&nbsp;
+                </span>
+            </th>
+        </tr>
+    </tfoot>
+</table>
+
+<fieldset>
+    <legend>
+        <span data-bind="if: IsSelected">Edit User</span>
+        <span data-bind="ifnot: IsSelected">Create User</span>
+    </legend>
+
+    <table class="for-layout">
+        <tr>
+            <td>
+                <form data-bind="submit: saveUser">
+                    <table class="for-layout">
+                        <tr>
+                            <td><label>User Name</label></td>
+                            <td><input type="text" data-bind="value: UserName" /></td>
+                        </tr>
+                        <tr>
+                            <td><label>Email</label></td>
+                            <td><input type="email" data-bind="value: Email" /></td>
+                        </tr>
+                        <tr>
+                            <td><label>Comment</label></td>
+                            <td><textarea data-bind="value: Comment" rows="4" cols="20"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><label>Is Approved</label></td>
+                            <td><input type="checkbox" data-bind="checked: IsApproved" /></td>
+                        </tr>
+                    </table>
+                    <button type="submit">Save</button>
+                    <a data-bind="click: clearUser">Clear</a>
+                    <a data-bind="click: deleteUser, visible: IsSelected">Delete</a>
+                </form>
+            </td>
+            <td>
+                <div data-bind="visible: IsSelected">
+                    <h2>In Role</h2>
+                    <ul data-bind="foreach: UsersRoles">
+                        <li data-bind="click: $parent.unassignRole">
+                            <span data-bind="text: RoleName"></span>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+                <div data-bind="visible: IsSelected">
+                    <h2>Not In Role</h2>
+                    <ul data-bind="foreach: OtherRoles">
+                        <li data-bind="click: $parent.assignRole">
+                            <span data-bind="text: RoleName"></span>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </table>
+</fieldset>

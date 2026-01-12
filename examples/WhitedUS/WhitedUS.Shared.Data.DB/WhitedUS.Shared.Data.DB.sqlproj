@@ -1,0 +1,536 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">10.0</VisualStudioVersion>
+    <PostConversionRemoveFromScc>
+    </PostConversionRemoveFromScc>
+    <PostConversionAddToScc>
+    </PostConversionAddToScc>
+    <PostConversionCheckOutFromScc>
+    </PostConversionCheckOutFromScc>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>WhitedUS.Shared.Data.DB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.0</ProjectVersion>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <ShowWizard>False</ShowWizard>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <IncludeSchemaNameInFileName>False</IncludeSchemaNameInFileName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <LoadSqlClrTypes>True</LoadSqlClrTypes>
+    <RootNamespace>WhitedUS.Shared.Data.DB</RootNamespace>
+    <DefaultSchema>dbo</DefaultSchema>
+    <PreviousProjectVersion>4.0</PreviousProjectVersion>
+    <ValidateCasingOnIdentifiers>False</ValidateCasingOnIdentifiers>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6539dd52-a64d-40c2-883b-34d2dfc0a5aa}</ProjectGuid>
+    <GenerateDatabaseFile>False</GenerateDatabaseFile>
+    <GenerateCreateScript>False</GenerateCreateScript>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AllowSnapshotIsolation>False</AllowSnapshotIsolation>
+    <AnsiNullDefault>False</AnsiNullDefault>
+    <AnsiNulls>True</AnsiNulls>
+    <AnsiPadding>True</AnsiPadding>
+    <AnsiWarnings>True</AnsiWarnings>
+    <ArithAbort>False</ArithAbort>
+    <AutoClose>False</AutoClose>
+    <AutoCreateStatistics>True</AutoCreateStatistics>
+    <AutoShrink>False</AutoShrink>
+    <AutoUpdateStatistics>True</AutoUpdateStatistics>
+    <AutoUpdateStatisticsAsynchronously>False</AutoUpdateStatisticsAsynchronously>
+    <ChangeTrackingRetentionPeriod>2</ChangeTrackingRetentionPeriod>
+    <ChangeTrackingRetentionUnit>Days</ChangeTrackingRetentionUnit>
+    <CloseCursorOnCommitEnabled>False</CloseCursorOnCommitEnabled>
+    <CompatibilityMode>100</CompatibilityMode>
+    <ConcatNullYieldsNull>True</ConcatNullYieldsNull>
+    <DatabaseAccess>MULTI_USER</DatabaseAccess>
+    <DatabaseChaining>False</DatabaseChaining>
+    <DatabaseState>ONLINE</DatabaseState>
+    <DateCorrelationOptimizationOn>False</DateCorrelationOptimizationOn>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultCursor>GLOBAL</DefaultCursor>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <DefaultFileStreamFilegroup>FileStream</DefaultFileStreamFilegroup>
+    <EnableFullTextSearch>True</EnableFullTextSearch>
+    <IsBrokerPriorityHonored>False</IsBrokerPriorityHonored>
+    <IsChangeTrackingAutoCleanupOn>True</IsChangeTrackingAutoCleanupOn>
+    <IsChangeTrackingOn>False</IsChangeTrackingOn>
+    <IsEncryptionOn>False</IsEncryptionOn>
+    <NumericRoundAbort>False</NumericRoundAbort>
+    <PageVerify>CHECKSUM</PageVerify>
+    <Parameterization>SIMPLE</Parameterization>
+    <QuotedIdentifier>True</QuotedIdentifier>
+    <ReadCommittedSnapshot>False</ReadCommittedSnapshot>
+    <Recovery>SIMPLE</Recovery>
+    <RecursiveTriggersEnabled>False</RecursiveTriggersEnabled>
+    <ServiceBrokerOption>EnableBroker</ServiceBrokerOption>
+    <SupplementalLoggingOn>False</SupplementalLoggingOn>
+    <TornPageDetection>False</TornPageDetection>
+    <Trustworthy>False</Trustworthy>
+    <UpdateOptions>READ_WRITE</UpdateOptions>
+    <VardecimalStorageFormatOn>True</VardecimalStorageFormatOn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>.\sql\release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>
+    </TargetDatabase>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+    <SuppressTSqlWarnings />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>.\sql\debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TargetDatabase>
+    </TargetDatabase>
+    <TreatTSqlWarningsAsErrors>False</TreatTSqlWarningsAsErrors>
+    <SuppressTSqlWarnings />
+  </PropertyGroup>
+  <!--Import the settings-->
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\Pre-Deployment" />
+    <Folder Include="Scripts\Post-Deployment" />
+    <Folder Include="Data Generation Plans" />
+    <Folder Include="Schema Comparisons" />
+    <Folder Include="Properties\" />
+    <Folder Include="Schema Objects\" />
+    <Folder Include="Schema Objects\Schemas\" />
+    <Folder Include="Schema Objects\Schemas\dbo\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Defaults\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Functions\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Rules\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Stored Procedures\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Types\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Data Types\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Types CLR\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Types\User Defined Table Types\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Programmability\Types\XML Schema Collections\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Service Broker\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Service Broker\Queues\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Synonyms\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\Constraints\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\Keys\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Tables\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Views\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Views\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Views\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\dbo\Views\Statistics\" />
+    <Folder Include="Schema Objects\Database Level Objects\" />
+    <Folder Include="Schema Objects\Database Level Objects\Assemblies\" />
+    <Folder Include="Schema Objects\Database Level Objects\Database Triggers\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Schemas\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Users\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Certificates\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Asymmetric Keys\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Master Keys\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Signatures\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Symmetric Keys\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Database Encryption Keys\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Database Audit Specification\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Roles\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Roles\Application Roles\" />
+    <Folder Include="Schema Objects\Database Level Objects\Security\Roles\Database Roles\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Broker Priorities\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Contracts\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Event Notifications\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Message Types\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Remote Service Binding\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Routes\" />
+    <Folder Include="Schema Objects\Database Level Objects\Service Broker\Services\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Full Text Stoplists\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Filegroups\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Files\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Full Text Catalogs\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Partition Functions\" />
+    <Folder Include="Schema Objects\Database Level Objects\Storage\Partition Schemes\" />
+    <Folder Include="Schema Objects\Schemas\Storage\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Programmability\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Programmability\Defaults\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Programmability\Functions\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Programmability\Rules\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Programmability\Stored Procedures\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Programmability\Types\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Programmability\Types\User Defined Data Types\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Programmability\Types\User Defined Types CLR\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Programmability\Types\User Defined Table Types\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Programmability\Types\XML Schema Collections\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Synonyms\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Tables\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Tables\Constraints\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Tables\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Tables\Keys\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Tables\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Tables\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Views\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Views\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Views\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Storage\Views\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Security\" />
+    <Folder Include="Schema Objects\Schemas\Security\Programmability\" />
+    <Folder Include="Schema Objects\Schemas\Security\Programmability\Defaults\" />
+    <Folder Include="Schema Objects\Schemas\Security\Programmability\Functions\" />
+    <Folder Include="Schema Objects\Schemas\Security\Programmability\Rules\" />
+    <Folder Include="Schema Objects\Schemas\Security\Programmability\Stored Procedures\" />
+    <Folder Include="Schema Objects\Schemas\Security\Programmability\Types\" />
+    <Folder Include="Schema Objects\Schemas\Security\Programmability\Types\User Defined Data Types\" />
+    <Folder Include="Schema Objects\Schemas\Security\Programmability\Types\User Defined Types CLR\" />
+    <Folder Include="Schema Objects\Schemas\Security\Programmability\Types\User Defined Table Types\" />
+    <Folder Include="Schema Objects\Schemas\Security\Programmability\Types\XML Schema Collections\" />
+    <Folder Include="Schema Objects\Schemas\Security\Synonyms\" />
+    <Folder Include="Schema Objects\Schemas\Security\Tables\" />
+    <Folder Include="Schema Objects\Schemas\Security\Tables\Constraints\" />
+    <Folder Include="Schema Objects\Schemas\Security\Tables\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Security\Tables\Keys\" />
+    <Folder Include="Schema Objects\Schemas\Security\Tables\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Security\Tables\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Security\Views\" />
+    <Folder Include="Schema Objects\Schemas\Security\Views\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Security\Views\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Security\Views\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Logging\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Programmability\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Programmability\Defaults\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Programmability\Functions\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Programmability\Rules\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Programmability\Stored Procedures\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Programmability\Types\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Programmability\Types\User Defined Data Types\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Programmability\Types\User Defined Types CLR\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Programmability\Types\User Defined Table Types\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Programmability\Types\XML Schema Collections\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Synonyms\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Tables\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Tables\Constraints\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Tables\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Tables\Keys\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Tables\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Tables\Statistics\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Views\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Views\Indexes\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Views\Triggers\" />
+    <Folder Include="Schema Objects\Schemas\Logging\Views\Statistics\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BuildContributorArgument Include="OutDir=$(OutDir)" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Schema Comparisons\DB2Local.scmp">
+      <SubType>NotInBuild</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Permissions.sql" />
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Constraints\DF_ContentMetaData_LastWriteDate.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Constraints\DF_ContentMetaData_CreatedDate.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Constraints\DF_ContentTiles_LastWriteTime.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Constraints\DF_ContentItems_RowID.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Constraints\DF_ContentItemsInRoles_IsPublisher.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Constraints\DF_ContentItemsInRoles_IsWriter.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Constraints\DF_ContentItemsInRoles_IsReader.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Constraints\DF_ContentItemsInRoles_List.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Constraints\DF_ContentData_RowID.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Applications_RequiresUniqueEmail.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Applications_RequiresQuestionAndAnswer.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Applications_PasswordAttemptWindow.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Applications_MinRequiredPasswordLength.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Applications_MinRequiredNonAlphanumericCharacters.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Applications_MaxInvalidPasswordAttempts.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Applications_EnablePasswordReset.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Applications_ApplicationID.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Roles_RoleID.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_CreationDate4.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_CreationDate3.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_CreationDate2.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_CreationDate1.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_CreationDate.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_IsOnline.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_IsLockedOut.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_IsEnabled.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_IsServiceAccount.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_UserID.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Logging\Tables\Constraints\DF_Sessions_LastUsedTime.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Logging\Tables\Constraints\DF_Sessions_StartedTime.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Logging\Tables\Constraints\DF_Sessions_ContextInfo.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\FK_ContentMetaData_ContentMetaTypes.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\FK_ContentMetaData_ContentItems1.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\FK_ContentTiles_ContentItems.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\FK_ContentTiles_ContentTypes.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\FK_ContentItems_ContentTypes.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\FK_ContentItemsInRoles_ContentItems.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\FK_ContentItemsInRoles_Roles.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\FK_ContentData_ContentItems.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Keys\FK_UsersInRoles_Roles.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Keys\FK_UsersInRoles_Users.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Keys\FK_Roles_Applications.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Logging\Tables\Keys\FK_Sessions_Users.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Storage\Filegroups\FileStream.filegroup.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Indexes\IX_ContentTiles.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Indexes\IX_ContentItems_Structure.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Indexes\IX_ContentItems_StructureID.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Indexes\IX_ContentItemsInRoles.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Indexes\IX_ContentData_ContentItemID.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Programmability\Functions\GetContentByBranch.function.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\PK_ContentMetaData.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\PK_ContentMetaTypes.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\PK_ContentTiles.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\PK_ContentItems.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\PK_ContentItemsInRoles.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\PK_ContentData.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\Keys\PK_ContentTypes.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Keys\PK_Applications.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Keys\PK_UsersInRoles.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Keys\PK_Roles.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Keys\PK_Users.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Logging\Tables\Keys\PK_Sessions.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Programmability\Functions\GetContentID.function.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Programmability\Functions\GetUserID.function.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Programmability\Functions\IsGuid.function.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\ContentMetaData.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\ContentMetaTypes.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\ContentTiles.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\ContentItems.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\ContentItemsInRoles.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\ContentData.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Storage\Tables\ContentTypes.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Applications.table.sql">
+      <SubType>Code</SubType>
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\UsersInRoles.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Roles.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Users.table.sql">
+      <SubType>Code</SubType>
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Logging\Tables\Sessions.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Service Broker\Routes\AutoCreatedLocal.route.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Security\Schemas\Storage.schema.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Security\Schemas\Security.schema.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Security\Schemas\Logging.schema.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Security\Schemas\Common.schema.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Database Level Objects\Security\Schemas\aspnet.schema.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_FailedPasswordWindowsStart1.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_FailedPasswordWindowsStart.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_FailedPasswordCount1.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Users_FailedPasswordCount.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Constraints\DF_Applications_InvalidPasswordWindow.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Schemas\Security\Tables\Indexes\IX_Users_UserName.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WhitedUS.Shared.Data.SqlClr\WhitedUS.Shared.Data.SqlClr.csproj">
+      <Name>WhitedUS.Shared.Data.SqlClr</Name>
+      <Project>{5f64b506-e781-4950-8ff9-b82036045f48}</Project>
+      <Private>True</Private>
+      <SqlAssemblyName>WhitedUS.Shared.Data.SqlClr</SqlAssemblyName>
+      <SqlOwnerName>
+      </SqlOwnerName>
+      <SqlPermissionSet>SAFE</SqlPermissionSet>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Debug.publish.xml" />
+    <None Include="Release.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\Pre-Deployment\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql" />
+  </ItemGroup>
+</Project>

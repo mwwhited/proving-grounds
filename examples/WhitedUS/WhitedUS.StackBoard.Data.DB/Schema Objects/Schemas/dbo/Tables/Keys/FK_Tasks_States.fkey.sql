@@ -1,0 +1,3 @@
+﻿ALTER TABLE [dbo].[Tasks]
+    ADD CONSTRAINT [FK_Tasks_States] FOREIGN KEY ([StateID]) REFERENCES [dbo].[States] ([StateID]) ON DELETE NO ACTION ON UPDATE NO ACTION;
+

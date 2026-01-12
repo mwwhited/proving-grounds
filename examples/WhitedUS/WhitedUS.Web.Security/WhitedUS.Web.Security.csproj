@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{35CA15C3-9C42-403D-A87A-DACB1B7FFEDC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WhitedUS.Web.Security</RootNamespace>
+    <AssemblyName>WhitedUS.Web.Security</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AspnetMembershipProvider.cs" />
+    <Compile Include="AspnetRoleProvider.cs" />
+    <Compile Include="AuthClaimModel.cs" />
+    <Compile Include="AuthClaimService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WhitedUS.AspNet.Data\WhitedUS.AspNet.Data.csproj">
+      <Project>{25D3F238-55CC-406A-8F48-E3E368C5701C}</Project>
+      <Name>WhitedUS.AspNet.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WhitedUS.Common\WhitedUS.Common.csproj">
+      <Project>{222EC2A1-15CD-47A1-AC33-D3D8C5DC9945}</Project>
+      <Name>WhitedUS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WhitedUS.Shared.Data\WhitedUS.Shared.Data.csproj">
+      <Project>{DEC8AA90-B227-43C0-A90C-098F440483F2}</Project>
+      <Name>WhitedUS.Shared.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WhitedUS.Shared.Models\WhitedUS.Shared.Models.csproj">
+      <Project>{229A9710-0401-4005-8F77-CECE6610B323}</Project>
+      <Name>WhitedUS.Shared.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

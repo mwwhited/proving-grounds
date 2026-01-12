@@ -1,0 +1,106 @@
+﻿@model IEnumerable<IFileSystemModel>
+
+@{
+    var path = this.ViewBag.Path;
+    var tagName = this.ViewBag.Tag;
+    int pageLength = this.ViewBag.PageLength;
+    int pageCount = this.ViewBag.PageCount;
+    int page = Math.Max(Math.Min(this.ViewBag.Page, pageCount - 1), 0);
+
+    IQueryable<TagModel> tags = this.ViewBag.Tags;
+
+    this.ViewBag.Title = Path.GetFileName(path) ?? tagName;
+    var parent = Path.GetDirectoryName(path);
+    var parentUrl = this.Url.Action("Access", "Content", new { area = "Photos", pathInfo = parent, });
+    var firstFile = true;
+}   
+
+<h2>@(this.ViewBag.Title ?? "Photos")</h2>
+
+<div class="header-set">
+    @if (!string.IsNullOrWhiteSpace(path))
+    {
+        <span class="header-directory">
+            <a href="@parentUrl">@(string.IsNullOrWhiteSpace(parent) ? "Root" : Path.GetFileName(parent))</a>
+        </span>
+    }
+    @if (page > 0)
+    {
+        <span class="header-prev">
+            <a href="?page=@(page - 1)">&lt;</a>
+        </span>
+    }
+    @for (var p = 0; p < pageCount; p++)
+    {
+        <span class="header-page header-page-@p">
+            @if (page == p)
+            {
+                <span>@(p + 1)</span>
+            }
+            else
+            {
+                <a href="?page=@p">@(p + 1)</a>
+            }
+        </span>
+    }
+    @if (page + 1 < pageCount)
+    {
+        <span class="header-next">
+            <a href="?page=@(page + 1)">&gt;</a>
+        </span>
+    }
+    <hr />
+
+    @if (tags.Count() > 0)
+    {        
+        foreach (var tag in tags.OrderBy(t=>t.Label))
+        {
+            var url = this.Url.Action("Tag", "Content", new { area = "Photos", tag = tag.Label, });
+            
+            <span class="header-tag @tag.TagClass">
+                <a href="@url">@tag.Label</a>
+            </span>
+        }
+        <hr />
+    }
+</div>
+
+<div class="photo-set">
+    @foreach (var item in this.Model)
+    {
+        var url = this.Url.Action("Access", "Content", new { area = "Photos", pathInfo = item.Path, });
+        var dir = item as DirectoryModel;
+
+        if (dir != null)
+        {
+            var thumbnail = this.Url.Action("Access", "Content", new { area = "Photos", pathInfo = dir.Thumbnail, });
+            
+            firstFile = false;
+            <span class="photo-directory photo-item">
+                <a href="@(url)" title="@Path.GetFileName(dir.Path)">
+                    <img src="@(thumbnail + "?factor=7")" alt="@(Path.GetFileName(dir.Path))" />
+                    <br />
+                    <span class="photo-directory-name">@(Path.GetFileName(dir.Path))</span>
+                </a>
+            </span>
+        }
+        else if (item is FileModel)
+        {
+            if (!firstFile)
+            {
+                firstFile = true;
+                <hr />
+            }
+            
+            <span class="photo-file photo-item">
+                <a href="@(url)?factor=11" title="@Path.GetFileName(item.Path)">
+                    <img src="@(url + "?factor=7")" alt="@(Path.GetFileName(item.Path))" />
+                    <br />
+                    <span class="photo-file-name">@(Path.GetFileName(item.Path))</span>
+                </a>
+            </span>
+        }
+    }
+    
+	<div style="height: 0px; clear: both;">&nbsp;</div>
+</div>

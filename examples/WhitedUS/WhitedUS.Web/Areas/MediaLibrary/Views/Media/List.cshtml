@@ -1,0 +1,48 @@
+﻿@model IQueryable<WhitedUS.MediaLibrary.Models.MediaModel>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+
+@if (this.Request.IsAuthenticated) {
+    <p>
+        @Html.ActionLink("Create", "Create")
+    </p>
+}
+
+@{
+    Html.Telerik()
+        .Grid(this.Model)
+        .Name("MediaListGrid")
+        .Columns(c=>{
+            c.Template(
+                    @<span>
+                        @if (this.Request.IsAuthenticated) {
+                            @Html.ActionLink("Edit", "Edit", "Media", new { Area = "MediaLibrary", id = item.LocalID, }, new { })
+                        }
+                        @Html.ActionLink("Detail", "Details", "Media", new { Area = "MediaLibrary", id = item.LocalID, }, new { })
+                    </span>
+                ).Title("Commands").Width(100);
+            c.Bound(o => o.Title).Filterable(true).Width(300);
+            c.Bound(o => o.BoxTitle).Filterable(true).Width(300);
+            c.Bound(o => o.Rating).Filterable(true).Width(100);
+            c.Bound(o => o.Format).Filterable(true).Width(300);
+            c.Template(
+                    @<span>
+                        <a href='@string.Format("{0}{1}", item.CodeType.Url, item.Code)' target='_blank'>@item.Code</a>
+                    </span>
+                ).Title("Code").Width(100);
+            c.Bound(o => o.MediaType.Name).Filterable(true).Title("Media Type").Width(150);
+        })
+        //.Scrollable(scrolling=>scrolling.Enabled(true))
+        .Pageable(paging=>paging.Enabled(true))
+        .Sortable(sorting=>sorting.Enabled(true))
+        .Filterable(filtering => filtering.Enabled(true))
+        //.Groupable(grouping=>grouping.Enabled(true))
+        .Footer(true)
+        //.DataKeys(keys=>keys.Add(o=>o.LocalID))
+        .Render()
+        ;
+}

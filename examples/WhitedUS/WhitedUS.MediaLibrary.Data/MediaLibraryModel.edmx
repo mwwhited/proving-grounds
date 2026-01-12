@@ -1,0 +1,419 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MediaCollectionModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="MediaCollectionModelStoreContainer">
+          <EntitySet Name="CodeTypes" EntityType="MediaCollectionModel.Store.CodeTypes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Genre" EntityType="MediaCollectionModel.Store.Genre" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GenreMedia" EntityType="MediaCollectionModel.Store.GenreMedia" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Media" EntityType="MediaCollectionModel.Store.Media" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MediaTypes" EntityType="MediaCollectionModel.Store.MediaTypes" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_GenreMedia_Genre1" Association="MediaCollectionModel.Store.FK_GenreMedia_Genre1">
+            <End Role="Genre" EntitySet="Genre" />
+            <End Role="GenreMedia" EntitySet="GenreMedia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GenreMedia_Media1" Association="MediaCollectionModel.Store.FK_GenreMedia_Media1">
+            <End Role="Media" EntitySet="Media" />
+            <End Role="GenreMedia" EntitySet="GenreMedia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Media_MediaTypes1" Association="MediaCollectionModel.Store.FK_Media_MediaTypes1">
+            <End Role="MediaTypes" EntitySet="MediaTypes" />
+            <End Role="Media" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MediaTypes_CodeTypes" Association="MediaCollectionModel.Store.FK_MediaTypes_CodeTypes">
+            <End Role="CodeTypes" EntitySet="CodeTypes" />
+            <End Role="MediaTypes" EntitySet="MediaTypes" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CodeTypes">
+          <Key>
+            <PropertyRef Name="LocalID" />
+          </Key>
+          <Property Name="LocalID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Long" Type="nvarchar" MaxLength="50" />
+          <Property Name="Url" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="LocalID" />
+          </Key>
+          <Property Name="LocalID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="GenreMedia">
+          <Key>
+            <PropertyRef Name="GenreID" />
+            <PropertyRef Name="MediaID" />
+          </Key>
+          <Property Name="GenreID" Type="int" Nullable="false" />
+          <Property Name="MediaID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Media">
+          <Key>
+            <PropertyRef Name="LocalID" />
+          </Key>
+          <Property Name="LocalID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="Rating" Type="nvarchar" MaxLength="50" />
+          <Property Name="Year" Type="nvarchar" MaxLength="50" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="Format" Type="nvarchar" MaxLength="50" />
+          <Property Name="Length" Type="nvarchar" MaxLength="50" />
+          <Property Name="MediaTypeID" Type="int" Nullable="false" />
+          <Property Name="Have" Type="bit" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="255" />
+          <Property Name="BoxTitle" Type="nvarchar" MaxLength="255" />
+          <Property Name="DiskNumber" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="MediaTypes">
+          <Key>
+            <PropertyRef Name="LocalID" />
+          </Key>
+          <Property Name="LocalID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="CodeTypeID" Type="int" />
+        </EntityType>
+        <Association Name="FK_GenreMedia_Genre1">
+          <End Role="Genre" Type="MediaCollectionModel.Store.Genre" Multiplicity="1" />
+          <End Role="GenreMedia" Type="MediaCollectionModel.Store.GenreMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="LocalID" />
+            </Principal>
+            <Dependent Role="GenreMedia">
+              <PropertyRef Name="GenreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GenreMedia_Media1">
+          <End Role="Media" Type="MediaCollectionModel.Store.Media" Multiplicity="1" />
+          <End Role="GenreMedia" Type="MediaCollectionModel.Store.GenreMedia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Media">
+              <PropertyRef Name="LocalID" />
+            </Principal>
+            <Dependent Role="GenreMedia">
+              <PropertyRef Name="MediaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Media_MediaTypes1">
+          <End Role="MediaTypes" Type="MediaCollectionModel.Store.MediaTypes" Multiplicity="1" />
+          <End Role="Media" Type="MediaCollectionModel.Store.Media" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MediaTypes">
+              <PropertyRef Name="LocalID" />
+            </Principal>
+            <Dependent Role="Media">
+              <PropertyRef Name="MediaTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MediaTypes_CodeTypes">
+          <End Role="CodeTypes" Type="MediaCollectionModel.Store.CodeTypes" Multiplicity="0..1" />
+          <End Role="MediaTypes" Type="MediaCollectionModel.Store.MediaTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CodeTypes">
+              <PropertyRef Name="LocalID" />
+            </Principal>
+            <Dependent Role="MediaTypes">
+              <PropertyRef Name="CodeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Media_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LocalID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Media_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Title" Type="nvarchar" Mode="In" />
+          <Parameter Name="Rating" Type="nvarchar" Mode="In" />
+          <Parameter Name="Year" Type="nvarchar" Mode="In" />
+          <Parameter Name="Code" Type="nvarchar" Mode="In" />
+          <Parameter Name="Format" Type="nvarchar" Mode="In" />
+          <Parameter Name="Length" Type="nvarchar" Mode="In" />
+          <Parameter Name="MediaTypeID" Type="int" Mode="In" />
+          <Parameter Name="Have" Type="bit" Mode="In" />
+          <Parameter Name="Notes" Type="nvarchar" Mode="In" />
+          <Parameter Name="BoxTitle" Type="nvarchar" Mode="In" />
+          <Parameter Name="DiskNumber" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="Media_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LocalID" Type="int" Mode="In" />
+          <Parameter Name="Title" Type="nvarchar" Mode="In" />
+          <Parameter Name="Rating" Type="nvarchar" Mode="In" />
+          <Parameter Name="Year" Type="nvarchar" Mode="In" />
+          <Parameter Name="Code" Type="nvarchar" Mode="In" />
+          <Parameter Name="Format" Type="nvarchar" Mode="In" />
+          <Parameter Name="Length" Type="nvarchar" Mode="In" />
+          <Parameter Name="MediaTypeID" Type="int" Mode="In" />
+          <Parameter Name="Have" Type="bit" Mode="In" />
+          <Parameter Name="Notes" Type="nvarchar" Mode="In" />
+          <Parameter Name="BoxTitle" Type="nvarchar" Mode="In" />
+          <Parameter Name="DiskNumber" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="MediaTypes_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LocalID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MediaTypes_Insert" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="CodeTypeID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="MediaTypes_Update" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LocalID" Type="int" Mode="In" />
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="CodeTypeID" Type="int" Mode="In" />
+        </Function>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MediaCollectionModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="MediaCollectionEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CodeTypes" EntityType="MediaCollectionModel.CodeType" />
+          <EntitySet Name="Genres" EntityType="MediaCollectionModel.Genre" />
+          <EntitySet Name="Media" EntityType="MediaCollectionModel.Medium" />
+          <EntitySet Name="MediaTypes" EntityType="MediaCollectionModel.MediaType" />
+          <AssociationSet Name="FK_MediaTypes_CodeTypes" Association="MediaCollectionModel.FK_MediaTypes_CodeTypes">
+            <End Role="CodeType" EntitySet="CodeTypes" />
+            <End Role="MediaType" EntitySet="MediaTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Media_MediaTypes1" Association="MediaCollectionModel.FK_Media_MediaTypes1">
+            <End Role="MediaType" EntitySet="MediaTypes" />
+            <End Role="Medium" EntitySet="Media" />
+          </AssociationSet>
+          <AssociationSet Name="GenreMedia" Association="MediaCollectionModel.GenreMedia">
+            <End Role="Genre" EntitySet="Genres" />
+            <End Role="Medium" EntitySet="Media" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CodeType">
+          <Key>
+            <PropertyRef Name="LocalID" />
+          </Key>
+          <Property Type="Int32" Name="LocalID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Long" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Url" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MediaTypes" Relationship="MediaCollectionModel.FK_MediaTypes_CodeTypes" FromRole="CodeType" ToRole="MediaType" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="LocalID" />
+          </Key>
+          <Property Type="Int32" Name="LocalID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Media" Relationship="MediaCollectionModel.GenreMedia" FromRole="Genre" ToRole="Medium" />
+        </EntityType>
+        <EntityType Name="Medium">
+          <Key>
+            <PropertyRef Name="LocalID" />
+          </Key>
+          <Property Type="Int32" Name="LocalID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Title" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="String" Name="Rating" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Year" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Code" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Format" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Length" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="MediaTypeID" Nullable="false" />
+          <Property Type="Boolean" Name="Have" Nullable="false" />
+          <Property Type="String" Name="Notes" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="BoxTitle" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="DiskNumber" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MediaType" Relationship="MediaCollectionModel.FK_Media_MediaTypes1" FromRole="Medium" ToRole="MediaType" />
+          <NavigationProperty Name="Genres" Relationship="MediaCollectionModel.GenreMedia" FromRole="Medium" ToRole="Genre" />
+        </EntityType>
+        <EntityType Name="MediaType">
+          <Key>
+            <PropertyRef Name="LocalID" />
+          </Key>
+          <Property Type="Int32" Name="LocalID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="CodeTypeID" Nullable="false" />
+          <NavigationProperty Name="CodeType" Relationship="MediaCollectionModel.FK_MediaTypes_CodeTypes" FromRole="MediaType" ToRole="CodeType" />
+          <NavigationProperty Name="Media" Relationship="MediaCollectionModel.FK_Media_MediaTypes1" FromRole="MediaType" ToRole="Medium" />
+        </EntityType>
+        <Association Name="FK_MediaTypes_CodeTypes">
+          <End Type="MediaCollectionModel.CodeType" Role="CodeType" Multiplicity="1" />
+          <End Type="MediaCollectionModel.MediaType" Role="MediaType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CodeType">
+              <PropertyRef Name="LocalID" />
+            </Principal>
+            <Dependent Role="MediaType">
+              <PropertyRef Name="CodeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Media_MediaTypes1">
+          <End Type="MediaCollectionModel.MediaType" Role="MediaType" Multiplicity="1" />
+          <End Type="MediaCollectionModel.Medium" Role="Medium" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MediaType">
+              <PropertyRef Name="LocalID" />
+            </Principal>
+            <Dependent Role="Medium">
+              <PropertyRef Name="MediaTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GenreMedia">
+          <End Type="MediaCollectionModel.Genre" Role="Genre" Multiplicity="*" />
+          <End Type="MediaCollectionModel.Medium" Role="Medium" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MediaCollectionModelStoreContainer" CdmEntityContainer="MediaCollectionEntities">
+          <EntitySetMapping Name="CodeTypes">
+            <EntityTypeMapping TypeName="MediaCollectionModel.CodeType">
+              <MappingFragment StoreEntitySet="CodeTypes">
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LocalID" ColumnName="LocalID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="MediaCollectionModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LocalID" ColumnName="LocalID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Media">
+            <EntityTypeMapping TypeName="MediaCollectionModel.Medium">
+              <MappingFragment StoreEntitySet="Media">
+                <ScalarProperty Name="DiskNumber" ColumnName="DiskNumber" />
+                <ScalarProperty Name="BoxTitle" ColumnName="BoxTitle" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Have" ColumnName="Have" />
+                <ScalarProperty Name="MediaTypeID" ColumnName="MediaTypeID" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="Format" ColumnName="Format" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="LocalID" ColumnName="LocalID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="MediaCollectionModel.Medium">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="MediaCollectionModel.Store.Media_Insert">
+                  <ScalarProperty Name="DiskNumber" ParameterName="DiskNumber" />
+                  <ScalarProperty Name="BoxTitle" ParameterName="BoxTitle" />
+                  <ScalarProperty Name="Notes" ParameterName="Notes" />
+                  <ScalarProperty Name="Have" ParameterName="Have" />
+                  <ScalarProperty Name="MediaTypeID" ParameterName="MediaTypeID" />
+                  <ScalarProperty Name="Length" ParameterName="Length" />
+                  <ScalarProperty Name="Format" ParameterName="Format" />
+                  <ScalarProperty Name="Code" ParameterName="Code" />
+                  <ScalarProperty Name="Year" ParameterName="Year" />
+                  <ScalarProperty Name="Rating" ParameterName="Rating" />
+                  <ScalarProperty Name="Title" ParameterName="Title" />
+                  <ResultBinding Name="LocalID" ColumnName="LocalID" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="MediaCollectionModel.Store.Media_Update">
+                  <ScalarProperty Name="DiskNumber" ParameterName="DiskNumber" Version="Current" />
+                  <ScalarProperty Name="BoxTitle" ParameterName="BoxTitle" Version="Current" />
+                  <ScalarProperty Name="Notes" ParameterName="Notes" Version="Current" />
+                  <ScalarProperty Name="Have" ParameterName="Have" Version="Current" />
+                  <ScalarProperty Name="MediaTypeID" ParameterName="MediaTypeID" Version="Current" />
+                  <ScalarProperty Name="Length" ParameterName="Length" Version="Current" />
+                  <ScalarProperty Name="Format" ParameterName="Format" Version="Current" />
+                  <ScalarProperty Name="Code" ParameterName="Code" Version="Current" />
+                  <ScalarProperty Name="Year" ParameterName="Year" Version="Current" />
+                  <ScalarProperty Name="Rating" ParameterName="Rating" Version="Current" />
+                  <ScalarProperty Name="Title" ParameterName="Title" Version="Current" />
+                  <ScalarProperty Name="LocalID" ParameterName="LocalID" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="MediaCollectionModel.Store.Media_Delete">
+                  <ScalarProperty Name="LocalID" ParameterName="LocalID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MediaTypes">
+            <EntityTypeMapping TypeName="MediaCollectionModel.MediaType">
+              <MappingFragment StoreEntitySet="MediaTypes">
+                <ScalarProperty Name="CodeTypeID" ColumnName="CodeTypeID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LocalID" ColumnName="LocalID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="MediaCollectionModel.MediaType">
+              <ModificationFunctionMapping>
+                <InsertFunction FunctionName="MediaCollectionModel.Store.MediaTypes_Insert">
+                  <ScalarProperty Name="CodeTypeID" ParameterName="CodeTypeID" />
+                  <ScalarProperty Name="Name" ParameterName="Name" />
+                  <ResultBinding Name="LocalID" ColumnName="LocalID" />
+                </InsertFunction>
+                <UpdateFunction FunctionName="MediaCollectionModel.Store.MediaTypes_Update">
+                  <ScalarProperty Name="CodeTypeID" ParameterName="CodeTypeID" Version="Current" />
+                  <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
+                  <ScalarProperty Name="LocalID" ParameterName="LocalID" Version="Current" />
+                </UpdateFunction>
+                <DeleteFunction FunctionName="MediaCollectionModel.Store.MediaTypes_Delete">
+                  <ScalarProperty Name="LocalID" ParameterName="LocalID" />
+                </DeleteFunction>
+              </ModificationFunctionMapping>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="GenreMedia" TypeName="MediaCollectionModel.GenreMedia" StoreEntitySet="GenreMedia">
+            <EndProperty Name="Medium">
+              <ScalarProperty Name="LocalID" ColumnName="MediaID" />
+            </EndProperty>
+            <EndProperty Name="Genre">
+              <ScalarProperty Name="LocalID" ColumnName="GenreID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="MediaLibraryModel">
+        <EntityTypeShape EntityType="MediaCollectionModel.CodeType" Width="1.5" PointX="0.75" PointY="1.875" Height="1.9802864583333317" />
+        <EntityTypeShape EntityType="MediaCollectionModel.Genre" Width="1.5" PointX="3" PointY="6.125" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="MediaCollectionModel.Medium" Width="1.5" PointX="5.25" PointY="1" Height="3.7109993489583313" />
+        <EntityTypeShape EntityType="MediaCollectionModel.MediaType" Width="1.5" PointX="3" PointY="1.875" Height="1.9802864583333317" />
+        <AssociationConnector Association="MediaCollectionModel.FK_MediaTypes_CodeTypes" >
+          <ConnectorPoint PointX="2.25" PointY="2.8651432291666659" />
+          <ConnectorPoint PointX="3" PointY="2.8651432291666659" />
+        </AssociationConnector>
+        <AssociationConnector Association="MediaCollectionModel.FK_Media_MediaTypes1" >
+          <ConnectorPoint PointX="4.5" PointY="2.8651432291666659" />
+          <ConnectorPoint PointX="5.25" PointY="2.8651432291666659" />
+        </AssociationConnector>
+        <AssociationConnector Association="MediaCollectionModel.GenreMedia" >
+          <ConnectorPoint PointX="4.5" PointY="6.922841796875" />
+          <ConnectorPoint PointX="6" PointY="6.922841796875" />
+          <ConnectorPoint PointX="6" PointY="4.7109993489583317" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

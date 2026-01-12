@@ -1,0 +1,8 @@
+﻿http://www.codeplex.com/wikipage?ProjectName=FlickrNet
+http://www.flickr.com/services/api/
+
+Key:
+93802dd1f6a061620dce60b7009fced3
+
+Secret:
+ca50b28e37ae8e62 

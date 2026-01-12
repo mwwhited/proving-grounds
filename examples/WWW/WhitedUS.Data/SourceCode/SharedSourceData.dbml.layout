@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="SharedSourceData">
+  <DataContextMoniker Name="/SharedSourceDataDataContext" />
+  <nestedChildShapes>
+    <classShape Id="2af6257e-f63a-486d-a383-db669ef1a07d" absoluteBounds="3.5, 1.125, 2, 1.9631982421875003">
+      <DataClassMoniker Name="/SharedSourceDataDataContext/Project" />
+      <nestedChildShapes>
+        <elementListCompartment Id="13284a1d-b11b-4a61-989b-28df74b667b7" absoluteBounds="3.515, 1.585, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="31ff47e3-e721-409d-acb2-3a4cd2eed5bf" absoluteBounds="3.5, 5.375, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/SharedSourceDataDataContext/FileType" />
+      <nestedChildShapes>
+        <elementListCompartment Id="df66feaa-c685-4c5a-aa65-0274625e15c8" absoluteBounds="3.515, 5.835, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="26bb09fe-6c16-436c-be12-93a93432f98f" absoluteBounds="0.75, 1.5, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/SharedSourceDataDataContext/Language" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6f40c0e7-5f3c-41db-828e-940b4422cc47" absoluteBounds="0.765, 1.96, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 2.09699625651042); (3.5 : 2.09699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SharedSourceDataDataContext/Language/Language_Project" />
+      <nodes>
+        <classShapeMoniker Id="26bb09fe-6c16-436c-be12-93a93432f98f" />
+        <classShapeMoniker Id="2af6257e-f63a-486d-a383-db669ef1a07d" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="fb201883-61b5-40bf-88bf-1c453c196bb5" absoluteBounds="6.625, 1.5, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/SharedSourceDataDataContext/File" />
+      <nestedChildShapes>
+        <elementListCompartment Id="927cb796-88a9-4649-ac2f-49343f5d98db" absoluteBounds="6.64, 1.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 6.16429768880208); (7.625 : 6.16429768880208); (7.625 : 3.84780110677083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SharedSourceDataDataContext/FileType/FileType_File" />
+      <nodes>
+        <classShapeMoniker Id="31ff47e3-e721-409d-acb2-3a4cd2eed5bf" />
+        <classShapeMoniker Id="fb201883-61b5-40bf-88bf-1c453c196bb5" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 2.29409912109375); (6.625 : 2.29409912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SharedSourceDataDataContext/Project/Project_File" />
+      <nodes>
+        <classShapeMoniker Id="2af6257e-f63a-486d-a383-db669ef1a07d" />
+        <classShapeMoniker Id="fb201883-61b5-40bf-88bf-1c453c196bb5" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

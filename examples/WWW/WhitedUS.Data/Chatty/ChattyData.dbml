@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Class="ChattyDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="" Member="MessageQueues">
+    <Type Name="MessageQueue">
+      <Column Name="ID" Type="System.Int32" DbType="int IDENTITY NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="To" Type="System.String" DbType="varchar(200)" CanBeNull="false" />
+      <Column Name="From" Type="System.String" DbType="varchar(200)" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="varchar(max)" CanBeNull="false" />
+      <Column Name="TimeStamp" Type="System.DateTime" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

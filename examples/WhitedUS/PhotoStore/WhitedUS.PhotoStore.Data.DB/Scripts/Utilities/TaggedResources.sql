@@ -1,0 +1,11 @@
+﻿SELECT DISTINCT
+	[BasePaths].[Path] AS [BasePath]
+	,[Resources].[Folder] + '/' + [Resources].[Name] + ISNULL([Resources].[Extension], '') AS [Path]
+	,[Tags].[Label]	AS [TagName]
+FROM [dbo].[BasePaths] AS [BasePaths]
+INNER JOIN [dbo].[Resources] AS [Resources]
+	ON [Resources].[BasePathID] = [BasePaths].[BasePathID]
+INNER JOIN [dbo].[ResourceTags] AS [ResourceTags]
+	ON [ResourceTags].[ResourceID] = [Resources].[ResourceID]
+INNER JOIN [dbo].[Tags] AS [Tags]
+	ON [Tags].[TagID] = [ResourceTags].[TagID]

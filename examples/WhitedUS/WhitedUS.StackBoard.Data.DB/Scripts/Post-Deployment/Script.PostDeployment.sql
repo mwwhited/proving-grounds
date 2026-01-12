@@ -1,0 +1,12 @@
+﻿--<groups>
+--  <group name="Root" hid="/" />
+--  <group name="Support" hid="/2/" />
+--  <group name="Compliance" hid="/4/" />
+--  <group name="Technology" hid="/5/" />
+--  <group name="Development" hid="/5/1/" />
+--  <group name="Matt" hid="/5/1/1/" />
+--  <group name="Todd" hid="/5/1/2/" />
+--  <group name="Mark" hid="/5/1/3/" />
+--  <group name="Sameer" hid="/5/1/4/" />
+--  <group name="IT" hid="/5/2/" />
+--</groups>

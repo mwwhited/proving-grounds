@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.whited.us/2008/01/RelayService" elementFormDefault="qualified" targetNamespace="http://www.whited.us/2008/01/RelayService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:5160/Services/NetworkRelay.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WhitedUS.Services.NetworkRelay" />
+  <xs:element name="Connect">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="server" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="port" type="xs:int" />
+        <xs:element minOccurs="0" name="orgSocket" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DataMessage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DataPacket" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DataPacketSize" type="xs:int" />
+  <xs:element name="SequenceNumber" type="xs:int" />
+  <xs:element name="EventMessage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="Payload" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WhitedUS.Services.NetworkRelay" name="EventType" type="q1:EventType" />
+  <xs:element name="LoopbackWithCallBack">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="inboundMessage" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Loopback">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="inboundMessage" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LoopbackResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="LoopbackResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Disconnect">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReturnLoopBack">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="originSocketName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="OutboundData" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

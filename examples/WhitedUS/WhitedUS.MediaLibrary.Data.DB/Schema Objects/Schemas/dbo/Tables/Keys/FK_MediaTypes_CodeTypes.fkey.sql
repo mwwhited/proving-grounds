@@ -1,0 +1,7 @@
+﻿ALTER TABLE [dbo].[MediaTypes]
+    ADD CONSTRAINT [FK_MediaTypes_CodeTypes] FOREIGN KEY ([CodeTypeID]) REFERENCES [dbo].[CodeTypes] ([LocalID]) ON DELETE NO ACTION ON UPDATE NO ACTION NOT FOR REPLICATION;
+
+
+GO
+ALTER TABLE [dbo].[MediaTypes] NOCHECK CONSTRAINT [FK_MediaTypes_CodeTypes];
+

@@ -1,0 +1,5 @@
+﻿CREATE TABLE [Security].[UsersInRoles] (
+    [UserID] UNIQUEIDENTIFIER NOT NULL,
+    [RoleID] UNIQUEIDENTIFIER NOT NULL
+);
+

@@ -1,0 +1,3 @@
+﻿ALTER DATABASE [$(DatabaseName)]
+    ADD FILE (NAME = [ImageStore], FILENAME = 'C:\Program Files\Microsoft SQL Server\MSSQL10_50.MSSQLSERVER\MSSQL\DATA\ImageStore.mdf', SIZE = 3036 KB, FILEGROWTH = 1024 KB) TO FILEGROUP [PRIMARY];
+

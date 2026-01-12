@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="CarMonitor" Class="CarMonitorDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=TROJAN\SQLEXPRESS;Initial Catalog=CarMonitor;Integrated Security=True" SettingsObjectName="WhitedUS.Data.Properties.Settings" SettingsPropertyName="CarMonitorConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Cars" Member="Cars">
+    <Type Name="Car">
+      <Column Name="CarID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Make" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Model" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OwnerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Car_InsurancePoliciesForCar" Member="InsurancePoliciesForCars" ThisKey="CarID" OtherKey="CarID" Type="InsurancePoliciesForCar" />
+      <Association Name="Car_PaymentsCar" Member="PaymentsCars" ThisKey="CarID" OtherKey="CarID" Type="PaymentsCar" />
+      <Association Name="Car_PaymentsCarsFuel" Member="PaymentsCarsFuels" ThisKey="CarID" OtherKey="CarID" Type="PaymentsCarsFuel" />
+      <Association Name="Car_PaymentsCarsMaintenance" Member="PaymentsCarsMaintenances" ThisKey="CarID" OtherKey="CarID" Type="PaymentsCarsMaintenance" />
+      <Association Name="User_Car" Member="User" ThisKey="OwnerID" OtherKey="PersonID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="PersonID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="User_Car" Member="Cars" ThisKey="PersonID" OtherKey="OwnerID" Type="Car" />
+      <Association Name="User_InsurancePolicy" Member="InsurancePolicies" ThisKey="PersonID" OtherKey="HolderID" Type="InsurancePolicy" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InsurancePolicies" Member="InsurancePolicies">
+    <Type Name="InsurancePolicy">
+      <Column Name="InsurancePolicyID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Carrier" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PolicyNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="HolderID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="InsurancePolicy_InsurancePoliciesForCar" Member="InsurancePoliciesForCars" ThisKey="InsurancePolicyID" OtherKey="InsurancePolicyID" Type="InsurancePoliciesForCar" />
+      <Association Name="InsurancePolicy_PaymentsInsurancePolicy" Member="PaymentsInsurancePolicies" ThisKey="InsurancePolicyID" OtherKey="InsurancePolicyID" Type="PaymentsInsurancePolicy" />
+      <Association Name="User_InsurancePolicy" Member="User" ThisKey="HolderID" OtherKey="PersonID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InsurancePoliciesForCars" Member="InsurancePoliciesForCars">
+    <Type Name="InsurancePoliciesForCar">
+      <Column Name="InsurancePolicyPerCarID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InsurancePolicyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CarID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CoverageStart" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CoverageEnd" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Car_InsurancePoliciesForCar" Member="Car" ThisKey="CarID" OtherKey="CarID" Type="Car" IsForeignKey="true" />
+      <Association Name="InsurancePolicy_InsurancePoliciesForCar" Member="InsurancePolicy" ThisKey="InsurancePolicyID" OtherKey="InsurancePolicyID" Type="InsurancePolicy" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MaintenanceTypes" Member="MaintenanceTypes">
+    <Type Name="MaintenanceType">
+      <Column Name="MaintenanceTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Type" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="MaintenanceType_PaymentsCarsMaintenance" Member="PaymentsCarsMaintenances" ThisKey="MaintenanceTypeID" OtherKey="MaintenanceTypeID" Type="PaymentsCarsMaintenance" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentsCars" Member="PaymentsCars">
+    <Type Name="PaymentsCar">
+      <Column Name="PaymentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CarID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Payee" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="Car_PaymentsCar" Member="Car" ThisKey="CarID" OtherKey="CarID" Type="Car" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentsCarsFuel" Member="PaymentsCarsFuels">
+    <Type Name="PaymentsCarsFuel">
+      <Column Name="FuelPaymentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CarID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CostPerGallon" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Gallons" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Octane" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MilesTank" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="MilesTotal" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Station" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="Car_PaymentsCarsFuel" Member="Car" ThisKey="CarID" OtherKey="CarID" Type="Car" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentsCarsMaintenance" Member="PaymentsCarsMaintenances">
+    <Type Name="PaymentsCarsMaintenance">
+      <Column Name="MaintenancePaymentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CarID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaintenanceTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Miles" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Payee" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Note" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Car_PaymentsCarsMaintenance" Member="Car" ThisKey="CarID" OtherKey="CarID" Type="Car" IsForeignKey="true" />
+      <Association Name="MaintenanceType_PaymentsCarsMaintenance" Member="MaintenanceType" ThisKey="MaintenanceTypeID" OtherKey="MaintenanceTypeID" Type="MaintenanceType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentsInsurancePolicies" Member="PaymentsInsurancePolicies">
+    <Type Name="PaymentsInsurancePolicy">
+      <Column Name="InsurancePolicyPaymentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InsurancePolicyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Association Name="InsurancePolicy_PaymentsInsurancePolicy" Member="InsurancePolicy" ThisKey="InsurancePolicyID" OtherKey="InsurancePolicyID" Type="InsurancePolicy" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

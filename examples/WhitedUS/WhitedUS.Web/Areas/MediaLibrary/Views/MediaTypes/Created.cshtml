@@ -1,0 +1,31 @@
+﻿@model WhitedUS.MediaLibrary.Models.MediaTypeModel
+
+@{
+    ViewBag.Title = "Created";
+}
+
+<h2>Created</h2>
+
+<fieldset>
+    <legend>Media Type</legend>
+
+    <div class="display-label">LocalID</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LocalID)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">Code Type</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CodeTypeID)
+    </div>
+
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.LocalID,}) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

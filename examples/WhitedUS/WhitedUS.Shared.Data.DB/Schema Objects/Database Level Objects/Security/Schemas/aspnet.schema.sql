@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [aspnet]
+    AUTHORIZATION [dbo];
+

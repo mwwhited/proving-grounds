@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8AC22EE6-7D64-4C9B-AD8E-6B0B0437C41C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WhitedUS.Data</RootNamespace>
+    <AssemblyName>WhitedUS.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Nonshipping>true</Nonshipping>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\WhitedUS.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CarMonitor\CarMonitorData.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CarMonitorData.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Chatty\ChattyData.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChattyData.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Chatty\ChattyDataDataContext.cs" />
+    <Compile Include="DataSources\ObjectHierarchicalDataSource.cs" />
+    <Compile Include="DataSources\ObjectHierarchicalDataSourceView.cs" />
+    <Compile Include="DataSources\ObjectHierarchicalEnumerable.cs" />
+    <Compile Include="DataSources\ObjectHierarchyData.cs" />
+    <Compile Include="DataSources\PropertyNamesConverter.cs" />
+    <Compile Include="DataSources\SelectMethod.cs" />
+    <Compile Include="DataSources\SelectMethodCollection.cs" />
+    <Compile Include="MediaCollection\CodeType.cs" />
+    <Compile Include="MediaCollection\Genre.cs" />
+    <Compile Include="MediaCollection\GenreMedia.cs" />
+    <Compile Include="MediaCollection\Media.cs" />
+    <Compile Include="MediaCollection\MediaCollectionData.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MediaCollectionData.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="MediaCollection\MediaCollectionDataDataContext.cs" />
+    <Compile Include="MediaCollection\MediaType.cs" />
+    <Compile Include="MembershipRoleProvider\MemberData.cs" />
+    <Compile Include="MembershipRoleProvider\RoleData.cs" />
+    <Compile Include="Person.cs" />
+    <Compile Include="Photos\Image.cs" />
+    <Compile Include="Photos\PhotoAlbum.cs" />
+    <Compile Include="Photos\Photo.cs" />
+    <Compile Include="Photos\PhotoTagsData.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PhotoTagsData.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Photos\Tag.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RSS\channel.cs" />
+    <Compile Include="RSS\channelCloud.cs" />
+    <Compile Include="RSS\channelCloudProtocol.cs" />
+    <Compile Include="RSS\channelImage.cs" />
+    <Compile Include="RSS\channelTextInput.cs" />
+    <Compile Include="RSS\item.cs" />
+    <Compile Include="RSS\itemCategory.cs" />
+    <Compile Include="RSS\itemEnclosure.cs" />
+    <Compile Include="RSS\itemSource.cs" />
+    <Compile Include="RSS\rss.cs" />
+    <Compile Include="SourceCode\File.cs" />
+    <Compile Include="SourceCode\FileType.cs" />
+    <Compile Include="SourceCode\ISharedSource.cs" />
+    <Compile Include="SourceCode\Language.cs" />
+    <Compile Include="SourceCode\Project.cs" />
+    <Compile Include="SourceCode\SharedSourceData.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharedSourceData.dbml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\WhitedUS.snk">
+      <Link>WhitedUS.snk</Link>
+    </None>
+    <None Include="MediaCollection\MediaCollectionData.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>MediaCollectionData.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WhitedUS.Libs\WhitedUS.Libs.csproj">
+      <Project>{4239FE33-388D-4549-AD67-F54C04EEF0A1}</Project>
+      <Name>WhitedUS.Libs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="MediaCollection\MediaCollectionClasses.cd" />
+    <None Include="MediaCollection\MediaCollectionData.dbml.layout">
+      <DependentUpon>MediaCollectionData.dbml</DependentUpon>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SourceCode\SharedSourceData.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>SharedSourceData.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Photos\PhotoTagsData.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>PhotoTagsData.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SourceCode\SharedSourceClasses.cd" />
+    <None Include="SourceCode\SharedSourceData.dbml.layout">
+      <DependentUpon>SharedSourceData.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CarMonitor\CarMonitorData.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>CarMonitorData.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Photos\PhotoTagsData.dbml.layout">
+      <DependentUpon>PhotoTagsData.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CarMonitor\CarMonitorData.dbml.layout">
+      <DependentUpon>CarMonitorData.dbml</DependentUpon>
+    </None>
+    <None Include="Chatty\ChattyData.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>ChattyData.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chatty\ChattyData.dbml.layout">
+      <DependentUpon>ChattyData.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

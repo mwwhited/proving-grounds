@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.5, 17.5" name="CarMonitorData">
+  <DataContextMoniker Name="/CarMonitorDataDataContext" />
+  <nestedChildShapes>
+    <classShape Id="78aec3fa-57af-461a-b8e5-34500e2f79ec" absoluteBounds="3.5, 8.125, 2, 1.9631982421874987">
+      <DataClassMoniker Name="/CarMonitorDataDataContext/Car" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c88ff64c-7c17-4aa6-b6e9-53a366486a8c" absoluteBounds="3.515, 8.585, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="60edb958-9281-40cb-8d17-bd9599606977" absoluteBounds="0.75, 7.25, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/CarMonitorDataDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b5beb86e-76f8-4809-a1a7-6852c2c3cf44" absoluteBounds="0.765, 7.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2fd4f279-35ff-4bbd-9da9-74e8ac1693ae" absoluteBounds="3.5, 4.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/CarMonitorDataDataContext/InsurancePolicy" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4d75c3b6-1be3-454d-95ed-1bfe38be61cb" absoluteBounds="3.515, 4.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="58acdd30-231f-4168-a031-af59db1941ee" absoluteBounds="9.25, 6.375, 2, 1.7708968098958335">
+      <DataClassMoniker Name="/CarMonitorDataDataContext/InsurancePoliciesForCar" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2ce7e0e0-f87a-48b6-8d5b-5367d70f7665" absoluteBounds="9.265, 6.835, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c6c7a241-dc16-4a1a-a361-3a2cbbe2c11f" absoluteBounds="6.5, 12.5, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/CarMonitorDataDataContext/MaintenanceType" />
+      <nestedChildShapes>
+        <elementListCompartment Id="42870376-8f6f-4077-88d4-634177633303" absoluteBounds="6.515, 12.96, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="76a1e746-6967-4dc4-963d-0c298fc246ce" absoluteBounds="6.25, 9.125, 2, 1.7708968098958344">
+      <DataClassMoniker Name="/CarMonitorDataDataContext/PaymentsCar" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6f34680a-d3d7-499c-b781-62e883b24eda" absoluteBounds="6.265, 9.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d47f6c47-576d-4f6c-bdab-9f68b89cb7a1" absoluteBounds="6.25, 14.75, 2, 2.5401025390625005">
+      <DataClassMoniker Name="/CarMonitorDataDataContext/PaymentsCarsFuel" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9ac1ced3-7398-436a-89bf-8dad5b8f66b9" absoluteBounds="6.265, 15.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c1f1faa0-4706-4f3e-ab45-3093cd8c2b66" absoluteBounds="9.25, 9, 2, 2.3478011067708344">
+      <DataClassMoniker Name="/CarMonitorDataDataContext/PaymentsCarsMaintenance" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a9e3715a-0178-4e45-81a7-ddbdffa61d37" absoluteBounds="9.265, 9.46, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3e144d79-e4f8-47ec-ab0a-ef736f9811ff" absoluteBounds="6.25, 4.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/CarMonitorDataDataContext/PaymentsInsurancePolicy" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b66f25f0-3341-4563-b56d-003568cd3068" absoluteBounds="6.265, 4.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 8.38064697265625); (3.5 : 8.38064697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CarMonitorDataDataContext/User/User_Car" />
+      <nodes>
+        <classShapeMoniker Id="60edb958-9281-40cb-8d17-bd9599606977" />
+        <classShapeMoniker Id="78aec3fa-57af-461a-b8e5-34500e2f79ec" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.75 : 7.25); (1.75 : 5.03929768880208); (3.5 : 5.03929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CarMonitorDataDataContext/User/User_InsurancePolicy" />
+      <nodes>
+        <classShapeMoniker Id="60edb958-9281-40cb-8d17-bd9599606977" />
+        <classShapeMoniker Id="2fd4f279-35ff-4bbd-9da9-74e8ac1693ae" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.5 : 8.125); (4.5 : 7.2499995); (9.25 : 7.2499995)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CarMonitorDataDataContext/Car/Car_InsurancePoliciesForCar" />
+      <nodes>
+        <classShapeMoniker Id="78aec3fa-57af-461a-b8e5-34500e2f79ec" />
+        <classShapeMoniker Id="58acdd30-231f-4168-a031-af59db1941ee" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.9999995 : 5.82859537760417); (4.9999995 : 6.78124775); (9.25 : 6.78124775)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CarMonitorDataDataContext/InsurancePolicy/InsurancePolicy_InsurancePoliciesForCar" />
+      <nodes>
+        <classShapeMoniker Id="2fd4f279-35ff-4bbd-9da9-74e8ac1693ae" />
+        <classShapeMoniker Id="58acdd30-231f-4168-a031-af59db1941ee" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 9.60659912109375); (6.25 : 9.60659912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CarMonitorDataDataContext/Car/Car_PaymentsCar" />
+      <nodes>
+        <classShapeMoniker Id="78aec3fa-57af-461a-b8e5-34500e2f79ec" />
+        <classShapeMoniker Id="76a1e746-6967-4dc4-963d-0c298fc246ce" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.5 : 10.0881982421875); (4.5 : 16.0200512695313); (6.25 : 16.0200512695313)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CarMonitorDataDataContext/Car/Car_PaymentsCarsFuel" />
+      <nodes>
+        <classShapeMoniker Id="78aec3fa-57af-461a-b8e5-34500e2f79ec" />
+        <classShapeMoniker Id="d47f6c47-576d-4f6c-bdab-9f68b89cb7a1" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 9.03125); (9.25 : 9.03125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CarMonitorDataDataContext/Car/Car_PaymentsCarsMaintenance" />
+      <nodes>
+        <classShapeMoniker Id="78aec3fa-57af-461a-b8e5-34500e2f79ec" />
+        <classShapeMoniker Id="c1f1faa0-4706-4f3e-ab45-3093cd8c2b66" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.40625 : 12.5); (8.40625 : 11.1530989583333); (9.25 : 11.1530989583333)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CarMonitorDataDataContext/MaintenanceType/MaintenanceType_PaymentsCarsMaintenance" />
+      <nodes>
+        <classShapeMoniker Id="c6c7a241-dc16-4a1a-a361-3a2cbbe2c11f" />
+        <classShapeMoniker Id="c1f1faa0-4706-4f3e-ab45-3093cd8c2b66" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 5.03929768880208); (6.25 : 5.03929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/CarMonitorDataDataContext/InsurancePolicy/InsurancePolicy_PaymentsInsurancePolicy" />
+      <nodes>
+        <classShapeMoniker Id="2fd4f279-35ff-4bbd-9da9-74e8ac1693ae" />
+        <classShapeMoniker Id="3e144d79-e4f8-47ec-ab0a-ef736f9811ff" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

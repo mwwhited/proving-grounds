@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    var Admin = {
+        Roles: {
+            List: "@this.Url.Action("List", "Roles", new { Area = "Administration", })",
+            Create: "@this.Url.Action("Create", "Roles", new { Area = "Administration", })",
+            Delete: "@this.Url.Action("Delete", "Roles", new { Area = "Administration", })",
+
+            Assign: "@this.Url.Action("Assign", "Roles", new { Area = "Administration", })",
+            Unassign: "@this.Url.Action("Unassign", "Roles", new { Area = "Administration", })",  
+                      
+            ForUser: "@this.Url.Action("ForUser", "Roles", new { Area = "Administration", })",
+            ExceptForUser: "@this.Url.Action("ExceptForUser", "Roles", new { Area = "Administration", })",
+        },
+        Users: {
+            List: "@this.Url.Action("List", "Users", new { Area = "Administration", })",
+            Save: "@this.Url.Action("Save", "Users", new { Area = "Administration", })",
+            Delete: "@this.Url.Action("Delete", "Users", new { Area = "Administration", })",
+        },
+    }
+</script>

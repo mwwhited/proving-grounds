@@ -1,0 +1,4 @@
+﻿http://jya.com/3des-cryptix.htm
+http://javapgms.blogspot.com/2007/12/des-program.html
+http://www.mindrot.org/projects/jBCrypt/
+

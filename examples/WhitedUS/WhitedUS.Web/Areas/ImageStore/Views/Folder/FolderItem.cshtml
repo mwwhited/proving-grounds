@@ -1,0 +1,12 @@
+﻿@model WhitedUS.ImageStore.Controllers.FolderWithChildrenModel
+<li>
+    @this.Html.RouteLink(this.Model.Name, new { area = "ImageStore", controller = "Content", action = "List", id = this.Model.FolderID, });
+    @foreach (var child in this.Model.Children)
+    {
+        <ul>
+            @{
+        this.Html.RenderPartial("FolderItem", child);
+            }
+        </ul>
+    }
+</li>

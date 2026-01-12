@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="SharedSourceControl" Class="SharedSourceDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=TROJAN\SQLEXPRESS;Initial Catalog=SharedSourceControl;Integrated Security=True" SettingsObjectName="WhitedUS.Data.Properties.Settings" SettingsPropertyName="SharedSourceControlConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Project" Member="Projects">
+    <Type Name="Project">
+      <Column Name="UniqueID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SvnUrl" Type="System.String" DbType="VarChar(512)" CanBeNull="true" />
+      <Column Name="IsPublic" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Project_File" Member="Files" ThisKey="UniqueID" OtherKey="ProjectID" Type="File" />
+      <Association Name="Language_Project" Member="Language" ThisKey="LanguageID" OtherKey="UniqueID" Type="Language" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FileType" Member="FileTypes">
+    <Type Name="FileType">
+      <Column Name="UniqueID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="MIME" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Association Name="FileType_File" Member="Files" ThisKey="UniqueID" OtherKey="FileTypeID" Type="File" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Language" Member="Languages">
+    <Type Name="Language">
+      <Column Name="UniqueID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Language_Project" Member="Projects" ThisKey="UniqueID" OtherKey="LanguageID" Type="Project" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[File]" Member="Files">
+    <Type Name="File">
+      <Column Name="UniqueID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FileName" Member="Name" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="ProjectID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="Data" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Note" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FileTypeID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="IsPublic" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="FileType_File" Member="FileType" ThisKey="FileTypeID" OtherKey="UniqueID" Type="FileType" IsForeignKey="true" />
+      <Association Name="Project_File" Member="Project" ThisKey="ProjectID" OtherKey="UniqueID" Type="Project" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

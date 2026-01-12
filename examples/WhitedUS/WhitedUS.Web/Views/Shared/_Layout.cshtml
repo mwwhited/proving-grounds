@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+@*
+http://rachelappel.com/add-ie-9-pinned-sites-dynamic-jump-lists-notifications-to-mvc-razor-views
+    <meta name="application-name" content="@(ViewBag.Title ?? "WhitedUS")" />
+    <meta name="msapplication-tooltip" content="Start the page in Site Mode"/>
+    <meta name="msapplication-starturl" content="@this.Request.Url.ToString()"/>
+    <meta name="msapplication-window" content="width=1024;height=768"/>
+    <meta name="msapplication-navbutton-color" content="blue"/>
+	
+    <meta name="msapplication-task" content="name=Home;action-uri=@this.Url.Action("Index", "Home", new { Area = "", });icon-url=@Url.Content("~/Content/Images.favicon-pie.ico")" />
+    <meta name="msapplication-task" content="name=About;action-uri=@this.Url.Action("About", "Home", new { Area = "", });icon-url=@Url.Content("~/Content/Images.favicon-pie.ico")" />
+    <meta name="msapplication-task" content="name=Media Library;action-uri=@this.Url.Action("Index", "Home", new { Area = "ImageStore", });icon-url=@Url.Content("~/Content/Images.favicon-pie.ico")" />
+    <meta name="msapplication-task" content="name=Image Store;action-uri=@this.Url.Action("Index", "Home", new { Area = "ImageStore", });icon-url=@Url.Content("~/Content/Images.favicon-pie.ico")" />
+    <meta name="msapplication-task" content="name=Administration;action-uri=@this.Url.Action("Index", "Home", new { Area = "Administration", });icon-url=@Url.Content("~/Content/Images.favicon-pie.ico")" />
+    <meta name="msapplication-task" content="name=Photos;action-uri=@this.Url.Action("Access", "Content", new { Area = "Photos", });icon-url=@Url.Content("~/Content/Images.favicon-pie.ico")" />
+    <link rel="shortcut icon" type=image/x-icon href="@Url.Content("~/Content/Images.favicon-pie.ico")" />
+    <link rel=icon type=image/ico href="@Url.Content("~/Content/Images.favicon-pie.ico")" />
+*@
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+
+    <link href="@Url.Content("~/Content/jquery.meow.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.less")" rel="stylesheet" type="text/css" />
+
+    <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/modernizr-2.6.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("~/Scripts/jquery.meow.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/jquery.linq.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/jquery.ba-bbq.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/jquery.ba-hashchange.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/my.jquery.extensions.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/knockout-2.1.0.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"></script>   
+    <script src="@Url.Content("~/Scripts/my.knockout.extensions.js")" type="text/javascript"></script> 
+    @(Html.Telerik()
+          .StyleSheetRegistrar()
+          .DefaultGroup(group => group
+              .Add("telerik.common.css")
+              .Add("telerik.rtl.css")
+              .Combined(true)
+              .Compress(true)
+            )
+        )
+    @RenderSection("Header", required:false)
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div id="title">
+                <h1>My MVC Application</h1>
+            </div>
+            <div id="logindisplay">
+                @Html.Partial("_LogOnPartial")
+            </div>
+            <nav>
+                <ul id="menu">
+                    <li>@Html.ActionLink("Home", "Index", "Home", new { Area = "", }, new { })</li>
+                    <li>@Html.ActionLink("About", "About", "Home", new { Area = "", }, new { })</li>
+                    @*<li>@Html.ActionLink("Media Library", "Index", "Home", new { Area="MediaLibrary", }, new { })</li>*@
+                    @*<li>@Html.ActionLink("Image Store", "Index", "Home", new { Area = "ImageStore", }, new { })</li>*@
+                    @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Administrators"))
+                    {
+                        <li>@Html.ActionLink("Administration", "Index", "Home", new { Area = "Administration", }, new { })</li>
+                    }
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("OpenID Claims", "OpenIDClaims", "Account", new { Area = "", }, new { })</li>
+                    }
+                    <li>@Html.ActionLink("Photos", "Access", "Content", new { Area = "Photos", }, new { })</li>
+                </ul>
+            </nav>
+        </header>
+        <section id="main">
+            @RenderBody()
+        </section>
+        <footer>
+            &nbsp;
+        </footer>
+    </div>
+
+    @(Html.Telerik()
+          .ScriptRegistrar()
+          .jQuery(false)
+          .jQueryValidation(false)
+          )
+</body>
+</html>

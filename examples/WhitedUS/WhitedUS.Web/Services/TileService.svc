@@ -1,0 +1,5 @@
+﻿<%@ ServiceHost 
+    Language="C#" 
+    Debug="true" 
+    Service="WhitedUS.ImageStore.ServiceModel.TileService, WhitedUS.ImageStore.ServiceModel"
+    Factory="System.ServiceModel.Activation.WebServiceHostFactory"%>

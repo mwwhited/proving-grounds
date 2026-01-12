@@ -1,0 +1,2 @@
+﻿// Seeing this comment implies that the code generation for file 'C:\repo\merge-em\MigratedFromTfs\src\MigratedFromSvn\whitedus20\WhitedUS\WhitedUS.AspNet.Data\AspNetEntities.edmx'
+// failed. See the ErrorList for details.

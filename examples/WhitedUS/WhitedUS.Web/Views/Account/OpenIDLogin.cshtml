@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "OpenIDLogin";
+}
+
+<script language="javascript" type="text/javascript">
+    function openIdUrl(site) {
+        var value = "";
+        var autoClick = false;
+
+        if (site == "google") {
+            value = "https://www.google.com/accounts/o8/id";
+            autoClick = true;
+        }
+        else if (site == "yahoo") {
+            value = "http://yahoo.com/"
+            autoClick = true;
+        }
+@*
+        else if (site == "facebook") {
+            value = "https://www.facebook.com/dialog/oauth?client_id=YOUR_APP_ID&redirect_uri=YOUR_REDIRECT_URI&scope=COMMA_SEPARATED_LIST_OF_PERMISSION_NAMES&state=SOME_ARBITRARY_BUT_UNIQUE_STRING"
+            autoClick = true;
+        }
+*@
+        if (value) {
+            var jText = $("#loginIdentifier");
+            jText.val(value)
+            .focus();
+            if (autoClick)
+                $("#btnOpenIdLogin").trigger("click");
+        }
+    }
+</script>
+
+<h2>OpenID Login</h2>
+
+@using (this.Html.BeginForm(new { Controller = "Account", Action = "OpenIDLogin", Area = "", }))
+{    
+    <fieldset >                             
+        <div class="containercontent" >
+            <div class="labelheaderblock">Log on using OpenId:</div>
+            <input id="loginIdentifier" name="loginIdentifier"/>             
+            <input id="btnOpenIdLogin" type="submit" value="Login"/>        
+            <img id="imgOpenIdLoginProgress" src="@this.Href("~/css/images/loading_small.gif")" style="display:none" />                 
+             
+        <div id="divOpenIdIcons">
+                <img src="@this.Href("~/Content/images/icons/google.png")" onclick="openIdUrl('google')" title="Google" class="hoverbutton" style="width: 24px;" />
+                <img src="@this.Href("~/Content/images/icons/yahoo.png")" onclick="openIdUrl('yahoo')" title="Yahoo" class="hoverbutton" style="width: 24px;" />
+@*
+                <img src="@this.Href("~/Content/images/icons/facebook.png")" onclick="openIdUrl('facebook')" title="Yahoo" class="hoverbutton" style="width: 24px;" />
+*@
+            </div>     
+        </div>
+    </fieldset>
+}
