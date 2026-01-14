@@ -1,6 +1,6 @@
 
 docker build ^
---tag eliassen/sbert ^
+--tag oobdev/sbert ^
 --file DockerFile.sbert ^
 .
 

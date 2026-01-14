@@ -2,9 +2,9 @@
             var $cms = window.$cms = window.$cms || {
     getBusinessUnit: function (market) {
         if (market === "USA") {
-            return 'bmw us';
+            return 'oobdev us';
         } else {
-            return 'bmw mx';
+            return 'oobdev mx';
         }
     },
     postForm: function (form) {

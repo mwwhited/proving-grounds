@@ -11,7 +11,7 @@ PUSHD %ENTRY_FOLDER%
 SET TARGET_VERSION=%1
 IF "%TARGET_VERSION%"=="" GOTO DONE
 
-SET TOOL_LIST=lightwell.dataloader.31.cli lightwell.dataloader.cli lightwell.dacpaccompiler.cli
+SET TOOL_LIST=oobdev.dataloader.31.cli oobdev.dataloader.cli oobdev.dacpaccompiler.cli
 
 ECHO == Install Tools ==
 CALL :INSTALL_TOOLS %TOOL_LIST%

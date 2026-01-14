@@ -1,4 +1,4 @@
-﻿USE bmwdss
+﻿USE oobdss
 GO
 
 DECLARE @procName NVARCHAR(2000) = '[dbo].[YourView]';

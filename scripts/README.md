@@ -7,7 +7,7 @@ These may require you install
 
 *DO NOT FORGET TO INSTALL IIS*
 
- * [IIS Install](http://confluence.sfam.americas.bmw.corp:8090/display/SA/Installing+IIS)
+ * [IIS Install](http://confluence.americas.oobdev.corp:8090/display/SA/Installing+IIS)
  * Setup IIS with this tool [IISWebModuleManager]($\Contract Management\Dev\src\Tools\BookingTestTools\IISWebModuleManager)
 
 ## Local Build Scripts

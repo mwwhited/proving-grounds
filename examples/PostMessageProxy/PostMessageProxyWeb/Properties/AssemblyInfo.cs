@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("PostMessageProxyWeb")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("BMW Group")]
+[assembly: AssemblyCompany("OoBDev")]
 [assembly: AssemblyProduct("PostMessageProxyWeb")]
-[assembly: AssemblyCopyright("Copyright © BMW Group 2017")]
+[assembly: AssemblyCopyright("Copyright © OoBDev 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

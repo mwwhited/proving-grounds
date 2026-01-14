@@ -91,11 +91,11 @@ ATTRIB -R /S /D "%TFS_BASE%\Contract Management\Projects\CMS\LocalBin" 2>NUL
 
 FOR %%T IN (
 	BizTalkCMSServices
-	BMWFS.BizTalk.CMS.Booking
-	BMWFS.BizTalk.CMS.EOT
-	BMWFS.BizTalk.CMS.Payments
-	BMWFS.BizTalk.CMS.Servicing
-	BMWFSCMSSendAdaptorProxies
+	OOBDEV.BizTalk.APP.Booking
+	OOBDEV.BizTalk.APP.EOT
+	OOBDEV.BizTalk.APP.Payments
+	OOBDEV.BizTalk.APP.Servicing
+	OOBDEVCMSSendAdaptorProxies
 	CMSBamAndEmf
 ) DO (
 	SET TFSSolution=%%~T

@@ -1,10 +1,10 @@
 ﻿@{
     ViewBag.Title = "CMS";
     var siebelClientUrl =
-        !string.IsNullOrWhiteSpace(this.Request.QueryString["dev"]) ? "http://sw10hs6801.bmwgroup.net/customercentralmx/" : //dev URL
-        !string.IsNullOrWhiteSpace(this.Request.QueryString["mock"]) ? "http://web2.bmwgroup.net/Home/Siebel?mock=true" : // local mock
+        !string.IsNullOrWhiteSpace(this.Request.QueryString["dev"]) ? "http://sw10hs6801.oobdev.net/customercentralmx/" : //dev URL
+        !string.IsNullOrWhiteSpace(this.Request.QueryString["mock"]) ? "http://web2.oobdev.net/Home/Siebel?mock=true" : // local mock
         this.Url.Action("Siebel", "Home"); //local URL
-    var dfeClientUrl = this.Url.Action("DFE", "Home"); // "http://web1.bmwgroup.net/Home/DFE";
+    var dfeClientUrl = this.Url.Action("DFE", "Home"); // "http://web1.oobdev.net/Home/DFE";
 }
 
 <h2>CMS</h2>@if (!string.IsNullOrWhiteSpace(this.Request.QueryString["dev"]))

@@ -1,9 +1,9 @@
 ﻿var $dfe = window.$dfe = window.$dfe || {
     getBusinessUnit: function (market) {
         if (market === "USA") {
-            return 'bmw us';
+            return 'oobdev us';
         } else {
-            return 'bmw mx';
+            return 'oobdev mx';
         }
     },
     postForm: function (form) {

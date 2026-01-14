@@ -3,8 +3,8 @@ SETLOCAL
 
 set path=%path%;C:\CCMSprint\Contract Management\src\Tools\Scripts\bin
 
-SET OCTO_API_KEY=API-EUMDQ27LSULIQPZMBWEQE8HK9E
-SET OCTO_API_URI=http://octopusdeploy.bmwgroup.net/
+SET OCTO_API_KEY=[YourAPIKey]
+SET OCTO_API_URI=[YourURL]
 
 SET OCTO_CHANNEL=CCMSprint
 
