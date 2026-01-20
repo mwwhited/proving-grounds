@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Magick.NET-Q16-HDRI-AnyCPU" Version="13.9.1" />
-    <PackageReference Include="Magick.NET.Core" Version="13.9.1" />
+    <PackageReference Include="Magick.NET-Q16-HDRI-AnyCPU" Version="14.10.2" />
+    <PackageReference Include="Magick.NET.Core" Version="14.10.2" />
   </ItemGroup>
 
 </Project>
