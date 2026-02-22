@@ -1,61 +1,103 @@
-﻿using System;
+﻿// ─────────────────────────────────────────────────────────────────────────────
+//  HOW THE BLENDER PROTOCOL WORKS (from the Blender addon source):
+//
+//  1.  osci-render is the TCP SERVER, listening on localhost:51677
+//  2.  You must first put osci-render into Blender mode:
+//        → In osci-render, load any .gpla file  -OR-
+//        → The Blender addon's "Connect to osci-render" button does this
+//      The title bar should read "Rendering from Blender" once connected.
+//  3.  The CLIENT (Blender / this program) connects and immediately sends:
+//          base64( gpla_binary ) + "\n"       ← one newline-delimited line per frame
+//  4.  Every subsequent frame is another line in the same format.
+//  5.  To disconnect cleanly, send the literal ASCII string "CLOSE\n"
+//
+//  ⚠  If osci-render isn't already in Blender mode when you connect, it will
+//     accept the TCP connection but silently ignore all data.
+//
+//  DEBUGGING TIP: Run with --save circle.gpla to write a multi-frame .gpla
+//  file you can drag-and-drop into osci-render to verify the binary format
+//  before attempting the live socket stream.
+// ─────────────────────────────────────────────────────────────────────────────
+
+using System;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using System.IO;
 using System.Threading;
 
-/// <summary>
-/// Renders a circle to osci-render at 60 fps using the GPLA binary protocol,
-/// simulating the per-frame sends that Blender's depsgraph_update_post handler does.
-/// Press Ctrl+C to stop; the connection is cleanly closed on exit.
-/// </summary>
 class OsciRenderCircle
 {
-    // ── Connection settings ──────────────────────────────────────────────────
+    // ── Connection ───────────────────────────────────────────────────────────
     private const string Host = "localhost";
-    private const int Port = 51622;
+    private static int Port = 51677;
 
     // ── GPLA version ─────────────────────────────────────────────────────────
     private const long GplaMajor = 2;
     private const long GplaMinor = 0;
     private const long GplaPatch = 0;
 
-    // ── Playback settings ────────────────────────────────────────────────────
+    // ── Playback ─────────────────────────────────────────────────────────────
     private const int Fps = 60;
-    private const int TotalFrames = 120; // 2 seconds @ 60 fps; set to -1 to loop forever
+    private const int TotalFrames = -1;    // -1 = loop forever until Ctrl+C
 
-    // ── Circle settings ───────────────────────────────────────────────────────
+    // ── Circle ───────────────────────────────────────────────────────────────
     private const int CircleVertices = 128;
     private const double Radius = 1.0;
-    private const double FocalLength = -0.05 * 50.0; // equivalent to a 50 mm lens
+    private const double FocalLength = -0.05 * 50.0;   // 50 mm lens equivalent
 
     // ── State ────────────────────────────────────────────────────────────────
     private static volatile bool _running = true;
     private static TcpClient? _client;
     private static NetworkStream? _stream;
 
-    static void Main()
+    // ─────────────────────────────────────────────────────────────────────────
+    static void Main(string[] args)
     {
-        // Cleanly handle Ctrl+C
+        if (int.TryParse(Environment.GetEnvironmentVariable("OSCI_RENDER_PORT"), out var port))
+        {
+            Port = port;
+        }
+
+        // --save <path>  →  write a multi-frame .gpla file for offline testing
+        if (args.Length == 2 && args[0] == "--save")
+        {
+            SaveToFile(args[1]);
+            return;
+        }
+
         Console.CancelKeyPress += OnCancel;
 
-        Console.WriteLine("Connecting to osci-render...");
+        Console.WriteLine($"Connecting to osci-render on {Host}:{Port}...");
+        Console.WriteLine("NOTE: osci-render must already be open and in Blender mode.");
+        Console.WriteLine("      (Load a .gpla file in osci-render first, or use the");
+        Console.WriteLine("       Blender addon's Connect button to prime it.)\n");
 
         try
         {
             _client = new TcpClient();
             _client.Connect(Host, Port);
+
+            // If osci-render stops reading (e.g. it's processing a frame),
+            // Write() will block until the kernel send buffer is full.
+            // A send timeout converts that infinite block into a clean exception
+            // so we can handle it gracefully instead of hanging forever.
+            _client.SendTimeout = 2000;  // ms — fail fast if buffer is full
+            _client.ReceiveTimeout = 2000;
+
+            // Reduce the kernel send buffer so it fills quickly and we get
+            // backpressure feedback early rather than queuing dozens of frames.
+            _client.SendBufferSize = 8192;
+
             _stream = _client.GetStream();
         }
         catch (SocketException ex)
         {
-            Console.WriteLine($"Could not connect: {ex.Message}");
-            Console.WriteLine("Make sure osci-render is running first.");
+            Console.WriteLine($"[ERROR] Could not connect: {ex.Message}");
             return;
         }
 
-        Console.WriteLine($"Connected! Streaming circle at {Fps} fps. Press Ctrl+C to stop.");
+        Console.WriteLine($"Connected! Streaming at {Fps} fps. Press Ctrl+C to stop.\n");
 
         try
         {
@@ -63,61 +105,85 @@ class OsciRenderCircle
         }
         finally
         {
-            // Always close cleanly regardless of how we exit the loop.
             CloseConnection();
         }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  Main render loop — mimics Blender's frame_change_pre handler firing at
-    //  60 fps, sending one GPLA packet per frame over the socket.
+    //  Main render loop — one GPLA packet per frame, paced to exactly 60 fps.
+    //
+    //  FLOW CONTROL: if osci-render falls behind and the send buffer fills up,
+    //  SendFrame() will throw within SendTimeout ms. We catch that, skip the
+    //  frame, and try again next tick. This keeps the wall-clock timing correct
+    //  even if individual frames are dropped, exactly like a real video encoder
+    //  dropping frames under load.
     // ─────────────────────────────────────────────────────────────────────────
-
     static void RunLoop()
     {
         long ticksPerFrame = Stopwatch.Frequency / Fps;
         var sw = Stopwatch.StartNew();
         long nextTick = sw.ElapsedTicks;
         int frameIndex = 0;
+        int droppedFrames = 0;
 
         while (_running)
         {
             if (TotalFrames > 0 && frameIndex >= TotalFrames)
                 break;
 
-            SendFrame(frameIndex);
+            SendResult result = SendFrame(frameIndex);
 
+            if (result == SendResult.FatalError)
+                break;
+
+            if (result == SendResult.Dropped)
+                droppedFrames++;
+
+            // Always advance the frame counter so animation stays in sync
+            // with wall-clock time regardless of drops.
             frameIndex++;
             nextTick += ticksPerFrame;
 
-            // Sleep for the remainder of this frame's budget.
+            // Sleep most of the remaining budget, then spin for precision.
             long remaining = nextTick - sw.ElapsedTicks;
             if (remaining > 0)
             {
-                // Convert ticks → milliseconds, sleep most of the remaining time,
-                // then spin for sub-millisecond precision.
                 int sleepMs = (int)(remaining * 1000 / Stopwatch.Frequency) - 1;
                 if (sleepMs > 0)
                     Thread.Sleep(sleepMs);
+                while (sw.ElapsedTicks < nextTick) { /* precision spin */ }
+            }
 
-                while (sw.ElapsedTicks < nextTick) { /* spin */ }
+            // If we're already late (send took longer than a frame budget),
+            // skip ahead so we don't try to "catch up" by flooding the socket.
+            while (sw.ElapsedTicks > nextTick)
+            {
+                nextTick += ticksPerFrame;
+                frameIndex++;
+                droppedFrames++;
             }
         }
 
-        Console.WriteLine($"\nFinished sending {frameIndex} frames.");
+        if (droppedFrames > 0)
+            Console.WriteLine($"\nWarning: {droppedFrames} frames were dropped due to backpressure.");
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  Per-frame send  (mirrors send_scene_to_osci_render in the addon)
-    // ─────────────────────────────────────────────────────────────────────────
+    enum SendResult { Ok, Dropped, FatalError }
 
-    static void SendFrame(int frameIndex)
+    // ─────────────────────────────────────────────────────────────────────────
+    //  Send one frame — mirrors send_scene_to_osci_render() from the addon.
+    //  Protocol: base64(binary_gpla) + "\n"
+    //
+    //  Returns:
+    //    Ok         — frame sent successfully
+    //    Dropped    — send buffer full (timeout); frame skipped, keep going
+    //    FatalError — socket is dead; stop the loop
+    // ─────────────────────────────────────────────────────────────────────────
+    static SendResult SendFrame(int frameIndex)
     {
-        if (_stream is null) return;
+        if (_stream is null) return SendResult.FatalError;
 
         byte[] payload = BuildGplaPacket(frameIndex);
-
-        // Protocol: base64(binary) + "\n"
         string b64 = Convert.ToBase64String(payload);
         byte[] toSend = Encoding.UTF8.GetBytes(b64 + "\n");
 
@@ -125,41 +191,76 @@ class OsciRenderCircle
         {
             _stream.Write(toSend, 0, toSend.Length);
             _stream.Flush();
-            Console.Write($"\rFrame {frameIndex + 1} sent ({payload.Length} bytes raw)   ");
+
+            double elapsed = (double)frameIndex / Fps;
+            Console.Write($"\rFrame {frameIndex + 1,6}  ({elapsed:F2}s)  raw={payload.Length}B  b64={toSend.Length}B   ");
+            return SendResult.Ok;
         }
-        catch (Exception ex) when (ex is SocketException or IOException)
+        catch (IOException ex) when (ex.InnerException is SocketException sx &&
+                                     sx.SocketErrorCode == SocketError.TimedOut)
         {
-            Console.WriteLine($"\nSocket error on frame {frameIndex}: {ex.Message}");
+            // Send buffer full — osci-render is behind. Drop this frame.
+            Console.Write($"\r[DROP] Frame {frameIndex + 1} skipped (buffer full)          ");
+            return SendResult.Dropped;
+        }
+        catch (Exception ex) when (ex is SocketException or IOException or ObjectDisposedException)
+        {
+            Console.WriteLine($"\n[ERROR] Socket lost on frame {frameIndex}: {ex.Message}");
             _running = false;
+            return SendResult.FatalError;
         }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  GPLA packet builder — one frame per packet (matches the Blender addon's
-    //  get_gpla_file which wraps only the current frame)
+    //  --save mode: write a multi-frame .gpla file for drag-and-drop testing
     // ─────────────────────────────────────────────────────────────────────────
-
-    static byte[] BuildGplaPacket(int frameIndex)
+    static void SaveToFile(string path)
     {
+        int frameCount = TotalFrames > 0 ? TotalFrames : 120; // 2 s @ 60 fps
+        Console.WriteLine($"Saving {frameCount} frames to: {path}");
+
         using var ms = new MemoryStream();
         using var w = new BinaryWriter(ms, Encoding.UTF8, leaveOpen: true);
 
-        // ── Header ───────────────────────────────────────────────────────────
         WriteTag(w, "GPLA    ");
         WriteInt64(w, GplaMajor);
         WriteInt64(w, GplaMinor);
         WriteInt64(w, GplaPatch);
 
-        // ── File info ────────────────────────────────────────────────────────
         WriteTag(w, "FILE    ");
-        WriteTag(w, "fCount  "); WriteInt64(w, 1);   // one frame per packet
+        WriteTag(w, "fCount  "); WriteInt64(w, frameCount);
         WriteTag(w, "fRate   "); WriteInt64(w, Fps);
         WriteTag(w, "DONE    ");
 
-        // ── Frame ────────────────────────────────────────────────────────────
+        for (int i = 0; i < frameCount; i++)
+            WriteFrame(w, i);
+
+        WriteTag(w, "END GPLA");
+
+        File.WriteAllBytes(path, ms.ToArray());
+        Console.WriteLine($"Done — {ms.Length:N0} bytes written.");
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    //  GPLA packet — one frame per packet, matching get_gpla_file() in addon
+    // ─────────────────────────────────────────────────────────────────────────
+    static byte[] BuildGplaPacket(int frameIndex)
+    {
+        using var ms = new MemoryStream();
+        using var w = new BinaryWriter(ms, Encoding.UTF8, leaveOpen: true);
+
+        WriteTag(w, "GPLA    ");
+        WriteInt64(w, GplaMajor);
+        WriteInt64(w, GplaMinor);
+        WriteInt64(w, GplaPatch);
+
+        WriteTag(w, "FILE    ");
+        WriteTag(w, "fCount  "); WriteInt64(w, 1);
+        WriteTag(w, "fRate   "); WriteInt64(w, Fps);
+        WriteTag(w, "DONE    ");
+
         WriteFrame(w, frameIndex);
 
-        // ── End marker ───────────────────────────────────────────────────────
         WriteTag(w, "END GPLA");
 
         return ms.ToArray();
@@ -174,70 +275,75 @@ class OsciRenderCircle
 
         WriteTag(w, "OBJECT  ");
 
+        // In the Blender addon the matrix is camera-space:
+        //   camera.matrix_world.inverted() @ obj.matrix_world
+        //
+        // osci-render uses a perspective divide, so the object must be
+        // at a non-zero Z in camera space or everything projects to a dot.
+        //
+        // A Blender default scene has:
+        //   camera at Z=+7.36, pointing down -Z (towards origin)
+        //   object at origin
+        //
+        // camera_space = cam_inv @ obj  →  object is at Z ≈ -7.36
+        // (negative because the camera looks down -Z in its own space)
+        //
+        // We replicate that with a translation matrix T(0, 0, -7.36):
+        //   [ 1  0  0   0  ]
+        //   [ 0  1  0   0  ]
+        //   [ 0  0  1  -7.36]
+        //   [ 0  0  0   1  ]
         WriteTag(w, "MATRIX  ");
-        WriteIdentityMatrix(w);
-        WriteTag(w, "DONE    "); // end MATRIX
+        WriteCameraSpaceMatrix(w, cameraDistance: -7.36);
+        WriteTag(w, "DONE    ");    // end MATRIX
 
         WriteTag(w, "STROKES ");
         WriteCircleStroke(w, frameIndex);
-        WriteTag(w, "DONE    "); // end STROKES
+        WriteTag(w, "DONE    ");    // end STROKES
 
-        WriteTag(w, "DONE    "); // end OBJECT
+        WriteTag(w, "DONE    ");        // end OBJECT
 
-        WriteTag(w, "DONE    "); // end OBJECTS
+        WriteTag(w, "DONE    ");            // end OBJECTS
 
-        WriteTag(w, "DONE    "); // end FRAME
+        WriteTag(w, "DONE    ");            // end FRAME
     }
 
     static void WriteCircleStroke(BinaryWriter w, int frameIndex)
     {
-        // Rotate the circle slightly each frame to make the animation visible.
-        double rotationPerFrame = 2.0 * Math.PI / (Fps * 2); // one full spin every 2 s
-        double offset = frameIndex * rotationPerFrame;
+        // Rotate the circle by a small angle each frame.
+        // One full revolution every 2 seconds at 60 fps.
+        double rotStep = 2.0 * Math.PI / (Fps * 2.0);
+        double angleOffset = frameIndex * rotStep;
 
-        var points = new (double x, double y, double z)[CircleVertices + 1];
-        for (int i = 0; i <= CircleVertices; i++)
-        {
-            double angle = offset + 2.0 * Math.PI * i / CircleVertices;
-            points[i] = (
-                x: Radius * Math.Cos(angle),
-                y: Radius * Math.Sin(angle),
-                z: 0.0
-            );
-        }
+        int totalPoints = CircleVertices + 1;  // +1 closes the loop
 
         WriteTag(w, "STROKE  ");
-
-        WriteTag(w, "vertexCt"); WriteInt64(w, points.Length);
-
+        WriteTag(w, "vertexCt"); WriteInt64(w, totalPoints);
         WriteTag(w, "VERTICES");
-        foreach (var (x, y, z) in points)
+        for (int i = 0; i < totalPoints; i++)
         {
-            WriteDouble(w, x);
-            WriteDouble(w, y);
-            WriteDouble(w, z);
+            double angle = angleOffset + 2.0 * Math.PI * i / CircleVertices;
+            WriteDouble(w, Radius * Math.Cos(angle));
+            WriteDouble(w, Radius * Math.Sin(angle));
+            WriteDouble(w, 0.0);
         }
-        WriteTag(w, "DONE    "); // end VERTICES
-
-        WriteTag(w, "DONE    "); // end STROKE
+        WriteTag(w, "DONE    ");   // end VERTICES
+        WriteTag(w, "DONE    ");       // end STROKE
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  Connection teardown — mirrors the addon's close_osci_render()
+    //  Clean disconnect — mirrors close_osci_render() in the addon exactly
     // ─────────────────────────────────────────────────────────────────────────
-
     static void CloseConnection()
     {
         if (_stream is null && _client is null) return;
-
         Console.WriteLine("\nClosing connection...");
+
         try
         {
             if (_stream is not null)
             {
-                // Tell osci-render we're done, exactly as the Blender addon does.
-                byte[] closeMsg = Encoding.UTF8.GetBytes("CLOSE\n");
-                _stream.Write(closeMsg, 0, closeMsg.Length);
+                _stream.Write(Encoding.UTF8.GetBytes("CLOSE\n"));
                 _stream.Flush();
                 _stream.Close();
                 _stream = null;
@@ -245,8 +351,7 @@ class OsciRenderCircle
         }
         catch (Exception ex) when (ex is SocketException or IOException or ObjectDisposedException)
         {
-            // Socket may already be dead — that's fine.
-            Console.WriteLine($"(Socket already closed: {ex.Message})");
+            Console.WriteLine($"(Socket already gone: {ex.Message})");
         }
         finally
         {
@@ -258,13 +363,14 @@ class OsciRenderCircle
 
     static void OnCancel(object? sender, ConsoleCancelEventArgs e)
     {
-        e.Cancel = true; // prevent immediate process kill so finally blocks run
+        e.Cancel = true;   // don't kill the process immediately; let finally run
         _running = false;
-        Console.WriteLine("\nCtrl+C received — stopping...");
+        Console.WriteLine("\nCtrl+C — finishing current frame then closing...");
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  Primitive writers
+    //  Binary primitives — match Python struct.pack / int.to_bytes exactly.
+    //  BinaryWriter on .NET is always little-endian on all platforms.
     // ─────────────────────────────────────────────────────────────────────────
 
     static void WriteTag(BinaryWriter w, string tag)
@@ -275,13 +381,30 @@ class OsciRenderCircle
     }
 
     static void WriteInt64(BinaryWriter w, long value) => w.Write(value);
-
     static void WriteDouble(BinaryWriter w, double value) => w.Write(value);
 
-    static void WriteIdentityMatrix(BinaryWriter w)
+    /// <summary>
+    /// Writes a 4×4 column-major translation matrix that places the object
+    /// at (0, 0, cameraDistance) in camera space.
+    ///
+    /// osci-render reads the matrix rows as:
+    ///   row 0..3, each with cols 0..3
+    /// which is the standard row-major layout Blender uses when iterating
+    /// matrix_world[i][j].  The translation lives in column 3 (w[i][3]).
+    ///
+    /// [ 1  0  0  0 ]   row 0
+    /// [ 0  1  0  0 ]   row 1
+    /// [ 0  0  1  d ]   row 2   ← d = cameraDistance (negative = in front)
+    /// [ 0  0  0  1 ]   row 3
+    /// </summary>
+    static void WriteCameraSpaceMatrix(BinaryWriter w, double cameraDistance)
     {
-        for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 4; j++)
-                WriteDouble(w, i == j ? 1.0 : 0.0);
+        for (int row = 0; row < 4; row++)
+            for (int col = 0; col < 4; col++)
+            {
+                double val = (row == col) ? 1.0 : 0.0;          // identity
+                if (row == 2 && col == 3) val = cameraDistance;  // Z translation
+                WriteDouble(w, val);
+            }
     }
 }
