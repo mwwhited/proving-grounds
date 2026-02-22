@@ -46,7 +46,8 @@ class OsciRenderCircle
     private const double Radius = 1.0;
     private const double FocalLength = -0.05 * 50.0;   // 50 mm lens equivalent
 
-    // ── State ────────────────────────────────────────────────────────────────
+    // ── Flow control ─────────────────────────────────────────────────────────
+    private const int MaxConsecutiveDrops = 3;  // reconnect after this many in a row
     private static volatile bool _running = true;
     private static TcpClient? _client;
     private static NetworkStream? _stream;
@@ -124,7 +125,8 @@ class OsciRenderCircle
         var sw = Stopwatch.StartNew();
         long nextTick = sw.ElapsedTicks;
         int frameIndex = 0;
-        int droppedFrames = 0;
+        int totalDropped = 0;
+        int consecutiveDrops = 0;
 
         while (_running)
         {
@@ -137,14 +139,32 @@ class OsciRenderCircle
                 break;
 
             if (result == SendResult.Dropped)
-                droppedFrames++;
+            {
+                totalDropped++;
+                consecutiveDrops++;
 
-            // Always advance the frame counter so animation stays in sync
-            // with wall-clock time regardless of drops.
+                if (consecutiveDrops >= MaxConsecutiveDrops)
+                {
+                    Console.WriteLine($"\n[RECONNECT] {consecutiveDrops} consecutive drops — resetting connection...");
+                    CloseConnection();
+
+                    // Brief pause to let osci-render notice the disconnect
+                    Thread.Sleep(500);
+
+                    if (!Reconnect())
+                        break;  // couldn't reconnect — give up
+
+                    consecutiveDrops = 0;
+                }
+            }
+            else
+            {
+                consecutiveDrops = 0;  // reset on any successful send
+            }
+
             frameIndex++;
             nextTick += ticksPerFrame;
 
-            // Sleep most of the remaining budget, then spin for precision.
             long remaining = nextTick - sw.ElapsedTicks;
             if (remaining > 0)
             {
@@ -154,18 +174,17 @@ class OsciRenderCircle
                 while (sw.ElapsedTicks < nextTick) { /* precision spin */ }
             }
 
-            // If we're already late (send took longer than a frame budget),
-            // skip ahead so we don't try to "catch up" by flooding the socket.
+            // If we're already late, skip ahead rather than flooding the socket.
             while (sw.ElapsedTicks > nextTick)
             {
                 nextTick += ticksPerFrame;
                 frameIndex++;
-                droppedFrames++;
+                totalDropped++;
             }
         }
 
-        if (droppedFrames > 0)
-            Console.WriteLine($"\nWarning: {droppedFrames} frames were dropped due to backpressure.");
+        if (totalDropped > 0)
+            Console.WriteLine($"\nTotal frames dropped: {totalDropped}");
     }
 
     enum SendResult { Ok, Dropped, FatalError }
@@ -359,6 +378,36 @@ class OsciRenderCircle
             _client = null;
             Console.WriteLine("Connection closed.");
         }
+    }
+
+    static bool Reconnect()
+    {
+        for (int attempt = 1; attempt <= 5; attempt++)
+        {
+            Console.WriteLine($"[RECONNECT] Attempt {attempt}/5...");
+            try
+            {
+                _client = new TcpClient();
+                _client.Connect(Host, Port);
+                _client.SendTimeout = 2000;
+                _client.ReceiveTimeout = 2000;
+                _client.SendBufferSize = 8192;
+                _stream = _client.GetStream();
+                Console.WriteLine("[RECONNECT] Reconnected successfully.");
+                return true;
+            }
+            catch (SocketException ex)
+            {
+                Console.WriteLine($"[RECONNECT] Failed: {ex.Message}");
+                _client = null;
+                _stream = null;
+                Thread.Sleep(500);
+            }
+        }
+
+        Console.WriteLine("[RECONNECT] Could not reconnect after 5 attempts. Stopping.");
+        _running = false;
+        return false;
     }
 
     static void OnCancel(object? sender, ConsoleCancelEventArgs e)
