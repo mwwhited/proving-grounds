@@ -3,6 +3,7 @@
   <Project Path="OsciRenderClientFractal3d/OsciRenderClientFractal3d.csproj" />
   <Project Path="OsciRenderClientHilbert/OsciRenderClientHilbert.csproj" />
   <Project Path="OsciRenderClientKochSnowflake/OsciRenderClientKochSnowflake.csproj" />
+  <Project Path="OsciRenderClientStates/OsciRenderClientStates.csproj" />
   <Project Path="OsciRenderClientV2/OsciRenderClientV2.csproj" />
   <Project Path="OsciRenderFractal/OsciRenderFractal.csproj" />
 </Solution>
