@@ -356,27 +356,34 @@ class OsciRenderCircle
     static void CloseConnection()
     {
         if (_stream is null && _client is null) return;
-        Console.WriteLine("\nClosing connection...");
 
         try
         {
             if (_stream is not null)
             {
-                _stream.Write(Encoding.UTF8.GetBytes("CLOSE\n"));
-                _stream.Flush();
+                // Best-effort CLOSE signal — osci-render may have already stopped
+                // reading by the time we get here, so swallow any write errors.
+                try
+                {
+                    _stream.WriteTimeout = 200;  // don't wait long
+                    _stream.Write(Encoding.UTF8.GetBytes("CLOSE\n"));
+                    _stream.Flush();
+                }
+                catch { /* ignored — socket may already be unreadable */ }
+
                 _stream.Close();
                 _stream = null;
             }
         }
         catch (Exception ex) when (ex is SocketException or IOException or ObjectDisposedException)
         {
-            Console.WriteLine($"(Socket already gone: {ex.Message})");
+            // Ignore — we're closing anyway
+            _ = ex;
         }
         finally
         {
             _client?.Close();
             _client = null;
-            Console.WriteLine("Connection closed.");
         }
     }
 
