@@ -25,9 +25,38 @@ using System.Net.Sockets;
 using System.Text;
 using System.IO;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 class OsciRenderCircle
 {
+    // ── Win32 console control handler ────────────────────────────────────────
+    // Fires on Ctrl+C, Ctrl+Break, window close, logoff, and shutdown —
+    // including force-kills via Task Manager (CTRL_CLOSE_EVENT).
+    // This is the only reliable way to run cleanup on a forced close on Windows.
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate? handler, bool add);
+
+    private delegate bool ConsoleCtrlDelegate(uint ctrlType);
+
+    // Keep a strong reference so the GC doesn't collect the delegate
+    // while the native code still holds a pointer to it.
+    private static readonly ConsoleCtrlDelegate _ctrlHandler = OnConsoleCtrl;
+
+    private static bool OnConsoleCtrl(uint ctrlType)
+    {
+        // ctrlType values:
+        //   0 = CTRL_C_EVENT
+        //   1 = CTRL_BREAK_EVENT
+        //   2 = CTRL_CLOSE_EVENT   ← window X / Task Manager "End Task"
+        //   5 = CTRL_LOGOFF_EVENT
+        //   6 = CTRL_SHUTDOWN_EVENT
+        _running = false;
+        CloseConnection();
+
+        // Return false so the default handler also runs (important for
+        // CTRL_CLOSE_EVENT — returning true would block the OS from closing).
+        return false;
+    }
     // ── Connection ───────────────────────────────────────────────────────────
     private const string Host = "localhost";
     private static int Port = 51677;
@@ -55,6 +84,13 @@ class OsciRenderCircle
     // ─────────────────────────────────────────────────────────────────────────
     static void Main(string[] args)
     {
+        // Native handler: covers Ctrl+C, Ctrl+Break, window X, Task Manager
+        // "End Task", logoff, and shutdown — including force-kills.
+        SetConsoleCtrlHandler(_ctrlHandler, add: true);
+
+        // Managed fallback for Ctrl+C inside the IDE / dotnet run.
+        Console.CancelKeyPress += OnCancel;
+
         if (int.TryParse(Environment.GetEnvironmentVariable("OSCI_RENDER_PORT"), out var port))
         {
             Port = port;
@@ -66,8 +102,6 @@ class OsciRenderCircle
             SaveToFile(args[1]);
             return;
         }
-
-        Console.CancelKeyPress += OnCancel;
 
         Console.WriteLine($"Connecting to osci-render on {Host}:{Port}...");
         Console.WriteLine("NOTE: osci-render must already be open and in Blender mode.");
