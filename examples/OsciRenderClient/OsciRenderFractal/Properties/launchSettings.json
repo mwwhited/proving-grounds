@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "OsciRenderClient": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "OSCI_RENDER_PORT": "51615"
+      }
+    }
+  }
+}

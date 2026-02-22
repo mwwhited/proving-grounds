@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="OsciRenderClient/OsciRenderClient.csproj" />
   <Project Path="OsciRenderClientV2/OsciRenderClientV2.csproj" />
+  <Project Path="OsciRenderFractal/OsciRenderFractal.csproj" />
 </Solution>
