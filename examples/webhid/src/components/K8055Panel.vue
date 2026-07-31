@@ -1,12 +1,11 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { useWebHid } from '../composables/useWebHid'
 import { K8055_FILTERS, Commands, DIGITAL_OUTPUTS, DIGITAL_INPUTS, buildRequest, decodeResponse } from '../devices/k8055'
 
 const {
   isSupported,
   devices,
-  selectedDevice,
   log,
   error,
   refreshDevices,
@@ -16,20 +15,38 @@ const {
   describeDevice,
 } = useWebHid()
 
-const outputs = reactive(new Set())
-const analog1 = ref(0)
-const analog2 = ref(0)
-const reading = ref(null)
+// Keyed by the HIDDevice instance itself, not vendorId/productId - two physical boards can
+// share the same address (e.g. both left on the default jumper setting), so productId alone
+// isn't unique. The browser hands back the same HIDDevice object for a given physical device
+// across calls, so the object reference is a safe per-device identity.
+const deviceStates = reactive(new Map())
+
+function stateFor(device) {
+  if (!deviceStates.has(device)) {
+    deviceStates.set(device, reactive({ outputs: new Set(), analog1: 0, analog2: 0, reading: null }))
+  }
+  return deviceStates.get(device)
+}
+
+// Boards sharing an address (same vendorId/productId) look identical via describeDevice(),
+// so tag them #1, #2, ... in connection order to keep them visually distinguishable.
+function deviceLabel(device) {
+  const sameAddress = devices.value.filter((d) => d.vendorId === device.vendorId && d.productId === device.productId)
+  const label = describeDevice(device)
+  return sameAddress.length > 1 ? `${label} #${sameAddress.indexOf(device) + 1}` : label
+}
 
 refreshDevices()
 
 function onInputReport(event) {
-  reading.value = decodeResponse(new Uint8Array(event.data.buffer))
+  const state = stateFor(event.target)
+  state.reading = decodeResponse(new Uint8Array(event.data.buffer))
 }
 
 async function open(device) {
   await openDevice(device)
   device.addEventListener('inputreport', onInputReport)
+  stateFor(device)
 }
 
 async function close(device) {
@@ -37,43 +54,45 @@ async function close(device) {
   await closeDevice(device)
 }
 
-function outputsMask() {
+function outputsMask(state) {
   let mask = 0
-  for (const bit of outputs) mask |= bit
+  for (const bit of state.outputs) mask |= bit
   return mask
 }
 
-async function sendOutputs() {
-  if (!selectedDevice.value?.opened) return
-  await selectedDevice.value.sendReport(
+async function sendOutputs(device) {
+  if (!device.opened) return
+  const state = stateFor(device)
+  await device.sendReport(
     0,
     buildRequest({
       command: Commands.SetAnalogDigital,
-      outputsMask: outputsMask(),
-      analog1: Number(analog1.value),
-      analog2: Number(analog2.value),
+      outputsMask: outputsMask(state),
+      analog1: Number(state.analog1),
+      analog2: Number(state.analog2),
     }),
   )
 }
 
-function toggleOutput(bit) {
-  if (outputs.has(bit)) outputs.delete(bit)
-  else outputs.add(bit)
-  sendOutputs()
+function toggleOutput(device, bit) {
+  const state = stateFor(device)
+  if (state.outputs.has(bit)) state.outputs.delete(bit)
+  else state.outputs.add(bit)
+  sendOutputs(device)
 }
 
-async function resetCounter1() {
-  if (!selectedDevice.value?.opened) return
-  await selectedDevice.value.sendReport(0, buildRequest({ command: Commands.ResetCounter1 }))
+async function resetCounter1(device) {
+  if (!device.opened) return
+  await device.sendReport(0, buildRequest({ command: Commands.ResetCounter1 }))
 }
 
-async function resetCounter2() {
-  if (!selectedDevice.value?.opened) return
-  await selectedDevice.value.sendReport(0, buildRequest({ command: Commands.ResetCounter2 }))
+async function resetCounter2(device) {
+  if (!device.opened) return
+  await device.sendReport(0, buildRequest({ command: Commands.ResetCounter2 }))
 }
 
-function isInputActive(bit) {
-  return reading.value ? (reading.value.digitalInputsMask & bit) !== 0 : false
+function isInputActive(state, bit) {
+  return state.reading ? (state.reading.digitalInputsMask & bit) !== 0 : false
 }
 </script>
 
@@ -95,61 +114,67 @@ function isInputActive(bit) {
       </div>
 
       <ul class="device-list">
-        <li v-for="device in devices" :key="device.productId + '-' + device.vendorId">
-          <span>{{ describeDevice(device) }}</span>
+        <li v-for="device in devices" :key="device">
+          <span>{{ deviceLabel(device) }}</span>
           <button v-if="!device.opened" @click="open(device)">Open</button>
           <button v-else @click="close(device)">Close</button>
         </li>
       </ul>
 
-      <div v-if="selectedDevice?.opened" class="report-form">
-        <h3>Digital Outputs</h3>
+      <div
+        v-for="device in devices.filter((d) => d.opened)"
+        :key="device"
+        class="report-form"
+      >
+        <h3>{{ deviceLabel(device) }}</h3>
+
+        <h4>Digital Outputs</h4>
         <div class="toggle-row">
           <button
             v-for="output in DIGITAL_OUTPUTS"
             :key="output.label"
-            :class="{ active: outputs.has(output.bit) }"
-            @click="toggleOutput(output.bit)"
+            :class="{ active: stateFor(device).outputs.has(output.bit) }"
+            @click="toggleOutput(device, output.bit)"
           >
             {{ output.label }}
           </button>
         </div>
 
-        <h3>Analog Outputs</h3>
+        <h4>Analog Outputs</h4>
         <label>
-          Analog 1 ({{ analog1 }})
-          <input v-model="analog1" type="range" min="0" max="255" @change="sendOutputs" />
+          Analog 1 ({{ stateFor(device).analog1 }})
+          <input v-model="stateFor(device).analog1" type="range" min="0" max="255" @change="sendOutputs(device)" />
         </label>
         <label>
-          Analog 2 ({{ analog2 }})
-          <input v-model="analog2" type="range" min="0" max="255" @change="sendOutputs" />
+          Analog 2 ({{ stateFor(device).analog2 }})
+          <input v-model="stateFor(device).analog2" type="range" min="0" max="255" @change="sendOutputs(device)" />
         </label>
 
-        <h3>Digital Inputs</h3>
+        <h4>Digital Inputs</h4>
         <div class="toggle-row">
           <span
             v-for="input in DIGITAL_INPUTS"
             :key="input.label"
-            :class="['pill', { active: isInputActive(input.bit) }]"
+            :class="['pill', { active: isInputActive(stateFor(device), input.bit) }]"
           >
             {{ input.label }}
           </span>
         </div>
 
-        <h3>Counters</h3>
+        <h4>Counters</h4>
         <div class="readout-row">
-          <span>Counter 1: {{ reading?.counter1 ?? '—' }}</span>
-          <button @click="resetCounter1">Reset</button>
+          <span>Counter 1: {{ stateFor(device).reading?.counter1 ?? '—' }}</span>
+          <button @click="resetCounter1(device)">Reset</button>
         </div>
         <div class="readout-row">
-          <span>Counter 2: {{ reading?.counter2 ?? '—' }}</span>
-          <button @click="resetCounter2">Reset</button>
+          <span>Counter 2: {{ stateFor(device).reading?.counter2 ?? '—' }}</span>
+          <button @click="resetCounter2(device)">Reset</button>
         </div>
 
-        <h3>Analog Inputs</h3>
+        <h4>Analog Inputs</h4>
         <div class="readout-row">
-          <span>Analog 1: {{ reading?.analog1 ?? '—' }}</span>
-          <span>Analog 2: {{ reading?.analog2 ?? '—' }}</span>
+          <span>Analog 1: {{ stateFor(device).reading?.analog1 ?? '—' }}</span>
+          <span>Analog 2: {{ stateFor(device).reading?.analog2 ?? '—' }}</span>
         </div>
       </div>
 
