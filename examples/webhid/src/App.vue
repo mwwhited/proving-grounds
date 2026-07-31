@@ -7,6 +7,8 @@ import HidPanel from './components/HidPanel.vue'
 import UsbPanel from './components/UsbPanel.vue'
 import SerialPanel from './components/SerialPanel.vue'
 import BluetoothPanel from './components/BluetoothPanel.vue'
+import WebcamPanel from './components/WebcamPanel.vue'
+import BarcodeDetectorPanel from './components/BarcodeDetectorPanel.vue'
 
 const isSecureContext = typeof window !== 'undefined' && window.isSecureContext
 const tab = ref('devices')
@@ -47,6 +49,8 @@ const tab = ref('devices')
       <BusylightPanel />
       <K8055Panel />
       <RadexOnePanel />
+      <WebcamPanel />
+      <BarcodeDetectorPanel />
     </div>
 
     <div v-else class="panels">
