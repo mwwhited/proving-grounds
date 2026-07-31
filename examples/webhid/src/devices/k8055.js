@@ -11,6 +11,10 @@ export const K8055_FILTERS = [
   { vendorId: 0x10cf, productId: 0x5503 },
 ]
 
+export function matchesK8055(device) {
+  return device.vendorId === 0x10cf && device.productId >= 0x5500 && device.productId <= 0x5503
+}
+
 export const Commands = {
   None: 0x00,
   ResetCounter1: 0x03,

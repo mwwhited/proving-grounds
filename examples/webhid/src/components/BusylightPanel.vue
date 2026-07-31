@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useWebHid } from '../composables/useWebHid'
-import { BUSYLIGHT_FILTERS, buildCommand, buildOffCommand } from '../devices/busylight'
+import { BUSYLIGHT_FILTERS, buildCommand, buildOffCommand, matchesBusylight } from '../devices/busylight'
 
 const {
   isSupported,
@@ -14,7 +14,7 @@ const {
   openDevice,
   closeDevice,
   describeDevice,
-} = useWebHid()
+} = useWebHid({ match: matchesBusylight })
 
 const color = ref('#ff0000')
 const onSteps = ref(5)

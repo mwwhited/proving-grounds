@@ -1,6 +1,6 @@
 import { ref, shallowRef } from 'vue'
 
-export function useWebHid() {
+export function useWebHid({ match } = {}) {
   const isSupported = typeof navigator !== 'undefined' && 'hid' in navigator
   const devices = shallowRef([])
   const selectedDevice = shallowRef(null)
@@ -20,7 +20,8 @@ export function useWebHid() {
 
   async function refreshDevices() {
     if (!isSupported) return
-    devices.value = await navigator.hid.getDevices()
+    const all = await navigator.hid.getDevices()
+    devices.value = match ? all.filter(match) : all
   }
 
   async function requestDevice(filters = []) {

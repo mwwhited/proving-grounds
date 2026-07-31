@@ -1,6 +1,6 @@
-# WebHID / WebUSB / Web Serial Example
+# WebHID / WebUSB / Web Serial / Web Bluetooth Example
 
-Vue 3 + Vite demo of talking to real HID/USB hardware from the browser, with a generic
+Vue 3 + Vite demo of talking to real HID/USB/Bluetooth hardware from the browser, with a generic
 explorer plus device-specific panels for three devices whose protocols were ported from the
 C# decoders in `BinaryDataDecoders`:
 
@@ -10,8 +10,8 @@ C# decoders in `BinaryDataDecoders`:
 | Velleman K8055 (vid 0x10cf, pid 0x5500-0x5503) | WebHID | Plain HID device, 8-byte reports |
 | Quarta RadexOne | Web Serial | Enumerates as a USB-to-serial (COM) port - Windows binds a serial driver to it before WebUSB could claim the interface |
 
-A generic "Explorer" tab is also included to poke at any other WebHID/WebUSB device without
-needing a specific protocol.
+A generic "Explorer" tab is also included to poke at any other WebHID/WebUSB device, any serial
+port, or any Bluetooth LE (GATT) device, without needing a specific protocol.
 
 ## Requirements
 
@@ -31,11 +31,13 @@ Then open the printed `http://localhost:...` URL in Chrome or Edge.
 
 ## Layout
 
-- `src/composables/useWebHid.js`, `useWebUsb.js`, `useWebSerial.js` - thin reactive wrappers
-  around `navigator.hid` / `navigator.usb` / `navigator.serial`
+- `src/composables/useWebHid.js`, `useWebUsb.js`, `useWebSerial.js`, `useWebBluetooth.js` - thin
+  reactive wrappers around `navigator.hid` / `navigator.usb` / `navigator.serial` /
+  `navigator.bluetooth`
 - `src/devices/busylight.js`, `k8055.js`, `radexOne.js` - pure encode/decode functions for each
   device's wire protocol (no browser APIs), ported from the corresponding C# structs
 - `src/components/BusylightPanel.vue`, `K8055Panel.vue`, `RadexOnePanel.vue` - device-specific
   UI built on top of the composables + device modules
-- `src/components/HidPanel.vue`, `UsbPanel.vue` - generic request/open/send-report and
-  control-transfer explorers
+- `src/components/HidPanel.vue`, `UsbPanel.vue`, `SerialPanel.vue`, `BluetoothPanel.vue` -
+  generic request/open/send-report, control-transfer, read/write-bytes, and GATT
+  service/characteristic explorers

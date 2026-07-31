@@ -1,7 +1,22 @@
 <script setup>
 import { reactive } from 'vue'
 import { useWebHid } from '../composables/useWebHid'
-import { K8055_FILTERS, Commands, DIGITAL_OUTPUTS, DIGITAL_INPUTS, buildRequest, decodeResponse } from '../devices/k8055'
+import SparklineChart from './SparklineChart.vue'
+import {
+  K8055_FILTERS,
+  Commands,
+  DIGITAL_OUTPUTS,
+  DIGITAL_INPUTS,
+  buildRequest,
+  decodeResponse,
+  matchesK8055,
+} from '../devices/k8055'
+
+const MAX_HISTORY = 120
+// The board pushes an input report on every interrupt-endpoint poll (well under 100ms) -
+// recording every one would flood the chart and the array copy on every reactive push.
+// Throttle to one sample per window instead.
+const RECORD_INTERVAL_MS = 250
 
 const {
   isSupported,
@@ -13,7 +28,7 @@ const {
   openDevice,
   closeDevice,
   describeDevice,
-} = useWebHid()
+} = useWebHid({ match: matchesK8055 })
 
 // Keyed by the HIDDevice instance itself, not vendorId/productId - two physical boards can
 // share the same address (e.g. both left on the default jumper setting), so productId alone
@@ -23,7 +38,18 @@ const deviceStates = reactive(new Map())
 
 function stateFor(device) {
   if (!deviceStates.has(device)) {
-    deviceStates.set(device, reactive({ outputs: new Set(), analog1: 0, analog2: 0, reading: null }))
+    deviceStates.set(
+      device,
+      reactive({
+        outputs: new Set(),
+        analog1: 0,
+        analog2: 0,
+        reading: null,
+        analog1History: [],
+        analog2History: [],
+        lastRecordedAt: 0,
+      }),
+    )
   }
   return deviceStates.get(device)
 }
@@ -41,6 +67,13 @@ refreshDevices()
 function onInputReport(event) {
   const state = stateFor(event.target)
   state.reading = decodeResponse(new Uint8Array(event.data.buffer))
+
+  const t = Date.now()
+  if (t - state.lastRecordedAt >= RECORD_INTERVAL_MS) {
+    state.lastRecordedAt = t
+    state.analog1History = [...state.analog1History, { t, v: state.reading.analog1 }].slice(-MAX_HISTORY)
+    state.analog2History = [...state.analog2History, { t, v: state.reading.analog2 }].slice(-MAX_HISTORY)
+  }
 }
 
 async function open(device) {
@@ -175,6 +208,22 @@ function isInputActive(state, bit) {
         <div class="readout-row">
           <span>Analog 1: {{ stateFor(device).reading?.analog1 ?? '—' }}</span>
           <span>Analog 2: {{ stateFor(device).reading?.analog2 ?? '—' }}</span>
+        </div>
+        <div class="charts">
+          <SparklineChart
+            title="Analog 1"
+            unit=""
+            :points="stateFor(device).analog1History"
+            :series-index="1"
+            :decimals="0"
+          />
+          <SparklineChart
+            title="Analog 2"
+            unit=""
+            :points="stateFor(device).analog2History"
+            :series-index="2"
+            :decimals="0"
+          />
         </div>
       </div>
 

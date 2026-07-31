@@ -5,6 +5,10 @@
 
 export const BUSYLIGHT_FILTERS = [{ vendorId: 0x04d8, productId: 0xf848 }]
 
+export function matchesBusylight(device) {
+  return device.vendorId === 0x04d8 && device.productId === 0xf848
+}
+
 export const AUDIO_NONE = 0x80
 
 export function encodeAudio(track, volume) {
