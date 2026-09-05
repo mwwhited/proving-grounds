@@ -50,13 +50,12 @@ needing a boot-time LBA loader.
 
 ## Status
 
-An LBA-translation patch was designed and partially built (CHS↔LBA math verified against an
-independent reference implementation across many drive geometries) but is **currently blocked**:
-tracing `831Bh` byte-for-byte revealed it truncates cylinder numbers to 10 bits *in how it talks
-to the drive*, not just in the calling convention — so a translate-and-reuse-the-existing-driver
-approach only works for drives whose true geometry is already ≤1024 cylinders. Going further
-requires bypassing `831Bh` and re-entering a stretch of retry/DRQ-wait logic (`842Ah`/`8458h`)
-whose exact success/failure semantics couldn't be pinned down from static analysis alone — see
-`analysis/02_int13h_disk_driver.md` §5. An attempt to verify it in Bochs hit an unrelated
-emulator/BIOS compatibility fault during early POST. Full detail and options going forward are in
-[`PATCH_NOTES.md`](PATCH_NOTES.md).
+**Patched and ready for cautious hardware testing.** The first design translated CHS and handed
+off to the vendor's own `831Bh`, which turned out to truncate cylinder numbers to 10 bits while
+building the ATA command — a hard wall regardless of translation. The shipped design instead
+bypasses `831Bh` entirely: it converts the caller's CHS straight to a 28-bit LBA value and talks
+to the drive in native ATA LBA mode (every IDE drive since ATA-1 supports this), reusing the
+vendor's own send/wait/transfer subroutines in exactly the pattern they already use for a normal
+single-sector transfer. This sidesteps the cylinder ceiling entirely and resolved the earlier
+DRQ-wait ambiguity without needing an emulator — see [`PATCH_NOTES.md`](PATCH_NOTES.md) for the
+full redesign story, what's verified, and how to test.
