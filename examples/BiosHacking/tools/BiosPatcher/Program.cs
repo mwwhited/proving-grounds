@@ -6,10 +6,21 @@ using Iced.Intel;
 using static Iced.Intel.AssemblerRegisters;
 
 // Builds the LBA-translation INT13h shim, assembles it, and either:
-//   --selftest   : runs it through the built-in x86-16 interpreter against known-good
-//                  test vectors (verified independently in JS) and reports pass/fail.
+//   --dump                     : prints the assembled shim bytes (no interpreter yet - see
+//                                 PATCH_NOTES.md, verification is currently blocked).
 //   --patch <in.bin> <out.bin> : injects the shim into a copy of the ROM and rewrites
-//                  the INT13h vector-install instruction to point at it.
+//                                 the INT13h vector-install instruction to point at it.
+//
+// *** KNOWN LIMITATION - see PATCH_NOTES.md ***
+// This only correctly unlocks capacity for drives whose TRUE reported geometry is already
+// <=1024 cylinders. The vendor's own task-file builder (831Bh) truncates cylinder numbers to
+// 10 bits when talking to the drive, independent of what this shim passes it - translating a
+// larger drive's CHS and handing off to the unmodified original driver will silently address
+// the wrong sectors above cylinder 1023. Going further requires bypassing 831Bh and correctly
+// replicating its low-level DRQ/retry logic (842Ah/8458h), which has one genuinely ambiguous
+// branch that couldn't be resolved by static analysis alone. Do not burn this to a chip and
+// trust it with real data beyond that limit. See analysis/02_int13h_disk_driver.md SS5 and
+// PATCH_NOTES.md for full detail and status.
 //
 // Shim placement is fixed by the free-space survey done during analysis:
 //   file offset 0x13FBC == F000:3FBC (6,212 bytes of erased 0xFF here).
@@ -38,6 +49,13 @@ byte[] BuildShim(out Dictionary<string, int> labelOffsets)
     var lCFDone = c.CreateLabel("CFDone");
     var lGPClylOK = c.CreateLabel("GPCylOK");
     var lGPExit = c.CreateLabel("GPExit");
+    // NOTE: AH=41h/42h/43h/48h (INT13h Extensions / EDD) dispatch and handlers were designed
+    // (see PATCH_NOTES.md "EDD design (not implemented)") but never implemented here - the
+    // 831Bh cylinder-truncation finding (BIOS_ANALYSIS.md / analysis/02_int13h_disk_driver.md)
+    // meant the classic AH=02/03/08 path below needed rework first, and that rework is itself
+    // blocked pending emulator verification. Do not add EDD dispatch entries here without also
+    // writing complete, tested handler bodies - a jump to an unbound label silently assembles
+    // as a jump to garbage.
 
     // ---------------- Entry ----------------
     c.Label(ref lEntry);
@@ -57,15 +75,22 @@ byte[] BuildShim(out Dictionary<string, int> labelOffsets)
 
     // ---------------- GetTrueGeom (ax=true_cyl[unused by caller in RW path], bx=true_heads, cx=true_spt) ----------------
     c.Label(ref lGetTrueGeom);
+    // 8255h indexes its table with DL as a 0-based drive number (0/1), but our live DL is
+    // still the raw INT13h drive number (80h) since we intercept before the original
+    // driver's own "SUB DL,80h" normalization runs. We only ever handle drive 80h, so
+    // hardcode index 0 for the lookup and restore the caller's real DL afterward.
+    c.push(dx);
+    c.xor(dl, dl);
     c.call(GetTableHelperOffset); // -> es:si = table ptr; clobbers ax
-    var mCyl = __word_ptr[si]; mCyl.Segment = Register.ES;
-    c.mov(ax, mCyl);
+    c.pop(dx);
+    // Iced's fluent Assembler has no clean segment-override syntax for a plain [reg] operand,
+    // so the ES: prefix (0x26) is emitted as a raw byte immediately before each instruction it
+    // applies to - this is architecturally identical to what a real assembler emits for "es:[si]".
+    c.db(0x26); c.mov(ax, __word_ptr[si]);       // es:[si]   -> true_cyl
     c.xor(bx, bx);
-    var mHeads = __byte_ptr[si + 2]; mHeads.Segment = Register.ES;
-    c.mov(bl, mHeads);
+    c.db(0x26); c.mov(bl, __byte_ptr[si + 2]);   // es:[si+2] -> true_heads
     c.xor(cx, cx);
-    var mSpt = __byte_ptr[si + 0x0E]; mSpt.Segment = Register.ES;
-    c.mov(cl, mSpt);
+    c.db(0x26); c.mov(cl, __byte_ptr[si + 0x0E]); // es:[si+0Eh] -> true_spt
     c.ret();
 
     // ---------------- ComputeFactor (in bx=true_heads; out bx=logical_heads; clobbers ax,cx) ----------------
