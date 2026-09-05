@@ -82,6 +82,23 @@ exists to catch — it did its job.
   the machine in an obfuscated loop. Never touched by this patch (nowhere near the free-space
   block or the 2-byte vector patch).
 
+## Capacity reporting: reads the drive directly, not the Setup-configured table
+
+`AH=08h` no longer trusts whatever CHS Setup/autodetect populated into the fixed-disk parameter
+table for sizing the reported capacity. It issues ATA IDENTIFY DEVICE (`0xECh`) directly and reads
+words 60-61 (the drive's true 32-bit total addressable LBA sector count) instead. This matters
+because many CF cards deliberately report an artificially small "default" CHS (IDENTIFY words
+1/3/6) for backward compatibility with old CHS-only BIOSes, even when their real capacity is much
+larger — relying on Setup's `Auto Detected` (which reads exactly those capped default-CHS words)
+would have silently capped the patch's reported capacity at whatever "safe" value the card chose
+to advertise, defeating the point. Falls back to the old CHS-table-derived calculation only if
+IDENTIFY itself fails (shouldn't happen for any real ATA/CF device — mandatory since ATA-1 — but
+kept as a defensive fallback rather than leaving `AH=08h` broken on failure).
+
+This means: **the Setup-configured Hard Disk Type no longer needs to match the CF card's real
+capacity at all** — any type that gets the drive detected and communicating (including the
+existing "Auto Detected" option) is sufficient; the patch queries true capacity itself.
+
 ## Known limitations (by design, not bugs)
 
 - Only drive `0x80` is translated. Drive `0x81` and floppies pass through untouched.

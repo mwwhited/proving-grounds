@@ -73,6 +73,10 @@ byte[] BuildShim()
     var lGetParams = c.CreateLabel("HandlerGetParams");
     var lGPCylOk = c.CreateLabel("GPCylOk");
     var lGetTrueGeom = c.CreateLabel("GetTrueGeom");
+    var lIdentify = c.CreateLabel("IdentifyDeviceGetTotalSectors");
+    var lIdentifyFail = c.CreateLabel("IdentifyFail");
+    var lIdentifyDone = c.CreateLabel("IdentifyDone");
+    var lGPHaveTotal = c.CreateLabel("GPHaveTotal");
     var lBuildTaskFile = c.CreateLabel("BuildLbaTaskFile");
     var lRwShared = c.CreateLabel("RwShared");
     var lCmdSet = c.CreateLabel("CmdSet");
@@ -116,6 +120,68 @@ byte[] BuildShim()
     c.db(0x26); c.mov(cl, __byte_ptr[si + 0x0E]);
     c.ret();
 
+    // ================= IdentifyDeviceGetTotalSectors =================
+    // Issues ATA IDENTIFY DEVICE (0xECh) directly to drive 0 and returns the drive's TRUE total
+    // addressable sector count (IDENTIFY words 60-61, a 32-bit LBA28 total) rather than trusting
+    // whatever CHS Setup/autodetect populated into the fixed-disk parameter table - many CF
+    // cards deliberately report an artificially small "default" CHS (words 1/3/6) for backward
+    // compatibility with old CHS-only BIOSes, while their true capacity only shows up in the
+    // words 60-61 total. Reading the identify block into a stack buffer mirrors the vendor's own
+    // convention (their auto-detect code does the same, per the Cadwell notes' description of
+    // ata_identify_to_table).
+    // Out: dx:ax = total_sectors (32-bit), CF=0 on success; CF=1 (dx:ax undefined) on failure.
+    // Corrupts: bx, cx, si, di, es, ds.
+    c.Label(ref lIdentify);
+    c.push(bp);
+    c.mov(bp, sp);
+    c.sub(sp, 512);
+
+    c.xor(ax, ax);
+    c.mov(ds, ax);
+    c.mov(bx, 0x441);
+    c.mov(__byte_ptr[bx + 1], 0);
+    c.mov(__byte_ptr[bx + 2], 0);
+    c.mov(__byte_ptr[bx + 3], 0);
+    c.mov(__byte_ptr[bx + 4], 0);
+    c.mov(__byte_ptr[bx + 5], 0);
+    c.mov(__byte_ptr[bx + 6], 0xA0);   // drive 0, standard bits (CHS/LBA mode bit irrelevant here)
+    c.mov(__byte_ptr[bx + 7], 0xEC);   // command = IDENTIFY DEVICE
+    c.mov(__byte_ptr[0x476], 0);
+
+    c.call(SendAtaTaskFileOffset);
+    c.jc(lIdentifyFail);
+    c.call(WaitControllerReadyOffset);
+    c.jc(lIdentifyFail);
+
+    c.mov(ax, ss);
+    c.mov(es, ax);
+    c.lea(di, __word_ptr[bp - 512]);   // 512-byte scratch buffer on our own stack frame
+
+    c.call(DrqWaitReadOffset);
+    c.jc(lIdentifyFail);
+
+    c.cli();
+    c.mov(dx, 0x1F0);
+    c.mov(cx, 0x100);
+    c.rep.insw();
+    c.sti();
+
+    // IDENTIFY word 60 (low 16 bits) is byte offset 120; word 61 (high 16 bits) is offset 122.
+    c.mov(ax, __word_ptr[bp - 512 + 120]);
+    c.mov(dx, __word_ptr[bp - 512 + 122]);
+    c.clc();
+    c.jmp(lIdentifyDone);
+
+    c.Label(ref lIdentifyFail);
+    c.xor(ax, ax);
+    c.xor(dx, dx);
+    c.stc();
+
+    c.Label(ref lIdentifyDone);
+    c.mov(sp, bp);
+    c.pop(bp);
+    c.ret();
+
     // ================= Handler_GetParams (AH=08h) =================
     // Reports a fixed 255-head/63-sector logical geometry, cylinder count sized to the
     // drive's real capacity (capped at 1024).
@@ -129,6 +195,10 @@ byte[] BuildShim()
     c.push(es);
     c.push(ds);
 
+    c.call(lIdentify);                 // dx:ax = total_sectors (true capacity), CF=0 on success
+    c.jnc(lGPHaveTotal);
+    // IDENTIFY failed (shouldn't happen for any real ATA/CF device, but stay defensive) - fall
+    // back to the Setup/autodetect-populated CHS table, same as the original design.
     c.call(lGetTrueGeom);              // ax=true_cyl, bx=true_heads, cx=true_spt
     c.mul(bx);                         // dx:ax = true_cyl * true_heads
     c.push(ax);
@@ -140,6 +210,7 @@ byte[] BuildShim()
     c.mul(bx);                         // dx:ax = (true_cyl*true_heads lo word) * true_spt
     c.add(dx, cx);                     // dx:ax = total_sectors (32-bit)
 
+    c.Label(ref lGPHaveTotal);
     c.mov(cx, LogicalHeads * LogicalSpt); // constant divisor = 255*63 = 16065
     c.div(cx);                         // ax = logical_cyl (floor); safe since true_cyl is a
                                         // 16-bit field, so total_sectors/16065 always fits AX
