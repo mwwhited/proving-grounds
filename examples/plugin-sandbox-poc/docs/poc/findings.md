@@ -145,3 +145,22 @@ What the sandbox is: new user, pid, ipc, uts, cgroup and network namespaces (`--
 ### Not yet done
 
 - CPU/cgroup limits, a general syscall allow-list, arm64, macOS. The conformance suite (Go, Java, Node, .NET) passes with the filter on, so thread creation under it works for those runtimes.
+
+## Phase 5: packaging
+
+`OoBDev.Plugins.Packaging` installs a signed `.plugin` zip (design §3). `PackageBuilder` makes one (hashes every file, writes the manifest's `files` table, signs it); `PluginPackage.Install` verifies and extracts it and returns a `PluginSpec` that runs from the install folder. 27 tests pass on Windows and in Docker on Linux.
+
+**Held (each rejection test starts from a package that installs, and breaks one thing):**
+- A package with no build for this platform, or a platform missing from `platforms`, is reported as unavailable before anything is extracted.
+- A file changed after signing fails its hash; a file added or removed fails the table check. Nothing is left in the install folder, not even an empty id folder.
+- Unsigned packages are rejected unless the development switch is on; a manifest edited after signing, a signature from an untrusted key, and a signature that claims a trusted key id but was made with another key are all rejected. A present signature that does not verify is never ignored, even with the switch on.
+- Unsafe paths (`..`, absolute, drive, backslash, duplicates by case), oversize packages and ids that are not plain names are rejected.
+- Installed files are read-only (and the entry is executable on Linux). A file changed or added in the install folder is caught by `VerifyInstalled`, and installing again replaces the damaged folder.
+- A real plugin (echo-go) runs from an installed package through the plain launcher.
+
+**Not covered:**
+- Signing keys: no revocation, rotation, expiry or chain; trust is a list of public keys the host is given. The tests use a throwaway key.
+- `VerifyInstalled` leaves a window between the check and the launch (a writer with access to the install folder could swap a file in it). Read-only files only slow that writer down. A launch that hashes the file it executes, or an install folder only the host can write, would close it.
+- Packaged plugins were run through the plain launcher only, not through the AppContainer or bubblewrap launchers. The platform-folder-only grant is by construction (the spec's working directory), not tested against the escape suite.
+- macOS (quarantine, ad-hoc signing), musl detection, WASM, emulation (x64 on ARM64) and fat versus per-platform packages are not done.
+- `entry.dev` still exists for development and bypasses all of this; the host must not accept it from an untrusted folder.

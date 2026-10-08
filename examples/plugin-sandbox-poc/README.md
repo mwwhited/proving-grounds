@@ -109,3 +109,7 @@ The simulator implements these checks itself, so they double as a spec for the r
 ### Escape results table
 
 `docs/poc/escape-results.md` is generated: `sh linux-test/run-docker.sh` (writes `linux-test/out/linux.trx`), then `python tools/escape_report.py --run-windows --trx linux=linux-test/out/linux.trx`. Which tests count for which capability is in `docs/poc/escape-matrix.json`; a row is HELD only if its denial tests and its controls all pass, and rows without a test say UNVERIFIED.
+
+### Packages
+
+`src/OoBDev.Plugins.Packaging` builds and installs signed `.plugin` zips (`PackageBuilder.Build`, `PluginPackage.Install`); see `docs/poc/findings.md` (Phase 5) for what is and is not verified. `dotnet test src/OoBDev.Plugins.Packaging.Tests`.

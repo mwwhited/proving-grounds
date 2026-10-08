@@ -13,7 +13,7 @@ Follows the planning shell's build order (§17), reordered so the Windows launch
 | 2 | Windows sandbox | Escape suite denied on Windows: network, process spawn, file read outside grant, fork bomb contained, memory cap enforced. Host killed (also inside a parent job) leaves no Bound plugin alive | **Mostly done** (Java unsupported in the AppContainer; CPU limit, fork-bomb loop and handle checks open; see findings) |
 | 3 | Escape suite as a product | Escape plugins packaged as a runnable suite with a per-OS result table (held, failed, unverified) | **Done** for Windows and Linux (`tools/escape_report.py`, `escape-matrix.json`, `escape-results.md`); macOS has no launcher |
 | 4 | Linux shim and launcher | Same escape suite denied on Linux. Go, Node and JVM plugins can still create threads under seccomp | **Started** (bubblewrap launcher and 22 escape tests pass in Docker; seccomp filter blocks new processes only) |
-| 5 | Packaging | Platform selection, hash verification, signature check; tampered package rejected; "unavailable on this platform" before launch | Not started |
+| 5 | Packaging | Platform selection, hash verification, signature check; tampered package rejected; "unavailable on this platform" before launch | **Done** (`OoBDev.Plugins.Packaging`, 27 tests on Windows and Linux; no macOS, no WASM, no revocation or key rotation) |
 | 6 | Promotion to [dotex](https://github.com/OutOfBandDevelopment/dotex) | Protocol, Host, launcher and conformance projects build and test on their own; moved with dotex READMEs and coverage; POC runs against the packages | Not started |
 | 7 | Detached mode, macOS | Detached survives host crash and reattaches by state file; macOS launcher with documented reduced guarantees | **Deferred** (decided after the Linux launcher: neither is needed to judge whether the base holds; revisit after phase 6) |
 
@@ -78,6 +78,15 @@ Things this POC found that the planning shell's settled decisions do not say yet
 6. **Linux needs unprivileged user namespaces.** bubblewrap fails on hosts that disable them, and Docker's default seccomp profile blocks them. Keep bubblewrap and document the requirement; there is no fallback.
 7. **Each denied test needs a positive control**, and a test that quietly ran the unsandboxed launcher passes for the wrong reason. Check the launcher actually in use (a negative control caught this once).
 8. **"Bound" needs a test that the host dies without cleanup** (`FailFast`), not just a clean shutdown, and a plugin that ignores EOF (`linger`) so only the OS can end it.
+
+## Back-port from phase 5 (packaging)
+
+9. **Sign the manifest with a detached signature** (`manifest.sig`, ECDSA P-256 over the exact manifest bytes) instead of a `signature` field inside it. Nothing has to be canonicalised, and the `files` table of hashes makes that one signature cover every file.
+10. **Check order matters.** Signature, then platform (so "unavailable" is reported with nothing extracted), then the zip against the file table, then hash while extracting to a temporary folder, then move into place. A rejected package leaves nothing behind.
+11. **The sandbox gets the platform folder only.** The install folder holds the whole verified package, but the spec's working directory (the folder launchers grant) is `<platform>/`.
+12. **Launch commands need a directory part** (`./demo.exe`): launchers treat a bare name as a PATH lookup.
+13. **Treat the zip as hostile.** Reject `..`, absolute and drive paths, backslashes, duplicate names (also by case), symlinks, too many entries and too many expanded bytes; ids and versions become folder names, so give them a strict alphabet.
+14. **A signature that is present must verify even when signatures are optional**; the "unsigned allowed" switch is for development only.
 
 ## Deferred
 

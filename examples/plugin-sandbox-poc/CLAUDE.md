@@ -16,6 +16,7 @@ Proof of concept for a sandboxed, any-language plugin system hosted by a .NET 10
 - `reference/`: uncompiled C# sketches. Treat as a starting point.
 - `src/PluginSandbox.slnx`: the real host core (phase 1). `Protocol`, `Host` (supervisor, router, session), `Launchers.Plain` (a plain process, NOT a sandbox), `Bench`, and three test projects including `Conformance`, which runs the same 36 checks against the real host. `dotnet test src/PluginSandbox.slnx`.
 - `src/OoBDev.Plugins.Launchers.Windows`: AppContainer + per-plugin job object launcher. `Launchers.Windows.Tests` holds 23 escape and kill-with-host tests using `plugins/escape-python` and the `TestHost` helper. `PLUGIN_LAUNCHER=appcontainer dotnet test src/OoBDev.Plugins.Conformance` re-runs the conformance checks inside the sandbox (Java is skipped: it does not start under the AppContainer).
+- `src/OoBDev.Plugins.Packaging`: signed `.plugin` zip builder and installer (platform selection, hashes, ECDSA signature, safe extraction); `Packaging.Tests` has 27 tests.
 - `src/OoBDev.Plugins.Launchers.Linux`: bubblewrap + prlimit launcher; `Launchers.Linux.Tests` has 22 escape and kill-with-host tests. Run on Linux with `sh linux-test/run-docker.sh` (needs Docker; relaxes its seccomp profile). Seccomp filter only blocks creating processes. No macOS launcher.
 - `tools/escape_report.py` + `docs/poc/escape-matrix.json` build `docs/poc/escape-results.md` (per-OS table: HELD / FAILED / CONTROL FAILED / UNVERIFIED). Add new escape tests to the matrix, with a control.
 

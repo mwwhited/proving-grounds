@@ -16,18 +16,24 @@ public static class PluginManifest
         return Parse(doc.RootElement, pluginDirectory, config);
     }
 
-    public static PluginSpec Parse(JsonElement root, string pluginDirectory, JsonElement? config = null)
+    /// <param name="commandOverride">The command to run, already chosen by a package loader. Without it the manifest must have <c>entry.dev</c>.</param>
+    public static PluginSpec Parse(JsonElement root, string pluginDirectory, JsonElement? config = null, string[]? commandOverride = null)
     {
         if (root.ValueKind != JsonValueKind.Object) throw new FormatException("manifest must be a JSON object");
 
         var id = RequiredString(root, "id");
-        var entry = Property(root, "entry", JsonValueKind.Object)
-            ?? throw new FormatException("manifest has no 'entry'");
-        var dev = Property(entry, "dev", JsonValueKind.Array)
-            ?? throw new FormatException("manifest has no 'entry.dev' (release packages are not supported yet)");
-        var command = dev.EnumerateArray().Select(a => a.ValueKind == JsonValueKind.String
-            ? a.GetString()! : throw new FormatException("'entry.dev' must be strings")).ToArray();
-        if (command.Length == 0) throw new FormatException("'entry.dev' is empty");
+        string[] command;
+        if (commandOverride is { Length: > 0 }) command = commandOverride;
+        else
+        {
+            var entry = Property(root, "entry", JsonValueKind.Object)
+                ?? throw new FormatException("manifest has no 'entry'");
+            var dev = Property(entry, "dev", JsonValueKind.Array)
+                ?? throw new FormatException("manifest has no 'entry.dev' (load a .plugin package with OoBDev.Plugins.Packaging)");
+            command = dev.EnumerateArray().Select(a => a.ValueKind == JsonValueKind.String
+                ? a.GetString()! : throw new FormatException("'entry.dev' must be strings")).ToArray();
+            if (command.Length == 0) throw new FormatException("'entry.dev' is empty");
+        }
 
         var lifetime = OptionalString(root, "lifetime") is { } l
             ? Enum.TryParse<Lifetime>(l, ignoreCase: false, out var parsed) && Enum.IsDefined(parsed)
