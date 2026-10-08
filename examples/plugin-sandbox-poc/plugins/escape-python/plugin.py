@@ -97,6 +97,44 @@ def allocate(a):
     return "allocated %s MB" % a["mb"]
 
 
+def threads(a):
+    import threading
+    n = int(a.get("n", 8))
+    done = []
+    ts = [threading.Thread(target=lambda: done.append(1)) for _ in range(n)]
+    for t in ts:
+        t.start()
+    for t in ts:
+        t.join()
+    return "ran %d threads" % len(done)
+
+
+def forkbomb(a):
+    # fork as many children as the OS allows (up to max), then clean them up; "denied" if the very first fork fails
+    kids = []
+    try:
+        for _ in range(int(a.get("max", 300))):
+            p = os.fork()
+            if p == 0:
+                import time
+                time.sleep(30)
+                os._exit(0)
+            kids.append(p)
+    except OSError as ex:
+        if not kids:
+            raise
+        err = type(ex).__name__
+    else:
+        err = "reached max"
+    for p in kids:
+        try:
+            os.kill(p, 9)
+            os.waitpid(p, 0)
+        except OSError:
+            pass
+    return "forked %d children (%s)" % (len(kids), err)
+
+
 def pid(a):
     return str(os.getpid())
 
@@ -120,7 +158,7 @@ def whoami(a):
 PROBES = {
     "read-file": read_file, "write-file": write_file, "list-dir": list_dir, "connect": connect,
     "spawn": spawn, "open-process": open_process, "read-env": read_env, "registry-write": registry_write,
-    "allocate": allocate, "pid": pid, "whoami": whoami,
+    "allocate": allocate, "pid": pid, "threads": threads, "forkbomb": forkbomb, "whoami": whoami,
     # positive controls: the same operations against places the host granted
     "ok-read-file": read_file, "ok-write-file": write_file, "ok-list-dir": list_dir,
 }

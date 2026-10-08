@@ -94,7 +94,7 @@ The simulator implements these checks itself, so they double as a spec for the r
 
 ## Linux sandbox (phase 4, started)
 
-`src/OoBDev.Plugins.Launchers.Linux` runs a plugin inside bubblewrap (namespaces, a minimal read-only filesystem, no network, rlimits). `sh linux-test/run-docker.sh` builds a Docker image, builds the compiled plugins and runs everything on Linux, including 18 escape tests. Docker's default seccomp profile has to be relaxed for it (see `docs/poc/findings.md`). `PLUGIN_LAUNCHER=bubblewrap` runs the conformance checks inside it (all pass). No seccomp filter yet.
+`src/OoBDev.Plugins.Launchers.Linux` runs a plugin inside bubblewrap (namespaces, a minimal read-only filesystem, no network, rlimits). `sh linux-test/run-docker.sh` builds a Docker image, builds the compiled plugins and runs everything on Linux, including 22 escape tests. Docker's default seccomp profile has to be relaxed for it (see `docs/poc/findings.md`). `PLUGIN_LAUNCHER=bubblewrap` runs the conformance checks inside it (all pass). A seccomp filter blocks creating processes (threads still work); it is not a general syscall filter.
 
 ## Known limits
 

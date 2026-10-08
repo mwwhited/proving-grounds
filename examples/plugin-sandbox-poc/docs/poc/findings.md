@@ -109,13 +109,13 @@ Run in Docker (`linux-test/`: .NET 10 SDK image plus Python, Go, a JDK, Node, bu
 
 ## Phase 4 (part): Linux sandbox with bubblewrap
 
-Code: `src/OoBDev.Plugins.Launchers.Linux` (`BubblewrapLauncher`: wraps the plugin command in `bwrap` and `prlimit`, then reuses the plain launcher for stdio and exit handling). Tests: `src/OoBDev.Plugins.Launchers.Linux.Tests`, 18 tests mirroring the Windows suite against `plugins/escape-python`. Run with `sh linux-test/run-docker.sh`. One machine: Docker Desktop on WSL2, kernel 6.6, unprivileged user (uid 1000).
+Code: `src/OoBDev.Plugins.Launchers.Linux` (`BubblewrapLauncher`: wraps the plugin command in `bwrap` and `prlimit`, then reuses the plain launcher for stdio and exit handling). Tests: `src/OoBDev.Plugins.Launchers.Linux.Tests`, 22 tests mirroring the Windows suite against `plugins/escape-python`. Run with `sh linux-test/run-docker.sh`. One machine: Docker Desktop on WSL2, kernel 6.6, unprivileged user (uid 1000).
 
 **The container had to be relaxed to run this.** Docker's default seccomp profile blocks `unshare`/`clone` with new namespaces, so bubblewrap fails with "No permissions to create new namespace". The run uses `--security-opt seccomp=unconfined --security-opt apparmor=unconfined`. That is a property of the test container. A host with unprivileged user namespaces enabled would not need it; one with them disabled (hardened distros, some CI) cannot use this launcher at all. Not tested on bare metal Linux or macOS.
 
 What the sandbox is: new user, pid, ipc, uts, cgroup and network namespaces (`--unshare-all`), a mount namespace containing only `/usr` (read-only), a few `/etc` entries, the plugin folder (read-only), granted folders, and a private `/tmp`; an empty environment; `--die-with-parent`; `RLIMIT_DATA` for the memory cap and `RLIMIT_NPROC` for a task cap.
 
-### Results (all 18 pass)
+### Results (all 22 pass)
 
 | Claim | Result |
 |:--|:--|
@@ -127,14 +127,13 @@ What the sandbox is: new user, pid, ipc, uts, cgroup and network namespaces (`--
 | Host process not visible (`/proc/<host pid>/environ` is `FileNotFoundError`) | Denied |
 | Host environment variables | Not inherited |
 | Memory cap | 300 MB allocation succeeds without a limit and fails with a 150 MB `RLIMIT_DATA` |
-| Child process | Allowed by default (control); denied with `MaxTasks = 1` |
+| Child process | Denied by default (`spawn` and `fork` give EPERM). Controls: threads work (16 started under the filter), and a plugin launched with `AllowChildProcesses = true` can spawn. With children allowed, `RLIMIT_NPROC` still stops a fork bomb at its cap (limit 40: it stopped between 5 and 40 children, not the 300 tried), and `MaxTasks = 1` denies a spawn |
 | Host killed with SIGKILL | Plugin and `bwrap` gone within 10 s. The plugin is told to ignore a closed channel (`linger`), so this is the sandbox, not the plugin exiting on EOF |
 | Conformance suite through the sandbox (`PLUGIN_LAUNCHER=bubblewrap`) | 6 of 6 pass: Go, Java, Node, .NET, Python and the chaos modes all run inside it. Negative control: with Docker's default seccomp profile (bubblewrap cannot start) the same run fails all 6 after 15 s each, so the pass is not the plain launcher in disguise. The Java failure seen on Windows does not occur here |
 
 ### Weaker than the Windows launcher
 
-- **No "no child processes" rule.** `RLIMIT_NPROC` counts threads too, so a Go, JVM or Node plugin needs a high limit (default 512). That contains a fork bomb but does not stop spawning. The spawn is only blocked with a limit of 1, which works for single-threaded Python. A real "no exec" rule needs a seccomp filter, which was not written. It also has to let the first `execve` through.
-- **No seccomp filter at all**, so the plugin has the full syscall surface of an unprivileged process (inside the namespaces). Phase 4's "threads still work under seccomp" claim is untested.
+- **No general syscall filter.** The seccomp program (`SeccompFilter`) only stops the plugin creating processes: `fork`/`vfork` and `clone` without `CLONE_THREAD` fail with EPERM, `clone3` returns ENOSYS so glibc falls back to `clone`, and a wrong-ABI syscall kills the process. Everything else is allowed, so the plugin has the rest of an unprivileged process's syscall surface inside the namespaces. `execve` is allowed (a process may replace itself). Only x86_64 and arm64 numbers exist; other architectures throw. arm64 is untested.
 - **No CPU limit, no cgroup limits** (cgroup v2 needs delegation).
 - `RLIMIT_DATA` is not exactly RSS: it counts private writable mappings, not file-backed memory or shared memory.
 - The pid namespace plus `--die-with-parent` killed the plugin when the host was `SIGKILL`ed. `PR_SET_PDEATHSIG` is tied to the parent *thread*; it held in this test, but a launch from a short-lived thread-pool thread could, in principle, kill the plugin early. Not seen.
@@ -143,4 +142,4 @@ What the sandbox is: new user, pid, ipc, uts, cgroup and network namespaces (`--
 
 ### Not yet done
 
-- seccomp filter (and a thread-creation test for Go, Java, Node under it), CPU/cgroup limits, macOS.
+- CPU/cgroup limits, a general syscall allow-list, arm64, macOS. The conformance suite (Go, Java, Node, .NET) passes with the filter on, so thread creation under it works for those runtimes.

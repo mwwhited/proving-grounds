@@ -16,6 +16,12 @@ public sealed class LinuxLauncherOptions
     /// </summary>
     public int? MaxTasks { get; init; } = 512;
 
+    /// <summary>
+    /// False (default): a seccomp filter stops the plugin creating processes (threads are fine). True: no filter, so
+    /// a plugin that is allowed to run helpers can; <see cref="MaxTasks"/> still caps a runaway.
+    /// </summary>
+    public bool AllowChildProcesses { get; init; }
+
     /// <summary>Path of the bubblewrap binary.</summary>
     public string Bwrap { get; init; } = "bwrap";
 }
@@ -23,7 +29,7 @@ public sealed class LinuxLauncherOptions
 /// <summary>
 /// Runs a plugin inside bubblewrap: new user, pid, ipc, uts, cgroup and network namespaces, a mount namespace that
 /// contains only the runtime (read-only), the plugin folder (read-only), the granted folders and a private /tmp,
-/// an empty environment, and rlimits from <c>prlimit</c>. It dies with the host (<c>--die-with-parent</c> plus the
+/// an empty environment, a seccomp filter against creating processes, and rlimits from <c>prlimit</c>. It dies with the host (<c>--die-with-parent</c> plus the
 /// pid namespace). Reuses the plain launcher for the process plumbing.
 /// </summary>
 [SupportedOSPlatform("linux")]
@@ -31,6 +37,21 @@ public sealed class BubblewrapLauncher(LinuxLauncherOptions? options = null) : I
 {
     readonly LinuxLauncherOptions _options = options ?? new();
     readonly PlainProcessLauncher _plain = new();
+    readonly string? _filterPath = (options ?? new()).AllowChildProcesses ? null : WriteFilter();
+
+    /// <summary>The BPF program is identical for every launch, so write it once per content and share the file.</summary>
+    static string WriteFilter()
+    {
+        var bytes = SeccompFilter.NoNewProcesses();
+        var path = Path.Combine(Path.GetTempPath(), $"oobdev-plugin-seccomp-{Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes))[..16]}.bpf");
+        if (!File.Exists(path) || new FileInfo(path).Length != bytes.Length)
+        {
+            var tmp = path + "." + Environment.ProcessId;
+            File.WriteAllBytes(tmp, bytes);
+            File.Move(tmp, path, overwrite: true);
+        }
+        return path;
+    }
 
     public ValueTask<IPluginProcess> LaunchAsync(PluginSpec spec, CancellationToken ct)
     {
@@ -57,6 +78,7 @@ public sealed class BubblewrapLauncher(LinuxLauncherOptions? options = null) : I
         }
         foreach (var (k, v) in new[] { ("PATH", "/usr/local/bin:/usr/bin:/bin"), ("HOME", "/tmp"), ("TMPDIR", "/tmp"), ("LANG", "C.UTF-8") })
             a.AddRange(["--setenv", k, v]);
+        if (_filterPath is not null) a.AddRange(["--seccomp", "3"]);
         a.AddRange(["--chdir", dir, "--"]);
 
         var limits = new List<string>();
@@ -67,6 +89,7 @@ public sealed class BubblewrapLauncher(LinuxLauncherOptions? options = null) : I
         var command = spec.Command.ToList();
         if (command[0].Contains('/')) command[0] = Path.GetFullPath(command[0], dir);
         a.AddRange(command);
-        return a;
+        // bubblewrap reads the filter from file descriptor 3: let a shell open the file there and exec bwrap
+        return _filterPath is null ? a : ["sh", "-c", "exec 3<\"$0\" && exec \"$@\"", _filterPath, .. a];
     }
 }

@@ -173,13 +173,46 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
     public async Task The_internet_cannot_be_reached() =>
         Denied(await RunAsync(new { probe = "connect", host = "1.1.1.1", port = 443 }));
 
+    // ---- processes: threads yes, new processes no ----
+
     [LinuxFact]
-    public async Task Control_a_plugin_can_start_a_child_process_when_the_task_limit_allows_it() =>
-        Allowed(await RunAsync(new { probe = "spawn" }));
+    public async Task Control_threads_still_work_under_the_filter()
+    {
+        var r = await RunAsync(new { probe = "threads", n = 16 });
+        Allowed(r);
+        Assert.Equal("ran 16 threads", r.Detail);
+    }
+
+    [LinuxFact]
+    public async Task Control_a_plugin_that_is_allowed_children_can_start_one() =>
+        Allowed(await RunAsync(new { probe = "spawn" }, options: new LinuxLauncherOptions { AllowChildProcesses = true }));
+
+    [LinuxFact]
+    public async Task By_default_a_plugin_cannot_start_a_child_process() =>
+        Denied(await RunAsync(new { probe = "spawn" }));
+
+    [LinuxFact]
+    public async Task By_default_a_plugin_cannot_fork()
+    {
+        var r = await RunAsync(new { probe = "forkbomb" });
+        Denied(r);
+        Assert.Contains("PermissionError", r.Detail);
+    }
+
+    [LinuxFact]
+    public async Task A_task_limit_contains_a_fork_bomb_when_children_are_allowed()
+    {
+        var r = await RunAsync(new { probe = "forkbomb", max = 300 },
+            options: new LinuxLauncherOptions { AllowChildProcesses = true, MaxTasks = 40 });
+        Allowed(r);                                       // control: forking works at all...
+        var forked = int.Parse(r.Detail.Split(' ')[1]);
+        Assert.InRange(forked, 5, 40);                    // ...and stops at the cap, far short of the 300 attempted
+        Assert.DoesNotContain("reached max", r.Detail);
+    }
 
     [LinuxFact]
     public async Task A_task_limit_of_one_stops_a_plugin_starting_a_child_process() =>
-        Denied(await RunAsync(new { probe = "spawn" }, options: new LinuxLauncherOptions { MaxTasks = 1 }));
+        Denied(await RunAsync(new { probe = "spawn" }, options: new LinuxLauncherOptions { AllowChildProcesses = true, MaxTasks = 1 }));
 
     [LinuxFact]
     public async Task The_host_process_cannot_be_seen()
