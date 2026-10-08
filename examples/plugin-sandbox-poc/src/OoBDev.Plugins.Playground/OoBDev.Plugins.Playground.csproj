@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OoBDev.Plugins.Launchers.Plain\OoBDev.Plugins.Launchers.Plain.csproj" />
+    <ProjectReference Include="..\OoBDev.Plugins.Launchers.Windows\OoBDev.Plugins.Launchers.Windows.csproj" />
+    <ProjectReference Include="..\OoBDev.Plugins.Launchers.Linux\OoBDev.Plugins.Launchers.Linux.csproj" />
+    <ProjectReference Include="..\OoBDev.Plugins.Packaging\OoBDev.Plugins.Packaging.csproj" />
+  </ItemGroup>
+</Project>

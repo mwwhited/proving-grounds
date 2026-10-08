@@ -113,3 +113,7 @@ The simulator implements these checks itself, so they double as a spec for the r
 ### Packages
 
 `src/OoBDev.Plugins.Packaging` builds and installs signed `.plugin` zips (`PackageBuilder.Build`, `PluginPackage.Install`); see `docs/poc/findings.md` (Phase 5) for what is and is not verified. `dotnet test src/OoBDev.Plugins.Packaging.Tests`.
+
+### Playground
+
+`dotnet run --project src/OoBDev.Plugins.Playground` is an interactive shell for trying the POC by hand (type `help`). Start the sample plugins and call them, `mode sandbox` to switch to the AppContainer (Windows) or bubblewrap (Linux) launcher, run the hostile probes with your own grants and limits (`probe read-file path=...`, `probe connect host=1.1.1.1 port=443`, `probe allocate mb=500 mem=100`), and `pack` / `tamper` / `install` a signed package to watch a bad one get rejected. Run the same probe in `plain` and `sandbox` mode to see the difference.
