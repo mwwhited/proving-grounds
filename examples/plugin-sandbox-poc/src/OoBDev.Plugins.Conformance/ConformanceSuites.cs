@@ -19,6 +19,10 @@ public class GoodPluginConformance(ITestOutputHelper output)
 
     [FactRequires(file: "echo-dotnet/out/EchoPlugin.dll")] public Task EchoDotnet() => RunEcho("echo-dotnet");
 
+    [FactRequires(file: "echo-go/out/echo-go.exe")] public Task EchoGo() => RunEcho("echo-go");
+
+    [FactRequires("java", file: "echo-java/out/EchoPlugin.class")] public Task EchoJava() => RunEcho("echo-java");
+
     async Task RunEcho(string name)
     {
         output.WriteLine($"[{name}]");

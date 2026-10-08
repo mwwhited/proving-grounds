@@ -1,0 +1,3 @@
+# build output (javac -d out EchoPlugin.java)
+out/
+*.class

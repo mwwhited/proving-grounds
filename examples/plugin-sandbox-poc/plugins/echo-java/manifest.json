@@ -1,0 +1,11 @@
+{
+  "id": "echo-java",
+  "version": "0.1.0",
+  "protocol": "2.1",
+  "entry": { "dev": ["java", "-cp", "out", "EchoPlugin"] },
+  "platforms": ["win-x64", "linux-x64", "osx-universal"],
+  "lifetime": "Bound",
+  "capabilities": { "data": "none", "publish": [], "subscribe": [], "sendTo": [] },
+  "limits": { "msgPerSec": 200, "maxFrameBytes": 1048576 },
+  "heartbeatTimeout": "5s"
+}

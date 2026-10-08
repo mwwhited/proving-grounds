@@ -11,7 +11,7 @@ public sealed class PlainProcessLauncher : Host.IPluginLauncher
     public ValueTask<Host.IPluginProcess> LaunchAsync(Host.PluginSpec spec, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
-        var info = new ProcessStartInfo(spec.Command[0])
+        var info = new ProcessStartInfo(ResolveExecutable(spec))
         {
             WorkingDirectory = spec.WorkingDirectory,
             RedirectStandardInput = true,
@@ -31,6 +31,16 @@ public sealed class PlainProcessLauncher : Host.IPluginLauncher
         process.Start();
         if (process.HasExited) exited.TrySetResult(process.ExitCode);   // exited before the handler was attached
         return ValueTask.FromResult<Host.IPluginProcess>(new PlainProcess(process, exited.Task));
+    }
+
+    /// <summary>A command with a directory part (<c>out/echo-go</c>) is relative to the plugin folder; a bare name is looked up on PATH.</summary>
+    static string ResolveExecutable(Host.PluginSpec spec)
+    {
+        var command = spec.Command[0];
+        if (command.IndexOfAny(['/', '\\']) < 0) return command;
+        var path = Path.GetFullPath(command, Path.GetFullPath(spec.WorkingDirectory));
+        if (OperatingSystem.IsWindows() && !File.Exists(path) && File.Exists(path + ".exe")) path += ".exe";
+        return path;
     }
 
     sealed class PlainProcess(Process process, Task<int> exited) : Host.IPluginProcess

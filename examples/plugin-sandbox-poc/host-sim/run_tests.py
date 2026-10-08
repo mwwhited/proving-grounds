@@ -4,7 +4,7 @@
     python host-sim/run_tests.py echo-python  # one target
     python host-sim/run_tests.py chaos        # misbehaviour fixtures
 
-Targets: echo-python, echo-dotnet (build first), ticker-node, chaos.
+Targets: echo-python, echo-dotnet, echo-go, echo-java (build the last three first), ticker-node, chaos.
 Exit code is non-zero if any check fails.
 """
 import os
@@ -140,7 +140,7 @@ def suite_chaos():
 
 
 def main():
-    want = sys.argv[1:] or ["echo-python", "echo-dotnet", "ticker-node", "chaos"]
+    want = sys.argv[1:] or ["echo-python", "echo-dotnet", "echo-go", "echo-java", "ticker-node", "chaos"]
     for target in want:
         if target == "echo-python":
             suite_echo("echo-python", [sys.executable, "plugin.py"])
@@ -150,6 +150,17 @@ def main():
                 print("[echo-dotnet] SKIP (run: dotnet publish -c Release -o out in plugins/echo-dotnet)")
                 continue
             suite_echo("echo-dotnet", ["dotnet", "out/EchoPlugin.dll"])
+        elif target == "echo-go":
+            exe = os.path.join(PLUGINS, "echo-go", "out", "echo-go" + (".exe" if os.name == "nt" else ""))
+            if not os.path.exists(exe):
+                print("[echo-go] SKIP (run: go build -o out/echo-go.exe . in plugins/echo-go)")
+                continue
+            suite_echo("echo-go", [exe])
+        elif target == "echo-java":
+            if not os.path.exists(os.path.join(PLUGINS, "echo-java", "out", "EchoPlugin.class")) or not shutil.which("java"):
+                print("[echo-java] SKIP (run: javac -d out EchoPlugin.java in plugins/echo-java)")
+                continue
+            suite_echo("echo-java", ["java", "-cp", "out", "EchoPlugin"])
         elif target == "ticker-node":
             if not shutil.which("node"):
                 print("[ticker-node] SKIP (node not found)")

@@ -1,0 +1,5 @@
+# build output (go build -o out/echo-go.exe .)
+out/
+*.exe
+*.test
+*.out
