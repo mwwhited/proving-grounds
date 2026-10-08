@@ -62,6 +62,20 @@ def spawn(a):
     return "child exited %s" % r.returncode
 
 
+def spawnloop(a):
+    # try to start `n` child processes in a row; denied only if none of them started
+    n, ok = int(a.get("n", 100)), 0
+    for _ in range(n):
+        try:
+            subprocess.run(["cmd.exe", "/c", "exit", "0"] if os.name == "nt" else ["/bin/true"], capture_output=True, timeout=5)
+            ok += 1
+        except Exception:
+            pass
+    if ok == 0:
+        raise PermissionError("0 of %d child processes started" % n)
+    return "%d of %d child processes started" % (ok, n)
+
+
 def open_process(a):
     if os.name != "nt":      # Linux: can this process see the host process at all?
         with open("/proc/%d/environ" % int(a["pid"]), "rb") as f:
@@ -167,7 +181,7 @@ def whoami(a):
 
 PROBES = {
     "read-file": read_file, "write-file": write_file, "list-dir": list_dir, "connect": connect,
-    "spawn": spawn, "open-process": open_process, "read-env": read_env, "registry-write": registry_write,
+    "spawn": spawn, "spawnloop": spawnloop, "open-process": open_process, "read-env": read_env, "registry-write": registry_write,
     "allocate": allocate, "pid": pid, "spin": spin, "threads": threads, "forkbomb": forkbomb, "whoami": whoami,
     # positive controls: the same operations against places the host granted
     "ok-read-file": read_file, "ok-write-file": write_file, "ok-list-dir": list_dir,

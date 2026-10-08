@@ -90,7 +90,7 @@ The simulator implements these checks itself, so they double as a spec for the r
 
 ## Windows sandbox (phase 2)
 
-`src/OoBDev.Plugins.Launchers.Windows` starts a plugin in an AppContainer (no network, no user files) inside its own job object (one process, optional memory cap, killed when the host dies). `dotnet test src/OoBDev.Plugins.Launchers.Windows.Tests` runs 21 escape, CPU, uninstall and kill-with-host tests against `plugins/escape-python`. `PLUGIN_LAUNCHER=appcontainer dotnet test src/OoBDev.Plugins.Conformance` runs the normal conformance checks inside the sandbox (Java is skipped, since it does not start under the AppContainer; see `docs/poc/findings.md` for that and the other open items). Windows only, tested on one machine.
+`src/OoBDev.Plugins.Launchers.Windows` starts a plugin in an AppContainer (no network, no user files) inside its own job object (one process, optional memory cap, killed when the host dies). `dotnet test src/OoBDev.Plugins.Launchers.Windows.Tests` runs 23 escape, CPU, uninstall and kill-with-host tests against `plugins/escape-python`. `PLUGIN_LAUNCHER=appcontainer dotnet test src/OoBDev.Plugins.Conformance` runs the normal conformance checks inside the sandbox (Java is skipped, since it does not start under the AppContainer; see `docs/poc/findings.md` for that and the other open items). Windows only, tested on one machine.
 
 ## Linux sandbox (phase 4, started)
 

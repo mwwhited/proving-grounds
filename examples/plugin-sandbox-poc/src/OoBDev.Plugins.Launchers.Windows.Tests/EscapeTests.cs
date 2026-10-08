@@ -54,7 +54,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
     }
 
     async Task<ProbeResult> RunAsync(object probe, IReadOnlyList<PathGrant>? grants = null, PluginLimits? limits = null,
-        TimeSpan? timeout = null, string? id = null)
+        TimeSpan? timeout = null, string? id = null, bool unsandboxed = false)
     {
         var cfg = JsonSerializer.SerializeToElement(probe);
         var spec = PluginManifest.Load(Paths.Escape, cfg) with
@@ -65,7 +65,8 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         };
         // a short restart backoff would hide a killed plugin behind a second launch; one attempt is what we want to see
         await using var manager = new PluginManager(
-            new AppContainerLauncher(new WindowsLauncherOptions { RuntimeReadPaths = WindowsLauncherOptions.PerUserRuntimes("python") }),
+            unsandboxed ? new OoBDev.Plugins.Launchers.Plain.PlainProcessLauncher()
+                : new AppContainerLauncher(new WindowsLauncherOptions { RuntimeReadPaths = WindowsLauncherOptions.PerUserRuntimes("python") }),
             new SupervisorOptions { MaxCrashesInWindow = 1, BackoffInitial = TimeSpan.FromMinutes(5) });
         var got = new TaskCompletionSource<JsonElement>(TaskCreationOptions.RunContinuationsAsynchronously);
         manager.Router.EventPublished += e => { if (e.Topic == "escape.result") got.TrySetResult(e.Payload!.Value.Clone()); };
@@ -199,6 +200,22 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
     public async Task A_plugin_cannot_start_a_child_process()
     {
         Denied(await RunAsync(new { probe = "spawn" }));
+    }
+
+    [WindowsFact]
+    public async Task Control_without_the_sandbox_a_plugin_can_start_many_children()
+    {
+        var r = await RunAsync(new { probe = "spawnloop", n = 20 }, unsandboxed: true, timeout: TimeSpan.FromSeconds(60));
+        Allowed(r);
+        Assert.StartsWith("20 of 20", r.Detail);
+    }
+
+    [WindowsFact]
+    public async Task A_plugin_cannot_start_children_in_a_loop()
+    {
+        var r = await RunAsync(new { probe = "spawnloop", n = 200 }, timeout: TimeSpan.FromSeconds(60));
+        Denied(r);
+        Assert.Contains("0 of 200", r.Detail);
     }
 
     [WindowsFact]
