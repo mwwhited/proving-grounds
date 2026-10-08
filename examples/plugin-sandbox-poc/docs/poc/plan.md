@@ -83,7 +83,7 @@ Things this POC found that the planning shell's settled decisions do not say yet
 
 - **macOS launcher.** Not started. No Mac available; Seatbelt (`sandbox-exec`) is deprecated, so the reduced-guarantee wording needs its own research.
 - **Detached lifetime.** Not implemented; Bound is the only mode proven.
-- Untested: `RateAction.Disconnect`, outbound queue overflow, tuned timings, CPU limits, LPAC, a Windows fork-bomb loop, handle enumeration, DNS, arm64, bare-metal Linux, a general syscall allow-list.
+- Untested: `tuned timings, CPU limits, LPAC, a Windows fork-bomb loop, handle enumeration, DNS, arm64, bare-metal Linux, a general syscall allow-list.
 
 ## Working rules
 
