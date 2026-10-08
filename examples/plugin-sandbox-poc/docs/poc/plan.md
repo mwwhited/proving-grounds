@@ -10,7 +10,7 @@ Follows the planning shell's build order (§17), reordered so the Windows launch
 |:-:|:--|:--|:-:|
 | 0 | Contract and examples | Plugins in 3 languages pass 36 checks under the stand-in host | **Done** |
 | 1 | Real .NET host core | Same plugins, unmodified, pass the same checks against the real host. Crash, hang and flood handled per policy. Crash loop reaches `Failed` after 5 in 60 s. `Stop` during backoff does not restart | **Done** |
-| 2 | Windows sandbox | Escape suite denied on Windows: network, process spawn, file read outside grant, fork bomb contained, memory cap enforced. Host killed (also inside a parent job) leaves no Bound plugin alive | Not started |
+| 2 | Windows sandbox | Escape suite denied on Windows: network, process spawn, file read outside grant, fork bomb contained, memory cap enforced. Host killed (also inside a parent job) leaves no Bound plugin alive | **Mostly done** (Java, CPU limit, fork-bomb loop and handle checks open; see findings) |
 | 3 | Escape suite as a product | Escape plugins packaged as a runnable suite with a per-OS result table (held, failed, unverified) | Not started |
 | 4 | Linux shim and launcher | Same escape suite denied on Linux. Go, Node and JVM plugins can still create threads under seccomp | Not started |
 | 5 | Packaging | Platform selection, hash verification, signature check; tampered package rejected; "unavailable on this platform" before launch | Not started |
@@ -84,7 +84,7 @@ Each runs as a plugin in the sandbox and reports what it managed to do. The expe
 - [x] Phase 1: Router and policy
 - [x] Phase 1: Plain-process launcher and adapter to the shared checks
 - [x] Phase 1: Wire encoding decided and measured
-- [ ] Phase 2: AppContainer launcher compiling
-- [ ] Phase 2: Open Windows claims verified
-- [ ] Phase 2: Escape suite passing on Windows
-- [ ] Phase 2: Kill-with-host tests passing, including nested job
+- [x] Phase 2: AppContainer launcher compiling
+- [x] Phase 2: Open Windows claims verified
+- [ ] Phase 2: Escape suite passing on Windows (18 pass; Java, DNS, CPU, fork-bomb loop, handle enumeration not covered)
+- [x] Phase 2: Kill-with-host tests passing, including nested job

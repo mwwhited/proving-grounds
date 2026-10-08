@@ -56,3 +56,45 @@ The codec is not the bottleneck: a 1 MB round trip is dominated by the plugin's 
 - Only `lifecycle.ready` may come from a plugin; all other `lifecycle.*` are host-only.
 - Say explicitly that consecutive request timeouts (3) are a hang signal in addition to heartbeat timeout.
 - Record the wire-encoding decision and measurements above.
+
+## Phase 2: Windows sandbox (AppContainer + job object)
+
+Code: `src/OoBDev.Plugins.Launchers.Windows` (`AppContainerLauncher`, `PluginJob`). Tests: `src/OoBDev.Plugins.Launchers.Windows.Tests` (18, against the hostile fixture `plugins/escape-python`), plus the existing conformance suite re-run inside the sandbox with `PLUGIN_LAUNCHER=appcontainer`. Run on Windows 11 build 26200, one machine, a non-admin user. Nothing here has been run on another Windows version.
+
+### Open claims (design §18) now verified
+
+| Claim | Result |
+|:--|:--|
+| Only the stdio pipe ends can be inherited (handle list with `bInheritHandles = true`) | Held. The plugin starts and talks over three pipes (stdin, stdout, stderr). Not yet checked from the plugin side by enumerating its handles |
+| A plugin can read and execute from its own folder | Held, after the launcher grants the container read+execute on it |
+| Executing a runtime from inside the AppContainer | Held for Go, Python, .NET and Node. Per-user installs (Python under `AppData\Local\Programs`) need an explicit read grant (`WindowsLauncherOptions.PerUserRuntimes`); system installs under Program Files work with none |
+| stdio works as the channel | Held. The echo, ticker and chaos plugins pass the same checks as under the plain launcher |
+
+### What the escape tests showed (all denied, each with a passing positive control)
+
+The token is an AppContainer (`whoami` probe). A folder outside every grant cannot be read or listed; the user's profile cannot be listed; a read-only grant cannot be written; the plugin's own folder cannot be modified. Loopback and internet connections fail (the loopback listener saw nothing). A child process cannot be started (job `ActiveProcessLimit = 1`, error 1816). The host process cannot be opened. HKCU cannot be written. The host's environment variables are not visible. A memory limit makes allocation fail while the same allocation without a limit succeeds.
+
+Kill-with-host: killing the host abruptly (`Environment.FailFast`, no cleanup) ends the plugin within the test's 10 s bound, also when the host was placed inside an outer job object first (nested jobs). Both pass.
+
+### Found while building (fixed)
+
+- **The host's environment leaked into the plugin.** A hostile plugin read a secret variable set in the host. The launcher now passes a minimal environment block (`SystemRoot`, `PATH`=System32, etc.).
+- **`LOCALAPPDATA` is required.** With an explicit environment that lacks it, `CreateProcess` fails with error 203 ("environment option not found") for an AppContainer. The launcher sets it, and `TEMP`/`TMP`, to the container's own folder (`GetAppContainerFolderPath`), not the user's.
+- **Re-applying ACLs on every launch is slow** (the Python tree) and made the first restart time out in a chaos check. The launcher now skips a grant that is already present.
+- **Node fails in an AppContainer** (`EPERM: lstat 'C:\'`) because it resolves the script's real path by `lstat`-ing every parent folder. `ticker-node` now starts with `--preserve-symlinks --preserve-symlinks-main`.
+
+### Not working / not done
+
+- **Java does not start in the AppContainer.** `java.nio.file.AccessDeniedException` on `conf\security\java.security`, although the file's ACL grants ALL APPLICATION PACKAGES read. Cause not found. The Java conformance check is skipped in sandbox mode with this reason. A fix needs a grant on the JDK folder (which requires admin) or more digging.
+- **Not tested:** DNS lookups (the connect tests resolve nothing), a fork bomb loop (only a single spawn), CPU limits (not implemented in `PluginJob`), a plugin enumerating its own handles, a plugin opening another plugin's pipe, other plugins being unaffected by a memory hog, `UseLpac` (written, never run), `Detached` (not implemented; the launcher refuses it).
+- **ACL cleanup is missing.** Grants persist on disk after the plugin stops. The profile can be removed (`RemoveProfile`) but the granted ACEs stay (the test runs left entries for a deleted container SID on the Python folder). Needs a revoke step in uninstall.
+- **Host-side pipe reads are blocking** (non-overlapped handles). Cancellation works only because killing the plugin closes the pipe.
+- **Plugin stdout/stderr are 3 separate pipes**; the conformance checks only read stdout and a stderr log line.
+
+So: the phase 2 exit criteria are met for network, process spawn, file reads outside grants, memory cap and kill-with-host (both forms), for Python, Go, Node and .NET plugins. They are not met for Java, CPU limits, or the fork-bomb and handle-enumeration cases. Do not describe the Windows sandbox as secure beyond the cases listed under "What the escape tests showed".
+
+### Back-port to the planning shell
+
+- An AppContainer launched with an explicit environment block needs `LOCALAPPDATA`; scrub the host environment (it leaks otherwise).
+- Node needs `--preserve-symlinks-main` under an AppContainer; the JVM may not start at all (open).
+- Per-user language runtimes need an explicit read grant; Program Files installs do not.

@@ -2,7 +2,7 @@
   "id": "ticker-node",
   "version": "0.1.0",
   "protocol": "2.1",
-  "entry": { "dev": ["node", "plugin.js"] },
+  "entry": { "dev": ["node", "--preserve-symlinks", "--preserve-symlinks-main", "plugin.js"] },
   "platforms": ["win-x64", "linux-x64", "osx-universal"],
   "lifetime": "Bound",
   "capabilities": { "data": "none", "publish": ["demo.tick"], "subscribe": [], "sendTo": [] },

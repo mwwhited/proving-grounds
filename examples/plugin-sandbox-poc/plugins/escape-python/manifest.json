@@ -1,0 +1,11 @@
+{
+  "id": "escape-python",
+  "version": "0.1.0",
+  "protocol": "2.1",
+  "entry": { "dev": ["python", "plugin.py"] },
+  "platforms": ["win-x64"],
+  "lifetime": "Bound",
+  "capabilities": { "data": "none", "publish": ["escape.result"], "subscribe": [], "sendTo": [] },
+  "limits": { "msgPerSec": 200, "maxFrameBytes": 1048576 },
+  "note": "TEST FIXTURE. Tries to break out of the sandbox on purpose; never ship."
+}

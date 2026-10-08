@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using OoBDev.Plugins.Host;
 using OoBDev.Plugins.Launchers.Plain;
+using OoBDev.Plugins.Launchers.Windows;
 using OoBDev.Plugins.Protocol;
 using Xunit;
 using Xunit.Abstractions;
@@ -38,8 +39,9 @@ static class Paths
 /// <summary>A [Fact] that reports itself skipped when a tool the plugin needs is missing.</summary>
 public sealed class FactRequiresAttribute : FactAttribute
 {
-    public FactRequiresAttribute(string? tool = null, string? file = null)
+    public FactRequiresAttribute(string? tool = null, string? file = null, string? appContainerGap = null)
     {
+        if (appContainerGap is not null && Environment.GetEnvironmentVariable("PLUGIN_LAUNCHER") == "appcontainer") { Skip = "known AppContainer gap: " + appContainerGap; return; }
         if (tool is not null && !Paths.OnPath(tool)) Skip = $"{tool} not found on PATH";
         else if (file is not null && !File.Exists(Path.Combine(Paths.Plugins, file)))
             Skip = $"{file} not built (dotnet publish -c Release -o out in plugins/echo-dotnet)";
@@ -62,10 +64,18 @@ sealed class Harness : IAsyncDisposable
     {
         JsonElement? cfg = config is null ? null : JsonSerializer.SerializeToElement(config);
         var spec = PluginManifest.Load(Paths.Of(pluginName), cfg);
-        _manager = new PluginManager(new PlainProcessLauncher(), options);
+        _manager = new PluginManager(Launcher(), options);
         _manager.Router.EventPublished += e => { lock (_events) _events.Add(e); };
         Plugin = _manager.Register(spec);
         Plugin.SessionCreated += _sessions.Enqueue;
+    }
+
+    /// <summary>Plain by default. <c>PLUGIN_LAUNCHER=appcontainer</c> runs the same checks inside the Windows sandbox.</summary>
+    static IPluginLauncher Launcher()
+    {
+        if (!OperatingSystem.IsWindows() || !string.Equals(Environment.GetEnvironmentVariable("PLUGIN_LAUNCHER"), "appcontainer", StringComparison.OrdinalIgnoreCase))
+            return new PlainProcessLauncher();
+        return new AppContainerLauncher(new WindowsLauncherOptions { RuntimeReadPaths = WindowsLauncherOptions.PerUserRuntimes("python", "node", "java", "go") });
     }
 
     public Router Router => _manager.Router;

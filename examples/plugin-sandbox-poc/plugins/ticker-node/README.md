@@ -22,6 +22,8 @@ Capabilities in `manifest.json`: `publish: ["demo.tick"]`, nothing else. Without
 
 Needs `node` on PATH. No build.
 
+The manifest starts `node --preserve-symlinks --preserve-symlinks-main plugin.js`. Without those flags Node resolves the real path of the script by calling `lstat` on every parent folder up to the drive root, which a Windows AppContainer may not do (`EPERM, lstat 'C:\'`). The flags skip that step and change nothing else.
+
 ```
 python ../../host-sim/run_tests.py ticker-node
 dotnet test ../../src/OoBDev.Plugins.Conformance

@@ -17,6 +17,7 @@ Example plugins for the sandboxed plugin system, in five languages (Python, C#, 
 | `plugins/echo-dotnet/` | Same behaviour in C# (.NET 10, stdlib only) |
 | `plugins/echo-go/` | Same behaviour in Go (stdlib only, native binary) |
 | `plugins/echo-java/` | Same behaviour in Java (JDK only) |
+| `plugins/escape-python/` | Hostile test fixture that attacks the Windows sandbox (see its README) |
 | `plugins/ticker-node/` | Publishes `demo.tick` events; asks the host for config (`config.get`) |
 | `plugins/chaos-python/` | **Test fixture.** Misbehaves on purpose (8 modes). Never a template |
 | `host-sim/hostsim.py` | Stand-in host: frame I/O, `Source` stamping, `config.get`, kill on violation |
@@ -86,6 +87,10 @@ The simulator implements these checks itself, so they double as a spec for the r
 2. Follow the six rules in `PROFILE.md`. The easy ones to break: printing to stdout, answering heartbeats from a different thread than the request loop, and blocking before you start reading input.
 3. Add a target to `run_tests.py` (copy `suite_echo`) and run it.
 4. For a release package you would add per-platform executables, a bundled runtime for interpreted languages, file hashes and a signature (design §3). Not implemented here; the `entry.dev` key in the manifests is a dev shortcut.
+
+## Windows sandbox (phase 2)
+
+`src/OoBDev.Plugins.Launchers.Windows` starts a plugin in an AppContainer (no network, no user files) inside its own job object (one process, optional memory cap, killed when the host dies). `dotnet test src/OoBDev.Plugins.Launchers.Windows.Tests` runs 18 escape and kill-with-host tests against `plugins/escape-python`. `PLUGIN_LAUNCHER=appcontainer dotnet test src/OoBDev.Plugins.Conformance` runs the normal conformance checks inside the sandbox (Java is skipped; see `docs/poc/findings.md` for that and the other open items). Windows only, tested on one machine.
 
 ## Known limits
 
