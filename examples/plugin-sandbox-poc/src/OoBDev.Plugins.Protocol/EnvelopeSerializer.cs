@@ -12,7 +12,7 @@ public static class EnvelopeSerializer
     /// <summary>Nesting limit applied to the whole body, payload included.</summary>
     public const int MaxDepth = 32;
 
-    static readonly JsonDocumentOptions ParseOptions = new()
+    private static readonly JsonDocumentOptions ParseOptions = new()
     {
         MaxDepth = MaxDepth,
         CommentHandling = JsonCommentHandling.Disallow,
@@ -20,7 +20,7 @@ public static class EnvelopeSerializer
     };
 
     // Exact, case-sensitive names only. Enum.TryParse would also accept numbers and "A,B" combinations.
-    static readonly Dictionary<string, MessageType> Types =
+    private static readonly Dictionary<string, MessageType> Types =
         Enum.GetValues<MessageType>().ToDictionary(t => t.ToString(), StringComparer.Ordinal);
 
     public static byte[] Serialize(Envelope e)
@@ -89,11 +89,11 @@ public static class EnvelopeSerializer
         }
     }
 
-    static bool Fail(string reason, out string error) { error = reason; return false; }
+    private static bool Fail(string reason, out string error) { error = reason; return false; }
 
-    static string Truncate(string s) => s.Length <= 80 ? s : s[..80];
+    private static string Truncate(string s) => s.Length <= 80 ? s : s[..80];
 
-    static bool TryString(JsonElement root, string name, bool required, out string? value, out string error)
+    private static bool TryString(JsonElement root, string name, bool required, out string? value, out string error)
     {
         value = null; error = "";
         if (!root.TryGetProperty(name, out var el) || el.ValueKind == JsonValueKind.Null)
@@ -103,7 +103,7 @@ public static class EnvelopeSerializer
         return true;
     }
 
-    static bool TryGuid(JsonElement root, string name, bool required, out Guid? value, out string error)
+    private static bool TryGuid(JsonElement root, string name, bool required, out Guid? value, out string error)
     {
         value = null;
         if (!TryString(root, name, required, out var text, out error)) return false;
@@ -113,7 +113,7 @@ public static class EnvelopeSerializer
         return true;
     }
 
-    static bool TryInt(JsonElement root, string name, out int? value, out string error)
+    private static bool TryInt(JsonElement root, string name, out int? value, out string error)
     {
         value = null; error = "";
         if (!root.TryGetProperty(name, out var el) || el.ValueKind == JsonValueKind.Null) return true;

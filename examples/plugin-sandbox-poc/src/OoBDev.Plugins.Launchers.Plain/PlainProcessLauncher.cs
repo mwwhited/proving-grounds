@@ -34,7 +34,7 @@ public sealed class PlainProcessLauncher : Host.IPluginLauncher
     }
 
     /// <summary>A command with a directory part (<c>out/echo-go</c>) is relative to the plugin folder; a bare name is looked up on PATH.</summary>
-    static string ResolveExecutable(Host.PluginSpec spec)
+    private static string ResolveExecutable(Host.PluginSpec spec)
     {
         var command = spec.Command[0];
         if (command.IndexOfAny(['/', '\\']) < 0) return command;
@@ -43,7 +43,7 @@ public sealed class PlainProcessLauncher : Host.IPluginLauncher
         return path;
     }
 
-    sealed class PlainProcess(Process process, Task<int> exited) : Host.IPluginProcess
+    private sealed class PlainProcess(Process process, Task<int> exited) : Host.IPluginProcess
     {
         public Stream Input => process.StandardInput.BaseStream;
         public Stream Output => process.StandardOutput.BaseStream;

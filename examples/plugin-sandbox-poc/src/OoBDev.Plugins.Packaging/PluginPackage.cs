@@ -5,9 +5,6 @@ using OoBDev.Plugins.Host;
 
 namespace OoBDev.Plugins.Packaging;
 
-/// <summary>A verified, extracted package: the spec to launch and where it lives.</summary>
-public sealed record InstalledPlugin(PluginSpec Spec, string Directory, string Platform);
-
 /// <summary>
 /// Installs a <c>.plugin</c> zip (design §3). Order matters: the signature is checked first, then the platform is
 /// selected from the manifest (so "unavailable on this platform" is reported with nothing extracted), then every file is
@@ -15,7 +12,7 @@ public sealed record InstalledPlugin(PluginSpec Spec, string Directory, string P
 /// </summary>
 public static class PluginPackage
 {
-    const int MaxManifestBytes = 1024 * 1024;
+    private const int MaxManifestBytes = 1024 * 1024;
 
     public static InstalledPlugin Install(string packagePath, string installRoot, PackageOptions options, JsonElement? config = null)
     {
@@ -118,7 +115,7 @@ public static class PluginPackage
 
     // ---- reading the zip ------------------------------------------------------------------------
 
-    static Dictionary<string, ZipArchiveEntry> Catalogue(ZipArchive zip, PackageOptions options)
+    private static Dictionary<string, ZipArchiveEntry> Catalogue(ZipArchive zip, PackageOptions options)
     {
         if (zip.Entries.Count > options.MaxEntries)
             throw new PackageException(PackageProblem.TooLarge, $"the package has {zip.Entries.Count} entries (limit {options.MaxEntries})");
@@ -140,20 +137,20 @@ public static class PluginPackage
         return map;
     }
 
-    static void CheckPath(string name)
+    private static void CheckPath(string name)
     {
         var bad = name.Length == 0 || name.Length > 260 || name[0] == '/' || name.Contains('\\') || name.Contains(':') || name.Contains('\0')
             || name.Split('/').Any(p => p is "" or "." or ".." || p.EndsWith(' ') || p.EndsWith('.'));
         if (bad) throw new PackageException(PackageProblem.UnsafePath, $"unsafe path in package: '{name}'");
     }
 
-    static bool IsSymlink(ZipArchiveEntry e)
+    private static bool IsSymlink(ZipArchiveEntry e)
     {
         var unixMode = (e.ExternalAttributes >> 16) & 0xF000;
         return unixMode == 0xA000;
     }
 
-    static byte[]? ReadSmall(Dictionary<string, ZipArchiveEntry> entries, string name)
+    private static byte[]? ReadSmall(Dictionary<string, ZipArchiveEntry> entries, string name)
     {
         if (!entries.TryGetValue(name, out var e)) return null;
         if (e.Length > MaxManifestBytes) throw new PackageException(PackageProblem.TooLarge, $"{name} is larger than {MaxManifestBytes} bytes");
@@ -164,7 +161,7 @@ public static class PluginPackage
         return ms.ToArray();
     }
 
-    static byte[]? ReadFile(string dir, string name)
+    private static byte[]? ReadFile(string dir, string name)
     {
         var p = Path.Combine(dir, name);
         return File.Exists(p) ? File.ReadAllBytes(p) : null;
@@ -172,14 +169,14 @@ public static class PluginPackage
 
     // ---- the manifest ---------------------------------------------------------------------------
 
-    static JsonDocument ParseManifest(byte[] bytes)
+    private static JsonDocument ParseManifest(byte[] bytes)
     {
         try { return JsonDocument.Parse(bytes, new JsonDocumentOptions { MaxDepth = 16 }); }
         catch (JsonException ex) { throw new PackageException(PackageProblem.BadManifest, "manifest.json is not valid JSON: " + ex.Message); }
     }
 
     /// <summary>Ids and versions become folder names, so they get a strict alphabet.</summary>
-    static string Name(JsonElement root, string property)
+    private static string Name(JsonElement root, string property)
     {
         var value = root.ValueKind == JsonValueKind.Object && root.TryGetProperty(property, out var el) && el.ValueKind == JsonValueKind.String
             ? el.GetString() : null;
@@ -189,7 +186,7 @@ public static class PluginPackage
     }
 
     /// <summary>Returns the entry path for <paramref name="platform"/>, or throws PlatformUnavailable.</summary>
-    static string SelectEntry(JsonElement root, string platform)
+    private static string SelectEntry(JsonElement root, string platform)
     {
         var listed = root.TryGetProperty("platforms", out var p) && p.ValueKind == JsonValueKind.Array
             && p.EnumerateArray().Any(x => x.ValueKind == JsonValueKind.String && x.GetString() == platform);
@@ -204,7 +201,7 @@ public static class PluginPackage
         return text;
     }
 
-    static Dictionary<string, string> FileTable(JsonElement root)
+    private static Dictionary<string, string> FileTable(JsonElement root)
     {
         if (!root.TryGetProperty("files", out var f) || f.ValueKind != JsonValueKind.Object)
             throw new PackageException(PackageProblem.BadManifest, "manifest has no 'files' table");
@@ -221,12 +218,12 @@ public static class PluginPackage
         return table;
     }
 
-    static bool Matches(byte[] hash, string expected)
+    private static bool Matches(byte[] hash, string expected)
         => string.Equals("sha256:" + Convert.ToHexStringLower(hash), expected, StringComparison.OrdinalIgnoreCase);
 
     // ---- writing --------------------------------------------------------------------------------
 
-    static void Extract(Dictionary<string, ZipArchiveEntry> entries, Dictionary<string, string> files,
+    private static void Extract(Dictionary<string, ZipArchiveEntry> entries, Dictionary<string, string> files,
         byte[] manifest, byte[]? signature, string temp, long maxTotal)
     {
         Directory.CreateDirectory(temp);
@@ -259,7 +256,7 @@ public static class PluginPackage
     }
 
     /// <summary>Read-only everywhere; on Unix also the execute bit for the entry and no write bits on folders.</summary>
-    static void Lock(string dir, string entryPath)
+    private static void Lock(string dir, string entryPath)
     {
         foreach (var file in Directory.EnumerateFiles(dir, "*", SearchOption.AllDirectories))
         {
@@ -275,7 +272,7 @@ public static class PluginPackage
                 File.SetUnixFileMode(d, UnixFileMode.UserRead | UnixFileMode.UserExecute);
     }
 
-    static void Remove(string dir)
+    private static void Remove(string dir)
     {
         if (!Directory.Exists(dir)) return;
         foreach (var d in Directory.EnumerateDirectories(dir, "*", SearchOption.AllDirectories).Append(dir))

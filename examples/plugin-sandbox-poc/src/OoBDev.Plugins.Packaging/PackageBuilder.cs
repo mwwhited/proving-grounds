@@ -46,7 +46,7 @@ public static class PackageBuilder
         }
     }
 
-    static void Add(ZipArchive zip, string name, byte[] bytes)
+    private static void Add(ZipArchive zip, string name, byte[] bytes)
     {
         using var s = zip.CreateEntry(name).Open();
         s.Write(bytes);

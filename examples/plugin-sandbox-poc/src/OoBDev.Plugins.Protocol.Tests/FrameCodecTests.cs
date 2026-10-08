@@ -1,16 +1,16 @@
 using System.Buffers.Binary;
 using System.Text;
 using System.Text.Json;
-using Xunit;
 
 namespace OoBDev.Plugins.Protocol.Tests;
 
+[TestClass]
 public class FrameCodecTests
 {
-    static Envelope Sample(JsonElement? payload = null) => new(
+    private static Envelope Sample(JsonElement? payload = null) => new(
         MessageType.Request, Guid.NewGuid(), Guid.NewGuid(), "echo", "billing", "me", 500, 2, payload);
 
-    static byte[] Frame(string body)
+    private static byte[] Frame(string body)
     {
         var b = Encoding.UTF8.GetBytes(body);
         var f = new byte[4 + b.Length];
@@ -19,13 +19,13 @@ public class FrameCodecTests
         return f;
     }
 
-    static ValueTask<FrameReadResult> Read(byte[] bytes, int max = FrameCodec.DefaultMaxFrameBytes)
+    private static ValueTask<FrameReadResult> Read(byte[] bytes, int max = FrameCodec.DefaultMaxFrameBytes)
         => FrameCodec.ReadAsync(new MemoryStream(bytes), max);
 
-    static string ValidBody(string extra = "") =>
+    private static string ValidBody(string extra = "") =>
         $$"""{"type":"Event","requestId":"{{Guid.NewGuid()}}"{{extra}}}""";
 
-    [Fact]
+    [TestMethod]
     public async Task Round_trips_every_field()
     {
         var payload = JsonSerializer.SerializeToElement(new { a = 1, b = new[] { "x", "wörld" }, c = (string?)null });
@@ -33,29 +33,29 @@ public class FrameCodecTests
 
         var result = await Read(FrameCodec.Encode(original));
 
-        Assert.Equal(FrameReadKind.Frame, result.Kind);
+        Assert.AreEqual(FrameReadKind.Frame, result.Kind);
         var e = result.Envelope!;
-        Assert.Equal(original.Type, e.Type);
-        Assert.Equal(original.RequestId, e.RequestId);
-        Assert.Equal(original.CorrelationId, e.CorrelationId);
-        Assert.Equal(("echo", "billing", "me", 500, 2), (e.Topic, e.Target, e.Source, e.TtlMs, e.Hops));
-        Assert.Equal(payload.GetRawText(), e.Payload!.Value.GetRawText());
+        Assert.AreEqual(original.Type, e.Type);
+        Assert.AreEqual(original.RequestId, e.RequestId);
+        Assert.AreEqual(original.CorrelationId, e.CorrelationId);
+        Assert.AreEqual(("echo", "billing", "me", 500, 2), (e.Topic, e.Target, e.Source, e.TtlMs, e.Hops));
+        Assert.AreEqual(payload.GetRawText(), e.Payload!.Value.GetRawText());
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Reads_back_to_back_frames_then_clean_end_of_stream()
     {
         var bytes = FrameCodec.Encode(Sample()).Concat(FrameCodec.Encode(Sample())).ToArray();
         using var s = new MemoryStream(bytes);
 
-        Assert.Equal(FrameReadKind.Frame, (await FrameCodec.ReadAsync(s)).Kind);
-        Assert.Equal(FrameReadKind.Frame, (await FrameCodec.ReadAsync(s)).Kind);
+        Assert.AreEqual(FrameReadKind.Frame, (await FrameCodec.ReadAsync(s)).Kind);
+        Assert.AreEqual(FrameReadKind.Frame, (await FrameCodec.ReadAsync(s)).Kind);
         var end = await FrameCodec.ReadAsync(s);
-        Assert.Equal(FrameReadKind.EndOfStream, end.Kind);
-        Assert.False(end.Truncated);
+        Assert.AreEqual(FrameReadKind.EndOfStream, end.Kind);
+        Assert.IsFalse(end.Truncated);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Oversize_length_is_a_violation_before_any_body_is_read()
     {
         var header = new byte[4];
@@ -63,47 +63,47 @@ public class FrameCodecTests
 
         var r = await Read(header);
 
-        Assert.Equal(FrameReadKind.Violation, r.Kind);
-        Assert.Contains("exceeds", r.Reason);
+        Assert.AreEqual(FrameReadKind.Violation, r.Kind);
+        Assert.Contains("exceeds", r.Reason ?? "");
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Length_equal_to_the_cap_is_allowed_and_one_over_is_not()
     {
         var atCap = Frame("{\"type\":\"Event\",\"requestId\":\"" + Guid.NewGuid() + "\",\"payload\":\"" + new string('x', 200) + "\"}");
         var bodyLength = (int)BinaryPrimitives.ReadUInt32LittleEndian(atCap);
 
-        Assert.Equal(FrameReadKind.Frame, (await Read(atCap, bodyLength)).Kind);
-        Assert.Equal(FrameReadKind.Violation, (await Read(atCap, bodyLength - 1)).Kind);
+        Assert.AreEqual(FrameReadKind.Frame, (await Read(atCap, bodyLength)).Kind);
+        Assert.AreEqual(FrameReadKind.Violation, (await Read(atCap, bodyLength - 1)).Kind);
     }
 
-    [Theory]
-    [InlineData("not{j")]
-    [InlineData("[]")]
-    [InlineData("42")]
-    [InlineData("{}")]
-    [InlineData("{\"type\":\"Event\"}")]                                            // no requestId
-    [InlineData("{\"type\":\"Nope\",\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]
-    [InlineData("{\"type\":\"event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]   // case-sensitive
-    [InlineData("{\"type\":\"2\",\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]       // no numeric enum
-    [InlineData("{\"type\":\"Request,Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]
-    [InlineData("{\"type\":1,\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]
-    [InlineData("{\"type\":\"Event\",\"requestId\":\"not-a-guid\"}")]
-    [InlineData("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\",\"topic\":5}")]
-    [InlineData("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\",\"ttlMs\":-1}")]
-    [InlineData("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\",\"ttlMs\":1.5}")]
-    [InlineData("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\",\"hops\":99999999999}")]
-    [InlineData("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\",}")]   // trailing comma
-    [InlineData("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\"} extra")]
-    [InlineData("{\"type\":\"Event\",/*c*/\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]
+    [TestMethod]
+    [DataRow("not{j")]
+    [DataRow("[]")]
+    [DataRow("42")]
+    [DataRow("{}")]
+    [DataRow("{\"type\":\"Event\"}")]                                            // no requestId
+    [DataRow("{\"type\":\"Nope\",\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]
+    [DataRow("{\"type\":\"event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]   // case-sensitive
+    [DataRow("{\"type\":\"2\",\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]       // no numeric enum
+    [DataRow("{\"type\":\"Request,Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]
+    [DataRow("{\"type\":1,\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]
+    [DataRow("{\"type\":\"Event\",\"requestId\":\"not-a-guid\"}")]
+    [DataRow("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\",\"topic\":5}")]
+    [DataRow("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\",\"ttlMs\":-1}")]
+    [DataRow("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\",\"ttlMs\":1.5}")]
+    [DataRow("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\",\"hops\":99999999999}")]
+    [DataRow("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\",}")]   // trailing comma
+    [DataRow("{\"type\":\"Event\",\"requestId\":\"00000000-0000-0000-0000-000000000001\"} extra")]
+    [DataRow("{\"type\":\"Event\",/*c*/\"requestId\":\"00000000-0000-0000-0000-000000000001\"}")]
     public async Task Malformed_bodies_are_violations(string body)
     {
         var r = await Read(Frame(body));
-        Assert.Equal(FrameReadKind.Violation, r.Kind);
+        Assert.AreEqual(FrameReadKind.Violation, r.Kind);
         Assert.StartsWith("bad frame body", r.Reason);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Invalid_utf8_is_a_violation()
     {
         var bad = new byte[] { 0x7B, 0x22, 0xFF, 0xFE, 0x22, 0x7D };   // {"..."}
@@ -111,41 +111,41 @@ public class FrameCodecTests
         BinaryPrimitives.WriteUInt32LittleEndian(frame, (uint)bad.Length);
         bad.CopyTo(frame, 4);
 
-        Assert.Equal(FrameReadKind.Violation, (await Read(frame)).Kind);
+        Assert.AreEqual(FrameReadKind.Violation, (await Read(frame)).Kind);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Empty_body_is_a_violation()
-        => Assert.Equal(FrameReadKind.Violation, (await Read(new byte[4])).Kind);
+        => Assert.AreEqual(FrameReadKind.Violation, (await Read(new byte[4])).Kind);
 
-    [Fact]
+    [TestMethod]
     public async Task Payload_nested_beyond_the_depth_limit_is_a_violation()
     {
         var deep = new string('[', EnvelopeSerializer.MaxDepth + 5) + new string(']', EnvelopeSerializer.MaxDepth + 5);
-        Assert.Equal(FrameReadKind.Violation, (await Read(Frame(ValidBody($",\"payload\":{deep}")))).Kind);
+        Assert.AreEqual(FrameReadKind.Violation, (await Read(Frame(ValidBody($",\"payload\":{deep}")))).Kind);
 
         var ok = new string('[', EnvelopeSerializer.MaxDepth - 2) + new string(']', EnvelopeSerializer.MaxDepth - 2);
-        Assert.Equal(FrameReadKind.Frame, (await Read(Frame(ValidBody($",\"payload\":{ok}")))).Kind);
+        Assert.AreEqual(FrameReadKind.Frame, (await Read(Frame(ValidBody($",\"payload\":{ok}")))).Kind);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Unknown_fields_and_null_optionals_are_ignored()
     {
         var r = await Read(Frame(ValidBody(",\"future\":{\"x\":1},\"topic\":null,\"payload\":null")));
-        Assert.Equal(FrameReadKind.Frame, r.Kind);
-        Assert.Null(r.Envelope!.Topic);
-        Assert.Equal(JsonValueKind.Null, r.Envelope.Payload!.Value.ValueKind);
+        Assert.AreEqual(FrameReadKind.Frame, r.Kind);
+        Assert.IsNull(r.Envelope!.Topic);
+        Assert.AreEqual(JsonValueKind.Null, r.Envelope.Payload!.Value.ValueKind);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Type_name_hints_in_the_payload_are_just_data()
     {
         var r = await Read(Frame(ValidBody(",\"payload\":{\"$type\":\"System.Diagnostics.Process, System\"}")));
-        Assert.Equal(FrameReadKind.Frame, r.Kind);
-        Assert.Equal("System.Diagnostics.Process, System", r.Envelope!.Payload!.Value.GetProperty("$type").GetString());
+        Assert.AreEqual(FrameReadKind.Frame, r.Kind);
+        Assert.AreEqual("System.Diagnostics.Process, System", r.Envelope!.Payload!.Value.GetProperty("$type").GetString());
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Truncation_is_end_of_stream_not_a_violation()
     {
         var full = FrameCodec.Encode(Sample());
@@ -153,46 +153,46 @@ public class FrameCodecTests
         foreach (var cut in new[] { 1, 3, 4, 10, full.Length - 1 })
         {
             var r = await Read(full[..cut]);
-            Assert.Equal(FrameReadKind.EndOfStream, r.Kind);
-            Assert.True(r.Truncated, $"cut at {cut}");
+            Assert.AreEqual(FrameReadKind.EndOfStream, r.Kind);
+            Assert.IsTrue(r.Truncated, $"cut at {cut}");
         }
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Frames_arriving_one_byte_at_a_time_are_reassembled()
     {
         var full = FrameCodec.Encode(Sample());
         await using var slow = new OneByteStream(full);
         var r = await FrameCodec.ReadAsync(slow);
-        Assert.Equal(FrameReadKind.Frame, r.Kind);
+        Assert.AreEqual(FrameReadKind.Frame, r.Kind);
     }
 
-    [Fact]
+    [TestMethod]
     public void Encoding_over_the_cap_throws_instead_of_sending()
     {
         var big = JsonSerializer.SerializeToElement(new string('x', 2000));
-        var ex = Assert.Throws<FrameTooLargeException>(() => FrameCodec.Encode(Sample(big), 1000));
-        Assert.Equal(1000, ex.Max);
+        var ex = Assert.ThrowsExactly<FrameTooLargeException>(() => FrameCodec.Encode(Sample(big), 1000));
+        Assert.AreEqual(1000, ex.Max);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task A_broken_pipe_is_end_of_stream()
     {
         await using var s = new ThrowingStream();
-        Assert.Equal(FrameReadKind.EndOfStream, (await FrameCodec.ReadAsync(s)).Kind);
+        Assert.AreEqual(FrameReadKind.EndOfStream, (await FrameCodec.ReadAsync(s)).Kind);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Cancellation_propagates()
     {
         using var cts = new CancellationTokenSource(50);
         await using var never = new HangingStream();
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await FrameCodec.ReadAsync(never, ct: cts.Token));
+        await Assert.ThrowsAsync<OperationCanceledException>(async () => await FrameCodec.ReadAsync(never, ct: cts.Token));
     }
 
     // ---- property tests: never a crash, always one of three outcomes ---------------------------
 
-    [Fact]
+    [TestMethod]
     public async Task Random_bytes_always_yield_a_frame_end_of_stream_or_violation()
     {
         var rng = new Random(20261008);
@@ -204,7 +204,7 @@ public class FrameCodecTests
         }
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Mutated_valid_frames_never_crash_the_reader()
     {
         var rng = new Random(7);
@@ -227,7 +227,7 @@ public class FrameCodecTests
         }
     }
 
-    [Fact]
+    [TestMethod]
     public async Task Random_valid_envelopes_round_trip()
     {
         var rng = new Random(99);
@@ -240,17 +240,17 @@ public class FrameCodecTests
 
             var back = (await Read(FrameCodec.Encode(env))).Envelope!;
 
-            Assert.Equal(env.Type, back.Type);
-            Assert.Equal(env.RequestId, back.RequestId);
-            Assert.Equal(env.CorrelationId, back.CorrelationId);
-            Assert.Equal(env.Topic, back.Topic);
-            Assert.Equal(env.TtlMs, back.TtlMs);
-            Assert.Equal(env.Payload?.GetRawText(), back.Payload?.GetRawText());
+            Assert.AreEqual(env.Type, back.Type);
+            Assert.AreEqual(env.RequestId, back.RequestId);
+            Assert.AreEqual(env.CorrelationId, back.CorrelationId);
+            Assert.AreEqual(env.Topic, back.Topic);
+            Assert.AreEqual(env.TtlMs, back.TtlMs);
+            Assert.AreEqual(env.Payload?.GetRawText(), back.Payload?.GetRawText());
         }
     }
 
     /// <summary>Reads until the stream ends or a violation; every step must be a legal outcome.</summary>
-    static async Task AssertDrains(byte[] bytes)
+    private static async Task AssertDrains(byte[] bytes)
     {
         using var s = new MemoryStream(bytes);
         for (var guard = 0; guard < 1000; guard++)
@@ -258,28 +258,28 @@ public class FrameCodecTests
             var r = await FrameCodec.ReadAsync(s, 4096);
             switch (r.Kind)
             {
-                case FrameReadKind.Frame: Assert.NotNull(r.Envelope); continue;
+                case FrameReadKind.Frame: Assert.IsNotNull(r.Envelope); continue;
                 case FrameReadKind.EndOfStream: return;
-                case FrameReadKind.Violation: Assert.False(string.IsNullOrEmpty(r.Reason)); return;
+                case FrameReadKind.Violation: Assert.IsFalse(string.IsNullOrEmpty(r.Reason)); return;
                 default: Assert.Fail("unknown outcome"); return;
             }
         }
         Assert.Fail("reader did not terminate");
     }
 
-    sealed class OneByteStream(byte[] data) : MemoryStream(data)
+    private sealed class OneByteStream(byte[] data) : MemoryStream(data)
     {
         public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken ct = default)
             => base.ReadAsync(buffer[..Math.Min(1, buffer.Length)], ct);
     }
 
-    sealed class ThrowingStream : MemoryStream
+    private sealed class ThrowingStream : MemoryStream
     {
         public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken ct = default)
             => throw new IOException("pipe closed");
     }
 
-    sealed class HangingStream : MemoryStream
+    private sealed class HangingStream : MemoryStream
     {
         public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken ct = default)
         {

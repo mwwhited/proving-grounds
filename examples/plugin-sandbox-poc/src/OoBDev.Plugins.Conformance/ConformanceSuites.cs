@@ -1,8 +1,6 @@
 using System.Text.Json;
 using OoBDev.Plugins.Host;
 using OoBDev.Plugins.Protocol;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace OoBDev.Plugins.Conformance;
 
@@ -11,25 +9,34 @@ namespace OoBDev.Plugins.Conformance;
 /// Check names match the Python runner. Where the real host can do more than the stand-in could (kill a hung
 /// plugin, drop flood frames) the check asserts the behaviour the stand-in's wording asks the host to have.
 /// </summary>
-public class GoodPluginConformance(ITestOutputHelper output)
+[TestClass]
+public class GoodPluginConformance(TestContext output)
 {
-    static readonly TimeSpan Short = TimeSpan.FromSeconds(2);
+    private static readonly TimeSpan Short = TimeSpan.FromSeconds(2);
 
-    [FactRequires("python")] public Task EchoPython() => RunEcho("echo-python");
+    [TestMethod]
 
-    [FactRequires(file: "echo-dotnet/out/EchoPlugin.dll")] public Task EchoDotnet() => RunEcho("echo-dotnet");
+    [RequiresTool("python")] public Task EchoPython() => RunEcho("echo-python");
 
-    [FactRequires(file: "echo-go/out/echo-go.exe")] public Task EchoGo() => RunEcho("echo-go");
+    [TestMethod]
 
-    [FactRequires("java", file: "echo-java/out/EchoPlugin.class",
+    [RequiresTool(file: "echo-dotnet/out/EchoPlugin.dll")] public Task EchoDotnet() => RunEcho("echo-dotnet");
+
+    [TestMethod]
+
+    [RequiresTool(file: "echo-go/out/echo-go.exe")] public Task EchoGo() => RunEcho("echo-go");
+
+    [TestMethod]
+
+    [RequiresTool("java", file: "echo-java/out/EchoPlugin.class",
         appContainerGap: "java cannot open its own java.security under an AppContainer (AccessDenied) although the ACL allows it; see docs/poc/findings.md")] public Task EchoJava() => RunEcho("echo-java");
 
-    async Task RunEcho(string name)
+    private async Task RunEcho(string name)
     {
         output.WriteLine($"[{name}]");
         var c = new Checks(output);
         await using var h = new Harness(name);
-        Assert.True(await h.StartAndWaitRunningAsync(), "plugin did not reach Running");
+        Assert.IsTrue(await h.StartAndWaitRunningAsync(), "plugin did not reach Running");
         var session = h.FirstSession;
 
         await CommonAsync(c, h, name);
@@ -52,17 +59,19 @@ public class GoodPluginConformance(ITestOutputHelper output)
         c.Check("sent nothing but valid frames", session.Violations.Count == 0, string.Join("; ", session.Violations));
         c.Check("never set a source field", session.ClaimedSources.Count == 0, string.Join(",", session.ClaimedSources));
 
-        Assert.Equal(10, c.Count);
+        Assert.AreEqual(10, c.Count);
         c.AssertAllPassed();
     }
 
-    [FactRequires("node")]
+    [TestMethod]
+
+    [RequiresTool("node")]
     public async Task TickerNode()
     {
         output.WriteLine("[ticker-node]");
         var c = new Checks(output);
         await using var h = new Harness("ticker-node", new { intervalMs = 50 });
-        Assert.True(await h.StartAndWaitRunningAsync(), "plugin did not reach Running");
+        Assert.IsTrue(await h.StartAndWaitRunningAsync(), "plugin did not reach Running");
         var session = h.FirstSession;
 
         await CommonAsync(c, h, "ticker-node");
@@ -77,11 +86,11 @@ public class GoodPluginConformance(ITestOutputHelper output)
         c.Check("exits 0 after Shutdown", exit is { Reason: ExitReason.Requested, ExitCode: 0, Detail: null }, exit?.ToString() ?? "no exit");
         c.Check("sent nothing but valid frames", session.Violations.Count == 0, string.Join("; ", session.Violations));
 
-        Assert.Equal(7, c.Count);
+        Assert.AreEqual(7, c.Count);
         c.AssertAllPassed();
     }
 
-    static async Task CommonAsync(Checks c, Harness h, string expectId)
+    private static async Task CommonAsync(Checks c, Harness h, string expectId)
     {
         var ready = h.WaitEvent("lifecycle.ready", TimeSpan.FromSeconds(10));
         c.Check("announces lifecycle.ready", ready?.Payload is { } p && p.GetProperty("id").GetString() == expectId);
@@ -90,103 +99,6 @@ public class GoodPluginConformance(ITestOutputHelper output)
         c.Check("unknown topic returns Error unknown-topic", ErrorCode(unknown) == "unknown-topic");
     }
 
-    static string? ErrorCode(Envelope e)
+    private static string? ErrorCode(Envelope e)
         => e.Type == MessageType.Error && e.Payload is { } p ? p.GetProperty("code").GetString() : null;
-}
-
-/// <summary>Each misbehaviour of <c>chaos-python</c> must be detected and handled by the host.</summary>
-public class ChaosConformance(ITestOutputHelper output)
-{
-    static readonly TimeSpan Wait = TimeSpan.FromSeconds(10);
-
-    static Harness Chaos(string mode, SupervisorOptions? options = null) => new("chaos-python", new { mode }, options);
-
-    /// <summary>Starts a chaos plugin and returns once its first run has ended (or the wait expired).</summary>
-    static async Task<Harness> RunUntilFirstExitAsync(string mode)
-    {
-        var h = Chaos(mode);
-        h.Plugin.Start();
-        Harness.Until(() => h.Plugin.Exits.Count >= 1, Wait);
-        await Task.CompletedTask;
-        return h;
-    }
-
-    [FactRequires("python")]
-    public async Task All_nine_checks_for_the_eight_modes()
-    {
-        output.WriteLine("[chaos-python] each mode must be detected by the host");
-        var c = new Checks(output);
-
-        await using (var h = await RunUntilFirstExitAsync("crash"))
-        {
-            var e = h.Plugin.Exits.FirstOrDefault();
-            c.Check("crash: unexpected nonzero exit is observable",
-                e is { Reason: ExitReason.Exited, ExitCode: 3 }, e?.ToString() ?? "no exit");
-        }
-
-        await using (var h = await RunUntilFirstExitAsync("exit-clean"))
-        {
-            var e = h.Plugin.Exits.FirstOrDefault();
-            c.Check("exit-clean: exit 0 without Shutdown is still an unexpected stop",
-                e is { Reason: ExitReason.Exited, ExitCode: 0 }, e?.ToString() ?? "no exit");
-        }
-
-        await using (var h = await RunUntilFirstExitAsync("hang"))
-        {
-            var e = h.Plugin.Exits.FirstOrDefault();
-            c.Check("hang: heartbeat goes unanswered (host declares hung)",
-                e is { Reason: ExitReason.Hung }, e?.ToString() ?? "no exit");
-        }
-
-        await using (var h = Chaos("sidebeat"))
-        {
-            Assert.True(await h.StartAndWaitRunningAsync());
-            var session = h.FirstSession;
-            await Task.Delay(300);
-            var beat = await session.HeartbeatAsync(TimeSpan.FromSeconds(1));
-            var stuck = false;
-            try { await session.RequestAsync("echo", Json.Of(1), TimeSpan.FromSeconds(1)); }
-            catch (TimeoutException) { stuck = true; }
-            c.Check("sidebeat: heartbeat alone looks healthy", beat);
-            c.Check("sidebeat: the unanswered request still exposes the stuck loop (TTL expires)", stuck);
-        }
-
-        await using (var h = Chaos("flood"))
-        {
-            Assert.True(await h.StartAndWaitRunningAsync());
-            var session = h.FirstSession;
-            Harness.Until(() => session.Received >= 5000, TimeSpan.FromSeconds(5));
-            c.Check("flood: observed rate exceeds the 200 msg/s limit (host throttles or drops)",
-                session.Received > 200 && session.Dropped > 0, $"received={session.Received} dropped={session.Dropped}");
-        }
-
-        await using (var h = await RunUntilFirstExitAsync("oversize"))
-        {
-            var s = h.FirstSession;
-            c.Check("oversize: a 2 MiB frame is a violation and the plugin is disconnected",
-                s.Violations.Count == 1 && s.Violations.First().Contains("exceeds")
-                && h.Plugin.Exits.FirstOrDefault() is { Reason: ExitReason.Violation }, string.Join("; ", s.Violations));
-        }
-
-        await using (var h = await RunUntilFirstExitAsync("garbage"))
-        {
-            var s = h.FirstSession;
-            c.Check("garbage: an invalid body is a violation and the plugin is disconnected",
-                s.Violations.Count == 1 && s.Violations.First().Contains("bad frame")
-                && h.Plugin.Exits.FirstOrDefault() is { Reason: ExitReason.Violation }, string.Join("; ", s.Violations));
-        }
-
-        await using (var h = Chaos("spoof"))
-        {
-            h.Plugin.Start();
-            var ev = h.WaitEvent("chaos.spoof", TimeSpan.FromSeconds(10));
-            var s = h.FirstSession;
-            c.Check("spoof: plugin claimed source 'admin' but the host stamped the real channel",
-                ev is not null && s.ClaimedSources.SequenceEqual(["admin"]) && ev.Source == "chaos-python",
-                $"claimed={string.Join(",", s.ClaimedSources)} source={ev?.Source}");
-        }
-
-        Assert.Equal(9, c.Count);
-        c.AssertAllPassed();
-    }
 }

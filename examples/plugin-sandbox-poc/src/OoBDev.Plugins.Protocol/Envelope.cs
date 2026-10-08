@@ -2,8 +2,6 @@ using System.Text.Json;
 
 namespace OoBDev.Plugins.Protocol;
 
-public enum MessageType { Request, Response, Event, Heartbeat, Shutdown, Error }
-
 /// <summary>
 /// The message envelope (PROFILE.md). <see cref="Source"/> is stamped by the host from the channel a frame
 /// arrived on; whatever a plugin put there is discarded by the host and only kept for diagnostics.

@@ -5,9 +5,9 @@ namespace OoBDev.Plugins.Host;
 /// <summary>Owns the plugins of one host: registration, start/stop by id, and host shutdown.</summary>
 public sealed class PluginManager : IAsyncDisposable
 {
-    readonly ConcurrentDictionary<string, ManagedPlugin> _plugins = new();
-    readonly IPluginLauncher _launcher;
-    readonly SupervisorOptions _options;
+    private readonly ConcurrentDictionary<string, ManagedPlugin> _plugins = new();
+    private readonly IPluginLauncher _launcher;
+    private readonly SupervisorOptions _options;
 
     public PluginManager(IPluginLauncher launcher, SupervisorOptions? options = null, Router? router = null)
     {

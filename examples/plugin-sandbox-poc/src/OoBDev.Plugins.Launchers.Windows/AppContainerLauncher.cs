@@ -9,29 +9,6 @@ using OoBDev.Plugins.Host;
 
 namespace OoBDev.Plugins.Launchers.Windows;
 
-public sealed class WindowsLauncherOptions
-{
-    /// <summary>Folders the plugin's runtime needs that AppContainers cannot read by default (a per-user Python install, for example).</summary>
-    public IReadOnlyList<string> RuntimeReadPaths { get; init; } = [];
-
-    /// <summary>
-    /// Read grants for runtimes installed per user (python, node, ...), found on PATH. System-wide installs under
-    /// Program Files are already readable by every AppContainer and are left alone.
-    /// </summary>
-    public static IReadOnlyList<string> PerUserRuntimes(params string[] tools)
-    {
-        var profile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        var path = (Environment.GetEnvironmentVariable("PATH") ?? "").Split(Path.PathSeparator);
-        return tools
-            .Select(t => path.FirstOrDefault(d => d.Length > 0 && File.Exists(Path.Combine(d, t + ".exe"))))
-            .Where(d => d is not null && d.StartsWith(profile, StringComparison.OrdinalIgnoreCase))
-            .Select(d => d!).Distinct().ToList();
-    }
-
-    /// <summary>Stricter variant: also drop the ALL APPLICATION PACKAGES group, so every system path must be granted.</summary>
-    public bool UseLpac { get; init; }
-}
-
 /// <summary>
 /// Starts a plugin inside an AppContainer with no capabilities (no network, no user files), in its own job
 /// object, inheriting only its three stdio pipe ends. Fail closed: if any step fails the plugin does not run.
@@ -41,7 +18,7 @@ public sealed class WindowsLauncherOptions
 [SupportedOSPlatform("windows")]
 public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null) : IPluginLauncher
 {
-    readonly WindowsLauncherOptions _options = options ?? new();
+    private readonly WindowsLauncherOptions _options = options ?? new();
 
     public ValueTask<IPluginProcess> LaunchAsync(PluginSpec spec, CancellationToken ct)
     {
@@ -49,7 +26,7 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
         return ValueTask.FromResult<IPluginProcess>(Launch(spec));
     }
 
-    static string ProfileName(string pluginId)
+    private static string ProfileName(string pluginId)
     {
         var clean = new string(pluginId.Select(c => char.IsAsciiLetterOrDigit(c) || c is '.' or '-' or '_' ? c : '_').ToArray());
         var name = "OoBDev.Plugin." + clean;
@@ -58,10 +35,10 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
 
     public static void RemoveProfile(string pluginId) => DeleteAppContainerProfile(ProfileName(pluginId));
 
-    static string LedgerPath(string profileName) => Path.Combine(
+    private static string LedgerPath(string profileName) => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OoBDev", "Plugins", "grants", profileName + ".txt");
 
-    static void Record(string profileName, string path)
+    private static void Record(string profileName, string path)
     {
         var ledger = LedgerPath(profileName);
         Directory.CreateDirectory(Path.GetDirectoryName(ledger)!);
@@ -104,7 +81,7 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
         return revoked;
     }
 
-    WinPlugin Launch(PluginSpec spec)
+    private WinPlugin Launch(PluginSpec spec)
     {
         string name = ProfileName(spec.Id);
         int hr = CreateAppContainerProfile(name, name, name, IntPtr.Zero, 0, out IntPtr sid);
@@ -223,7 +200,7 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
     }
 
     /// <summary>The container's private, writable folder (under the user's Packages folder). Nothing else can touch it.</summary>
-    static string ContainerFolder(SecurityIdentifier sid)
+    private static string ContainerFolder(SecurityIdentifier sid)
     {
         Marshal.ThrowExceptionForHR(GetAppContainerFolderPath(sid.Value, out IntPtr p));
         try { return Marshal.PtrToStringUni(p)!; }
@@ -231,7 +208,7 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
     }
 
     /// <summary>Only what a runtime needs to start. Sorted, double-NUL terminated, as CreateProcess requires.</summary>
-    static string EnvironmentBlock(string containerFolder)
+    private static string EnvironmentBlock(string containerFolder)
     {
         var system = Environment.GetFolderPath(Environment.SpecialFolder.System);
         var root = Environment.GetEnvironmentVariable("SystemRoot") ?? Path.GetDirectoryName(system)!;
@@ -254,7 +231,7 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
         return sb.Append('\0').ToString();
     }
 
-    static void Grant(string profileName, SecurityIdentifier sid, string path, FileSystemRights rights)
+    private static void Grant(string profileName, SecurityIdentifier sid, string path, FileSystemRights rights)
     {
         Record(profileName, Path.GetFullPath(path));
         var di = new DirectoryInfo(Path.GetFullPath(path));
@@ -269,7 +246,7 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
         di.SetAccessControl(acl);
     }
 
-    static string ResolveExecutable(PluginSpec spec)
+    private static string ResolveExecutable(PluginSpec spec)
     {
         var command = spec.Command[0];
         if (command.IndexOfAny(['/', '\\']) >= 0)
@@ -285,14 +262,14 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
         throw new FileNotFoundException($"Cannot find '{command}' on PATH.");
     }
 
-    static string CommandLine(string exe, IEnumerable<string> args)
+    private static string CommandLine(string exe, IEnumerable<string> args)
     {
         var sb = new StringBuilder().Append('"').Append(exe).Append('"');
         foreach (var a in args) sb.Append(' ').Append(Quote(a));
         return sb.ToString();
     }
 
-    static string Quote(string arg)
+    private static string Quote(string arg)
     {
         if (arg.Length > 0 && arg.IndexOfAny([' ', '\t', '"']) < 0) return arg;
         var sb = new StringBuilder("\"");
@@ -307,14 +284,14 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
         return sb.Append('\\', backslashes * 2).Append('"').ToString();
     }
 
-    sealed class WinPlugin : IPluginProcess
+    private sealed class WinPlugin : IPluginProcess
     {
-        readonly IntPtr _process;
-        readonly PluginJob _job;
-        readonly TaskCompletionSource<int> _exited = new(TaskCreationOptions.RunContinuationsAsynchronously);
-        readonly ManualResetEvent _waitEvent;
-        readonly RegisteredWaitHandle _registration;
-        int _disposed;
+        private readonly IntPtr _process;
+        private readonly PluginJob _job;
+        private readonly TaskCompletionSource<int> _exited = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        private readonly ManualResetEvent _waitEvent;
+        private readonly RegisteredWaitHandle _registration;
+        private int _disposed;
 
         public WinPlugin(IntPtr process, PluginJob job, Stream input, Stream output, Stream error)
         {
@@ -350,24 +327,24 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
         }
     }
 
-    const int PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES = 0x20009;
-    const int PROC_THREAD_ATTRIBUTE_HANDLE_LIST = 0x20002;
-    const int PROC_THREAD_ATTRIBUTE_ALL_APPLICATION_PACKAGES_POLICY = 0x2000F;
-    const uint EXTENDED_STARTUPINFO_PRESENT = 0x00080000;
-    const uint CREATE_SUSPENDED = 0x4;
-    const uint CREATE_UNICODE_ENVIRONMENT = 0x400;
-    const uint CREATE_NO_WINDOW = 0x08000000;
-    const int STARTF_USESTDHANDLES = 0x100;
-    const uint HANDLE_FLAG_INHERIT = 1;
+    private const int PROC_THREAD_ATTRIBUTE_SECURITY_CAPABILITIES = 0x20009;
+    private const int PROC_THREAD_ATTRIBUTE_HANDLE_LIST = 0x20002;
+    private const int PROC_THREAD_ATTRIBUTE_ALL_APPLICATION_PACKAGES_POLICY = 0x2000F;
+    private const uint EXTENDED_STARTUPINFO_PRESENT = 0x00080000;
+    private const uint CREATE_SUSPENDED = 0x4;
+    private const uint CREATE_UNICODE_ENVIRONMENT = 0x400;
+    private const uint CREATE_NO_WINDOW = 0x08000000;
+    private const int STARTF_USESTDHANDLES = 0x100;
+    private const uint HANDLE_FLAG_INHERIT = 1;
 
     [StructLayout(LayoutKind.Sequential)]
-    struct SECURITY_CAPABILITIES { public IntPtr AppContainerSid; public IntPtr Capabilities; public uint CapabilityCount; public uint Reserved; }
+    private struct SECURITY_CAPABILITIES { public IntPtr AppContainerSid; public IntPtr Capabilities; public uint CapabilityCount; public uint Reserved; }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct SECURITY_ATTRIBUTES { public int nLength; public IntPtr lpSecurityDescriptor; public bool bInheritHandle; }
+    private struct SECURITY_ATTRIBUTES { public int nLength; public IntPtr lpSecurityDescriptor; public bool bInheritHandle; }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    struct STARTUPINFO
+    private struct STARTUPINFO
     {
         public int cb; public string? lpReserved, lpDesktop, lpTitle;
         public int dwX, dwY, dwXSize, dwYSize, dwXCountChars, dwYCountChars, dwFillAttribute, dwFlags;
@@ -376,25 +353,25 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct STARTUPINFOEX { public STARTUPINFO StartupInfo; public IntPtr lpAttributeList; }
+    private struct STARTUPINFOEX { public STARTUPINFO StartupInfo; public IntPtr lpAttributeList; }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct PROCESS_INFORMATION { public IntPtr hProcess, hThread; public int dwProcessId, dwThreadId; }
+    private struct PROCESS_INFORMATION { public IntPtr hProcess, hThread; public int dwProcessId, dwThreadId; }
 
-    [DllImport("userenv.dll", CharSet = CharSet.Unicode)] static extern int CreateAppContainerProfile(string name, string display, string desc, IntPtr caps, uint capCount, out IntPtr sid);
-    [DllImport("userenv.dll", CharSet = CharSet.Unicode)] static extern int DeriveAppContainerSidFromAppContainerName(string name, out IntPtr sid);
-    [DllImport("userenv.dll", CharSet = CharSet.Unicode)] static extern int GetAppContainerFolderPath(string sid, out IntPtr path);
-    [DllImport("userenv.dll", CharSet = CharSet.Unicode)] static extern int DeleteAppContainerProfile(string name);
-    [DllImport("kernel32.dll", SetLastError = true)] static extern bool InitializeProcThreadAttributeList(IntPtr list, int count, int flags, ref IntPtr size);
-    [DllImport("kernel32.dll", SetLastError = true)] static extern bool UpdateProcThreadAttribute(IntPtr list, uint flags, IntPtr attr, IntPtr value, IntPtr size, IntPtr prev, IntPtr retSize);
-    [DllImport("kernel32.dll")] static extern void DeleteProcThreadAttributeList(IntPtr list);
-    [DllImport("kernel32.dll", SetLastError = true)] static extern bool CreatePipe(out IntPtr read, out IntPtr write, ref SECURITY_ATTRIBUTES sa, uint size);
-    [DllImport("kernel32.dll", SetLastError = true)] static extern bool SetHandleInformation(IntPtr h, uint mask, uint flags);
+    [DllImport("userenv.dll", CharSet = CharSet.Unicode)] private static extern int CreateAppContainerProfile(string name, string display, string desc, IntPtr caps, uint capCount, out IntPtr sid);
+    [DllImport("userenv.dll", CharSet = CharSet.Unicode)] private static extern int DeriveAppContainerSidFromAppContainerName(string name, out IntPtr sid);
+    [DllImport("userenv.dll", CharSet = CharSet.Unicode)] private static extern int GetAppContainerFolderPath(string sid, out IntPtr path);
+    [DllImport("userenv.dll", CharSet = CharSet.Unicode)] private static extern int DeleteAppContainerProfile(string name);
+    [DllImport("kernel32.dll", SetLastError = true)] private static extern bool InitializeProcThreadAttributeList(IntPtr list, int count, int flags, ref IntPtr size);
+    [DllImport("kernel32.dll", SetLastError = true)] private static extern bool UpdateProcThreadAttribute(IntPtr list, uint flags, IntPtr attr, IntPtr value, IntPtr size, IntPtr prev, IntPtr retSize);
+    [DllImport("kernel32.dll")] private static extern void DeleteProcThreadAttributeList(IntPtr list);
+    [DllImport("kernel32.dll", SetLastError = true)] private static extern bool CreatePipe(out IntPtr read, out IntPtr write, ref SECURITY_ATTRIBUTES sa, uint size);
+    [DllImport("kernel32.dll", SetLastError = true)] private static extern bool SetHandleInformation(IntPtr h, uint mask, uint flags);
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    static extern bool CreateProcessW(string? app, StringBuilder cmd, IntPtr pa, IntPtr ta, bool inherit, uint flags, IntPtr env, string? dir, ref STARTUPINFOEX si, out PROCESS_INFORMATION pi);
-    [DllImport("kernel32.dll", SetLastError = true)] static extern uint ResumeThread(IntPtr hThread);
-    [DllImport("kernel32.dll", SetLastError = true)] static extern bool TerminateProcess(IntPtr h, uint code);
-    [DllImport("kernel32.dll", SetLastError = true)] static extern bool GetExitCodeProcess(IntPtr h, out uint code);
-    [DllImport("kernel32.dll")] static extern bool CloseHandle(IntPtr h);
-    [DllImport("advapi32.dll")] static extern IntPtr FreeSid(IntPtr sid);
+    private static extern bool CreateProcessW(string? app, StringBuilder cmd, IntPtr pa, IntPtr ta, bool inherit, uint flags, IntPtr env, string? dir, ref STARTUPINFOEX si, out PROCESS_INFORMATION pi);
+    [DllImport("kernel32.dll", SetLastError = true)] private static extern uint ResumeThread(IntPtr hThread);
+    [DllImport("kernel32.dll", SetLastError = true)] private static extern bool TerminateProcess(IntPtr h, uint code);
+    [DllImport("kernel32.dll", SetLastError = true)] private static extern bool GetExitCodeProcess(IntPtr h, out uint code);
+    [DllImport("kernel32.dll")] private static extern bool CloseHandle(IntPtr h);
+    [DllImport("advapi32.dll")] private static extern IntPtr FreeSid(IntPtr sid);
 }

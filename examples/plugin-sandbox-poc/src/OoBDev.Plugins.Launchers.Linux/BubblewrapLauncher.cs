@@ -4,28 +4,6 @@ using OoBDev.Plugins.Launchers.Plain;
 
 namespace OoBDev.Plugins.Launchers.Linux;
 
-public sealed class LinuxLauncherOptions
-{
-    /// <summary>Host folders mounted read-only at the same path. Missing ones are skipped. Must cover the language runtimes.</summary>
-    public IReadOnlyList<string> ReadOnlyPaths { get; init; } =
-        ["/usr", "/etc/alternatives", "/etc/ld.so.cache", "/etc/ssl", "/etc/java-17-openjdk", "/etc/java-21-openjdk", "/etc/java-25-openjdk"];
-
-    /// <summary>
-    /// RLIMIT_NPROC for the plugin. Counts threads as well as processes, so a threaded runtime (Go, JVM, Node)
-    /// needs a generous value. Null = no limit. A low value is a fork-bomb brake, not a precise "no children" rule.
-    /// </summary>
-    public int? MaxTasks { get; init; } = 512;
-
-    /// <summary>
-    /// False (default): a seccomp filter stops the plugin creating processes (threads are fine). True: no filter, so
-    /// a plugin that is allowed to run helpers can; <see cref="MaxTasks"/> still caps a runaway.
-    /// </summary>
-    public bool AllowChildProcesses { get; init; }
-
-    /// <summary>Path of the bubblewrap binary.</summary>
-    public string Bwrap { get; init; } = "bwrap";
-}
-
 /// <summary>
 /// Runs a plugin inside bubblewrap: new user, pid, ipc, uts, cgroup and network namespaces, a mount namespace that
 /// contains only the runtime (read-only), the plugin folder (read-only), the granted folders and a private /tmp,
@@ -35,12 +13,12 @@ public sealed class LinuxLauncherOptions
 [SupportedOSPlatform("linux")]
 public sealed class BubblewrapLauncher(LinuxLauncherOptions? options = null) : IPluginLauncher
 {
-    readonly LinuxLauncherOptions _options = options ?? new();
-    readonly PlainProcessLauncher _plain = new();
-    readonly string? _filterPath = (options ?? new()).AllowChildProcesses ? null : WriteFilter();
+    private readonly LinuxLauncherOptions _options = options ?? new();
+    private readonly PlainProcessLauncher _plain = new();
+    private readonly string? _filterPath = (options ?? new()).AllowChildProcesses ? null : WriteFilter();
 
     /// <summary>The BPF program is identical for every launch, so write it once per content and share the file.</summary>
-    static string WriteFilter()
+    private static string WriteFilter()
     {
         var bytes = SeccompFilter.NoNewProcesses();
         var path = Path.Combine(Path.GetTempPath(), $"oobdev-plugin-seccomp-{Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes))[..16]}.bpf");

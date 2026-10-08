@@ -9,7 +9,7 @@ namespace OoBDev.Plugins.Launchers.Windows;
 /// </summary>
 internal sealed class PluginJob : IDisposable
 {
-    IntPtr _job;
+    private IntPtr _job;
 
     public PluginJob(bool killOnClose, long? memoryLimitBytes, int? cpuPercent = null)
     {
@@ -64,12 +64,12 @@ internal sealed class PluginJob : IDisposable
         if (job != IntPtr.Zero) CloseHandle(job);
     }
 
-    const uint JOB_OBJECT_LIMIT_PROCESS_MEMORY = 0x100;
-    const uint JOB_OBJECT_LIMIT_ACTIVE_PROCESS = 0x8;
-    const uint JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x2000;
+    private const uint JOB_OBJECT_LIMIT_PROCESS_MEMORY = 0x100;
+    private const uint JOB_OBJECT_LIMIT_ACTIVE_PROCESS = 0x8;
+    private const uint JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x2000;
 
     [StructLayout(LayoutKind.Sequential)]
-    struct BasicLimit
+    private struct BasicLimit
     {
         public long PerProcessUserTimeLimit, PerJobUserTimeLimit;
         public uint LimitFlags;
@@ -80,18 +80,18 @@ internal sealed class PluginJob : IDisposable
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct CpuRate { public uint ControlFlags, CpuRate_; }
+    private struct CpuRate { public uint ControlFlags, CpuRate_; }
 
     [StructLayout(LayoutKind.Sequential)]
-    struct ExtendedLimit
+    private struct ExtendedLimit
     {
         public BasicLimit Basic;
         public ulong Io1, Io2, Io3, Io4, Io5, Io6;
         public UIntPtr ProcessMemoryLimit, JobMemoryLimit, PeakProcessMemoryUsed, PeakJobMemoryUsed;
     }
 
-    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] static extern IntPtr CreateJobObjectW(IntPtr attrs, string? name);
-    [DllImport("kernel32.dll", SetLastError = true)] static extern bool SetInformationJobObject(IntPtr job, int cls, IntPtr info, uint len);
-    [DllImport("kernel32.dll", SetLastError = true)] static extern bool AssignProcessToJobObject(IntPtr job, IntPtr proc);
-    [DllImport("kernel32.dll")] static extern bool CloseHandle(IntPtr h);
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr CreateJobObjectW(IntPtr attrs, string? name);
+    [DllImport("kernel32.dll", SetLastError = true)] private static extern bool SetInformationJobObject(IntPtr job, int cls, IntPtr info, uint len);
+    [DllImport("kernel32.dll", SetLastError = true)] private static extern bool AssignProcessToJobObject(IntPtr job, IntPtr proc);
+    [DllImport("kernel32.dll")] private static extern bool CloseHandle(IntPtr h);
 }

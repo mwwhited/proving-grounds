@@ -4,9 +4,6 @@ using OoBDev.Plugins.Protocol;
 
 namespace OoBDev.Plugins.Host;
 
-/// <summary>A frame the router refused because the plugin's policy does not allow it.</summary>
-public sealed record PolicyDenial(string PluginId, string Action, string? Topic, string? Target, string Reason);
-
 /// <summary>
 /// The hub in hub-and-spoke. Receives stamped frames from sessions and applies default-deny policy:
 /// a plugin may publish, subscribe and send only to what its policy lists. Plugin-to-plugin traffic is
@@ -15,15 +12,15 @@ public sealed record PolicyDenial(string PluginId, string Action, string? Topic,
 public sealed class Router : IFrameSink
 {
     public const int MaxHops = 8;
-    static readonly TimeSpan DefaultForwardTtl = TimeSpan.FromSeconds(5);
+    private static readonly TimeSpan DefaultForwardTtl = TimeSpan.FromSeconds(5);
 
-    readonly TimeProvider _time;
-    readonly ConcurrentDictionary<string, PluginSpec> _specs = new();
-    readonly ConcurrentDictionary<string, PluginSession> _sessions = new();
-    readonly ConcurrentDictionary<Guid, Forward> _forwards = new();
-    readonly ConcurrentDictionary<string, Func<Envelope, CancellationToken, Task<JsonElement?>>> _handlers = new();
+    private readonly TimeProvider _time;
+    private readonly ConcurrentDictionary<string, PluginSpec> _specs = new();
+    private readonly ConcurrentDictionary<string, PluginSession> _sessions = new();
+    private readonly ConcurrentDictionary<Guid, Forward> _forwards = new();
+    private readonly ConcurrentDictionary<string, Func<Envelope, CancellationToken, Task<JsonElement?>>> _handlers = new();
 
-    sealed record Forward(string OriginId, Guid OriginRequestId, string TargetId, string? Topic, DateTimeOffset Expires);
+    private sealed record Forward(string OriginId, Guid OriginRequestId, string TargetId, string? Topic, DateTimeOffset Expires);
 
     public Router(TimeProvider? time = null) => _time = time ?? TimeProvider.System;
 
@@ -69,7 +66,7 @@ public sealed class Router : IFrameSink
 
     // ---- events ------------------------------------------------------------------------------
 
-    void OnEvent(PluginSession from, Envelope frame, PluginPolicy policy)
+    private void OnEvent(PluginSession from, Envelope frame, PluginPolicy policy)
     {
         var topic = frame.Topic;
         if (string.IsNullOrEmpty(topic)) { Deny(from, "publish", null, null, "event without a topic"); return; }
@@ -93,7 +90,7 @@ public sealed class Router : IFrameSink
 
     // ---- requests ----------------------------------------------------------------------------
 
-    async Task OnRequestAsync(PluginSession from, Envelope request, PluginPolicy policy)
+    private async Task OnRequestAsync(PluginSession from, Envelope request, PluginPolicy policy)
     {
         if (request.Target is null)
         {
@@ -132,7 +129,7 @@ public sealed class Router : IFrameSink
         }
     }
 
-    async Task HandleHostRequestAsync(PluginSession from, Envelope request)
+    private async Task HandleHostRequestAsync(PluginSession from, Envelope request)
     {
         if (request.Topic is null || !_handlers.TryGetValue(request.Topic, out var handler))
         {
@@ -150,7 +147,7 @@ public sealed class Router : IFrameSink
     }
 
     /// <summary>A target's answer to a relayed request goes back to whoever asked; anything else is dropped.</summary>
-    void OnReply(PluginSession from, Envelope reply)
+    private void OnReply(PluginSession from, Envelope reply)
     {
         if (reply.CorrelationId is not { } id || !_forwards.TryGetValue(id, out var fwd) || fwd.TargetId != from.Id)
             return;   // unsolicited, or a spoofed correlation id for someone else's request
@@ -159,7 +156,7 @@ public sealed class Router : IFrameSink
             TrySend(origin, reply with { RequestId = Guid.NewGuid(), CorrelationId = fwd.OriginRequestId });
     }
 
-    void PruneForwards()
+    private void PruneForwards()
     {
         var now = _time.GetUtcNow();
         foreach (var (id, fwd) in _forwards)
@@ -180,17 +177,17 @@ public sealed class Router : IFrameSink
         return false;
     }
 
-    void Deny(PluginSession from, string action, string? topic, string? target, string reason)
+    private void Deny(PluginSession from, string action, string? topic, string? target, string reason)
         => Denied?.Invoke(new PolicyDenial(from.Id, action, topic, target, reason));
 
-    void ReplyError(PluginSession to, Envelope request, string code, string message)
+    private void ReplyError(PluginSession to, Envelope request, string code, string message)
         => TrySend(to, Envelope.Create(MessageType.Error, request.Topic,
             JsonSerializer.SerializeToElement(new { code, message }), correlationId: request.RequestId));
 
-    static void TrySend(PluginSession to, Envelope e)
+    private static void TrySend(PluginSession to, Envelope e)
     {
         try { to.Send(e); } catch (Exception ex) when (ex is PluginUnavailableException or PluginQueueFullException) { }
     }
 
-    static void TryDeliver(PluginSession to, Envelope e) => TrySend(to, e);
+    private static void TryDeliver(PluginSession to, Envelope e) => TrySend(to, e);
 }

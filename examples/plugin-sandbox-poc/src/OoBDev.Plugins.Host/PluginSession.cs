@@ -5,12 +5,6 @@ using OoBDev.Plugins.Protocol;
 
 namespace OoBDev.Plugins.Host;
 
-/// <summary>Where a session hands the frames it does not handle itself.</summary>
-public interface IFrameSink
-{
-    ValueTask OnFrameAsync(PluginSession from, Envelope frame);
-}
-
 /// <summary>
 /// The host's side of one plugin process: frame I/O, <c>Source</c> stamping, <c>config.get</c>, heartbeat
 /// bookkeeping, rate limiting and request/response matching. One session per launch; a restart builds a new one.
@@ -20,36 +14,36 @@ public sealed class PluginSession : IAsyncDisposable
     public const string ReadyTopic = "lifecycle.ready";
     public const string ConfigTopic = "config.get";
 
-    static readonly JsonElement EmptyObject = JsonDocument.Parse("{}").RootElement.Clone();
+    private static readonly JsonElement EmptyObject = JsonDocument.Parse("{}").RootElement.Clone();
 
-    readonly PluginSpec _spec;
-    readonly IPluginProcess _process;
-    readonly IFrameSink _sink;
-    readonly TimeProvider _time;
-    readonly TimeSpan _writeTimeout;
-    readonly CancellationTokenSource _cts = new();
+    private readonly PluginSpec _spec;
+    private readonly IPluginProcess _process;
+    private readonly IFrameSink _sink;
+    private readonly TimeProvider _time;
+    private readonly TimeSpan _writeTimeout;
+    private readonly CancellationTokenSource _cts = new();
 
-    readonly ConcurrentDictionary<Guid, TaskCompletionSource<Envelope>> _pending = new();
+    private readonly ConcurrentDictionary<Guid, TaskCompletionSource<Envelope>> _pending = new();
     // Two lanes: control frames (heartbeat, shutdown) are always written before queued data.
-    readonly ConcurrentQueue<byte[]> _control = new();
-    readonly ConcurrentQueue<byte[]> _data = new();
-    readonly SemaphoreSlim _signal = new(0);
-    int _dataQueued;
+    private readonly ConcurrentQueue<byte[]> _control = new();
+    private readonly ConcurrentQueue<byte[]> _data = new();
+    private readonly SemaphoreSlim _signal = new(0);
+    private int _dataQueued;
 
-    readonly TaskCompletionSource<Envelope> _ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
-    readonly TaskCompletionSource<string> _faulted = new(TaskCreationOptions.RunContinuationsAsynchronously);
-    readonly ConcurrentQueue<string> _violations = new();
-    readonly ConcurrentQueue<string> _claimedSources = new();
-    readonly ConcurrentQueue<string> _stderrTail = new();
+    private readonly TaskCompletionSource<Envelope> _ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly TaskCompletionSource<string> _faulted = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly ConcurrentQueue<string> _violations = new();
+    private readonly ConcurrentQueue<string> _claimedSources = new();
+    private readonly ConcurrentQueue<string> _stderrTail = new();
 
-    long _lastHeartbeatTicks;
-    int _consecutiveTimeouts;
-    long _received;
-    long _dropped;
-    long _windowStart;
-    int _windowCount;
-    int _disposed;
-    Task _readLoop = Task.CompletedTask, _writeLoop = Task.CompletedTask, _errorLoop = Task.CompletedTask;
+    private long _lastHeartbeatTicks;
+    private int _consecutiveTimeouts;
+    private long _received;
+    private long _dropped;
+    private long _windowStart;
+    private int _windowCount;
+    private int _disposed;
+    private Task _readLoop = Task.CompletedTask, _writeLoop = Task.CompletedTask, _errorLoop = Task.CompletedTask;
 
     public PluginSession(PluginSpec spec, IPluginProcess process, IFrameSink sink,
         TimeProvider? time = null, TimeSpan? writeTimeout = null)
@@ -144,7 +138,7 @@ public sealed class PluginSession : IAsyncDisposable
         catch (TimeoutException) { return false; }
     }
 
-    async Task<Envelope> ExchangeAsync(Envelope request, TimeSpan timeout, bool control, CancellationToken ct)
+    private async Task<Envelope> ExchangeAsync(Envelope request, TimeSpan timeout, bool control, CancellationToken ct)
     {
         var tcs = new TaskCompletionSource<Envelope>(TaskCreationOptions.RunContinuationsAsynchronously);
         _pending[request.RequestId] = tcs;
@@ -163,7 +157,7 @@ public sealed class PluginSession : IAsyncDisposable
 
     // ---- receiving -----------------------------------------------------------------------------
 
-    async Task ReadLoopAsync()
+    private async Task ReadLoopAsync()
     {
         try
         {
@@ -180,7 +174,7 @@ public sealed class PluginSession : IAsyncDisposable
         finally { FailPending("channel closed"); }
     }
 
-    async ValueTask HandleAsync(Envelope received)
+    private async ValueTask HandleAsync(Envelope received)
     {
         Interlocked.Increment(ref _received);
         if (received.Source is not null && _claimedSources.Count < 100) _claimedSources.Enqueue(received.Source);
@@ -219,7 +213,7 @@ public sealed class PluginSession : IAsyncDisposable
     }
 
     /// <summary>Fixed one-second window. A burst can straddle a boundary, so the worst case is twice the limit.</summary>
-    bool Admit()
+    private bool Admit()
     {
         var now = _time.GetTimestamp();
         if (_time.GetElapsedTime(_windowStart, now) >= TimeSpan.FromSeconds(1))
@@ -235,14 +229,14 @@ public sealed class PluginSession : IAsyncDisposable
         return false;
     }
 
-    void TrySendQuietly(Envelope e)
+    private void TrySendQuietly(Envelope e)
     {
         try { Send(e); } catch (Exception ex) when (ex is PluginUnavailableException or PluginQueueFullException) { }
     }
 
     // ---- writing -------------------------------------------------------------------------------
 
-    async Task WriteLoopAsync()
+    private async Task WriteLoopAsync()
     {
         var ct = _cts.Token;
         try
@@ -269,7 +263,7 @@ public sealed class PluginSession : IAsyncDisposable
         catch (Exception ex) when (ex is OperationCanceledException or IOException or ObjectDisposedException) { }
     }
 
-    async Task WriteFrameAsync(byte[] frame, CancellationToken ct)
+    private async Task WriteFrameAsync(byte[] frame, CancellationToken ct)
     {
         await _process.Input.WriteAsync(frame, ct).ConfigureAwait(false);
         await _process.Input.FlushAsync(ct).ConfigureAwait(false);
@@ -277,7 +271,7 @@ public sealed class PluginSession : IAsyncDisposable
 
     // ---- stderr, faults, teardown ------------------------------------------------------------
 
-    async Task ErrorLoopAsync()
+    private async Task ErrorLoopAsync()
     {
         if (_process.Error is null) return;
         try
@@ -289,7 +283,7 @@ public sealed class PluginSession : IAsyncDisposable
         catch (Exception ex) when (ex is OperationCanceledException or IOException or ObjectDisposedException) { }
     }
 
-    void Log(string line)
+    private void Log(string line)
     {
         _stderrTail.Enqueue(line);
         while (_stderrTail.Count > 50) _stderrTail.TryDequeue(out _);
@@ -297,7 +291,7 @@ public sealed class PluginSession : IAsyncDisposable
     }
 
     /// <summary>Disconnects the plugin: record why, then kill it.</summary>
-    void Fault(string reason, bool violation)
+    private void Fault(string reason, bool violation)
     {
         if (violation) _violations.Enqueue(reason);
         _faulted.TrySetResult(reason);
@@ -307,7 +301,7 @@ public sealed class PluginSession : IAsyncDisposable
     /// <summary>Host decision to disconnect, for example after repeated request timeouts.</summary>
     public void Disconnect(string reason) => Fault(reason, violation: false);
 
-    void FailPending(string reason)
+    private void FailPending(string reason)
     {
         foreach (var (id, tcs) in _pending)
             if (tcs.TrySetException(new PluginUnavailableException(Id, reason)))

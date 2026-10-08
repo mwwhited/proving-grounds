@@ -2,19 +2,6 @@ using System.Buffers.Binary;
 
 namespace OoBDev.Plugins.Protocol;
 
-public enum FrameReadKind
-{
-    /// <summary>A complete, valid envelope.</summary>
-    Frame,
-    /// <summary>The peer closed the stream (cleanly between frames, or mid-frame when <see cref="FrameReadResult.Truncated"/>).</summary>
-    EndOfStream,
-    /// <summary>The peer broke the protocol (oversize frame, bad body). The host disconnects.</summary>
-    Violation,
-}
-
-public readonly record struct FrameReadResult(
-    FrameReadKind Kind, Envelope? Envelope = null, string? Reason = null, bool Truncated = false);
-
 /// <summary>
 /// Frame = uint32 little-endian body length, then that many bytes of UTF-8 JSON (PROFILE.md).
 /// Reading any byte sequence yields exactly one of: a frame, end of stream, or a violation. It never throws
@@ -68,7 +55,7 @@ public static class FrameCodec
     }
 
     /// <summary>Reads until <paramref name="buffer"/> is full or the stream ends. Returns the bytes read.</summary>
-    static async ValueTask<int> ReadExactAsync(Stream stream, byte[] buffer, CancellationToken ct)
+    private static async ValueTask<int> ReadExactAsync(Stream stream, byte[] buffer, CancellationToken ct)
     {
         var total = 0;
         while (total < buffer.Length)
@@ -81,11 +68,4 @@ public static class FrameCodec
         }
         return total;
     }
-}
-
-public sealed class FrameTooLargeException(int size, int max)
-    : InvalidOperationException($"frame body of {size} bytes exceeds the {max} byte limit")
-{
-    public int Size { get; } = size;
-    public int Max { get; } = max;
 }

@@ -43,5 +43,3 @@ foreach (var (label, size, binary) in new[] { ("1 KB text", 1024, false), ("1 KB
     Console.WriteLine($"{label,-22}{frame.Length,12}{(double)frame.Length / size,9:P0} {enc,11:F3}{dec,11:F3}{Ms(sw, rt),30:F3}");
 }
 return 0;
-
-static class Ext { public static byte[] GetBytes(this Random r, int n) { var b = new byte[n]; r.NextBytes(b); return b; } }

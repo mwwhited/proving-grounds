@@ -1,63 +1,23 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using OoBDev.Plugins.Host;
 using OoBDev.Plugins.Launchers.Plain;
 using OoBDev.Plugins.Launchers.Linux;
 using OoBDev.Plugins.Launchers.Windows;
 using OoBDev.Plugins.Protocol;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace OoBDev.Plugins.Conformance;
-
-/// <summary>Where the example plugins live (<c>plugin-sandbox-poc/plugins</c>).</summary>
-static class Paths
-{
-    public static string Plugins { get; } = FindPlugins();
-
-    static string FindPlugins()
-    {
-        for (var dir = new DirectoryInfo(AppContext.BaseDirectory); dir is not null; dir = dir.Parent)
-        {
-            var candidate = Path.Combine(dir.FullName, "plugins");
-            if (Directory.Exists(Path.Combine(candidate, "echo-python"))) return candidate;
-        }
-        throw new DirectoryNotFoundException("could not find the plugins folder above " + AppContext.BaseDirectory);
-    }
-
-    public static string Of(string plugin) => Path.Combine(Plugins, plugin);
-
-    public static bool OnPath(string tool)
-    {
-        var exts = OperatingSystem.IsWindows() ? new[] { ".exe", ".cmd", ".bat", "" } : new[] { "" };
-        return (Environment.GetEnvironmentVariable("PATH") ?? "").Split(Path.PathSeparator)
-            .Any(d => d.Length > 0 && exts.Any(e => File.Exists(Path.Combine(d, tool + e))));
-    }
-}
-
-/// <summary>A [Fact] that reports itself skipped when a tool the plugin needs is missing.</summary>
-public sealed class FactRequiresAttribute : FactAttribute
-{
-    public FactRequiresAttribute(string? tool = null, string? file = null, string? appContainerGap = null)
-    {
-        if (appContainerGap is not null && Environment.GetEnvironmentVariable("PLUGIN_LAUNCHER") == "appcontainer") { Skip = "known AppContainer gap: " + appContainerGap; return; }
-        if (tool is not null && !Paths.OnPath(tool)) Skip = $"{tool} not found on PATH";
-        else if (file is not null && !File.Exists(Path.Combine(Paths.Plugins, OperatingSystem.IsWindows() ? file : file.Replace(".exe", ""))))
-            Skip = $"{file} not built (dotnet publish -c Release -o out in plugins/echo-dotnet)";
-    }
-}
 
 /// <summary>
 /// The test-side stand-in for an application using the host: a <see cref="PluginManager"/> running one plugin
 /// from <c>plugins/&lt;name&gt;</c> through the plain (unsandboxed) launcher, with every event and session recorded.
 /// </summary>
-sealed class Harness : IAsyncDisposable
+internal sealed class Harness : IAsyncDisposable
 {
-    readonly PluginManager _manager;
-    readonly List<Envelope> _events = [];
-    readonly ConcurrentQueue<PluginSession> _sessions = new();
+    private readonly PluginManager _manager;
+    private readonly List<Envelope> _events = [];
+    private readonly ConcurrentQueue<PluginSession> _sessions = new();
 
     public ManagedPlugin Plugin { get; }
 
@@ -75,7 +35,7 @@ sealed class Harness : IAsyncDisposable
     /// Plain by default. <c>PLUGIN_LAUNCHER=appcontainer</c> (Windows) or <c>bubblewrap</c> (Linux) runs the same
     /// checks inside the OS sandbox.
     /// </summary>
-    static IPluginLauncher Launcher()
+    private static IPluginLauncher Launcher()
     {
         var mode = Environment.GetEnvironmentVariable("PLUGIN_LAUNCHER");
         if (OperatingSystem.IsWindows() && string.Equals(mode, "appcontainer", StringComparison.OrdinalIgnoreCase))
@@ -131,32 +91,4 @@ sealed class Harness : IAsyncDisposable
     }
 
     public ValueTask DisposeAsync() => _manager.DisposeAsync();
-}
-
-/// <summary>Collects named PASS/FAIL checks the way <c>run_tests.py</c> prints them.</summary>
-sealed class Checks(ITestOutputHelper output)
-{
-    readonly List<(string Name, bool Ok, string Detail)> _all = [];
-
-    public int Count => _all.Count;
-
-    public void Check(string name, bool ok, string detail = "")
-    {
-        _all.Add((name, ok, detail));
-        output.WriteLine($"  {(ok ? "PASS" : "FAIL")}  {name}" + (!ok && detail.Length > 0 ? $"  ({detail})" : ""));
-    }
-
-    public void AssertAllPassed()
-    {
-        var failed = _all.Where(c => !c.Ok).Select(c => $"{c.Name} ({c.Detail})").ToList();
-        Assert.True(failed.Count == 0, $"{failed.Count}/{_all.Count} checks failed: " + string.Join("; ", failed));
-    }
-}
-
-static class Json
-{
-    public static JsonElement Of(object? value) => JsonSerializer.SerializeToElement(value);
-
-    public static bool Equal(JsonElement? actual, object? expected)
-        => actual is { } a && JsonNode.DeepEquals(JsonNode.Parse(a.GetRawText()), JsonSerializer.SerializeToNode(expected));
 }

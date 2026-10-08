@@ -3,33 +3,6 @@ using OoBDev.Plugins.Protocol;
 
 namespace OoBDev.Plugins.Host;
 
-public enum PluginState { Stopped, Starting, Running, Stopping, Backoff, Failed }
-
-public sealed record SupervisorOptions
-{
-    public TimeSpan BackoffInitial { get; init; } = TimeSpan.FromMilliseconds(500);
-    public TimeSpan BackoffMax { get; init; } = TimeSpan.FromSeconds(30);
-    /// <summary>Random extra delay in [0, JitterMax) added to every backoff.</summary>
-    public TimeSpan JitterMax { get; init; } = TimeSpan.FromMilliseconds(250);
-    /// <summary>A run at least this long counts as stable and resets the backoff.</summary>
-    public TimeSpan StableAfter { get; init; } = TimeSpan.FromMinutes(1);
-    public TimeSpan CrashWindow { get; init; } = TimeSpan.FromSeconds(60);
-    public int MaxCrashesInWindow { get; init; } = 5;
-    /// <summary>How long a launched plugin has to announce <c>lifecycle.ready</c>.</summary>
-    public TimeSpan ReadyTimeout { get; init; } = TimeSpan.FromSeconds(10);
-    /// <summary>After <c>Shutdown</c>, how long to wait for exit before killing.</summary>
-    public TimeSpan ShutdownGrace { get; init; } = TimeSpan.FromSeconds(2);
-    /// <summary>Upper bound on the heartbeat period; the real period is also capped at a third of the plugin's timeout.</summary>
-    public TimeSpan HeartbeatInterval { get; init; } = TimeSpan.FromSeconds(1);
-    /// <summary>Host requests in a row that may time out before the plugin is declared hung.</summary>
-    public int MaxConsecutiveRequestTimeouts { get; init; } = 3;
-    public TimeProvider Time { get; init; } = TimeProvider.System;
-}
-
-public enum ExitReason { Requested, Exited, Hung, Violation, StartFailed, StartTimeout }
-
-public sealed record ExitRecord(ExitReason Reason, int? ExitCode, string? Detail, DateTimeOffset At);
-
 /// <summary>
 /// Supervisor for one plugin: desired state versus actual state. <see cref="Start"/> and <see cref="StopAsync"/>
 /// change intent; one loop reconciles reality, so manual control and crash recovery share a code path and
@@ -37,16 +10,16 @@ public sealed record ExitRecord(ExitReason Reason, int? ExitCode, string? Detail
 /// </summary>
 public sealed class ManagedPlugin
 {
-    readonly IPluginLauncher _launcher;
-    readonly Router _router;
-    readonly SupervisorOptions _opt;
-    readonly object _gate = new();
-    readonly List<PluginState> _history = [PluginState.Stopped];
-    readonly List<ExitRecord> _exits = [];
-    CancellationTokenSource _cts = new();
-    Task _loop = Task.CompletedTask;
-    PluginSession? _session;
-    PluginState _state = PluginState.Stopped;
+    private readonly IPluginLauncher _launcher;
+    private readonly Router _router;
+    private readonly SupervisorOptions _opt;
+    private readonly object _gate = new();
+    private readonly List<PluginState> _history = [PluginState.Stopped];
+    private readonly List<ExitRecord> _exits = [];
+    private CancellationTokenSource _cts = new();
+    private Task _loop = Task.CompletedTask;
+    private PluginSession? _session;
+    private PluginState _state = PluginState.Stopped;
 
     public ManagedPlugin(PluginSpec spec, IPluginLauncher launcher, Router router, SupervisorOptions? options = null)
     {
@@ -130,7 +103,7 @@ public sealed class ManagedPlugin
 
     // ---- the loop ----------------------------------------------------------------------------
 
-    async Task RunAsync(CancellationToken ct)
+    private async Task RunAsync(CancellationToken ct)
     {
         var crashes = new Queue<DateTimeOffset>();
         var backoff = _opt.BackoffInitial;
@@ -194,7 +167,7 @@ public sealed class ManagedPlugin
     }
 
     /// <summary>Waits for the plugin to become ready, then watches it until it ends or a stop is requested.</summary>
-    async Task<ExitRecord> SuperviseAsync(PluginSession session, CancellationToken ct)
+    private async Task<ExitRecord> SuperviseAsync(PluginSession session, CancellationToken ct)
     {
         var stop = Task.Delay(Timeout.Infinite, ct);
         var readyTimeout = Task.Delay(_opt.ReadyTimeout, _opt.Time, ct);
@@ -228,7 +201,7 @@ public sealed class ManagedPlugin
     /// Gets the process to end and disposes the session. Graceful: ask first, kill after the grace period.
     /// Otherwise it is a crash, kill straight away. Returns the record with the exit code filled in.
     /// </summary>
-    async Task<ExitRecord> StopSessionAsync(PluginSession? session, bool graceful, ExitRecord? crash = null)
+    private async Task<ExitRecord> StopSessionAsync(PluginSession? session, bool graceful, ExitRecord? crash = null)
     {
         if (session is null)
             return crash ?? Record(ExitReason.Requested, null, "stopped before launch");
@@ -259,11 +232,11 @@ public sealed class ManagedPlugin
     internal static TimeSpan NextBackoff(TimeSpan current, SupervisorOptions opt)
         => TimeSpan.FromTicks(Math.Min(current.Ticks * 2, opt.BackoffMax.Ticks));
 
-    ExitRecord Record(ExitReason reason, int? code, string? detail) => new(reason, code, detail, _opt.Time.GetUtcNow());
+    private ExitRecord Record(ExitReason reason, int? code, string? detail) => new(reason, code, detail, _opt.Time.GetUtcNow());
 
-    void Add(ExitRecord record) { lock (_gate) _exits.Add(record); }
+    private void Add(ExitRecord record) { lock (_gate) _exits.Add(record); }
 
-    void Set(PluginState state)
+    private void Set(PluginState state)
     {
         lock (_gate)
         {

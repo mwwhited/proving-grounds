@@ -17,11 +17,11 @@ namespace OoBDev.Plugins.Launchers.Linux;
 /// </summary>
 public static class SeccompFilter
 {
-    const uint Allow = 0x7fff0000, KillProcess = 0x80000000, Errno = 0x00050000;
-    const uint Eperm = 1, Enosys = 38, CloneThread = 0x00010000, X32Bit = 0x40000000;
-    const ushort Ld = 0x20, Jeq = 0x15, Jset = 0x45, Ret = 0x06;
+    private const uint Allow = 0x7fff0000, KillProcess = 0x80000000, Errno = 0x00050000;
+    private const uint Eperm = 1, Enosys = 38, CloneThread = 0x00010000, X32Bit = 0x40000000;
+    private const ushort Ld = 0x20, Jeq = 0x15, Jset = 0x45, Ret = 0x06;
 
-    sealed record Ins(ushort Code, uint K, string? Jt = null, string? Jf = null, string? Label = null);
+    private sealed record Ins(ushort Code, uint K, string? Jt = null, string? Jf = null, string? Label = null);
 
     /// <summary>The filter for this machine's architecture. Throws on one it has no syscall numbers for.</summary>
     public static byte[] NoNewProcesses() => NoNewProcesses(RuntimeInformation.ProcessArchitecture);
@@ -55,7 +55,7 @@ public static class SeccompFilter
         return Assemble(p);
     }
 
-    static byte[] Assemble(List<Ins> program)
+    private static byte[] Assemble(List<Ins> program)
     {
         var at = new Dictionary<string, int>();
         for (var i = 0; i < program.Count; i++) if (program[i].Label is { } l) at[l] = i;

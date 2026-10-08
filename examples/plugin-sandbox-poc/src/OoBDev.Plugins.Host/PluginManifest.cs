@@ -78,26 +78,26 @@ public static class PluginManifest
         throw new FormatException($"bad duration '{text}' (use 500ms, 5s or 2m)");
     }
 
-    static JsonElement? Property(JsonElement obj, string name, JsonValueKind kind)
+    private static JsonElement? Property(JsonElement obj, string name, JsonValueKind kind)
     {
         if (!obj.TryGetProperty(name, out var el) || el.ValueKind == JsonValueKind.Null) return null;
         return el.ValueKind == kind ? el : throw new FormatException($"'{name}' must be a {kind.ToString().ToLowerInvariant()}");
     }
 
-    static string RequiredString(JsonElement obj, string name)
+    private static string RequiredString(JsonElement obj, string name)
         => OptionalString(obj, name) is { Length: > 0 } s ? s : throw new FormatException($"manifest has no '{name}'");
 
-    static string? OptionalString(JsonElement obj, string name)
+    private static string? OptionalString(JsonElement obj, string name)
         => Property(obj, name, JsonValueKind.String)?.GetString();
 
-    static int? PositiveInt(JsonElement obj, string name)
+    private static int? PositiveInt(JsonElement obj, string name)
     {
         if (!obj.TryGetProperty(name, out var el) || el.ValueKind == JsonValueKind.Null) return null;
         return el.ValueKind == JsonValueKind.Number && el.TryGetInt32(out var n) && n > 0
             ? n : throw new FormatException($"'{name}' must be a positive integer");
     }
 
-    static string[] Strings(JsonElement obj, string name)
+    private static string[] Strings(JsonElement obj, string name)
         => Property(obj, name, JsonValueKind.Array) is { } arr
             ? [.. arr.EnumerateArray().Select(a => a.ValueKind == JsonValueKind.String
                 ? a.GetString()! : throw new FormatException($"'{name}' must be strings"))]
