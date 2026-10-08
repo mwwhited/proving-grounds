@@ -105,3 +105,7 @@ The simulator implements these checks itself, so they double as a spec for the r
 ## Real host (phase 1)
 
 `src/` holds the .NET 10 host core: `dotnet test src/PluginSandbox.slnx`. The `Conformance` project runs the same checks as `host-sim/run_tests.py` against the real supervisor, router and session, using these plugins unmodified plus echo-go and echo-java (build them first or their checks are skipped). `Launchers.Plain` starts plugins as ordinary processes. It is **not a sandbox**. See `docs/poc/findings.md`.
+
+### Escape results table
+
+`docs/poc/escape-results.md` is generated: `sh linux-test/run-docker.sh` (writes `linux-test/out/linux.trx`), then `python tools/escape_report.py --run-windows --trx linux=linux-test/out/linux.trx`. Which tests count for which capability is in `docs/poc/escape-matrix.json`; a row is HELD only if its denial tests and its controls all pass, and rows without a test say UNVERIFIED.

@@ -11,3 +11,4 @@ cd src
 dotnet build PluginSandbox.slnx -v q 2>&1 | grep -E " error " || true
 dotnet test PluginSandbox.slnx --no-build --logger "console;verbosity=normal" 2>&1 | grep -vE "Passed OoBDev.Plugins.(Host|Protocol)" | tail -60
 PLUGIN_LAUNCHER=bubblewrap dotnet test OoBDev.Plugins.Conformance --no-build --logger "console;verbosity=normal" 2>&1 | grep -E "Passed |Failed |Skipped |Total|Message|Error|exit" | head -40
+[ -d /out ] && (dotnet test OoBDev.Plugins.Launchers.Linux.Tests --no-build --logger "trx;LogFileName=/out/linux.trx" >/dev/null 2>&1 || true)

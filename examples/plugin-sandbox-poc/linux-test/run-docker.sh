@@ -5,4 +5,4 @@
 docker build -q -t plugin-poc-linux linux-test >/dev/null &&
 docker run --rm --user 1000:1000 -e HOME=/tmp/home -e DOTNET_CLI_HOME=/tmp/home \
   --security-opt seccomp=unconfined --security-opt apparmor=unconfined \
-  -v "$PWD:/src:ro" plugin-poc-linux sh /src/linux-test/run.sh
+  -v "$PWD:/src:ro" -v "$PWD/linux-test/out:/out" plugin-poc-linux sh /src/linux-test/run.sh
