@@ -1,0 +1,21 @@
+@startuml
+title Implementation Roadmap
+
+[*] --> Core
+Core : 1. Protocol, SDKs (.NET + one more),\nrouter, policy, supervisor
+Core --> Pkg
+Pkg : 2. Package format, manifest,\nverification, platform selection
+Pkg --> Linux
+Linux : 3. Linux shim + launcher\n(Landlock, seccomp, pdeathsig)
+Linux --> Windows
+Windows : 4. Windows launcher\n(AppContainer, per-plugin job)
+Windows --> Conf
+Conf : 5. Conformance suite in CI
+Conf --> Detached
+Detached : 6. Detached mode + reconnect
+Detached --> Mac
+Mac : 7. macOS launcher\n(reduced guarantees)
+Mac --> Extra
+Extra : 8. Optional WASM entry, LPAC,\ncgroups, more SDKs
+Extra --> [*]
+@enduml

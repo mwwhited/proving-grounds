@@ -1,0 +1,33 @@
+@startuml
+title Sandbox Application by Platform
+
+start
+:Host verifies package, picks platform entry;
+if (Platform?) then (Windows)
+  :Create/derive AppContainer SID;
+  :Grant ACLs on approved folders only;
+  :Create anonymous pipes for stdio;
+  :STARTUPINFOEX with SECURITY_CAPABILITIES\n+ HANDLE_LIST (stdio handles only);
+  :CreateProcessW suspended;
+  :Assign to per-plugin job (Bound);
+  :ResumeThread;
+elseif (Linux) then
+  :Launch native shim with socketpair on stdio;
+  :Shim sets PDEATHSIG (Bound) or setsid (Detached);
+  :Shim applies Landlock rules;
+  :Shim installs seccomp filter;
+  :Shim sets NO_NEW_PRIVS;
+  :Shim execve plugin;
+else (macOS)
+  :Launch shim / sandbox-exec;
+  :sandbox_init with Seatbelt profile;
+  :execve plugin;
+endif
+if (Sandbox applied?) then (yes)
+  :Plugin runs;
+  stop
+else (no)
+  :FAIL CLOSED: plugin does not run;
+  stop
+endif
+@enduml

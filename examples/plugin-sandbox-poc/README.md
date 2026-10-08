@@ -8,6 +8,9 @@ Example plugins for the sandboxed plugin system, in three languages, plus a stan
 
 | Path | What |
 |:--|:--|
+| `CLAUDE.md` | Instructions for working on the POC: read order, rules, scope |
+| `docs/` | Snapshot of the design (index, 12 topic files, decision log, use cases, diagrams) and the POC docs in `docs/poc/` (use cases, journeys, design, plan). See `docs/SNAPSHOT.md` |
+| `reference/` | Uncompiled C# sketches: Windows launcher, per-plugin job, supervisor. Starting points, not tested |
 | `PROFILE.md` | The wire profile: framing, envelope, the six rules every plugin follows |
 | `plugins/echo-python/` | Smallest conforming plugin (stdlib only). `echo`, `add` |
 | `plugins/echo-dotnet/` | Same behaviour in C# (.NET 10, stdlib only) |

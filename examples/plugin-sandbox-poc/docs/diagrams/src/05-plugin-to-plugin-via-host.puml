@@ -1,0 +1,20 @@
+@startuml
+title Plugin A to Plugin B via Host
+
+participant "Plugin A" as A
+participant Host as H
+participant Policy as P
+participant "Plugin B" as B
+
+A -> H : Request(Target="B", Topic="calibrate")
+H -> H : stamp Source = A
+H -> P : may A send "calibrate" to B?
+alt allowed
+  H -> B : Request (Source=A)
+  B --> H : Response
+  H --> A : Response
+else denied
+  H --> A : Error(denied)
+  H -> H : log policy denial
+end
+@enduml

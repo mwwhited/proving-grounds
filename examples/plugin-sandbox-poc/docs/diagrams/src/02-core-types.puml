@@ -1,0 +1,65 @@
+@startuml
+title Core Types
+
+enum Lifetime {
+  Bound
+  Detached
+}
+
+enum PluginState {
+  Stopped
+  Starting
+  Running
+  Stopping
+  Backoff
+  Failed
+}
+
+class PluginSpec {
+  +Id : string
+  +EntryPath : string
+  +Args : string[]
+  +Grants : PathGrant[]
+  +Lifetime : Lifetime
+  +Limits : ResourceLimits
+  +HeartbeatTimeout : TimeSpan
+  +DependsOn : string[]
+}
+
+class PathGrant {
+  +Path : string
+  +Mode : Read | Write | Execute
+}
+
+interface IPluginLauncher {
+  +Launch(spec) : PluginProcess
+}
+
+class ManagedPlugin {
+  +State : PluginState
+  +Start()
+  +StopAsync()
+  +RestartAsync()
+  +StateChanged : event
+}
+
+class PluginManager {
+  +Register(p)
+  +Start(id)
+  +StopAsync(id)
+  +ShutdownAsync()
+}
+
+class Router {
+  +OnFrameAsync()
+  +SendAsync()
+}
+
+PluginManager "1" o-- "*" ManagedPlugin
+ManagedPlugin --> IPluginLauncher
+ManagedPlugin --> PluginSpec
+ManagedPlugin --> Router
+ManagedPlugin --> PluginState
+PluginSpec --> Lifetime
+PluginSpec o-- PathGrant
+@enduml

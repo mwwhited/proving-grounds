@@ -1,0 +1,29 @@
+@startuml
+title Component Overview
+
+package "Host Application (.NET 10)" {
+  [PluginManager] as PM
+  [ManagedPlugin\n(supervisor loop)] as MP
+  [Router + Policy] as R
+  [Package Loader\n(verify, extract)] as PL
+  interface IPluginLauncher
+  [WindowsLauncher] as WL
+  [LinuxLauncher\n+ native shim] as LL
+  [MacLauncher] as ML
+  [WasmtimeLauncher\n(optional)] as WT
+}
+
+package "Sandboxed Plugin Process" {
+  [Plugin executable\n(any language, uses SDK)] as P
+}
+
+PM --> MP : 1..n
+PM --> PL
+MP --> IPluginLauncher
+IPluginLauncher <|.. WL
+IPluginLauncher <|.. LL
+IPluginLauncher <|.. ML
+IPluginLauncher <|.. WT
+MP <--> R : frames
+R <--> P : stdio channel
+@enduml

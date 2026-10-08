@@ -1,0 +1,37 @@
+@startuml
+title Start, Crash Recovery, and Stop
+
+actor Operator
+participant PluginManager as PM
+participant ManagedPlugin as MP
+participant IPluginLauncher as L
+participant "Plugin Process" as P
+
+Operator -> PM : Start("telemetry")
+PM -> MP : Start()
+MP -> L : Launch(spec)
+L --> MP : process + channel
+P --> MP : heartbeat
+note right of MP : Running
+
+== Crash ==
+P -[#red]> P : crash
+MP -> MP : Backoff, wait
+MP -> L : Launch(spec) (fresh sandbox)
+MP -> P : replay in-flight requests by ID
+
+== Hang ==
+P -[#red]> P : stops answering pings
+MP -> P : Kill(tree)
+MP -> MP : treat as crash
+
+== Intentional stop ==
+Operator -> PM : StopAsync("telemetry")
+MP -> P : Shutdown message
+alt exits within 2 s
+  P --> MP : exit 0
+else timeout
+  MP -> P : Kill(tree)
+end
+note right of MP : Stopped (no restart)
+@enduml

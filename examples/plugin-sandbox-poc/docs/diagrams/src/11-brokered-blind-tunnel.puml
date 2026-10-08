@@ -1,0 +1,33 @@
+@startuml
+title Brokered Blind Tunnel to an External Service (proposed)
+
+participant "Plugin (sandboxed, no network)" as P
+participant "Host Broker" as B
+participant "Policy Engine" as PE
+participant "DNS / Network" as N
+participant "External service\n(e.g. MongoDB)" as X
+
+P -> B : StreamOpen(permissionId, "mongo.example.com", 27017)
+B -> B : stamp Source = plugin
+B -> PE : permission approved for this host + port + transport?
+alt allowed
+  B -> N : resolve name (host resolves, not the plugin)
+  B -> B : reject loopback / private / metadata ranges\n(unless the approval names them)
+  B -> X : TCP connect
+  X --> B : connected
+  B --> P : StreamOpened(streamId)
+  P <-> B : StreamData (credit-based flow control)
+  B <-> X : bytes copied, TLS untouched
+  note over B
+    Blind: host never terminates TLS
+    and never sees plaintext.
+    Enforced: destination, bytes, duration,
+    connection count, rate. All logged.
+  end note
+else denied
+  B --> P : Error(denied)
+  B -> B : log denial
+end
+P -> B : StreamClose
+B -> X : close
+@enduml

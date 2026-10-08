@@ -1,0 +1,13 @@
+@startuml
+title Hub-and-Spoke Topology
+
+node "Host (router + policy)" as H
+node "Plugin A" as A
+node "Plugin B" as B
+node "Plugin C" as C
+
+H <--> A : channel A
+H <--> B : channel B
+H <--> C : channel C
+A -[#red,dashed]-> B : impossible: no network,\nno peer endpoints
+@enduml

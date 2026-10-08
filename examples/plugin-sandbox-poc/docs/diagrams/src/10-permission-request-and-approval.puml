@@ -1,0 +1,31 @@
+@startuml
+title Permission Request and Approval (proposed)
+
+actor "Operator / User" as U
+participant "Package Loader" as PL
+participant "Approval Store" as AS
+participant "Policy Engine" as PE
+participant "Launcher" as L
+participant "Plugin" as P
+
+PL -> PL : verify signature + hashes
+PL -> AS : lookup(pluginId, packageHash)
+alt approval on file covers every requested permission
+  AS --> PE : approved set
+else new or widened request
+  AS --> U : review (what, why, data-flow warnings)
+  alt approved
+    U -> AS : record decision (scope, expiry, granted limits)
+  else denied
+    U -> AS : record denial
+  end
+end
+PE -> PE : effective = requested ∩ approved ∩ host ceiling
+PE -> L : spec with effective grants + limits
+L -> P : launch sandbox (deny-all baseline)
+note right of P
+  Approval changes what the broker
+  will serve and the limits applied.
+  The OS sandbox stays deny-all.
+end note
+@enduml

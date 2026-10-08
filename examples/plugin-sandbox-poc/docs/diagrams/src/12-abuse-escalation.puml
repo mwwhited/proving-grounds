@@ -1,0 +1,21 @@
+@startuml
+title Abuse and Resource Escalation Ladder (proposed)
+
+[*] --> Normal
+Normal --> Burst : above steady rate, within burst allowance
+Burst --> Normal : back under limit
+Burst --> Throttled : sustained over limit
+Throttled --> Normal : back under limit for a quiet period
+Throttled --> Warned : still over limit
+Warned --> Normal : back under limit
+Warned --> Killed : still over limit, or OS hard limit hit
+Killed --> Restarting : restart with backoff
+Restarting --> Normal : stable for 1 minute
+Restarting --> Quarantined : repeated violations in window
+Quarantined --> Normal : operator clears + reviews
+
+Throttled : backpressure / delay reads
+Warned : "slow down" event to plugin + log
+Killed : kill process tree
+Quarantined : state = Failed, no auto restart,\nuser or admin notified
+@enduml

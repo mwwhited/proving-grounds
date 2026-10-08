@@ -1,0 +1,15 @@
+@startuml
+title Plugin State Machine
+
+[*] --> Stopped
+Stopped --> Starting : Start()
+Starting --> Running : launched + first heartbeat
+Starting --> Backoff : launch failed
+Running --> Stopping : Stop()
+Running --> Backoff : crash or heartbeat timeout
+Backoff --> Starting : delay elapsed
+Backoff --> Stopping : Stop()
+Backoff --> Failed : 5 crashes in 60 s
+Stopping --> Stopped : process gone
+Failed --> Starting : manual Start()
+@enduml

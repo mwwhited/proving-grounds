@@ -1,0 +1,26 @@
+@startuml
+title Host Crash: Bound vs Detached
+
+participant Host as H
+participant "OS Kernel" as K
+participant "Bound Plugin" as B
+participant "Detached Plugin" as D
+
+== Normal ==
+H <-> B : heartbeat
+H <-> D : heartbeat
+
+== Host crashes ==
+H -[#red]> H : crash / kill -9
+K -> B : kill (job close / pdeathsig / EOF)
+destroy B
+D -> D : channel lost -> orphan mode\n(buffer, wait for reconnect)
+
+== Host restarts ==
+H -> H : read state file
+H -> D : ping (verify PID + start time)
+D --> H : alive
+H -> D : reconnect + token
+D --> H : flush buffered data
+H -> H : launch fresh Bound plugins
+@enduml
