@@ -11,7 +11,9 @@
     { "id": "net-internet", "what": "Connect to the internet",
       "windows": { "deny": ["The_internet_cannot_be_reached"], "control": ["Control_loopback_is_reachable_without_the_sandbox"] },
       "linux": { "deny": ["The_internet_cannot_be_reached"], "control": ["Control_loopback_is_reachable_without_the_sandbox"] } },
-    { "id": "net-dns", "what": "Resolve a name", "windows": {}, "linux": {} },
+    { "id": "net-dns", "what": "Resolve a name",
+      "windows": { "deny": ["Names_cannot_be_resolved"], "control": ["Control_names_resolve_without_the_sandbox"] },
+      "linux": { "deny": ["Names_cannot_be_resolved"], "control": ["Control_names_resolve_without_the_sandbox"] } },
     { "id": "spawn", "what": "Start a child process",
       "windows": { "deny": ["A_plugin_cannot_start_a_child_process", "A_plugin_cannot_start_children_in_a_loop"], "control": ["Control_without_the_sandbox_a_plugin_can_start_many_children"] },
       "linux": { "deny": ["By_default_a_plugin_cannot_start_a_child_process", "By_default_a_plugin_cannot_fork"], "control": ["Control_a_plugin_that_is_allowed_children_can_start_one", "Control_threads_still_work_under_the_filter"] } },
@@ -45,7 +47,9 @@
     { "id": "stale-grants", "what": "Leave access grants behind after uninstall",
       "windows": { "deny": ["Uninstall_removes_the_grants_and_the_container"], "control": [] },
       "linux": { "na": true } },
-    { "id": "handles", "what": "Enumerate its open handles or file descriptors", "windows": {}, "linux": {} },
+    { "id": "handles", "what": "Inherit pipes or sockets beyond its own channel",
+      "windows": { "deny": ["The_plugin_holds_only_its_three_channel_pipes"], "control": ["Control_the_plugin_runs_in_an_appcontainer"] },
+      "linux": { "deny": ["The_plugin_holds_only_its_three_channel_pipes_and_nothing_else"], "control": ["Control_the_plugin_runs_in_a_pid_namespace"] } },
     { "id": "peer-channel", "what": "Open another plugin's channel", "windows": {}, "linux": {} }
   ]
 }

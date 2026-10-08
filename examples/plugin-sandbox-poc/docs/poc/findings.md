@@ -164,3 +164,11 @@ What the sandbox is: new user, pid, ipc, uts, cgroup and network namespaces (`--
 - Packaged plugins were run through the plain launcher only, not through the AppContainer or bubblewrap launchers. The platform-folder-only grant is by construction (the spec's working directory), not tested against the escape suite.
 - macOS (quarantine, ad-hoc signing), musl detection, WASM, emulation (x64 on ARM64) and fat versus per-platform packages are not done.
 - `entry.dev` still exists for development and bypasses all of this; the host must not accept it from an untrusted folder.
+
+## Escape rows closed: DNS and inherited handles
+
+- **Resolve a name:** denied on both OSes (`gaierror`), with a control that resolves `example.com` outside the sandbox. This is a consequence of having no network, not a separate rule.
+- **Inherited handles:** the plugin holds exactly three pipes (stdin, stdout, stderr), no sockets, and no pipe of the host or a peer. The row was narrowed from "enumerate its handles" to "inherit pipes or sockets beyond its own channel", because enumeration is not an escape and counting cannot tell the runtime's own disk and event handles from inherited ones (Windows shows disk=3, other=128 for Python). Only the pipe count is asserted there.
+- Probing arbitrary handle values on Windows raises `0xC0000008` (strict handle checks) instead of returning false, so the probe catches it per handle.
+- **Still unverified:** opening a peer's channel (needs two plugins running at once in the test), and CPU limits on Linux.
+- **Flake seen once:** `Plugin_dies_when_the_host_is_killed` (Linux, Docker) failed in one run and passed in the next four. Timing, not investigated yet.

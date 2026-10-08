@@ -194,6 +194,29 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         Denied(await RunAsync(new { probe = "connect", host = "1.1.1.1", port = 443 }));
     }
 
+    [WindowsFact]
+    public async Task Control_names_resolve_without_the_sandbox()
+    {
+        Assert.NotEmpty(await Dns.GetHostAddressesAsync("example.com"));   // so a failed lookup below is the sandbox, not a dead network
+    }
+
+    [WindowsFact]
+    public async Task Names_cannot_be_resolved()
+    {
+        Denied(await RunAsync(new { probe = "resolve", host = "example.com" }));
+    }
+
+    [WindowsFact]
+    public async Task The_plugin_holds_only_its_three_channel_pipes()
+    {
+        var r = await RunAsync(new { probe = "handles" });
+        Allowed(r);
+        output.WriteLine(r.Detail);
+        // stdin, stdout, stderr: its own channel and no pipe of the host or a peer plugin. Disk and other handles are the
+        // runtime's own (script, DLLs, events) and cannot be told from inherited ones by counting, so they are not asserted.
+        Assert.Contains("pipe=3", r.Detail);
+    }
+
     // ---- processes ----
 
     [WindowsFact]

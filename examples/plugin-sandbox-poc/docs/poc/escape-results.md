@@ -8,7 +8,7 @@ HELD means every denial test passed and so did its control. Read the notes at th
 |:--|:-:|:-:|
 | Connect to a service on the host machine | HELD | HELD |
 | Connect to the internet | HELD | HELD |
-| Resolve a name | UNVERIFIED | UNVERIFIED |
+| Resolve a name | HELD | HELD |
 | Start a child process | HELD | HELD |
 | Fork without limit | HELD | HELD |
 | Read files or list folders outside its grants | HELD | HELD |
@@ -20,18 +20,14 @@ HELD means every denial test passed and so did its control. Read the notes at th
 | Exceed its CPU limit | HELD | UNVERIFIED |
 | Keep running after the host is killed | HELD | HELD |
 | Leave access grants behind after uninstall | HELD | n/a |
-| Enumerate its open handles or file descriptors | UNVERIFIED | UNVERIFIED |
+| Inherit pipes or sockets beyond its own channel | HELD | HELD |
 | Open another plugin's channel | UNVERIFIED | UNVERIFIED |
 
-Held: windows 13/16, linux 10/14
+Held: windows 15/16, linux 12/14
 
 ## Not held or not verified
 
-- **Resolve a name** on windows: UNVERIFIED (no test)
-- **Resolve a name** on linux: UNVERIFIED (no test)
 - **Exceed its CPU limit** on linux: UNVERIFIED (no test)
-- **Enumerate its open handles or file descriptors** on windows: UNVERIFIED (no test)
-- **Enumerate its open handles or file descriptors** on linux: UNVERIFIED (no test)
 - **Open another plugin's channel** on windows: UNVERIFIED (no test)
 - **Open another plugin's channel** on linux: UNVERIFIED (no test)
 

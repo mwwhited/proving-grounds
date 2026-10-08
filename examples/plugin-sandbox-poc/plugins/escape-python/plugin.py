@@ -57,6 +57,42 @@ def connect(a):
         return "connected to %s:%s" % (a["host"], a["port"])
 
 
+def resolve(a):
+    addrs = sorted({x[4][0] for x in socket.getaddrinfo(a["host"], None)})
+    return "resolved %s to %s" % (a["host"], ",".join(addrs))
+
+
+def handles(a):
+    # what does this process hold open? Windows: probe every handle value; Linux: read /proc/self/fd
+    kinds = {}
+    if os.name == "nt":
+        import ctypes
+        k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        names = {1: "disk", 2: "char", 3: "pipe"}
+        for h in range(4, 16384, 4):
+            try:   # strict handle checks make a closed handle value raise instead of returning false
+                if k32.GetHandleInformation(ctypes.c_void_p(h), ctypes.byref(ctypes.c_uint32())):
+                    t = names.get(k32.GetFileType(ctypes.c_void_p(h)), "other")
+                    kinds[t] = kinds.get(t, 0) + 1
+            except OSError:
+                pass
+    else:
+        for fd in os.listdir("/proc/self/fd"):
+            try:
+                target = os.readlink("/proc/self/fd/" + fd)
+            except OSError:
+                continue
+            if target.startswith("/proc/"):
+                continue   # the descriptor listdir itself opened
+            t = "pipe" if target.startswith("pipe:") else "socket" if target.startswith("socket:") else "dir" if os.path.isdir(target) and fd not in "012" else "other"
+            if target.startswith("/dev/null"):
+                t = "null"
+            kinds[t] = kinds.get(t, 0) + 1
+            if t not in ("pipe", "null"):
+                kinds["[" + fd + "->" + target + "]"] = 1
+    return "handles " + " ".join("%s=%d" % kv for kv in sorted(kinds.items()))
+
+
 def spawn(a):
     r = subprocess.run(a.get("cmd", ["cmd.exe", "/c", "echo", "child"] if os.name == "nt" else ["/bin/true"]), capture_output=True, timeout=5)
     return "child exited %s" % r.returncode
@@ -181,7 +217,7 @@ def whoami(a):
 
 PROBES = {
     "read-file": read_file, "write-file": write_file, "list-dir": list_dir, "connect": connect,
-    "spawn": spawn, "spawnloop": spawnloop, "open-process": open_process, "read-env": read_env, "registry-write": registry_write,
+    "spawn": spawn, "resolve": resolve, "handles": handles, "spawnloop": spawnloop, "open-process": open_process, "read-env": read_env, "registry-write": registry_write,
     "allocate": allocate, "pid": pid, "spin": spin, "threads": threads, "forkbomb": forkbomb, "whoami": whoami,
     # positive controls: the same operations against places the host granted
     "ok-read-file": read_file, "ok-write-file": write_file, "ok-list-dir": list_dir,

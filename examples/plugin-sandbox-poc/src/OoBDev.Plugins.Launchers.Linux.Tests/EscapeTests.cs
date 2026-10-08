@@ -173,6 +173,25 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
     public async Task The_internet_cannot_be_reached() =>
         Denied(await RunAsync(new { probe = "connect", host = "1.1.1.1", port = 443 }));
 
+    [LinuxFact]
+    public async Task Control_names_resolve_without_the_sandbox() =>
+        Assert.NotEmpty(await Dns.GetHostAddressesAsync("example.com"));   // so a failed lookup below is the sandbox, not a dead network
+
+    [LinuxFact]
+    public async Task Names_cannot_be_resolved() =>
+        Denied(await RunAsync(new { probe = "resolve", host = "example.com" }));
+
+    [LinuxFact]
+    public async Task The_plugin_holds_only_its_three_channel_pipes_and_nothing_else()
+    {
+        var r = await RunAsync(new { probe = "handles" });
+        Allowed(r);
+        output.WriteLine(r.Detail);
+        Assert.Contains("pipe=3", r.Detail);
+        Assert.DoesNotContain("socket=", r.Detail);
+        Assert.DoesNotContain("other=", r.Detail);
+    }
+
     // ---- processes: threads yes, new processes no ----
 
     [LinuxFact]
