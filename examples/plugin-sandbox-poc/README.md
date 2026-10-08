@@ -88,3 +88,7 @@ The simulator implements these checks itself, so they double as a spec for the r
 - No sandbox, no policy router, no supervisor restart logic, no packaging or signing.
 - `flood` is checked by counting what arrived in one second, not by a real rate limiter.
 - Windows and Linux/macOS behave the same here only because nothing OS-specific runs.
+
+## Real host (phase 1)
+
+`src/` holds the .NET 10 host core: `dotnet test src/PluginSandbox.slnx`. The `Conformance` project runs the same 36 checks as `host-sim/run_tests.py` against the real supervisor, router and session, using these plugins unmodified (build `echo-dotnet` first or its check is skipped). `Launchers.Plain` starts plugins as ordinary processes. It is **not a sandbox**. See `docs/poc/findings.md`.

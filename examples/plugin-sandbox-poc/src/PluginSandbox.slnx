@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="OoBDev.Plugins.Protocol/OoBDev.Plugins.Protocol.csproj" />
+    <Project Path="OoBDev.Plugins.Host/OoBDev.Plugins.Host.csproj" />
+    <Project Path="OoBDev.Plugins.Launchers.Plain/OoBDev.Plugins.Launchers.Plain.csproj" />
+    <Project Path="OoBDev.Plugins.Bench/OoBDev.Plugins.Bench.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="OoBDev.Plugins.Protocol.Tests/OoBDev.Plugins.Protocol.Tests.csproj" />
+    <Project Path="OoBDev.Plugins.Host.Tests/OoBDev.Plugins.Host.Tests.csproj" />
+    <Project Path="OoBDev.Plugins.Conformance/OoBDev.Plugins.Conformance.csproj" />
+  </Folder>
+</Solution>

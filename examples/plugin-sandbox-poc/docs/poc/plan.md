@@ -79,11 +79,11 @@ Each runs as a plugin in the sandbox and reports what it managed to do. The expe
 - [x] Misbehaving fixture with 8 modes
 - [x] Stand-in host and 36 checks
 - [x] Use cases, journeys, design and plan documented
-- [ ] Phase 1: Protocol library
-- [ ] Phase 1: Supervisor with state-machine tests
-- [ ] Phase 1: Router and policy
-- [ ] Phase 1: Plain-process launcher and adapter to the shared checks
-- [ ] Phase 1: Wire encoding decided and measured
+- [x] Phase 1: Protocol library
+- [x] Phase 1: Supervisor with state-machine tests
+- [x] Phase 1: Router and policy
+- [x] Phase 1: Plain-process launcher and adapter to the shared checks
+- [x] Phase 1: Wire encoding decided and measured
 - [ ] Phase 2: AppContainer launcher compiling
 - [ ] Phase 2: Open Windows claims verified
 - [ ] Phase 2: Escape suite passing on Windows

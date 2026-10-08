@@ -4,7 +4,7 @@ Proof of concept for a sandboxed, any-language plugin system hosted by a .NET 10
 
 ## Read first
 
-1. `docs/poc/plan.md`: phases, exit criteria, checklist. **Phase 1 (real .NET host core) is next.**
+1. `docs/poc/plan.md`: phases, exit criteria, checklist. **Phase 1 (real .NET host core) is done; phase 2 (Windows sandbox) is next.**
 2. `docs/planning-shell-CLAUDE.md`: settled decisions, corrections, conventions, open questions. Treat the settled decisions as fixed.
 3. `docs/design.md`: index to the design topic files in `docs/design/` (section numbers `§N` map to files there).
 4. `docs/poc/design.md`, `use-cases.md`, `user-journeys.md`: POC scope, actors and journeys.
@@ -14,7 +14,8 @@ Proof of concept for a sandboxed, any-language plugin system hosted by a .NET 10
 
 - `PROFILE.md`, `plugins/` (Python, C#, Node, and a `chaos-python` misbehaviour fixture), `host-sim/` (stand-in host and 36 checks). Run `python host-sim/run_tests.py`; build the .NET plugin first (`dotnet publish -c Release -o out` in `plugins/echo-dotnet`). See `README.md`.
 - `reference/`: uncompiled C# sketches. Treat as a starting point.
-- Nothing is sandboxed yet. No real host, supervisor or router yet.
+- `src/PluginSandbox.slnx`: the real host core (phase 1). `Protocol`, `Host` (supervisor, router, session), `Launchers.Plain` (a plain process, NOT a sandbox), `Bench`, and three test projects including `Conformance`, which runs the same 36 checks against the real host. `dotnet test src/PluginSandbox.slnx`.
+- Nothing is sandboxed yet.
 
 ## Rules
 

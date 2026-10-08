@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\OoBDev.Plugins.Protocol\OoBDev.Plugins.Protocol.csproj" />
+  </ItemGroup>
+</Project>
