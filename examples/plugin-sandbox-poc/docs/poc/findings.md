@@ -98,3 +98,11 @@ So: the phase 2 exit criteria are met for network, process spawn, file reads out
 - An AppContainer launched with an explicit environment block needs `LOCALAPPDATA`; scrub the host environment (it leaks otherwise).
 - Node needs `--preserve-symlinks-main` under an AppContainer; the JVM may not start at all (open).
 - Per-user language runtimes need an explicit read grant; Program Files installs do not.
+
+## Linux run of phase 1 (plain launcher, no sandbox)
+
+Run in Docker (`linux-test/`: .NET 10 SDK image plus Python, Go, a JDK, Node, bubblewrap; `docker build -t plugin-poc-linux linux-test`, then run `linux-test/run.sh` with the POC mounted at `/src`). WSL was checked too: it has no native toolchains and needs a sudo password, so Docker is the route.
+
+- The stand-in host checks (46 with the Go and Java plugins built) and the real host's conformance suite (echo-go, echo-java, echo-dotnet, echo-python, ticker-node, chaos) all pass, plus the 33 host tests and 35 protocol tests. No plugin or host change was needed.
+- Needed only environment changes: a `python` command (manifests say `python`; Debian ships `python3`, so the image installs `python-is-python3`) and the Go binary path without `.exe`.
+- This says nothing about isolation. The plain launcher is not a sandbox, and there is no Linux sandbox launcher yet (phase 4). Docker's own seccomp and user-namespace limits will need to be accounted for when one is built.

@@ -43,7 +43,7 @@ public sealed class FactRequiresAttribute : FactAttribute
     {
         if (appContainerGap is not null && Environment.GetEnvironmentVariable("PLUGIN_LAUNCHER") == "appcontainer") { Skip = "known AppContainer gap: " + appContainerGap; return; }
         if (tool is not null && !Paths.OnPath(tool)) Skip = $"{tool} not found on PATH";
-        else if (file is not null && !File.Exists(Path.Combine(Paths.Plugins, file)))
+        else if (file is not null && !File.Exists(Path.Combine(Paths.Plugins, OperatingSystem.IsWindows() ? file : file.Replace(".exe", ""))))
             Skip = $"{file} not built (dotnet publish -c Release -o out in plugins/echo-dotnet)";
     }
 }

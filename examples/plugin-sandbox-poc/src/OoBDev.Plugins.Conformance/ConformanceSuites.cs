@@ -21,7 +21,8 @@ public class GoodPluginConformance(ITestOutputHelper output)
 
     [FactRequires(file: "echo-go/out/echo-go.exe")] public Task EchoGo() => RunEcho("echo-go");
 
-    [FactRequires("java", file: "echo-java/out/EchoPlugin.class")] public Task EchoJava() => RunEcho("echo-java");
+    [FactRequires("java", file: "echo-java/out/EchoPlugin.class",
+        appContainerGap: "java cannot open its own java.security under an AppContainer (AccessDenied) although the ACL allows it; see docs/poc/findings.md")] public Task EchoJava() => RunEcho("echo-java");
 
     async Task RunEcho(string name)
     {
