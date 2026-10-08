@@ -12,7 +12,7 @@ Proof of concept for a sandboxed, any-language plugin system hosted by a .NET 10
 
 ## What exists
 
-- `PROFILE.md`, `plugins/` (Python, C#, Node, and a `chaos-python` misbehaviour fixture), `host-sim/` (stand-in host and 36 checks). Run `python host-sim/run_tests.py`; build the .NET plugin first (`dotnet publish -c Release -o out` in `plugins/echo-dotnet`). See `README.md`.
+- `PROFILE.md`, `plugins/` (Python, C#, Go, Java, Node, and a `chaos-python` misbehaviour fixture; each has a README and `.gitignore`), `host-sim/` (stand-in host and 36 checks). Run `python host-sim/run_tests.py`; build the compiled plugins first (see `README.md`: dotnet, go, javac). See `README.md`.
 - `reference/`: uncompiled C# sketches. Treat as a starting point.
 - `src/PluginSandbox.slnx`: the real host core (phase 1). `Protocol`, `Host` (supervisor, router, session), `Launchers.Plain` (a plain process, NOT a sandbox), `Bench`, and three test projects including `Conformance`, which runs the same 36 checks against the real host. `dotnet test src/PluginSandbox.slnx`.
 - Nothing is sandboxed yet.

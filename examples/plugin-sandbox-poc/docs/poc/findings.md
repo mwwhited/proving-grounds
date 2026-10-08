@@ -2,7 +2,9 @@
 
 ## Phase 1: real host core
 
-**Result:** the same four plugins, unmodified, pass the same 36 checks against the real host (`src/OoBDev.Plugins.Conformance`: echo-python 10, echo-dotnet 10, ticker-node 7, chaos-python 9). `python host-sim/run_tests.py` still passes 36/36. Also: 35 protocol tests (incl. seeded property tests) and 33 host tests (supervisor transitions, router policy).
+**Result:** the same four plugins, unmodified, pass the same 36 checks against the real host (`src/OoBDev.Plugins.Conformance`: echo-python 10, echo-dotnet 10, ticker-node 7, chaos-python 9). `python host-sim/run_tests.py` still passes those 36.
+
+Afterwards two more languages were added as external plugins with the same 10 checks each: **echo-go** (stdlib only, native binary) and **echo-java** (JDK only). Both pass on the stand-in and the real host, so the stand-in now has 56 checks. `echo-dotnet` was already a separate program outside the solution; it is launched as `dotnet out/EchoPlugin.dll`. Also: 35 protocol tests (incl. seeded property tests) and 33 host tests (supervisor transitions, router policy).
 
 Nothing is sandboxed. `Launchers.Plain` is an ordinary child process.
 
@@ -26,6 +28,7 @@ The stand-in only observed; the real host acts, so some checks assert the action
 - `Utf8JsonReader` validates UTF-8 lazily, so invalid bytes inside a skipped field parsed "successfully". The property test caught it. The parser now checks `Utf8.IsValid` first.
 - `Enum.TryParse` accepts numbers and `"Request,Event"`. Message type is now an exact-name lookup.
 - Plugins could publish any `lifecycle.*` topic to the host. Now only `lifecycle.ready` is accepted from a plugin.
+- The plain launcher resolved only bare command names. A manifest command like `out/echo-go` is now resolved against the plugin folder (with `.exe` added on Windows).
 - Backoff was doubled before use, so the first retry waited 1 s, not 500 ms.
 - A request timeout alone must not reset the failure counter; only a matched reply does. Otherwise `sidebeat` hides forever.
 

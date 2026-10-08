@@ -1,8 +1,8 @@
 # Example plugins and test harness
 
-Example plugins for the sandboxed plugin system, in three languages, plus a stand-in host that runs them. Written against the design in `plugin-sandbox-project/docs/design/`.
+Example plugins for the sandboxed plugin system, in five languages (Python, C#, Node, Go, Java), a stand-in host that runs them, and a real .NET 10 host core (`src/`). Written against the design in `plugin-sandbox-project/docs/design/`.
 
-**What this is not:** a sandbox. There is no host, launcher, permission model or isolation here. Plugins run as ordinary child processes. What the examples prove is the *protocol contract*: framing, heartbeat, lifecycle, config, and what the host must detect when a plugin misbehaves. The wire encoding is an **example profile**, not a settled decision (see `PROFILE.md`).
+**What this is not:** a sandbox yet. There is a real host (supervisor, router, protocol) but no isolation or permission model. Plugins run as ordinary child processes. What the examples prove is the *protocol contract*: framing, heartbeat, lifecycle, config, and what the host must detect when a plugin misbehaves. The wire encoding is an **example profile**, not a settled decision (see `PROFILE.md`).
 
 ## Contents
 
@@ -12,8 +12,11 @@ Example plugins for the sandboxed plugin system, in three languages, plus a stan
 | `docs/` | Snapshot of the design (index, 12 topic files, decision log, use cases, diagrams) and the POC docs in `docs/poc/` (use cases, journeys, design, plan). See `docs/SNAPSHOT.md` |
 | `reference/` | Uncompiled C# sketches: Windows launcher, per-plugin job, supervisor. Starting points, not tested |
 | `PROFILE.md` | The wire profile: framing, envelope, the six rules every plugin follows |
+| `src/` | The real .NET 10 host core (phase 1): Protocol, Host, plain launcher, tests, conformance, bench. `src/PluginSandbox.slnx` |
 | `plugins/echo-python/` | Smallest conforming plugin (stdlib only). `echo`, `add` |
 | `plugins/echo-dotnet/` | Same behaviour in C# (.NET 10, stdlib only) |
+| `plugins/echo-go/` | Same behaviour in Go (stdlib only, native binary) |
+| `plugins/echo-java/` | Same behaviour in Java (JDK only) |
 | `plugins/ticker-node/` | Publishes `demo.tick` events; asks the host for config (`config.get`) |
 | `plugins/chaos-python/` | **Test fixture.** Misbehaves on purpose (8 modes). Never a template |
 | `host-sim/hostsim.py` | Stand-in host: frame I/O, `Source` stamping, `config.get`, kill on violation |
@@ -21,15 +24,16 @@ Example plugins for the sandboxed plugin system, in three languages, plus a stan
 
 ## Requirements
 
-Python 3.10+, Node 18+ (for `ticker-node`), .NET 10 SDK (for `echo-dotnet`). Missing tools make that target skip, not fail.
+Python 3.10+, Node 18+ (`ticker-node`), .NET 10 SDK (`echo-dotnet` and the host), Go 1.22+ (`echo-go`), a JDK 17+ (`echo-java`). Missing tools make that target skip, not fail. Each plugin folder has its own README.
 
 ## Build
 
-Only the .NET plugin needs a build:
+Three plugins need a build step (outputs go to a git-ignored `out/`):
 
 ```bash
-cd plugins/echo-dotnet
-dotnet publish -c Release -o out
+(cd plugins/echo-dotnet && dotnet publish -c Release -o out)
+(cd plugins/echo-go && go build -o out/echo-go.exe .)   # out/echo-go on Linux/macOS
+(cd plugins/echo-java && javac -d out EchoPlugin.java)
 ```
 
 ## Run by hand
@@ -54,10 +58,10 @@ Swap the command for `["dotnet", "out/EchoPlugin.dll"]` or `["node", "plugin.js"
 
 ```bash
 python host-sim/run_tests.py                 # all targets
-python host-sim/run_tests.py echo-python     # one target: echo-python | echo-dotnet | ticker-node | chaos
+python host-sim/run_tests.py echo-python     # one target: echo-python | echo-dotnet | echo-go | echo-java | ticker-node | chaos
 ```
 
-Expected: `36/36 checks passed`.
+Expected with everything built: `56/56 checks passed` (the original three languages plus chaos are the 36 the real host must also pass; Go and Java add 20). Real host: `dotnet test src/PluginSandbox.slnx`.
 
 **Good plugins** are checked for: ready event, heartbeat reply, `echo`/`add` correctness, `Error` on unknown topic and bad payload, a 200 KB payload, exit 0 on `Shutdown`, no stray stdout, and never setting `source`.
 
@@ -85,10 +89,10 @@ The simulator implements these checks itself, so they double as a spec for the r
 
 ## Known limits
 
-- No sandbox, no policy router, no supervisor restart logic, no packaging or signing.
-- `flood` is checked by counting what arrived in one second, not by a real rate limiter.
+- No sandbox and no packaging or signing. The stand-in host has no router or restart logic; the real host in `src/` does.
+- In the stand-in, `flood` is checked by counting what arrived in one second; the real host drops and counts the excess.
 - Windows and Linux/macOS behave the same here only because nothing OS-specific runs.
 
 ## Real host (phase 1)
 
-`src/` holds the .NET 10 host core: `dotnet test src/PluginSandbox.slnx`. The `Conformance` project runs the same 36 checks as `host-sim/run_tests.py` against the real supervisor, router and session, using these plugins unmodified (build `echo-dotnet` first or its check is skipped). `Launchers.Plain` starts plugins as ordinary processes. It is **not a sandbox**. See `docs/poc/findings.md`.
+`src/` holds the .NET 10 host core: `dotnet test src/PluginSandbox.slnx`. The `Conformance` project runs the same checks as `host-sim/run_tests.py` against the real supervisor, router and session, using these plugins unmodified plus echo-go and echo-java (build them first or their checks are skipped). `Launchers.Plain` starts plugins as ordinary processes. It is **not a sandbox**. See `docs/poc/findings.md`.
