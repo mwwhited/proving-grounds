@@ -172,3 +172,12 @@ What the sandbox is: new user, pid, ipc, uts, cgroup and network namespaces (`--
 - Probing arbitrary handle values on Windows raises `0xC0000008` (strict handle checks) instead of returning false, so the probe catches it per handle.
 - **Still unverified:** opening a peer's channel (needs two plugins running at once in the test), and CPU limits on Linux.
 - **Flake seen once:** `Plugin_dies_when_the_host_is_killed` (Linux, Docker) failed in one run and passed in the next four. Timing, not investigated yet.
+
+## Leaked file descriptors, and the peer-process row
+
+- **Real leak found on Linux:** a run of the handles test showed fd 203 in the plugin, pointing at a CA-certificate file the host process had open (opened without close-on-exec by .NET's OpenSSL). bubblewrap does not close inherited descriptors, and a descriptor still works inside the sandbox even though its path is not mounted. The launcher's `sh` wrapper now closes every descriptor above 2 before it opens the seccomp filter on fd 3 and execs bwrap.
+- **Fix needed bash:** Debian's `/bin/sh` is dash, which only accepts single-digit descriptors in a redirection (`exec 203<&-` ran a command named `200`, exit 127). The wrapper uses `bash` when `/bin/bash` or `/usr/bin/bash` exists and falls back to `sh`, which can only close fds 4 to 9. A host without bash would keep the leak: say so if quoting the Linux result.
+- **A bash trap:** an `exec` inside a loop with `done 2>/dev/null` made that redirect permanent and turned the plugin's stderr into `/dev/null`. The handles probe caught it.
+- **Test for the leak is deterministic:** the test dups a descriptor to clear close-on-exec, runs the probe, and expects it absent. Its control runs the same probe with the plain launcher and must see the descriptor, so the denial cannot pass by accident.
+- **Windows** passes an explicit handle list, and shows exactly three pipes.
+- **Peer process:** a second plugin cannot open the first one's process (Windows: access denied; Linux: not visible in its own `/proc`). Both tests keep the victim running and check the host can reach that pid. A plugin's channel is an anonymous pipe pair, so there is no name to open; this is the closest real attack. Back-port: wire-level peer isolation rests on the launcher passing only its own pipes.

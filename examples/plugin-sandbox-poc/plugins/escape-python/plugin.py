@@ -88,7 +88,7 @@ def handles(a):
             if target.startswith("/dev/null"):
                 t = "null"
             kinds[t] = kinds.get(t, 0) + 1
-            if t not in ("pipe", "null"):
+            if t != "pipe":
                 kinds["[" + fd + "->" + target + "]"] = 1
     return "handles " + " ".join("%s=%d" % kv for kv in sorted(kinds.items()))
 

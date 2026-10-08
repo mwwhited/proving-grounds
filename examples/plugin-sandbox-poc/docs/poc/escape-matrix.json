@@ -49,7 +49,9 @@
       "linux": { "na": true } },
     { "id": "handles", "what": "Inherit pipes or sockets beyond its own channel",
       "windows": { "deny": ["The_plugin_holds_only_its_three_channel_pipes"], "control": ["Control_the_plugin_runs_in_an_appcontainer"] },
-      "linux": { "deny": ["The_plugin_holds_only_its_three_channel_pipes_and_nothing_else"], "control": ["Control_the_plugin_runs_in_a_pid_namespace"] } },
-    { "id": "peer-channel", "what": "Open another plugin's channel", "windows": {}, "linux": {} }
+      "linux": { "deny": ["The_plugin_holds_only_its_three_channel_pipes_and_nothing_else", "A_descriptor_the_host_leaks_does_not_reach_the_plugin"], "control": ["Control_the_plugin_runs_in_a_pid_namespace", "Control_a_descriptor_the_host_leaks_reaches_an_unsandboxed_plugin"] } },
+    { "id": "peer-channel", "what": "Open another running plugin's process",
+      "windows": { "deny": ["A_plugin_cannot_open_another_running_plugins_process"], "control": ["Control_the_plugin_runs_in_an_appcontainer"] },
+      "linux": { "deny": ["A_plugin_cannot_see_another_running_plugins_process"], "control": ["Control_the_plugin_runs_in_a_pid_namespace"] } }
   ]
 }

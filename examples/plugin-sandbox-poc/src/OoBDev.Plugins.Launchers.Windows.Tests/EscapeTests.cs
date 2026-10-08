@@ -217,6 +217,40 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         Assert.Contains("pipe=3", r.Detail);
     }
 
+    // ---- a peer plugin ----
+
+    /// <summary>Runs a victim plugin and a second plugin together; returns the victim's real pid and what the second one saw.</summary>
+    async Task<(int VictimPid, ProbeResult Peer)> RunWithPeerAsync()
+    {
+        await using var manager = new PluginManager(
+            new AppContainerLauncher(new WindowsLauncherOptions { RuntimeReadPaths = WindowsLauncherOptions.PerUserRuntimes("python") }),
+            new SupervisorOptions { MaxCrashesInWindow = 1, BackoffInitial = TimeSpan.FromMinutes(5) });
+        var results = new System.Collections.Concurrent.ConcurrentDictionary<string, TaskCompletionSource<JsonElement>>();
+        TaskCompletionSource<JsonElement> Slot(string probe) => results.GetOrAdd(probe, _ => new(TaskCreationOptions.RunContinuationsAsynchronously));
+        manager.Router.EventPublished += e => { if (e.Topic == "escape.result") Slot(e.Payload!.Value.GetProperty("probe").GetString()!).TrySetResult(e.Payload!.Value.Clone()); };
+
+        PluginSpec Spec(string id, object probe) => PluginManifest.Load(Paths.Escape, JsonSerializer.SerializeToElement(probe)) with { Id = id };
+        manager.Register(Spec("victim", new { probe = "pid" })).Start();
+        var v = await Slot("pid").Task.WaitAsync(TimeSpan.FromSeconds(20));
+        var pid = int.Parse(v.GetProperty("detail").GetString()!);
+
+        manager.Register(Spec("peer", new { probe = "open-process", pid })).Start();
+        var p = await Slot("open-process").Task.WaitAsync(TimeSpan.FromSeconds(20));
+        var peer = new ProbeResult(p.GetProperty("outcome").GetString()!, p.GetProperty("detail").GetString()!, null);
+        output.WriteLine($"victim pid {pid}; peer: {peer.Outcome} {peer.Detail}");
+        // the victim must still be alive for the denial to mean anything
+        Assert.False(Process.GetProcessById(pid).HasExited);
+        Assert.True(Process.GetProcessById(pid).StartTime > DateTime.MinValue);   // control: the host can open that pid
+        return (pid, peer);
+    }
+
+    [WindowsFact]
+    public async Task A_plugin_cannot_open_another_running_plugins_process()
+    {
+        var (_, peer) = await RunWithPeerAsync();
+        Denied(peer);
+    }
+
     // ---- processes ----
 
     [WindowsFact]

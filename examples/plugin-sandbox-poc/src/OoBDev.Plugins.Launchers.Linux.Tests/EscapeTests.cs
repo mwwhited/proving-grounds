@@ -47,14 +47,14 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
     }
 
     async Task<ProbeResult> RunAsync(object probe, IReadOnlyList<PathGrant>? grants = null, PluginLimits? limits = null,
-        LinuxLauncherOptions? options = null)
+        LinuxLauncherOptions? options = null, bool unsandboxed = false)
     {
         var cfg = JsonSerializer.SerializeToElement(probe);
         var spec = PluginManifest.Load(Paths.Escape, cfg) with
         {
             Id = "escape-test", Grants = grants ?? [], Limits = limits ?? new PluginLimits(),
         };
-        await using var manager = new PluginManager(new BubblewrapLauncher(options),
+        await using var manager = new PluginManager(unsandboxed ? new OoBDev.Plugins.Launchers.Plain.PlainProcessLauncher() : new BubblewrapLauncher(options),
             new SupervisorOptions { MaxCrashesInWindow = 1, BackoffInitial = TimeSpan.FromMinutes(5) });
         var got = new TaskCompletionSource<JsonElement>(TaskCreationOptions.RunContinuationsAsynchronously);
         manager.Router.EventPublished += e => { if (e.Topic == "escape.result") got.TrySetResult(e.Payload!.Value.Clone()); };
@@ -190,6 +190,65 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         Assert.Contains("pipe=3", r.Detail);
         Assert.DoesNotContain("socket=", r.Detail);
         Assert.DoesNotContain("other=", r.Detail);
+    }
+
+    // ---- a peer plugin ----
+
+    [LinuxFact]
+    public async Task A_plugin_cannot_see_another_running_plugins_process()
+    {
+        await using var manager = new PluginManager(new BubblewrapLauncher(),
+            new SupervisorOptions { MaxCrashesInWindow = 1, BackoffInitial = TimeSpan.FromMinutes(5) });
+        var results = new System.Collections.Concurrent.ConcurrentDictionary<string, TaskCompletionSource<JsonElement>>();
+        TaskCompletionSource<JsonElement> Slot(string probe) => results.GetOrAdd(probe, _ => new(TaskCreationOptions.RunContinuationsAsynchronously));
+        manager.Router.EventPublished += e => { if (e.Topic == "escape.result") Slot(e.Payload!.Value.GetProperty("probe").GetString()!).TrySetResult(e.Payload!.Value.Clone()); };
+
+        PluginSpec Spec(string id, object probe) => PluginManifest.Load(Paths.Escape, JsonSerializer.SerializeToElement(probe)) with { Id = id };
+        manager.Register(Spec("victim", new { probe = "pid" })).Start();
+        await Slot("pid").Task.WaitAsync(TimeSpan.FromSeconds(20));
+
+        // the victim's pid in the host's /proc: its python process, found by command line
+        var victims = Directory.EnumerateDirectories("/proc").Select(d => Path.GetFileName(d)).Where(n => int.TryParse(n, out _))
+            .Where(n => { try { return File.ReadAllText($"/proc/{n}/cmdline").Contains("escape-python") && File.ReadAllText($"/proc/{n}/cmdline").Contains("plugin.py"); } catch { return false; } })
+            .Select(int.Parse).ToList();
+        Assert.NotEmpty(victims);
+        // control: the host (same user, no namespace) can read the victim's environment
+        Assert.All(victims, p => Assert.NotNull(File.ReadAllBytes($"/proc/{p}/environ")));
+
+        manager.Register(Spec("peer", new { probe = "open-process", pid = victims[0] })).Start();
+        var r = await Slot("open-process").Task.WaitAsync(TimeSpan.FromSeconds(20));
+        output.WriteLine($"victim pids {string.Join(',', victims)}; peer: {r.GetProperty("outcome").GetString()} {r.GetProperty("detail").GetString()}");
+        Assert.Equal("denied", r.GetProperty("outcome").GetString());
+    }
+
+    [System.Runtime.InteropServices.DllImport("libc", SetLastError = true)] static extern int dup(int fd);
+    [System.Runtime.InteropServices.DllImport("libc", SetLastError = true)] static extern int close(int fd);
+
+    /// <summary>Leaks a descriptor the way a library that opens files without close-on-exec does (dup clears the flag).</summary>
+    async Task<ProbeResult> RunWithLeakedFdAsync(bool unsandboxed)
+    {
+        using var f = File.OpenRead("/etc/hostname");
+        var leaked = dup((int)f.SafeFileHandle.DangerousGetHandle());
+        Assert.True(leaked > 2);
+        try { return await RunAsync(new { probe = "handles" }, unsandboxed: unsandboxed); }
+        finally { close(leaked); }
+    }
+
+    [LinuxFact]
+    public async Task Control_a_descriptor_the_host_leaks_reaches_an_unsandboxed_plugin()
+    {
+        var r = await RunWithLeakedFdAsync(unsandboxed: true);
+        Allowed(r);
+        Assert.Contains("hostname", r.Detail);
+    }
+
+    [LinuxFact]
+    public async Task A_descriptor_the_host_leaks_does_not_reach_the_plugin()
+    {
+        var r = await RunWithLeakedFdAsync(unsandboxed: false);
+        Allowed(r);
+        Assert.DoesNotContain("hostname", r.Detail);
+        Assert.Contains("pipe=3", r.Detail);
     }
 
     // ---- processes: threads yes, new processes no ----

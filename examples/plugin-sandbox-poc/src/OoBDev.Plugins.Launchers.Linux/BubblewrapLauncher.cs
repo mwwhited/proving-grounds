@@ -89,7 +89,14 @@ public sealed class BubblewrapLauncher(LinuxLauncherOptions? options = null) : I
         var command = spec.Command.ToList();
         if (command[0].Contains('/')) command[0] = Path.GetFullPath(command[0], dir);
         a.AddRange(command);
-        // bubblewrap reads the filter from file descriptor 3: let a shell open the file there and exec bwrap
-        return _filterPath is null ? a : ["sh", "-c", "exec 3<\"$0\" && exec \"$@\"", _filterPath, .. a];
+        // The shell first closes every inherited descriptor above 2 (the host may hold files or sockets open without
+        // close-on-exec, and an open descriptor still works inside the sandbox even if its path is not mounted), then
+        // opens the filter on descriptor 3, which is where bubblewrap reads it from, and execs bwrap.
+        const string closeInherited = "for f in /proc/self/fd/*; do n=${f##*/}; [ \"$n\" -gt 2 ] 2>/dev/null && eval \"exec $n<&-\"; done; ";
+        // dash (/bin/sh on Debian) only accepts single-digit descriptors in a redirection, so it cannot close fd 203: use bash.
+        var shell = File.Exists("/bin/bash") || File.Exists("/usr/bin/bash") ? "bash" : "sh";
+        return _filterPath is null
+            ? [shell, "-c", closeInherited + "exec \"$@\"", shell, .. a]
+            : [shell, "-c", closeInherited + "exec 3<\"$0\" && exec \"$@\"", _filterPath, .. a];
     }
 }

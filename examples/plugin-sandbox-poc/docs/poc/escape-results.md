@@ -21,15 +21,13 @@ HELD means every denial test passed and so did its control. Read the notes at th
 | Keep running after the host is killed | HELD | HELD |
 | Leave access grants behind after uninstall | HELD | n/a |
 | Inherit pipes or sockets beyond its own channel | HELD | HELD |
-| Open another plugin's channel | UNVERIFIED | UNVERIFIED |
+| Open another running plugin's process | HELD | HELD |
 
-Held: windows 15/16, linux 12/14
+Held: windows 16/16, linux 13/14
 
 ## Not held or not verified
 
 - **Exceed its CPU limit** on linux: UNVERIFIED (no test)
-- **Open another plugin's channel** on windows: UNVERIFIED (no test)
-- **Open another plugin's channel** on linux: UNVERIFIED (no test)
 
 ## Read this before quoting the table
 
