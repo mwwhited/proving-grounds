@@ -9,5 +9,6 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
     <ProjectReference Include="..\OoBDev.Plugins.Launchers.Plain\OoBDev.Plugins.Launchers.Plain.csproj" />
     <ProjectReference Include="..\OoBDev.Plugins.Launchers.Windows\OoBDev.Plugins.Launchers.Windows.csproj" />
+    <ProjectReference Include="..\OoBDev.Plugins.Launchers.Linux\OoBDev.Plugins.Launchers.Linux.csproj" />
   </ItemGroup>
 </Project>

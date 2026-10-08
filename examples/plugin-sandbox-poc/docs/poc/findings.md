@@ -129,7 +129,7 @@ What the sandbox is: new user, pid, ipc, uts, cgroup and network namespaces (`--
 | Memory cap | 300 MB allocation succeeds without a limit and fails with a 150 MB `RLIMIT_DATA` |
 | Child process | Allowed by default (control); denied with `MaxTasks = 1` |
 | Host killed with SIGKILL | Plugin and `bwrap` gone within 10 s. The plugin is told to ignore a closed channel (`linger`), so this is the sandbox, not the plugin exiting on EOF |
-| Conformance in plain mode on Linux | Passes (previous section). Not yet run through the Bubblewrap launcher |
+| Conformance suite through the sandbox (`PLUGIN_LAUNCHER=bubblewrap`) | 6 of 6 pass: Go, Java, Node, .NET, Python and the chaos modes all run inside it. Negative control: with Docker's default seccomp profile (bubblewrap cannot start) the same run fails all 6 after 15 s each, so the pass is not the plain launcher in disguise. The Java failure seen on Windows does not occur here |
 
 ### Weaker than the Windows launcher
 
@@ -143,5 +143,4 @@ What the sandbox is: new user, pid, ipc, uts, cgroup and network namespaces (`--
 
 ### Not yet done
 
-- Run the conformance suite through `BubblewrapLauncher` (Go, Java, Node, .NET inside the sandbox). This is the check that matters for "can real runtimes live in it".
 - seccomp filter (and a thread-creation test for Go, Java, Node under it), CPU/cgroup limits, macOS.

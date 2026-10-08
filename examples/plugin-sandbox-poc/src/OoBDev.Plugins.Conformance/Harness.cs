@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using OoBDev.Plugins.Host;
 using OoBDev.Plugins.Launchers.Plain;
+using OoBDev.Plugins.Launchers.Linux;
 using OoBDev.Plugins.Launchers.Windows;
 using OoBDev.Plugins.Protocol;
 using Xunit;
@@ -70,12 +71,18 @@ sealed class Harness : IAsyncDisposable
         Plugin.SessionCreated += _sessions.Enqueue;
     }
 
-    /// <summary>Plain by default. <c>PLUGIN_LAUNCHER=appcontainer</c> runs the same checks inside the Windows sandbox.</summary>
+    /// <summary>
+    /// Plain by default. <c>PLUGIN_LAUNCHER=appcontainer</c> (Windows) or <c>bubblewrap</c> (Linux) runs the same
+    /// checks inside the OS sandbox.
+    /// </summary>
     static IPluginLauncher Launcher()
     {
-        if (!OperatingSystem.IsWindows() || !string.Equals(Environment.GetEnvironmentVariable("PLUGIN_LAUNCHER"), "appcontainer", StringComparison.OrdinalIgnoreCase))
-            return new PlainProcessLauncher();
-        return new AppContainerLauncher(new WindowsLauncherOptions { RuntimeReadPaths = WindowsLauncherOptions.PerUserRuntimes("python", "node", "java", "go") });
+        var mode = Environment.GetEnvironmentVariable("PLUGIN_LAUNCHER");
+        if (OperatingSystem.IsWindows() && string.Equals(mode, "appcontainer", StringComparison.OrdinalIgnoreCase))
+            return new AppContainerLauncher(new WindowsLauncherOptions { RuntimeReadPaths = WindowsLauncherOptions.PerUserRuntimes("python", "node", "java", "go") });
+        if (OperatingSystem.IsLinux() && string.Equals(mode, "bubblewrap", StringComparison.OrdinalIgnoreCase))
+            return new BubblewrapLauncher();
+        return new PlainProcessLauncher();
     }
 
     public Router Router => _manager.Router;
