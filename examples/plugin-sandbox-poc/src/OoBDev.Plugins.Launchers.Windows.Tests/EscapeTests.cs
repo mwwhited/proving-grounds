@@ -33,6 +33,7 @@ public sealed record ProbeResult(string Outcome, string Detail, ExitRecord? Exit
 /// and checks what the OS let it do. Every "denied" test has a positive control (an "ok-" probe or the whoami
 /// probe) so a broken probe cannot make the sandbox look tighter than it is.
 /// </summary>
+[Collection("appcontainer")]
 public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
 {
     const string PluginId = "escape-test";
@@ -53,12 +54,12 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
     }
 
     async Task<ProbeResult> RunAsync(object probe, IReadOnlyList<PathGrant>? grants = null, PluginLimits? limits = null,
-        TimeSpan? timeout = null)
+        TimeSpan? timeout = null, string? id = null)
     {
         var cfg = JsonSerializer.SerializeToElement(probe);
         var spec = PluginManifest.Load(Paths.Escape, cfg) with
         {
-            Id = PluginId,
+            Id = id ?? PluginId,
             Grants = grants ?? [],
             Limits = limits ?? new PluginLimits(),
         };
@@ -246,6 +247,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
 }
 
 /// <summary>Plugins must die with the host, however the host dies, including when the host is itself inside a job.</summary>
+[Collection("appcontainer")]
 public sealed class KillWithHostTests(ITestOutputHelper output)
 {
     static string HostExe { get; } = FindHost();
@@ -320,4 +322,65 @@ public sealed class KillWithHostTests(ITestOutputHelper output)
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] static extern IntPtr CreateJobObjectW(IntPtr attrs, string? name);
     [DllImport("kernel32.dll", SetLastError = true)] static extern bool AssignProcessToJobObject(IntPtr job, IntPtr proc);
     [DllImport("kernel32.dll")] static extern bool CloseHandle(IntPtr h);
+}
+
+/// <summary>
+/// The tests share one container per plugin id and run in one collection so nobody revokes a grant that another test
+/// is using. When they are all done, revoke what they granted (including entries left by runs before the ledger existed).
+/// </summary>
+[CollectionDefinition("appcontainer")]
+public sealed class AppContainerCollection : ICollectionFixture<AppContainerCleanup> { }
+
+public sealed class AppContainerCleanup : IDisposable
+{
+    public void Dispose() =>
+        AppContainerLauncher.Uninstall("escape-test", WindowsLauncherOptions.PerUserRuntimes("python").Append(Paths.Escape));
+}
+
+/// <summary>Grants persist on disk, so uninstalling a plugin has to take them back.</summary>
+[Collection("appcontainer")]
+public sealed class UninstallTests(ITestOutputHelper output) : IDisposable
+{
+    const string Id = "escape-uninstall";
+    readonly string _root = Directory.CreateTempSubdirectory("ps-uninstall-").FullName;
+
+    public void Dispose() { try { Directory.Delete(_root, recursive: true); } catch { } }
+
+    /// <summary>Entries on this folder for any AppContainer other than the two well-known "all application packages" groups.</summary>
+    static string[] ContainerEntries(string path) =>
+        new DirectoryInfo(path).GetAccessControl().GetAccessRules(true, false, typeof(System.Security.Principal.SecurityIdentifier))
+            .Cast<System.Security.AccessControl.FileSystemAccessRule>().Select(r => r.IdentityReference.Value)
+            .Where(v => v.StartsWith("S-1-15-2-") && v.Split('-').Length > 8).ToArray();
+
+    [WindowsFact]
+    public async Task Uninstall_removes_the_grants_and_the_container()
+    {
+        AppContainerLauncher.Uninstall(Id, WindowsLauncherOptions.PerUserRuntimes("python").Append(Paths.Escape));   // start clean
+        var rw = Directory.CreateDirectory(Path.Combine(_root, "rw")).FullName;
+        var python = WindowsLauncherOptions.PerUserRuntimes("python");
+        var watched = python.Append(Paths.Escape).Append(rw).ToArray();
+
+        // control: before uninstalling, the plugin ran, wrote into its grant, and the entries really are on disk
+        var cfg = JsonSerializer.SerializeToElement(new { probe = "ok-write-file", path = Path.Combine(rw, "out.txt") });
+        var spec = PluginManifest.Load(Paths.Escape, cfg) with { Id = Id, Grants = [new PathGrant(rw, Write: true)] };
+        await using (var manager = new PluginManager(
+            new AppContainerLauncher(new WindowsLauncherOptions { RuntimeReadPaths = python }),
+            new SupervisorOptions { MaxCrashesInWindow = 1, BackoffInitial = TimeSpan.FromMinutes(5) }))
+        {
+            var got = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
+            manager.Router.EventPublished += e => { if (e.Topic == "escape.result") got.TrySetResult(e.Payload!.Value.GetProperty("outcome").GetString()!); };
+            manager.Register(spec).Start();
+            Assert.Equal("allowed", await got.Task.WaitAsync(TimeSpan.FromSeconds(30)));
+        }
+        Assert.Equal("escaped", File.ReadAllText(Path.Combine(rw, "out.txt")));
+        foreach (var path in watched) Assert.NotEmpty(ContainerEntries(path));
+        var sid = ContainerEntries(rw).Single();
+        output.WriteLine($"container {sid} has entries on {watched.Length} folders before uninstall");
+
+        var revoked = AppContainerLauncher.Uninstall(Id);   // from the ledger alone: no extra paths
+
+        Assert.True(revoked >= watched.Length, $"revoked {revoked} of {watched.Length}");
+        foreach (var path in watched) Assert.DoesNotContain(sid, ContainerEntries(path));
+        Assert.Equal(0, AppContainerLauncher.Uninstall(Id));   // idempotent
+    }
 }

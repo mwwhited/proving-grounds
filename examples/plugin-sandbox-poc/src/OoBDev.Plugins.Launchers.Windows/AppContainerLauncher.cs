@@ -35,7 +35,8 @@ public sealed class WindowsLauncherOptions
 /// <summary>
 /// Starts a plugin inside an AppContainer with no capabilities (no network, no user files), in its own job
 /// object, inheriting only its three stdio pipe ends. Fail closed: if any step fails the plugin does not run.
-/// Granted ACLs persist on disk after the plugin stops; <see cref="RemoveProfile"/> removes the container.
+/// Granted ACLs persist on disk after the plugin stops (a restart reuses them). Every grant is recorded in a ledger;
+/// <see cref="Uninstall"/> revokes them all and removes the container.
 /// </summary>
 [SupportedOSPlatform("windows")]
 public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null) : IPluginLauncher
@@ -57,6 +58,52 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
 
     public static void RemoveProfile(string pluginId) => DeleteAppContainerProfile(ProfileName(pluginId));
 
+    static string LedgerPath(string profileName) => Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "OoBDev", "Plugins", "grants", profileName + ".txt");
+
+    static void Record(string profileName, string path)
+    {
+        var ledger = LedgerPath(profileName);
+        Directory.CreateDirectory(Path.GetDirectoryName(ledger)!);
+        if (File.Exists(ledger) && File.ReadLines(ledger).Contains(path, StringComparer.OrdinalIgnoreCase)) return;
+        using var f = new FileStream(ledger, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+        using var w = new StreamWriter(f);
+        w.WriteLine(path);
+    }
+
+    /// <summary>
+    /// Undoes a plugin's installation: removes every ACL entry the launcher added for it (from the ledger, plus
+    /// <paramref name="extraPaths"/> for grants made before the ledger existed), then deletes its container profile.
+    /// Returns the number of folders it revoked access on. Idempotent. Do it while the plugin is stopped.
+    /// </summary>
+    public static int Uninstall(string pluginId, IEnumerable<string>? extraPaths = null)
+    {
+        var name = ProfileName(pluginId);
+        Marshal.ThrowExceptionForHR(DeriveAppContainerSidFromAppContainerName(name, out var sidPtr));
+        int revoked = 0;
+        try
+        {
+            var sid = new SecurityIdentifier(sidPtr);
+            var ledger = LedgerPath(name);
+            var paths = (File.Exists(ledger) ? File.ReadAllLines(ledger) : []).Concat(extraPaths ?? [])
+                .Where(p => !string.IsNullOrWhiteSpace(p)).Select(Path.GetFullPath).Distinct(StringComparer.OrdinalIgnoreCase);
+            foreach (var path in paths)
+            {
+                var di = new DirectoryInfo(path);
+                if (!di.Exists) continue;
+                var acl = di.GetAccessControl();
+                if (acl.GetAccessRules(true, false, typeof(SecurityIdentifier)).Cast<FileSystemAccessRule>().All(r => !r.IdentityReference.Equals(sid))) continue;
+                acl.PurgeAccessRules(sid);
+                di.SetAccessControl(acl);
+                revoked++;
+            }
+            DeleteAppContainerProfile(name);
+            if (File.Exists(ledger)) File.Delete(ledger);
+        }
+        finally { FreeSid(sidPtr); }
+        return revoked;
+    }
+
     WinPlugin Launch(PluginSpec spec)
     {
         string name = ProfileName(spec.Id);
@@ -71,10 +118,10 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
         try
         {
             var secId = new SecurityIdentifier(sid);
-            Grant(secId, spec.WorkingDirectory, FileSystemRights.ReadAndExecute);
-            foreach (var p in _options.RuntimeReadPaths) Grant(secId, p, FileSystemRights.ReadAndExecute);
+            Grant(name, secId, spec.WorkingDirectory, FileSystemRights.ReadAndExecute);
+            foreach (var p in _options.RuntimeReadPaths) Grant(name, secId, p, FileSystemRights.ReadAndExecute);
             foreach (var g in spec.Grants)
-                Grant(secId, g.Path, g.Write ? FileSystemRights.Modify : FileSystemRights.ReadAndExecute);
+                Grant(name, secId, g.Path, g.Write ? FileSystemRights.Modify : FileSystemRights.ReadAndExecute);
 
             var sa = new SECURITY_ATTRIBUTES { nLength = Marshal.SizeOf<SECURITY_ATTRIBUTES>(), bInheritHandle = true };
             if (!CreatePipe(out inRead, out inWrite, ref sa, 0)) throw new Win32Exception();
@@ -207,8 +254,9 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
         return sb.Append('\0').ToString();
     }
 
-    static void Grant(SecurityIdentifier sid, string path, FileSystemRights rights)
+    static void Grant(string profileName, SecurityIdentifier sid, string path, FileSystemRights rights)
     {
+        Record(profileName, Path.GetFullPath(path));
         var di = new DirectoryInfo(Path.GetFullPath(path));
         var acl = di.GetAccessControl();
         // ACLs persist, so a plugin that restarts finds its grant already in place; rewriting a big tree on every launch is slow

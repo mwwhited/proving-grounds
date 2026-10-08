@@ -10,12 +10,12 @@ Follows the planning shell's build order (§17), reordered so the Windows launch
 |:-:|:--|:--|:-:|
 | 0 | Contract and examples | Plugins in 3 languages pass 36 checks under the stand-in host | **Done** |
 | 1 | Real .NET host core | Same plugins, unmodified, pass the same checks against the real host. Crash, hang and flood handled per policy. Crash loop reaches `Failed` after 5 in 60 s. `Stop` during backoff does not restart | **Done** |
-| 2 | Windows sandbox | Escape suite denied on Windows: network, process spawn, file read outside grant, fork bomb contained, memory cap enforced. Host killed (also inside a parent job) leaves no Bound plugin alive | **Mostly done** (Java, CPU limit, fork-bomb loop and handle checks open; see findings) |
+| 2 | Windows sandbox | Escape suite denied on Windows: network, process spawn, file read outside grant, fork bomb contained, memory cap enforced. Host killed (also inside a parent job) leaves no Bound plugin alive | **Mostly done** (Java unsupported in the AppContainer; CPU limit, fork-bomb loop and handle checks open; see findings) |
 | 3 | Escape suite as a product | Escape plugins packaged as a runnable suite with a per-OS result table (held, failed, unverified) | Not started |
 | 4 | Linux shim and launcher | Same escape suite denied on Linux. Go, Node and JVM plugins can still create threads under seccomp | **Started** (bubblewrap launcher and 22 escape tests pass in Docker; seccomp filter blocks new processes only) |
 | 5 | Packaging | Platform selection, hash verification, signature check; tampered package rejected; "unavailable on this platform" before launch | Not started |
 | 6 | Promotion to [dotex](https://github.com/OutOfBandDevelopment/dotex) | Protocol, Host, launcher and conformance projects build and test on their own; moved with dotex READMEs and coverage; POC runs against the packages | Not started |
-| 7 | Detached mode, macOS | Detached survives host crash and reattaches by state file; macOS launcher with documented reduced guarantees | Later |
+| 7 | Detached mode, macOS | Detached survives host crash and reattaches by state file; macOS launcher with documented reduced guarantees | **Deferred** (decided after the Linux launcher: neither is needed to judge whether the base holds; revisit after phase 6) |
 
 Not planned until the base is proven: permissions and approval (§10), brokered access (§11), network isolation (§12), resource-limit escalation (§13).
 
@@ -63,8 +63,27 @@ Each runs as a plugin in the sandbox and reports what it managed to do. The expe
 | Language runtimes need syscalls or files the sandbox denies (Go, Node, JVM) | Medium | Include them as escape-suite plugins, not just C# and Python |
 | The wire encoding choice hurts latency or SDK effort | Low | Measure in phase 1 before fixing it |
 | Windows-only POC hides Linux and macOS problems | High | State it in every result; do not claim cross-platform until phase 4 |
-| ACLs granted to the AppContainer persist after uninstall | Medium | Add cleanup to the launcher tests |
+| ACLs granted to the AppContainer persist after uninstall | Medium | Mitigated: grant ledger plus `AppContainerLauncher.Uninstall`, tested |
 | Effort spills into the proposed layers (§10-13) | Medium | They are out of scope until phase 6 is done |
+
+## Back-port to the planning shell
+
+Things this POC found that the planning shell's settled decisions do not say yet (details in `findings.md`):
+
+1. **Windows needs `LOCALAPPDATA` in an explicit environment block.** Without it the AppContainer process fails with error 203. The launcher must build the environment, not inherit it.
+2. **Scrub the environment on every OS.** Windows passes an explicit block; bubblewrap uses `--clearenv`. Inheriting the host's environment leaks secrets.
+3. **Per-user runtimes need a read grant.** A Python or Node install under the user profile is not readable by an AppContainer. The launcher grants it, and the grant is persistent state that uninstall must revoke (ledger plus `Uninstall`).
+4. **Some runtimes need flags to start inside a sandbox.** Node needs `--preserve-symlinks --preserve-symlinks-main`, because it canonicalises paths through folders the container cannot list. Java has no such flag and does not start under the AppContainer launcher at all.
+5. **Thread-counting limits cannot express "no child processes".** Windows job active-process limits and Linux `RLIMIT_NPROC` count threads and processes together. On Linux the answer is a seccomp filter that fails `fork`, `vfork` and `clone` without `CLONE_THREAD` (block process creation, not `execve`, since the target's own `execve` runs after the filter is installed).
+6. **Linux needs unprivileged user namespaces.** bubblewrap fails on hosts that disable them, and Docker's default seccomp profile blocks them. Keep bubblewrap and document the requirement; there is no fallback.
+7. **Each denied test needs a positive control**, and a test that quietly ran the unsandboxed launcher passes for the wrong reason. Check the launcher actually in use (a negative control caught this once).
+8. **"Bound" needs a test that the host dies without cleanup** (`FailFast`), not just a clean shutdown, and a plugin that ignores EOF (`linger`) so only the OS can end it.
+
+## Deferred
+
+- **macOS launcher.** Not started. No Mac available; Seatbelt (`sandbox-exec`) is deprecated, so the reduced-guarantee wording needs its own research.
+- **Detached lifetime.** Not implemented; Bound is the only mode proven.
+- Untested: `RateAction.Disconnect`, outbound queue overflow, tuned timings, CPU limits, LPAC, a Windows fork-bomb loop, handle enumeration, DNS, arm64, bare-metal Linux, a general syscall allow-list.
 
 ## Working rules
 
@@ -86,5 +105,5 @@ Each runs as a plugin in the sandbox and reports what it managed to do. The expe
 - [x] Phase 1: Wire encoding decided and measured
 - [x] Phase 2: AppContainer launcher compiling
 - [x] Phase 2: Open Windows claims verified
-- [ ] Phase 2: Escape suite passing on Windows (18 pass; Java, DNS, CPU, fork-bomb loop, handle enumeration not covered)
+- [ ] Phase 2: Escape suite passing on Windows (19 pass; Java unsupported; DNS, CPU, fork-bomb loop, handle enumeration not covered)
 - [x] Phase 2: Kill-with-host tests passing, including nested job
