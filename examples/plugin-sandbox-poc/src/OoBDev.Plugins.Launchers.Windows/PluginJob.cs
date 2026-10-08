@@ -11,7 +11,7 @@ internal sealed class PluginJob : IDisposable
 {
     IntPtr _job;
 
-    public PluginJob(bool killOnClose, long? memoryLimitBytes)
+    public PluginJob(bool killOnClose, long? memoryLimitBytes, int? cpuPercent = null)
     {
         _job = CreateJobObjectW(IntPtr.Zero, null);
         if (_job == IntPtr.Zero) throw new Win32Exception();
@@ -35,6 +35,19 @@ internal sealed class PluginJob : IDisposable
                 if (!SetInformationJobObject(_job, 9 /* ExtendedLimitInformation */, p, (uint)len)) throw new Win32Exception();
             }
             finally { Marshal.FreeHGlobal(p); }
+            if (cpuPercent is int pct)
+            {
+                // hard cap: the job's threads are paused for the rest of each interval once the share is used up
+                var cpu = new CpuRate { ControlFlags = 0x1 | 0x4, CpuRate_ = (uint)Math.Clamp(pct, 1, 100) * 100 };
+                int clen = Marshal.SizeOf<CpuRate>();
+                IntPtr cp = Marshal.AllocHGlobal(clen);
+                try
+                {
+                    Marshal.StructureToPtr(cpu, cp, false);
+                    if (!SetInformationJobObject(_job, 15 /* CpuRateControlInformation */, cp, (uint)clen)) throw new Win32Exception();
+                }
+                finally { Marshal.FreeHGlobal(cp); }
+            }
         }
         catch { Dispose(); throw; }
     }
@@ -65,6 +78,9 @@ internal sealed class PluginJob : IDisposable
         public UIntPtr Affinity;
         public uint PriorityClass, SchedulingClass;
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    struct CpuRate { public uint ControlFlags, CpuRate_; }
 
     [StructLayout(LayoutKind.Sequential)]
     struct ExtendedLimit

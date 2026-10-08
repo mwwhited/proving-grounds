@@ -180,7 +180,7 @@ public sealed class AppContainerLauncher(WindowsLauncherOptions? options = null)
             {
                 // Bound is the only lifetime implemented. The process joins its job before it runs one instruction.
                 if (spec.Lifetime != Lifetime.Bound) throw new NotSupportedException("Detached plugins are not implemented.");
-                job = new PluginJob(killOnClose: true, spec.Limits.MemoryBytes);
+                job = new PluginJob(killOnClose: true, spec.Limits.MemoryBytes, spec.Limits.CpuPercent);
                 job.Assign(pi.hProcess);
                 if (ResumeThread(pi.hThread) == unchecked((uint)-1)) throw new Win32Exception();
             }

@@ -244,6 +244,26 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         Assert.NotEqual("allowed", r.Outcome);
         Assert.True(r.Started, "the plugin never started, so this proved nothing: " + r.Exit);
     }
+
+    static double Share(ProbeResult r) => double.Parse(r.Detail.Split(' ').Last(), System.Globalization.CultureInfo.InvariantCulture);
+
+    [WindowsFact]
+    public async Task Control_a_plugin_without_a_cpu_cap_gets_most_of_a_core()
+    {
+        var r = await RunAsync(new { probe = "spin", seconds = 3 });
+        Allowed(r);
+        Assert.True(Share(r) > 0.7, r.Detail);
+    }
+
+    [WindowsFact]
+    public async Task A_cpu_cap_limits_a_busy_plugin()
+    {
+        // 5% of the whole machine is well under one core on any machine with 8 or fewer logical processors
+        var r = await RunAsync(new { probe = "spin", seconds = 3 }, limits: new PluginLimits { CpuPercent = Math.Max(1, 100 / Environment.ProcessorCount / 4) },
+            timeout: TimeSpan.FromSeconds(30));
+        Allowed(r);
+        Assert.True(Share(r) < 0.5, r.Detail);
+    }
 }
 
 /// <summary>Plugins must die with the host, however the host dies, including when the host is itself inside a job.</summary>

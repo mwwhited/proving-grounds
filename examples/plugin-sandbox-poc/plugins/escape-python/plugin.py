@@ -97,6 +97,16 @@ def allocate(a):
     return "allocated %s MB" % a["mb"]
 
 
+def spin(a):
+    # busy-loop for `seconds` of wall time and report the share of one core it got
+    import time
+    wall0, cpu0 = time.perf_counter(), time.process_time()
+    while time.perf_counter() - wall0 < float(a.get("seconds", 3)):
+        pass
+    share = (time.process_time() - cpu0) / (time.perf_counter() - wall0)
+    return "cpu share %.2f" % share
+
+
 def threads(a):
     import threading
     n = int(a.get("n", 8))
@@ -158,7 +168,7 @@ def whoami(a):
 PROBES = {
     "read-file": read_file, "write-file": write_file, "list-dir": list_dir, "connect": connect,
     "spawn": spawn, "open-process": open_process, "read-env": read_env, "registry-write": registry_write,
-    "allocate": allocate, "pid": pid, "threads": threads, "forkbomb": forkbomb, "whoami": whoami,
+    "allocate": allocate, "pid": pid, "spin": spin, "threads": threads, "forkbomb": forkbomb, "whoami": whoami,
     # positive controls: the same operations against places the host granted
     "ok-read-file": read_file, "ok-write-file": write_file, "ok-list-dir": list_dir,
 }

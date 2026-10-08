@@ -83,7 +83,7 @@ Things this POC found that the planning shell's settled decisions do not say yet
 
 - **macOS launcher.** Not started. No Mac available; Seatbelt (`sandbox-exec`) is deprecated, so the reduced-guarantee wording needs its own research.
 - **Detached lifetime.** Not implemented; Bound is the only mode proven.
-- Untested: `tuned timings, CPU limits, LPAC, a Windows fork-bomb loop, handle enumeration, DNS, arm64, bare-metal Linux, a general syscall allow-list.
+- Untested: tuned timings, CPU limits on Linux, LPAC, a Windows fork-bomb loop, handle enumeration, DNS, arm64, bare-metal Linux, a general syscall allow-list.
 
 ## Working rules
 
@@ -105,5 +105,5 @@ Things this POC found that the planning shell's settled decisions do not say yet
 - [x] Phase 1: Wire encoding decided and measured
 - [x] Phase 2: AppContainer launcher compiling
 - [x] Phase 2: Open Windows claims verified
-- [ ] Phase 2: Escape suite passing on Windows (19 pass; Java unsupported; DNS, CPU, fork-bomb loop, handle enumeration not covered)
+- [ ] Phase 2: Escape suite passing on Windows (21 pass; Java unsupported; DNS, fork-bomb loop, handle enumeration not covered)
 - [x] Phase 2: Kill-with-host tests passing, including nested job
