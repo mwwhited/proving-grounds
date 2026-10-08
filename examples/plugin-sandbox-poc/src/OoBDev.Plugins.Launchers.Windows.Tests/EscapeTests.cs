@@ -93,7 +93,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
 
     // ---- the token really is an AppContainer ----
 
-    [Fact]
+    [WindowsFact]
     public async Task Control_the_plugin_runs_in_an_appcontainer()
     {
         var r = await RunAsync(new { probe = "whoami" });
@@ -103,7 +103,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
 
     // ---- files ----
 
-    [Fact]
+    [WindowsFact]
     public async Task Control_a_granted_folder_can_be_read_listed_and_written()
     {
         var ro = Dir("ro", "hello.txt", "granted-content");
@@ -118,7 +118,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         Assert.Equal("escaped", File.ReadAllText(target));   // written by the plugin to the one place it was given
     }
 
-    [Fact]
+    [WindowsFact]
     public async Task A_file_outside_every_grant_cannot_be_read()
     {
         var secret = Dir("secret", "secret.txt", "top-secret");
@@ -126,21 +126,21 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         Denied(await RunAsync(new { probe = "read-file", path = Path.Combine(secret, "secret.txt") }, [new PathGrant(Path.Combine(_root, "ro"))]));
     }
 
-    [Fact]
+    [WindowsFact]
     public async Task A_folder_outside_every_grant_cannot_be_listed()
     {
         var secret = Dir("secret", "secret.txt");
         Denied(await RunAsync(new { probe = "list-dir", path = secret }));
     }
 
-    [Fact]
+    [WindowsFact]
     public async Task The_users_own_files_cannot_be_read()
     {
         var docs = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         Denied(await RunAsync(new { probe = "list-dir", path = docs }));
     }
 
-    [Fact]
+    [WindowsFact]
     public async Task A_read_only_grant_cannot_be_written()
     {
         var ro = Dir("ro", "hello.txt");
@@ -149,7 +149,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         Assert.False(File.Exists(target));
     }
 
-    [Fact]
+    [WindowsFact]
     public async Task The_plugins_own_folder_cannot_be_modified()
     {
         // the launcher grants the plugin folder read+execute only; a plugin must not be able to rewrite its own code
@@ -164,7 +164,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
 
     // ---- network ----
 
-    [Fact]
+    [WindowsFact]
     public async Task Control_loopback_is_reachable_without_the_sandbox()
     {
         // the positive control for the two network tests: the listener works and a plain process can reach it
@@ -175,7 +175,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         Assert.True(c.Connected);
     }
 
-    [Fact]
+    [WindowsFact]
     public async Task Loopback_services_on_the_host_machine_cannot_be_reached()
     {
         using var listener = new TcpListener(IPAddress.Loopback, 0);
@@ -186,7 +186,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         Assert.False(accepted.IsCompleted, "the listener saw a connection from the plugin");
     }
 
-    [Fact]
+    [WindowsFact]
     public async Task The_internet_cannot_be_reached()
     {
         Denied(await RunAsync(new { probe = "connect", host = "1.1.1.1", port = 443 }));
@@ -194,13 +194,13 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
 
     // ---- processes ----
 
-    [Fact]
+    [WindowsFact]
     public async Task A_plugin_cannot_start_a_child_process()
     {
         Denied(await RunAsync(new { probe = "spawn" }));
     }
 
-    [Fact]
+    [WindowsFact]
     public async Task The_host_process_cannot_be_opened()
     {
         Denied(await RunAsync(new { probe = "open-process", pid = Environment.ProcessId }));
@@ -208,7 +208,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
 
     // ---- environment and registry ----
 
-    [Fact]
+    [WindowsFact]
     public async Task Host_environment_variables_are_not_inherited()
     {
         Environment.SetEnvironmentVariable(HostSecretName, "s3cret-from-host");
@@ -216,7 +216,7 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
         finally { Environment.SetEnvironmentVariable(HostSecretName, null); }
     }
 
-    [Fact]
+    [WindowsFact]
     public async Task The_users_registry_hive_cannot_be_written()
     {
         try { Denied(await RunAsync(new { probe = "registry-write" })); }
@@ -229,13 +229,13 @@ public sealed class EscapeTests(ITestOutputHelper output) : IDisposable
 
     // ---- resources ----
 
-    [Fact]
+    [WindowsFact]
     public async Task Control_a_plugin_without_a_memory_limit_can_allocate_300_MB()
     {
         Allowed(await RunAsync(new { probe = "allocate", mb = 300 }));
     }
 
-    [Fact]
+    [WindowsFact]
     public async Task A_memory_limit_kills_a_plugin_that_exceeds_it()
     {
         var r = await RunAsync(new { probe = "allocate", mb = 300 }, limits: new PluginLimits { MemoryBytes = 150L * 1024 * 1024 });
@@ -259,10 +259,10 @@ public sealed class KillWithHostTests(ITestOutputHelper output)
             "OoBDev.Plugins.Launchers.Windows.TestHost.exe");
     }
 
-    [Fact]
+    [WindowsFact]
     public Task Plugin_dies_when_the_host_is_killed() => RunAsync(nestedJob: false);
 
-    [Fact]
+    [WindowsFact]
     public Task Plugin_dies_when_the_host_is_killed_inside_a_parent_job() => RunAsync(nestedJob: true);
 
     async Task RunAsync(bool nestedJob)

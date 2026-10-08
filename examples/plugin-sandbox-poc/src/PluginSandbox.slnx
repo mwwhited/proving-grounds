@@ -4,6 +4,7 @@
     <Project Path="OoBDev.Plugins.Host/OoBDev.Plugins.Host.csproj" />
     <Project Path="OoBDev.Plugins.Launchers.Plain/OoBDev.Plugins.Launchers.Plain.csproj" />
     <Project Path="OoBDev.Plugins.Launchers.Windows/OoBDev.Plugins.Launchers.Windows.csproj" />
+    <Project Path="OoBDev.Plugins.Launchers.Linux/OoBDev.Plugins.Launchers.Linux.csproj" />
     <Project Path="OoBDev.Plugins.Bench/OoBDev.Plugins.Bench.csproj" />
   </Folder>
   <Folder Name="/tests/">
@@ -12,5 +13,7 @@
     <Project Path="OoBDev.Plugins.Conformance/OoBDev.Plugins.Conformance.csproj" />
     <Project Path="OoBDev.Plugins.Launchers.Windows.TestHost/OoBDev.Plugins.Launchers.Windows.TestHost.csproj" />
     <Project Path="OoBDev.Plugins.Launchers.Windows.Tests/OoBDev.Plugins.Launchers.Windows.Tests.csproj" />
+    <Project Path="OoBDev.Plugins.Launchers.Linux.TestHost/OoBDev.Plugins.Launchers.Linux.TestHost.csproj" />
+    <Project Path="OoBDev.Plugins.Launchers.Linux.Tests/OoBDev.Plugins.Launchers.Linux.Tests.csproj" />
   </Folder>
 </Solution>

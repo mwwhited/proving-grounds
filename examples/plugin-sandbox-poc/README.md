@@ -92,6 +92,10 @@ The simulator implements these checks itself, so they double as a spec for the r
 
 `src/OoBDev.Plugins.Launchers.Windows` starts a plugin in an AppContainer (no network, no user files) inside its own job object (one process, optional memory cap, killed when the host dies). `dotnet test src/OoBDev.Plugins.Launchers.Windows.Tests` runs 18 escape and kill-with-host tests against `plugins/escape-python`. `PLUGIN_LAUNCHER=appcontainer dotnet test src/OoBDev.Plugins.Conformance` runs the normal conformance checks inside the sandbox (Java is skipped; see `docs/poc/findings.md` for that and the other open items). Windows only, tested on one machine.
 
+## Linux sandbox (phase 4, started)
+
+`src/OoBDev.Plugins.Launchers.Linux` runs a plugin inside bubblewrap (namespaces, a minimal read-only filesystem, no network, rlimits). `sh linux-test/run-docker.sh` builds a Docker image, builds the compiled plugins and runs everything on Linux, including 18 escape tests. Docker's default seccomp profile has to be relaxed for it (see `docs/poc/findings.md`). No seccomp filter yet; conformance has not been run through the sandbox.
+
 ## Known limits
 
 - No sandbox and no packaging or signing. The stand-in host has no router or restart logic; the real host in `src/` does.

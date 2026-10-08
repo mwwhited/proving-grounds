@@ -58,11 +58,14 @@ def connect(a):
 
 
 def spawn(a):
-    r = subprocess.run(a.get("cmd", ["cmd.exe", "/c", "echo", "child"]), capture_output=True, timeout=5)
+    r = subprocess.run(a.get("cmd", ["cmd.exe", "/c", "echo", "child"] if os.name == "nt" else ["/bin/true"]), capture_output=True, timeout=5)
     return "child exited %s" % r.returncode
 
 
 def open_process(a):
+    if os.name != "nt":      # Linux: can this process see the host process at all?
+        with open("/proc/%d/environ" % int(a["pid"]), "rb") as f:
+            return "read %d bytes of the host's environment" % len(f.read())
     import ctypes
     k32 = ctypes.WinDLL("kernel32", use_last_error=True)
     k32.OpenProcess.restype = ctypes.c_void_p
@@ -99,6 +102,8 @@ def pid(a):
 
 
 def whoami(a):
+    if os.name != "nt":      # Linux: inside a PID namespace this process is one of the first few
+        return "pidns" if os.getpid() < 50 else "NOT in a pid namespace (pid %d)" % os.getpid()
     import ctypes
     tok = ctypes.c_void_p()
     adv = ctypes.WinDLL("advapi32", use_last_error=True)
@@ -147,6 +152,10 @@ write_frame({"type": "Event", "requestId": new_id(), "topic": "escape.result",
 
 while True:
     env = read_frame()
+    if env is None and cfg.get("linger"):      # ignore a closed channel: only the OS can end this plugin
+        import time
+        while True:
+            time.sleep(60)
     if env is None or env.get("type") == "Shutdown":
         sys.exit(0)
     if env.get("type") == "Heartbeat":

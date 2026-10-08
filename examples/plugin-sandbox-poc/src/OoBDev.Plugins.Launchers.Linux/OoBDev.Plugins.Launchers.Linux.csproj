@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\OoBDev.Plugins.Host\OoBDev.Plugins.Host.csproj" />
+    <ProjectReference Include="..\OoBDev.Plugins.Launchers.Plain\OoBDev.Plugins.Launchers.Plain.csproj" />
+  </ItemGroup>
+</Project>

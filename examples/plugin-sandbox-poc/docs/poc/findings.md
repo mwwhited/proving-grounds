@@ -106,3 +106,42 @@ Run in Docker (`linux-test/`: .NET 10 SDK image plus Python, Go, a JDK, Node, bu
 - The stand-in host checks (46 with the Go and Java plugins built) and the real host's conformance suite (echo-go, echo-java, echo-dotnet, echo-python, ticker-node, chaos) all pass, plus the 33 host tests and 35 protocol tests. No plugin or host change was needed.
 - Needed only environment changes: a `python` command (manifests say `python`; Debian ships `python3`, so the image installs `python-is-python3`) and the Go binary path without `.exe`.
 - This says nothing about isolation. The plain launcher is not a sandbox, and there is no Linux sandbox launcher yet (phase 4). Docker's own seccomp and user-namespace limits will need to be accounted for when one is built.
+
+## Phase 4 (part): Linux sandbox with bubblewrap
+
+Code: `src/OoBDev.Plugins.Launchers.Linux` (`BubblewrapLauncher`: wraps the plugin command in `bwrap` and `prlimit`, then reuses the plain launcher for stdio and exit handling). Tests: `src/OoBDev.Plugins.Launchers.Linux.Tests`, 18 tests mirroring the Windows suite against `plugins/escape-python`. Run with `sh linux-test/run-docker.sh`. One machine: Docker Desktop on WSL2, kernel 6.6, unprivileged user (uid 1000).
+
+**The container had to be relaxed to run this.** Docker's default seccomp profile blocks `unshare`/`clone` with new namespaces, so bubblewrap fails with "No permissions to create new namespace". The run uses `--security-opt seccomp=unconfined --security-opt apparmor=unconfined`. That is a property of the test container. A host with unprivileged user namespaces enabled would not need it; one with them disabled (hardened distros, some CI) cannot use this launcher at all. Not tested on bare metal Linux or macOS.
+
+What the sandbox is: new user, pid, ipc, uts, cgroup and network namespaces (`--unshare-all`), a mount namespace containing only `/usr` (read-only), a few `/etc` entries, the plugin folder (read-only), granted folders, and a private `/tmp`; an empty environment; `--die-with-parent`; `RLIMIT_DATA` for the memory cap and `RLIMIT_NPROC` for a task cap.
+
+### Results (all 18 pass)
+
+| Claim | Result |
+|:--|:--|
+| Runs in a PID namespace | Held (control) |
+| Granted folders readable, listable, writable (read-only grant not writable) | Held (control) and denied as expected |
+| Folders outside every grant, the user's home, `/etc/passwd`, `/etc/shadow` | Denied |
+| Plugin cannot modify its own folder | Denied |
+| Loopback and internet connections | Denied (loopback listener saw nothing; positive control passes) |
+| Host process not visible (`/proc/<host pid>/environ` is `FileNotFoundError`) | Denied |
+| Host environment variables | Not inherited |
+| Memory cap | 300 MB allocation succeeds without a limit and fails with a 150 MB `RLIMIT_DATA` |
+| Child process | Allowed by default (control); denied with `MaxTasks = 1` |
+| Host killed with SIGKILL | Plugin and `bwrap` gone within 10 s. The plugin is told to ignore a closed channel (`linger`), so this is the sandbox, not the plugin exiting on EOF |
+| Conformance in plain mode on Linux | Passes (previous section). Not yet run through the Bubblewrap launcher |
+
+### Weaker than the Windows launcher
+
+- **No "no child processes" rule.** `RLIMIT_NPROC` counts threads too, so a Go, JVM or Node plugin needs a high limit (default 512). That contains a fork bomb but does not stop spawning. The spawn is only blocked with a limit of 1, which works for single-threaded Python. A real "no exec" rule needs a seccomp filter, which was not written. It also has to let the first `execve` through.
+- **No seccomp filter at all**, so the plugin has the full syscall surface of an unprivileged process (inside the namespaces). Phase 4's "threads still work under seccomp" claim is untested.
+- **No CPU limit, no cgroup limits** (cgroup v2 needs delegation).
+- `RLIMIT_DATA` is not exactly RSS: it counts private writable mappings, not file-backed memory or shared memory.
+- The pid namespace plus `--die-with-parent` killed the plugin when the host was `SIGKILL`ed. `PR_SET_PDEATHSIG` is tied to the parent *thread*; it held in this test, but a launch from a short-lived thread-pool thread could, in principle, kill the plugin early. Not seen.
+- Runtime locations are a fixed list (`/usr`, a few `/etc`). Java needs `/etc/java-*`; a runtime installed elsewhere needs `ReadOnlyPaths`.
+- Detached lifetime is not implemented.
+
+### Not yet done
+
+- Run the conformance suite through `BubblewrapLauncher` (Go, Java, Node, .NET inside the sandbox). This is the check that matters for "can real runtimes live in it".
+- seccomp filter (and a thread-creation test for Go, Java, Node under it), CPU/cgroup limits, macOS.
